@@ -1,3 +1,5 @@
+-- Draconic Reactor Control program by drmon(forked by Zeanon)
+
 -- modifiable variables
 -- Peripherals
 local reactorPeripheral = "back"
