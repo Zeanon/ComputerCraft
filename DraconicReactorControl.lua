@@ -25,6 +25,7 @@ local activateOnCharged = true
 
 -- please leave things untouched from here on
 os.loadAPI("lib/f")
+os.loadAPI("lib/surface")
 
 local version = "0.25"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
@@ -41,6 +42,7 @@ local emergencyFlood = false
 
 -- monitor
 local mon, monitor, monX, monY
+f.initialize(mon, surface)
 
 -- peripherals
 local reactor
@@ -308,6 +310,9 @@ function update()
         end
 
         f.draw_text_lr(mon, 2, 4, 1, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
+        if externalfluxgate.getSignalLowFlow() >= maxStabilizerThroughput then
+            f.draw_info(mon, 1, 5, "stabilizer maximum", colors.white, colors.black, colors.blue)
+        end
 
         f.draw_text_lr(mon, 2, 6, 1, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 
@@ -342,6 +347,8 @@ function update()
         f.progress_bar(mon, 2, 24, mon.X-2, fuelPercent, 100, fuelColor, colors.gray)
 
         f.draw_text_lr(mon, 2, 26, 1, "Last action due to:", action, colors.gray, colors.gray, colors.black)
+
+        f.render(mon)
 
         -- actual reactor interaction
         --
@@ -454,7 +461,7 @@ function update()
             print("Threshold: false")
         end
 
-        sleep(0.1)
+        sleep(0.2)
     end
 end
 
