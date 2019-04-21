@@ -490,6 +490,7 @@ function getThreshold()
         externalfluxgate.setSignalLowFlow(oldOutput)
         oldOutput = -1
         thresholded = false
+
     end
 end
 
