@@ -9,14 +9,11 @@ local internalOutput = "right"
 
 -- target strength of the containment field
 local targetStrength = 50
-local minimumStrength = 25
 -- maximum temperature the reactor may reach
 local maxTemperature = 7000
 -- temperature the programm should keep the reactor at
 local safeTemperature = 3000
-local maxSafeTemperature = 6000
 -- if the containment field gets below this value the reactor will be shut down
-local lowestFieldPercent = 30
 local lowestFieldPercentThreshold = 15
 -- the difference between the internal output and internal input (if you use a buffer core, so that the core will be filled)
 local outputInputHyteresis = 2500
@@ -95,6 +92,9 @@ function save_config()
     sw.writeLine(autoInputGate)
     sw.writeLine(curInputGate)
     sw.writeLine(oldOutput)
+    sw.writeLine(outputInputHyteresis)
+    sw.writeLine(targetStrength)
+    sw.writeLine(safeTemperature)
     sw.close()
 end
 
@@ -105,6 +105,9 @@ function load_config()
     autoInputGate = sr.readLine()
     curInputGate = tonumber(sr.readLine())
     oldOutput = tonumber(sr.readLine())
+    outputInputHyteresis = tonumber(sr.readline())
+    targetStrength = tonumber(sr.readLine())
+    safeTemperature = tonumber(sr.readLine())
     sr.close()
 end
 
@@ -319,7 +322,7 @@ function update()
         -- buttons
         drawButtons(7)
 
-        f.draw_text_lr(mon, 2, 9, 1, "Input Gate", f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        f.draw_text_lr(mon, 2, 9, 1, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 
         if autoInputGate then
             f.draw_text(mon, 14, 10, "AU", colors.white, colors.gray)
@@ -333,7 +336,7 @@ function update()
         f.draw_text_lr(mon, 2, 14, 1, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-2, satPercent, 100, colors.blue, colors.gray)
 
-        f.draw_text_lr(mon, 2, 17, 1, "Temperature ", f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        f.draw_text_lr(mon, 2, 17, 1, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
         f.progress_bar(mon, 2, 18, mon.X-2, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
@@ -404,8 +407,14 @@ function update()
         end
 
         -- Saturation too low, regulate Output
-        if satPercent < 25 and (ri.status == "online" or "charging") then
+        if satPercent < 25 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             satthreshold = 0
+            getThreshold()
+        elseif satPercent < 35 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+            satthreshold = 250000
+            getThreshold()
+        elseif satPercent < 45 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+            satthreshold = 500000
             getThreshold()
         else
             satthreshold = -1
@@ -413,14 +422,14 @@ function update()
         end
 
         -- field strength is close to dangerous, fire up input
-        if fieldPercent <= lowestFieldPercent and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+        if fieldPercent <= lowestFieldPercentThreshold + 15 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             if emergencyFlood == true then
                 print("Target Gate: 900000")
             end
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            fieldthreshold = 0
+            fieldthreshold = 150000
             getThreshold()
         else
             emergencyFlood = false
@@ -449,6 +458,15 @@ function update()
             emergencyTemp = true
             tempthreshold = 0
             getThreshold()
+        elseif ri.temperature > (maxTemperature / 7) *6 then
+            tempthreshold = 400000
+            getThreshold()
+        elseif ri.temperature > (maxTemperature / 7) *5 then
+            tempthreshold = 750000
+            getThreshold()
+        elseif ri.temperature > (maxTemperature / 7) *4 then
+            tempthreshold = 1000000
+            getThreshold()
         else
             tempthreshold = -1
             getThreshold()
@@ -460,6 +478,7 @@ function update()
         else
             print("Threshold: false")
         end
+        print("Hyteresis: ".. outputInputHyteresis)
 
         sleep(0.2)
     end
