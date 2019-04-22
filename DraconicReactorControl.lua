@@ -345,7 +345,6 @@ function update()
 
         f.draw_text_lr(mon, 2, 26, 1, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
-
         -- actual reactor interaction
 
         if emergencyCharge == true then
