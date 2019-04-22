@@ -91,7 +91,6 @@ function save_config()
     sw.writeLine(autoInputGate)
     sw.writeLine(curInputGate)
     sw.writeLine(oldOutput)
-    sw.writeLine(outputInputHyteresis)
     sw.writeLine(targetStrength)
     sw.writeLine(safeTemperature)
     sw.close()
@@ -104,7 +103,6 @@ function load_config()
     autoInputGate = sr.readLine()
     curInputGate = tonumber(sr.readLine())
     oldOutput = tonumber(sr.readLine())
-    outputInputHyteresis = tonumber(sr.readLine())
     targetStrength = tonumber(sr.readLine())
     safeTemperature = tonumber(sr.readLine())
     sr.close()
@@ -347,7 +345,6 @@ function update()
 
         f.draw_text_lr(mon, 2, 26, 1, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
-        f.render(mon)
 
         -- actual reactor interaction
 
