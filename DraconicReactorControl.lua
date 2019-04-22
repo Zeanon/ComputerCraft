@@ -92,6 +92,7 @@ function save_config()
     sw.writeLine(curInputGate)
     sw.writeLine(targetStrength)
     sw.writeLine(safeTemperature)
+    sw.writeLine(oldOutput)
     sw.close()
 end
 
@@ -103,6 +104,7 @@ function load_config()
     curInputGate = tonumber(sr.readLine())
     targetStrength = tonumber(sr.readLine())
     safeTemperature = tonumber(sr.readLine())
+    oldOutput = tonumber(sr.readLine())
     sr.close()
 end
 
@@ -481,13 +483,13 @@ end
 function getThreshold()
     if ri.status == "charging" then
         threshold = 0
-    elseif satthreshold >= 0 and satthreshold <= tempthreshold and satthreshold <= fieldthreshold and satthreshold <= fuelthreshold then
+    elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold < 0) and (satthreshold <= fieldthreshold or fieldthreshold < 0) and (satthreshold <= fuelthreshold or fuelthreshold < 0) then
         threshold = satthreshold
-    elseif tempthreshold >= 0 and tempthreshold <= satthreshold and tempthreshold <= fieldthreshold and tempthreshold <= fuelthreshold then
+    elseif tempthreshold >= 0 and (tempthreshold <= satthreshold or satthreshold < 0) and (tempthreshold <= fieldthreshold or fieldthreshold < 0) and (tempthreshold <= fuelthreshold or fuelthreshold < 0) then
         threshold = tempthreshold
-    elseif fieldthreshold >= 0 and fieldthreshold <= satthreshold and fieldthreshold <= tempthreshold and fieldthreshold <= fuelthreshold then
+    elseif fieldthreshold >= 0 and (fieldthreshold <= satthreshold or satthreshold < 0) and (fieldthreshold <= tempthreshold or tempthreshold < 0) and (fieldthreshold <= fuelthreshold or fuelthreshold <0) then
         threshold = fieldthreshold
-    elseif fuelthreshold >= 0 and fuelthreshold <= satthreshold and fuelthreshold <= tempthreshold and fuelthreshold <= fieldthreshold then
+    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold < 0) and (fuelthreshold <= tempthreshold or tempthreshold < 0) and (fuelthreshold <= fieldthreshold or fieldthreshold < 0) then
         threshold = fuelthreshold
     else
         threshold = -1
