@@ -39,7 +39,6 @@ local emergencyFlood = false
 
 -- monitor
 local mon, monitor, monX, monY
-f.initialize(mon, surface)
 
 -- peripherals
 local reactor
@@ -313,9 +312,6 @@ function update()
         end
 
         f.draw_text_lr(mon, 2, 4, 1, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
-        if externalfluxgate.getSignalLowFlow() >= maxStabilizerThroughput then
-            f.draw_info(mon, 1, 5, "stabilizer maximum", colors.white, colors.black, colors.blue)
-        end
 
         f.draw_text_lr(mon, 2, 6, 1, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 
@@ -354,7 +350,7 @@ function update()
         f.render(mon)
 
         -- actual reactor interaction
-        --
+
         if emergencyCharge == true then
             reactor.chargeReactor()
         end
