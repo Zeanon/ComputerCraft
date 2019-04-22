@@ -96,6 +96,7 @@ function save_config()
     sw.close()
 end
 
+
 --read settings from file
 function load_config()
     sr = fs.open("config.txt", "r")
