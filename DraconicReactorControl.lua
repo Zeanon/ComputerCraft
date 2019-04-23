@@ -163,6 +163,7 @@ function buttons()
             if threshold >= 0 and cFlow > threshold then
                 cFlow = threshold
             end
+            oldOutput = cFlow
             externalfluxgate.setSignalLowFlow(cFlow)
         end
 
@@ -483,13 +484,13 @@ end
 function getThreshold()
     if ri.status == "charging" then
         threshold = 0
-    elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold < 0) and (satthreshold <= fieldthreshold or fieldthreshold < 0) and (satthreshold <= fuelthreshold or fuelthreshold < 0) then
+    elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) then
         threshold = satthreshold
-    elseif tempthreshold >= 0 and (tempthreshold <= satthreshold or satthreshold < 0) and (tempthreshold <= fieldthreshold or fieldthreshold < 0) and (tempthreshold <= fuelthreshold or fuelthreshold < 0) then
+    elseif tempthreshold >= 0 and (tempthreshold <= satthreshold or satthreshold == -1) and (tempthreshold <= fieldthreshold or fieldthreshold == -1) and (tempthreshold <= fuelthreshold or fuelthreshold == -1) then
         threshold = tempthreshold
-    elseif fieldthreshold >= 0 and (fieldthreshold <= satthreshold or satthreshold < 0) and (fieldthreshold <= tempthreshold or tempthreshold < 0) and (fieldthreshold <= fuelthreshold or fuelthreshold <0) then
+    elseif fieldthreshold >= 0 and (fieldthreshold <= satthreshold or satthreshold == -1) and (fieldthreshold <= tempthreshold or tempthreshold == -1) and (fieldthreshold <= fuelthreshold or fuelthreshold == -1) then
         threshold = fieldthreshold
-    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold < 0) and (fuelthreshold <= tempthreshold or tempthreshold < 0) and (fuelthreshold <= fieldthreshold or fieldthreshold < 0) then
+    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold == -1µ) and (fuelthreshold <= tempthreshold or tempthreshold == -1) and (fuelthreshold <= fieldthreshold or fieldthreshold == -1) then
         threshold = fuelthreshold
     else
         threshold = -1
@@ -498,7 +499,7 @@ function getThreshold()
         oldOutput = externalfluxgate.getSignalLowFlow()
         externalfluxgate.setSignalLowFlow(threshold)
         thresholded = true
-    elseif threshold >= 0 and externalfluxgate.getSignalLowFlow() > threshold and thresholded then
+    elseif threshold >= 0 and thresholded then
         if threshold < oldOutput then
             externalfluxgate.setSignalLowFlow(threshold)
         elseif threshold >= oldOutput then
