@@ -222,20 +222,6 @@ end
 function update()
     while true do
 
-        f.clear(mon)
-
-        ri = reactor.getReactorInfo()
-
-        -- print out all the infos from .getReactorInfo() to term
-
-        if ri == nil then
-            error("reactor has an invalid setup")
-        end
-
-        for k, v in pairs (ri) do
-            print(k.. ": ".. v)
-        end
-
         -- monitor output
         local satPercent
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
@@ -344,48 +330,7 @@ function update()
 
         f.draw_text_lr(mon, 2, 26, 1, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
-        -- actual reactor interaction
 
-        if emergencyCharge == true then
-            reactor.chargeReactor()
-        end
-
-        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
-        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
-
-        -- are we charging? open the floodgates
-        if ri.status == "charging" then
-            getThreshold()
-            inputfluxgate.setSignalLowFlow(900000)
-            outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            print("Target Gate: 900000")
-            emergencyCharge = false
-        end
-
-        -- are we stopping from a shutdown and our temp is better? activate
-        if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
-            reactor.activateReactor()
-            emergencyTemp = false
-        end
-
-        -- are we charged? lets activate
-        if ri.status == "charged" and activateOnCharged then
-            reactor.activateReactor()
-        end
-
-        -- are we on? regulate the input fludgate to our target field strength
-        -- or set it to our saved setting since we are on manual
-        if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
-            if autoInputGate then
-                fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
-                print("Target Gate: ".. fluxval)
-                inputfluxgate.setSignalLowFlow(fluxval)
-                outputfluxgate.setSignalLowFlow(fluxval + outputInputHyteresis)
-            else
-                inputfluxgate.setSignalLowFlow(curInputGate)
-                outputfluxgate.setSignalLowFlow(curInputGate + outputInputHyteresis)
-            end
-        end
         -- safeguards
         --
 
@@ -417,9 +362,6 @@ function update()
 
         -- field strength is close to dangerous, fire up input
         if fieldPercent <= lowestFieldPercentThreshold + 15 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            if emergencyFlood == true then
-                print("Target Gate: 900000")
-            end
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
@@ -466,7 +408,63 @@ function update()
             getThreshold()
         end
 
-        -- printing threshold
+
+        -- print out all the infos from .getReactorInfo() to term
+        f.clear(mon)
+
+        ri = reactor.getReactorInfo()
+
+        if ri == nil then
+            error("reactor has an invalid setup")
+        end
+
+        for k, v in pairs (ri) do
+            print(k.. ": ".. v)
+        end
+
+        -- actual reactor interaction
+
+        if emergencyCharge == true then
+            reactor.chargeReactor()
+        end
+
+        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
+        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
+
+        -- are we stopping from a shutdown and our temp is better? activate
+        if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
+            reactor.activateReactor()
+            emergencyTemp = false
+        end
+
+        -- are we charged? lets activate
+        if ri.status == "charged" and activateOnCharged then
+            reactor.activateReactor()
+        end
+
+        -- are we charging? open the floodgates
+        if ri.status == "charging" then
+            getThreshold()
+            inputfluxgate.setSignalLowFlow(900000)
+            outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
+            emergencyCharge = false
+        end
+
+        -- are we on? regulate the input fludgate to our target field strength
+        -- or set it to our saved setting since we are on manual
+        if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
+            if autoInputGate then
+                fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
+                inputfluxgate.setSignalLowFlow(fluxval)
+                outputfluxgate.setSignalLowFlow(fluxval + outputInputHyteresis)
+            else
+                inputfluxgate.setSignalLowFlow(curInputGate)
+                outputfluxgate.setSignalLowFlow(curInputGate + outputInputHyteresis)
+            end
+        end
+
+        print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
+
         if threshold >= 0 then
             print("Threshold: ".. threshold)
         else
