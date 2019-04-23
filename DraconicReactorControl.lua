@@ -235,10 +235,8 @@ function update()
         for k, v in pairs (ri) do
             print(k.. ": ".. v)
         end
-        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
-        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
 
-        -- monitor outputw
+        -- monitor output
         local satPercent
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if isnan(satPercent) then
@@ -352,6 +350,9 @@ function update()
         if emergencyCharge == true then
             reactor.chargeReactor()
         end
+
+        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
+        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
 
         -- are we charging? open the floodgates
         if ri.status == "charging" then
