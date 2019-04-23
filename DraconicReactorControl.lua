@@ -490,7 +490,7 @@ function getThreshold()
         threshold = tempthreshold
     elseif fieldthreshold >= 0 and (fieldthreshold <= satthreshold or satthreshold == -1) and (fieldthreshold <= tempthreshold or tempthreshold == -1) and (fieldthreshold <= fuelthreshold or fuelthreshold == -1) then
         threshold = fieldthreshold
-    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold == -1µ) and (fuelthreshold <= tempthreshold or tempthreshold == -1) and (fuelthreshold <= fieldthreshold or fieldthreshold == -1) then
+    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold == -1) and (fuelthreshold <= tempthreshold or tempthreshold == -1) and (fuelthreshold <= fieldthreshold or fieldthreshold == -1) then
         threshold = fuelthreshold
     else
         threshold = -1
