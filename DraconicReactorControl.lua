@@ -93,7 +93,6 @@ function save_config()
     sw.writeLine(targetStrength)
     sw.writeLine(safeTemperature)
     sw.writeLine(oldOutput)
-    sw.writeLine(outputInputHyteresis)
     sw.close()
 end
 
@@ -101,24 +100,11 @@ end
 function load_config()
     sr = fs.open("config.txt", "r")
     version = sr.readLine()
-    if sr.readLine() ~= nil then
-        autoInputGate = sr.readLine()
-    end
-    if sr.readLine() ~= nil then
-        curInputGate = tonumber(sr.readLine())
-    end
-    if sr.readLine() ~= nil then
-        targetStrength = tonumber(sr.readLine())
-    end
-    if sr.readLine() ~= nil then
-        safeTemperature = tonumber(sr.readLine())
-    end
-    if sr.readLine() ~= nil then
-        oldOutput = tonumber(sr.readLine())
-    end
-    if sr.readLine() ~= nil then
-        outputInputHyteresis = tonumber(sr.readLine())
-    end
+    autoInputGate = sr.readLine()
+    curInputGate = tonumber(sr.readLine())
+    targetStrength = tonumber(sr.readLine())
+    safeTemperature = tonumber(sr.readLine())
+    oldOutput = tonumber(sr.readLine())
     sr.close()
 end
 
