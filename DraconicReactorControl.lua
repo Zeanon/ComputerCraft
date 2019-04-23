@@ -88,11 +88,11 @@ mon.monitor,mon.X, mon.Y = monitor, monX, monY
 function save_config()
     sw = fs.open("config.txt", "w")
     sw.writeLine(version)
-    sw.writeLine(autoInputGate)
-    sw.writeLine(curInputGate)
-    sw.writeLine(targetStrength)
-    sw.writeLine(safeTemperature)
-    sw.writeLine(oldOutput)
+    --sw.writeLine(autoInputGate)
+    --sw.writeLine(curInputGate)
+    --sw.writeLine(targetStrength)
+    --sw.writeLine(safeTemperature)
+    --sw.writeLine(oldOutput)
     sw.close()
 end
 
@@ -100,11 +100,11 @@ end
 function load_config()
     sr = fs.open("config.txt", "r")
     version = sr.readLine()
-    autoInputGate = sr.readLine()
-    curInputGate = tonumber(sr.readLine())
-    targetStrength = tonumber(sr.readLine())
-    safeTemperature = tonumber(sr.readLine())
-    oldOutput = tonumber(sr.readLine())
+    --autoInputGate = sr.readLine()
+    --curInputGate = tonumber(sr.readLine())
+    --targetStrength = tonumber(sr.readLine())
+    --safeTemperature = tonumber(sr.readLine())
+    --oldOutput = tonumber(sr.readLine())
     sr.close()
 end
 
