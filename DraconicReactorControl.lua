@@ -164,6 +164,7 @@ function buttons()
                 cFlow = threshold
             end
             oldOutput = cFlow
+            save_config()
             externalfluxgate.setSignalLowFlow(cFlow)
         end
 
@@ -512,6 +513,7 @@ function getThreshold()
         oldOutput = -1
         thresholded = false
     end
+    save_config()
 end
 
 parallel.waitForAny(buttons, update)
