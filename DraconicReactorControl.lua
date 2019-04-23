@@ -329,7 +329,6 @@ function update()
         f.draw_text_lr(mon, 2, 14, 1, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-2, satPercent, 100, colors.blue, colors.gray)
 
-        print(safeTemperature)
         f.draw_text_lr(mon, 2, 17, 1, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
         f.progress_bar(mon, 2, 18, mon.X-2, tempPercent, 100, tempColor, colors.gray)
 
@@ -406,10 +405,10 @@ function update()
             satthreshold = 0
             getThreshold()
         elseif satPercent < 35 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            satthreshold = 250000
+            satthreshold = 350000
             getThreshold()
         elseif satPercent < 45 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            satthreshold = 500000
+            satthreshold = 600000
             getThreshold()
         else
             satthreshold = -1
@@ -424,7 +423,7 @@ function update()
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            fieldthreshold = 150000
+            fieldthreshold = 200000
             getThreshold()
         else
             emergencyFlood = false
