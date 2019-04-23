@@ -238,8 +238,7 @@ function update()
         print("Output Gate: ", externalfluxgate.getSignalLowFlow())
         print("Input Gate: ", inputfluxgate.getSignalLowFlow())
 
-        -- monitor output
-
+        -- monitor outputw
         local satPercent
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if isnan(satPercent) then
@@ -332,6 +331,7 @@ function update()
         f.draw_text_lr(mon, 2, 14, 1, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-2, satPercent, 100, colors.blue, colors.gray)
 
+        print(safeTemperature)
         f.draw_text_lr(mon, 2, 17, 1, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
         f.progress_bar(mon, 2, 18, mon.X-2, tempPercent, 100, tempColor, colors.gray)
 
