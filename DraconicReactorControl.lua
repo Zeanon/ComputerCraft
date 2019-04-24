@@ -86,9 +86,10 @@ end
 
 --read settings from file
 function load_config()
-    --sr = fs.open("config.txt", "r")
+    sr = fs.open("config.txt", "r")
     local curVersion
-    for line in io.lines("config.txt") do
+    local line = sr.readLine()
+    while line do
         for k,v in pairs (mysplit(line, ":")) do
             if k == "version" then
                 curVersion = v
@@ -133,7 +134,7 @@ function load_config()
     --targetStrength = tonumber(sr.readLine())
     -- safeTemperature = tonumber(sr.readLine())
     --oldOutput = tonumber(sr.readLine())
-    --sr.close()
+    sr.close()
     if curVersion ~= version then
         save_config()
     end
