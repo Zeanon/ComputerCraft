@@ -4,8 +4,8 @@
 -- Peripherals
 local reactorPeripheral = "back"
 local externalOutput = "flux_gate_1"
-local internalInput = "flux_gate_2"
 local internalOutput = "right"
+local internalInput = "flux_gate_2"
 
 -- target strength of the containment field
 local targetStrength = 50
@@ -200,6 +200,9 @@ function buttons()
             save_config()
         end
 
+        -- Numpad
+
+
     end
 end
 
@@ -221,6 +224,8 @@ end
 
 function update()
     while true do
+        f.clear(mon)
+        ri = reactor.getReactorInfo()
 
         -- monitor output
         local satPercent
@@ -231,7 +236,7 @@ function update()
 
         local tempPercent, tempColor
         tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
-        if isnan(temppPercent) then
+        if isnan(tempPercent) then
             tempPercent = 0
         end
 
@@ -313,26 +318,25 @@ function update()
         f.draw_text(mon, 0, 12, "                                                      ", colors.white, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, 1, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
-        f.progress_bar(mon, 2, 15, mon.X-2, satPercent, 100, colors.blue, colors.gray)
+        f.progress_bar(mon, 2, 15, mon.X-10, satPercent, 100, colors.blue, colors.gray)
 
         f.draw_text_lr(mon, 2, 17, 1, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        f.progress_bar(mon, 2, 18, mon.X-2, tempPercent, 100, tempColor, colors.gray)
+        f.progress_bar(mon, 2, 18, mon.X-10, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
             f.draw_text_lr(mon, 2, 20, 1, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
             f.draw_text_lr(mon, 2, 20, 1, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        f.progress_bar(mon, 2, 21, mon.X-2, fieldPercent, 100, fieldColor, colors.gray)
+        f.progress_bar(mon, 2, 21, mon.X-10, fieldPercent, 100, fieldColor, colors.gray)
 
         f.draw_text_lr(mon, 2, 23, 1, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        f.progress_bar(mon, 2, 24, mon.X-2, fuelPercent, 100, fuelColor, colors.gray)
+        f.progress_bar(mon, 2, 24, mon.X-10, fuelPercent, 100, fuelColor, colors.gray)
 
         f.draw_text_lr(mon, 2, 26, 1, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
 
         -- safeguards
-        --
 
         -- out of fuel, kill it
         if fuelPercent <= 15 then
@@ -410,10 +414,6 @@ function update()
 
 
         -- print out all the infos from .getReactorInfo() to term
-        f.clear(mon)
-
-        ri = reactor.getReactorInfo()
-
         if ri == nil then
             error("reactor has an invalid setup")
         end
