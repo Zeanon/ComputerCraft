@@ -315,7 +315,7 @@ function update()
             drawButtons(10)
         end
 
-        f.draw_line(mon, 0, 12, mon.X-18, colors.yellow)
+        f.draw_line(mon, 0, 12, mon.X-20, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, 20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-21, satPercent, 100, colors.blue, colors.gray)
