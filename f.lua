@@ -60,8 +60,8 @@ end
 
 --draw vertical line
 function draw_column(mon, x, y, height, color)
-    if length < 0 then
-        length = 0
+    if height < 0 then
+        height = 0
     end
     mon.monitor.setBackgroundColor(color)
     local i = 0
