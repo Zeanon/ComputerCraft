@@ -107,11 +107,10 @@ function load_config()
     local curVersion
     local line = sr.readLine()
     while line do
-        local splitted = split(line, ":")
-        if splitted[1] == "version" then
+        if split(line, ":")[1] == "version" then
             curVersion = split(line, ":")[2]
         elseif split(line, ":")[1] == "autoInputGate" then
-            autoInputGate = splitted[3]
+            autoInputGate = split(line, ":")[2]
         elseif split(line, ":")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ":")[2])
         elseif split(line, ":")[1] == "curOutput" then
@@ -135,11 +134,6 @@ function load_config()
         end
         line = sr.readLine()
     end
-    --autoInputGate = sr.readLine()
-    --curInputGate = tonumber(sr.readLine())
-    --targetStrength = tonumber(sr.readLine())
-    -- safeTemperature = tonumber(sr.readLine())
-    --oldOutput = tonumber(sr.readLine())
     sr.close()
     if curVersion ~= version then
         save_config()
@@ -581,19 +575,6 @@ function getThreshold()
         thresholded = false
     end
     save_config()
-end
-
-function split(string, delimiter)
-    local result = { }
-    local from = 1
-    local delim_from, delim_to = string.find( string, delimiter, from )
-    while delim_from do
-        table.insert( result, string.sub( string, from , delim_from-1 ) )
-        from = delim_to + 1
-        delim_from, delim_to = string.find( string, delimiter, from )
-    end
-    table.insert( result, string.sub( string, from ) )
-    return result
 end
 
 function isnan(x)
