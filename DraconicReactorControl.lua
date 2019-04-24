@@ -83,7 +83,11 @@ end
 function save_config()
     sw = fs.open("config.txt", "w")
     sw.writeLine("version:" .. version)
-    sw.writeLine("autoInputGate:" .. (autoInputGate and "true" or "false"))
+    if autoInputGate then
+        sw.writeLine("autoInputGate:true")
+    else
+        sw.writeLine("autoInputGate:false")
+    end
     sw.writeLine("curInputGate:" .. curInputGate)
     sw.writeLine("curOutput:" .. curOutput)
     sw.writeLine("targetStrength:" .. targetStrength)
@@ -380,7 +384,7 @@ function update()
         end
 
         f.draw_line(mon, 0, 12, mon.X-19, colors.yellow)
-        f.draw_column(mon, mon.X-18, 0, mon.Y, colors.yellow)
+        f.draw_column(mon, mon.X-19, 0, mon.Y, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, 20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-22, satPercent, 100, colors.blue, colors.gray)
