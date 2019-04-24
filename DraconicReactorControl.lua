@@ -316,7 +316,7 @@ function update()
         end
 
         -- f.draw_text(mon, 0, 12, "                                                      ", colors.white, colors.yellow)
-        paintutils.drawLine(0, 12, mon.X-18, 12, colors.yellow)
+        f.paintutils.drawLine(0, 12, mon.X-18, 12, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, mon.X-20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-21, satPercent, 100, colors.blue, colors.gray)
