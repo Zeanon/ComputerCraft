@@ -70,7 +70,7 @@ local emergencyTemp = false
 function save_config()
     sw = fs.open("config.txt", "w")
     sw.writeLine("version:" .. version)
-    sw.writeLine("autoInputGate:" .. autoInputGate)
+    sw.writeLine("autoInputGate:" .. (autoInputGate and "true" or "false"))
     sw.writeLine("curInputGate:" .. curInputGate)
     sw.writeLine("curOutputGate:" .. curOutputGate)
     sw.writeLine("targetStrength:" .. targetStrength)
@@ -97,22 +97,22 @@ function load_config()
                 autoInputGate = v
             end
             if k == "curInputGate" then
-                curInputGate = v
+                curInputGate = tonumber(v)
             end
             if k == "curOutputGate" then
-                curOutputGate = v
+                curOutputGate = tonumber(v)
             end
             if k == "targetStrength" then
-                targetStrength = v
+                targetStrength = tonumber(v)
             end
             if k == "safeTemperature" then
-                safeTemperature = v
+                safeTemperature = tonumber(v)
             end
             if k == "oldOutput" then
-                oldOutput = v
+                oldOutput = tonumber(v)
             end
             if k == "outputInputHyteresis" then
-                outputInputHyteresis = v
+                outputInputHyteresis = tonumber(v)
             end
             if k == "reactorPeripheral" then
                 reactorPeripheral = v
