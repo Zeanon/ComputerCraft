@@ -90,10 +90,11 @@ function load_config()
     local curVersion
     local line = sr.readLine()
     while line do
-        if split(line, ":")[1] == "version" then
+        local splitted = split(line, ":")
+        if splitted[1] == "version" then
             curVersion = split(line, ":")[2]
         elseif split(line, ":")[1] == "autoInputGate" then
-            autoInputGate = split(line, ":")[2]
+            autoInputGate = splitted[3]
         elseif split(line, ":")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ":")[2])
         elseif split(line, ":")[1] == "curOutputGate" then
@@ -564,23 +565,17 @@ function getThreshold()
     save_config()
 end
 
-function split(pString, pPattern)
-    local Table = {}  -- NOTE: use {n = 0} in Lua-5.0
-    local fpat = "(.-)" .. pPattern
-    local last_end = 1
-    local s, e, cap = pString:find(fpat, 1)
-    while s do
-        if s ~= 1 or cap ~= "" then
-            table.insert(Table,cap)
-        end
-        last_end = e+1
-        s, e, cap = pString:find(fpat, last_end)
+function split(string, delimiter)
+    local result = { }
+    local from = 1
+    local delim_from, delim_to = string.find( string, delimiter, from )
+    while delim_from do
+        table.insert( result, string.sub( string, from , delim_from-1 ) )
+        from = delim_to + 1
+        delim_from, delim_to = string.find( string, delimiter, from )
     end
-    if last_end <= #pString then
-        cap = pString:sub(last_end)
-        table.insert(Table, cap)
-    end
-    return Table
+    table.insert( result, string.sub( string, from ) )
+    return result
 end
 
 parallel.waitForAny(buttons, update)
