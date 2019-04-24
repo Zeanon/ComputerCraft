@@ -90,41 +90,30 @@ function load_config()
     local curVersion
     local line = sr.readLine()
     while line do
-        for k,v in pairs (mysplit(line, ":")) do
+        for k,v in pairs (split(line, ":")) do
             if k == "version" then
                 curVersion = v
-            end
-            if k == "autoInputGate" then
+            elseif k == "autoInputGate" then
                 autoInputGate = v
-            end
-            if k == "curInputGate" then
+            elseif k == "curInputGate" then
                 curInputGate = tonumber(v)
-            end
-            if k == "curOutputGate" then
+            elseif k == "curOutputGate" then
                 curOutputGate = tonumber(v)
-            end
-            if k == "targetStrength" then
+            elseif k == "targetStrength" then
                 targetStrength = tonumber(v)
-            end
-            if k == "safeTemperature" then
+            elseif k == "safeTemperature" then
                 safeTemperature = tonumber(v)
-            end
-            if k == "oldOutput" then
+            elseif k == "oldOutput" then
                 oldOutput = tonumber(v)
-            end
-            if k == "outputInputHyteresis" then
+            elseif k == "outputInputHyteresis" then
                 outputInputHyteresis = tonumber(v)
-            end
-            if k == "reactorPeripheral" then
+            elseif k == "reactorPeripheral" then
                 reactorPeripheral = v
-            end
-            if k == "internalInput" then
+            elseif k == "internalInput" then
                 internalInput = v
-            end
-            if k == "internalOutput" then
+            elseif k == "internalOutput" then
                 internalOutput = v
-            end
-            if k == "externalOutput" then
+            elseif k == "externalOutput" then
                 externalOutput = v
             end
         end
@@ -378,7 +367,7 @@ function update()
         end
 
         f.draw_line(mon, 0, 12, mon.X-19, colors.yellow)
-        f.draw_column(mon, mon.X-20, colors.yellow)
+        f.draw_column(mon, mon.X-20, mon.Y, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, 20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-22, satPercent, 100, colors.blue, colors.gray)
@@ -577,15 +566,23 @@ function getThreshold()
     save_config()
 end
 
-function mysplit(inputstr, sep)
-    if sep == nil then
-        sep = "%s"
+function split(pString, pPattern)
+    local Table = {}  -- NOTE: use {n = 0} in Lua-5.0
+    local fpat = "(.-)" .. pPattern
+    local last_end = 1
+    local s, e, cap = pString:find(fpat, 1)
+    while s do
+        if s ~= 1 or cap ~= "" then
+            table.insert(Table,cap)
+        end
+        last_end = e+1
+        s, e, cap = pString:find(fpat, last_end)
     end
-    local t={}
-    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-        table.insert(t, str)
+    if last_end <= #pString then
+        cap = pString:sub(last_end)
+        table.insert(Table, cap)
     end
-    return t
+    return Table
 end
 
 parallel.waitForAny(buttons, update)
