@@ -129,6 +129,7 @@ function load_config()
         elseif split(line, ":")[1] == "externalOutput" then
             externalOutput = split(line, ":")[2]
         end
+        line = sr.readLine()
     end
     --autoInputGate = sr.readLine()
     --curInputGate = tonumber(sr.readLine())
