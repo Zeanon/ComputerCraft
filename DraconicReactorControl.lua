@@ -39,7 +39,7 @@ local version = "0.25"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
-local curOutputGate = 0
+local curOutput = 0
 local oldOutput = -1
 local threshold = -1
 local tempthreshold = -1
@@ -85,7 +85,7 @@ function save_config()
     sw.writeLine("version:" .. version)
     sw.writeLine("autoInputGate:" .. (autoInputGate and "true" or "false"))
     sw.writeLine("curInputGate:" .. curInputGate)
-    sw.writeLine("curOutputGate:" .. curOutputGate)
+    sw.writeLine("curOutput:" .. curOutput)
     sw.writeLine("targetStrength:" .. targetStrength)
     sw.writeLine("safeTemperature:" .. safeTemperature)
     sw.writeLine("oldOutput:" .. oldOutput)
@@ -110,8 +110,8 @@ function load_config()
             autoInputGate = splitted[3]
         elseif split(line, ":")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "curOutputGate" then
-            curOutputGate = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "curOutput" then
+            curOutput = tonumber(split(line, ":")[2])
         elseif split(line, ":")[1] == "targetStrength" then
             targetStrength = tonumber(split(line, ":")[2])
         elseif split(line, ":")[1] == "safeTemperature" then
@@ -207,29 +207,28 @@ function buttons()
         local satPercent
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if yPos == 7 then
-            local cFlow = externalfluxgate.getSignalLowFlow()
             if xPos >= 2 and xPos <= 4 then
-                cFlow = cFlow-1000
+                curOutput = curOutput-1000
             elseif xPos >= 6 and xPos <= 9 then
-                cFlow = cFlow-10000
+                curOutput = curOutput-10000
             elseif xPos >= 10 and xPos <= 12 then
-                cFlow = cFlow-100000
+                curOutput = curOutput-100000
             elseif xPos >= 17 and xPos <= 19 then
-                cFlow = cFlow+100000
+                curOutput = curOutput+100000
             elseif xPos >= 21 and xPos <= 23 then
-                cFlow = cFlow+10000
+                curOutput = curOutput+10000
             elseif xPos >= 25 and xPos <= 27 then
-                cFlow = cFlow+1000
+                curOutput = curOutput+1000
             end
-            if isnan(cFlow) then
-                cFlow = 0
+            if isnan(curOutput) then
+                curOutput = 0
             end
-            if threshold >= 0 and cFlow > threshold then
-                cFlow = threshold
+            if threshold >= 0 and curOutput > threshold then
+                curOutput = threshold
             end
-            oldOutput = cFlow
+            oldOutput = curOutput
+            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
             save_config()
-            externalfluxgate.setSignalLowFlow(cFlow)
         end
 
         -- input gate controls
@@ -251,6 +250,7 @@ function buttons()
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
             outputfluxgate.setSignalLowFlow(curInputGate + outputInputHyteresis)
+            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
             save_config()
         end
 
@@ -380,7 +380,7 @@ function update()
         end
 
         f.draw_line(mon, 0, 12, mon.X-19, colors.yellow)
-        f.draw_column(mon, mon.X-20, mon.Y, colors.yellow)
+        f.draw_column(mon, mon.X-18, 0, mon.Y, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, 20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
         f.progress_bar(mon, 2, 15, mon.X-22, satPercent, 100, colors.blue, colors.gray)
@@ -541,10 +541,6 @@ function update()
     end
 end
 
-function isnan(x)
-    return x ~= x
-end
-
 function getThreshold()
     if ri.status == "charging" then
         threshold = 0
@@ -560,19 +556,23 @@ function getThreshold()
         threshold = -1
     end
     if threshold >= 0 and externalfluxgate.getSignalLowFlow() > threshold and thresholded == false then
-        oldOutput = externalfluxgate.getSignalLowFlow()
-        externalfluxgate.setSignalLowFlow(threshold)
+        oldOutput = curOutput
+        curOutput = threshold
+        externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
         thresholded = true
     elseif threshold >= 0 and thresholded then
         if threshold < oldOutput then
-            externalfluxgate.setSignalLowFlow(threshold)
+            curOutput = threshold
+            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
         elseif threshold >= oldOutput then
-            externalfluxgate.setSignalLowFlow(oldOutput)
+            curOutput = oldOutput
+            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
             oldOutput = -1
             thresholded = false
         end
     elseif threshold == -1 and oldOutput > -1 then
-        externalfluxgate.setSignalLowFlow(oldOutput)
+        curOutput = oldOutput
+        externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
         oldOutput = -1
         thresholded = false
     end
@@ -590,6 +590,10 @@ function split(string, delimiter)
     end
     table.insert( result, string.sub( string, from ) )
     return result
+end
+
+function isnan(x)
+    return x ~= x
 end
 
 parallel.waitForAny(buttons, update)
