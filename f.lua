@@ -58,6 +58,21 @@ function draw_line(mon, x, y, length, color)
     mon.monitor.write(string.rep(" ", length))
 end
 
+--draw vertical line
+function draw_column(mon, x, y, height, color)
+    if length < 0 then
+        length = 0
+    end
+    mon.monitor.setBackgroundColor(color)
+    local i = 0
+    while i < height do
+        mon.monitor.setCursorPos(x,y)
+        mon.monitor.write("  ")
+        y = y + 1
+        i = i + 1
+    end
+end
+
 --create progress bar
 --draws two overlapping lines
 --background line of bg_color
