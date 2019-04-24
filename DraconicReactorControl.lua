@@ -293,20 +293,20 @@ function update()
         end
 
         if fuelPercent > 15 then
-            f.draw_text_lr(mon, 2, 2, 1, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+            f.draw_text_lr(mon, 2, 2, mon.X-20, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         end
         if fuelPercent <= 15 then
-            f.draw_text_lr(mon, 2, 2, 1, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+            f.draw_text_lr(mon, 2, 2, mon.X-20, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
         end
 
-        f.draw_text_lr(mon, 2, 4, 1, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
+        f.draw_text_lr(mon, 2, 4, mon.X-20, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
-        f.draw_text_lr(mon, 2, 6, 1, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        f.draw_text_lr(mon, 2, 6, mon.X-20, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 
         -- buttons
         drawButtons(7)
 
-        f.draw_text_lr(mon, 2, 9, 1, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        f.draw_text_lr(mon, 2, 9, mon.X-20, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 
         if autoInputGate then
             f.draw_text(mon, 14, 10, "AU", colors.white, colors.gray)
@@ -315,25 +315,26 @@ function update()
             drawButtons(10)
         end
 
-        f.draw_text(mon, 0, 12, "                                                      ", colors.white, colors.yellow)
+        -- f.draw_text(mon, 0, 12, "                                                      ", colors.white, colors.yellow)
+        paintutils.drawLine(0, 12, mox.X-18, 12, colors.yellow)
 
-        f.draw_text_lr(mon, 2, 14, 1, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
-        f.progress_bar(mon, 2, 15, mon.X-15, satPercent, 100, colors.blue, colors.gray)
+        f.draw_text_lr(mon, 2, 14, mon.X-20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
+        f.progress_bar(mon, 2, 15, mon.X-20, satPercent, 100, colors.blue, colors.gray)
 
-        f.draw_text_lr(mon, 2, 17, 1, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        f.progress_bar(mon, 2, 18, mon.X-15, tempPercent, 100, tempColor, colors.gray)
+        f.draw_text_lr(mon, 2, 17, mon.X-20, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        f.progress_bar(mon, 2, 18, mon.X-20, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
-            f.draw_text_lr(mon, 2, 20, 1, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            f.draw_text_lr(mon, 2, 20, mon.X-20, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
-            f.draw_text_lr(mon, 2, 20, 1, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            f.draw_text_lr(mon, 2, 20, mon.X-20, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        f.progress_bar(mon, 2, 21, mon.X-15, fieldPercent, 100, fieldColor, colors.gray)
+        f.progress_bar(mon, 2, 21, mon.X-20, fieldPercent, 100, fieldColor, colors.gray)
 
-        f.draw_text_lr(mon, 2, 23, 1, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        f.progress_bar(mon, 2, 24, mon.X-15, fuelPercent, 100, fuelColor, colors.gray)
+        f.draw_text_lr(mon, 2, 23, mon.X-20, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
+        f.progress_bar(mon, 2, 24, mon.X-20, fuelPercent, 100, fuelColor, colors.gray)
 
-        f.draw_text_lr(mon, 2, 26, 1, "Last action due to:", action, colors.gray, colors.gray, colors.black)
+        f.draw_text_lr(mon, 2, 26, mon.X-20, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
 
         -- safeguards
