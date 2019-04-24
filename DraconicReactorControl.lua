@@ -90,32 +90,30 @@ function load_config()
     local curVersion
     local line = sr.readLine()
     while line do
-        for k,v in pairs (split(line, ":")) do
-            if k == "version" then
-                curVersion = v
-            elseif k == "autoInputGate" then
-                autoInputGate = v
-            elseif k == "curInputGate" then
-                curInputGate = tonumber(v)
-            elseif k == "curOutputGate" then
-                curOutputGate = tonumber(v)
-            elseif k == "targetStrength" then
-                targetStrength = tonumber(v)
-            elseif k == "safeTemperature" then
-                safeTemperature = tonumber(v)
-            elseif k == "oldOutput" then
-                oldOutput = tonumber(v)
-            elseif k == "outputInputHyteresis" then
-                outputInputHyteresis = tonumber(v)
-            elseif k == "reactorPeripheral" then
-                reactorPeripheral = v
-            elseif k == "internalInput" then
-                internalInput = v
-            elseif k == "internalOutput" then
-                internalOutput = v
-            elseif k == "externalOutput" then
-                externalOutput = v
-            end
+        if split(line, ":")[1] == "version" then
+            curVersion = split(line, ":")[2]
+        elseif split(line, ":")[1] == "autoInputGate" then
+            autoInputGate = split(line, ":")[2]
+        elseif split(line, ":")[1] == "curInputGate" then
+            curInputGate = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "curOutputGate" then
+            curOutputGate = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "targetStrength" then
+            targetStrength = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "safeTemperature" then
+            safeTemperature = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "oldOutput" then
+            oldOutput = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "outputInputHyteresis" then
+            outputInputHyteresis = tonumber(split(line, ":")[2])
+        elseif split(line, ":")[1] == "reactorPeripheral" then
+            reactorPeripheral = split(line, ":")[2]
+        elseif split(line, ":")[1] == "internalInput" then
+            internalInput = split(line, ":")[2]
+        elseif split(line, ":")[1] == "internalOutput" then
+            internalOutput = split(line, ":")[2]
+        elseif split(line, ":")[1] == "externalOutput" then
+            externalOutput = split(line, ":")[2]
         end
     end
     --autoInputGate = sr.readLine()
