@@ -11,22 +11,23 @@ local externalOutput = "flux_gate_8"
 local targetStrength = 50
 -- maximum temperature the reactor may reach
 local maxTemperature = 7000
-local tempBoostOutput1 = 400000
-local tempBoostOutput2 = 750000
-local tempBoostOutput3 = 1000000
+local tempBoost1Output = 400000
+local tempBoost2Output = 750000
+local tempBoost3Output = 1000000
 -- temperature the programm should keep the reactor at
-local safeTemperature = 3000
+local safeTemperature = 5000
 -- if the containment field gets below this value the reactor will be shut down (if it's 10% higher, the output will be capped to fieldBoostOutput)
-local lowestFieldPercentThreshold = 15
+local lowestFieldPercent = 15
+local fieldBoost = 25
 local fieldBoostOutput = 200000
 -- the difference between the internal output and internal input (if you use a buffer core, so that the core will be filled)
 local outputInputHyteresis = 2500
 --
 local satBoostThreshold = 25
 local satBoost1 = 35
-local satBoostOutput1 = 350000
+local satBoost1Output = 350000
 local satBoost2 = 45
-local satBoostOutput2 = 600000
+local satBoost2Output = 600000
 
 local activateOnCharged = true
 
@@ -38,6 +39,7 @@ local version = "0.25"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
+local curOutputGate = 0
 local oldOutput = -1
 local threshold = -1
 local tempthreshold = -1
@@ -63,6 +65,86 @@ local ri
 local action = "None since reboot"
 local emergencyCharge = false
 local emergencyTemp = false
+
+--write settings to config file
+function save_config()
+    sw = fs.open("config.txt", "w")
+    sw.writeLine("version:" .. version)
+    sw.writeLine("autoInputGate:" .. autoInputGate)
+    sw.writeLine("curInputGate:" .. curInputGate)
+    sw.writeLine("curOutputGate:" .. curOutputGate)
+    sw.writeLine("targetStrength:" .. targetStrength)
+    sw.writeLine("safeTemperature:" .. safeTemperature)
+    sw.writeLine("oldOutput:" .. oldOutput)
+    sw.writeLine("outputInputHyteresis:" .. outputInputHyteresis)
+    sw.writeLine("reactorPeripheral:" .. reactorPeripheral)
+    sw.writeLine("internalInput:" .. internalInput)
+    sw.writeLine("internalOutput:" .. internalOutput)
+    sw.eriteLine("externalOutput:" .. externalOutput)
+    sw.close()
+end
+
+--read settings from file
+function load_config()
+    sr = fs.open("config.txt", "r")
+    local curVersion
+    for line in sr:lines() do
+        for k,v in pairs (mysplit(line, ":")) do
+            if k == "version" then
+                curVersion = v
+            end
+            if k == "autoInputGate" then
+                autoInputGate = v
+            end
+            if k == "curInputGate" then
+                curInputGate = v
+            end
+            if k == "curOutputGate" then
+                curOutputGate = v
+            end
+            if k == "targetStrength" then
+                targetStrength = v
+            end
+            if k == "safeTemperature" then
+                safeTemperature = v
+            end
+            if k == "oldOutput" then
+                oldOutput = v
+            end
+            if k == "outputInputHyteresis" then
+                outputInputHyteresis = v
+            end
+            if k == "reactorPeripheral" then
+                reactorPeripheral = v
+            end
+            if k == "internalInput" then
+                internalInput = v
+            end
+            if k == "internalOutput" then
+                internalOutput = v
+            end
+            if k == "externalOutput" then
+                externalOutput = v
+            end
+        end
+    end
+    --autoInputGate = sr.readLine()
+    --curInputGate = tonumber(sr.readLine())
+    --targetStrength = tonumber(sr.readLine())
+    -- safeTemperature = tonumber(sr.readLine())
+    --oldOutput = tonumber(sr.readLine())
+    sr.close()
+    if curVersion ~= version then
+        save_config()
+    end
+end
+
+-- 1st time? save our settings, if not, load our settings
+if fs.exists("config.txt") == false then
+    save_config()
+else
+    load_config()
+end
 
 monitor = f.periphSearch("monitor")
 inputfluxgate = peripheral.wrap(internalInput)
@@ -94,37 +176,6 @@ monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
---write settings to config file
-function save_config()
-    sw = fs.open("config.txt", "w")
-    sw.writeLine(version)
-    --sw.writeLine(autoInputGate)
-    --sw.writeLine(curInputGate)
-    --sw.writeLine(targetStrength)
-    --sw.writeLine(safeTemperature)
-    --sw.writeLine(oldOutput)
-    sw.close()
-end
-
---read settings from file
-function load_config()
-    sr = fs.open("config.txt", "r")
-    version = sr.readLine()
-    --autoInputGate = sr.readLine()
-    --curInputGate = tonumber(sr.readLine())
-    --targetStrength = tonumber(sr.readLine())
-    --safeTemperature = tonumber(sr.readLine())
-    --oldOutput = tonumber(sr.readLine())
-    sr.close()
-end
-
-
--- 1st time? save our settings, if not, load our settings
-if fs.exists("config.txt") == false then
-    save_config()
-else
-    load_config()
-end
 
 function buttons()
 
@@ -375,7 +426,7 @@ function update()
         end
 
         -- field strength is close to dangerous, fire up input
-        if fieldPercent <= lowestFieldPercentThreshold + 15 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+        if fieldPercent <= fieldBoost and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
@@ -388,8 +439,8 @@ function update()
         end
 
         -- field strength is too dangerous, kill it and try to charge it before it blows
-        if fieldPercent <= lowestFieldPercentThreshold and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            action = "Field Str < " ..lowestFieldPercentThreshold.."%"
+        if fieldPercent <= lowestFieldPercent and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+            action = "Field Str < " ..lowestFieldPercent.."%"
             reactor.stopReactor()
             reactor.chargeReactor()
             emergencyCharge = true
@@ -408,14 +459,14 @@ function update()
             emergencyTemp = true
             tempthreshold = 0
             getThreshold()
-        elseif ri.temperature > (maxTemperature / 7) *6 then
-            tempthreshold = 400000
+        elseif ri.temperature > maxTemperature - ((maxTemperature - safeTemperature)/4) then
+            tempthreshold = tempBoost1Output
             getThreshold()
-        elseif ri.temperature > (maxTemperature / 7) *5 then
-            tempthreshold = 750000
+        elseif ri.temperature > maxTemperature - ((maxTemperature - safeTemperature)/2) then
+            tempthreshold = tempBoost2Output
             getThreshold()
-        elseif ri.temperature > (maxTemperature / 7) *4 then
-            tempthreshold = 1000000
+        elseif ri.temperature > safeTemperature + ((maxTemperature - safeTemperature)/4) then
+            tempthreshold = tempBoost3Output
             getThreshold()
         else
             tempthreshold = -1
@@ -522,6 +573,17 @@ function getThreshold()
         thresholded = false
     end
     save_config()
+end
+
+function mysplit(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+    local t={}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+        table.insert(t, str)
+    end
+    return t
 end
 
 parallel.waitForAny(buttons, update)
