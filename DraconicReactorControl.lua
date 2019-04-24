@@ -315,23 +315,23 @@ function update()
             drawButtons(10)
         end
 
-        f.draw_line(mon, 0, 12, mon.X-19, colors.yellow)
+        f.draw_line(mon, 0, 12, mon.X-18, colors.yellow)
 
         f.draw_text_lr(mon, 2, 14, mon.X-20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
-        f.progress_bar(mon, 2, 15, mon.X-21, satPercent, 100, colors.blue, colors.gray)
+        f.progress_bar(mon, 2, 15, mon.X-20, satPercent, 100, colors.blue, colors.gray)
 
         f.draw_text_lr(mon, 2, 17, mon.X-20, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        f.progress_bar(mon, 2, 18, mon.X-21, tempPercent, 100, tempColor, colors.gray)
+        f.progress_bar(mon, 2, 18, mon.X-20, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
             f.draw_text_lr(mon, 2, 20, mon.X-20, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
             f.draw_text_lr(mon, 2, 20, mon.X-20, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        f.progress_bar(mon, 2, 21, mon.X-21, fieldPercent, 100, fieldColor, colors.gray)
+        f.progress_bar(mon, 2, 21, mon.X-20, fieldPercent, 100, fieldColor, colors.gray)
 
         f.draw_text_lr(mon, 2, 23, mon.X-20, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        f.progress_bar(mon, 2, 24, mon.X-21, fuelPercent, 100, fuelColor, colors.gray)
+        f.progress_bar(mon, 2, 24, mon.X-20, fuelPercent, 100, fuelColor, colors.gray)
 
         f.draw_text_lr(mon, 2, 26, mon.X-20, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
