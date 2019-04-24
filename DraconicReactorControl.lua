@@ -535,7 +535,7 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
 
-        sleep(0.2)
+        sleep(0.5)
     end
 end
 
