@@ -3,20 +3,30 @@
 -- modifiable variables
 -- Peripherals
 local reactorPeripheral = "back"
-local externalOutput = "flux_gate_8"
-local internalOutput = "flux_gate_9"
 local internalInput = "flux_gate_7"
+local internalOutput = "flux_gate_9"
+local externalOutput = "flux_gate_8"
 
 -- target strength of the containment field
 local targetStrength = 50
 -- maximum temperature the reactor may reach
 local maxTemperature = 7000
+local tempBoostOutput1 = 400000
+local tempBoostOutput2 = 750000
+local tempBoostOutput3 = 1000000
 -- temperature the programm should keep the reactor at
 local safeTemperature = 3000
--- if the containment field gets below this value the reactor will be shut down
+-- if the containment field gets below this value the reactor will be shut down (if it's 10% higher, the output will be capped to fieldBoostOutput)
 local lowestFieldPercentThreshold = 15
+local fieldBoostOutput = 200000
 -- the difference between the internal output and internal input (if you use a buffer core, so that the core will be filled)
 local outputInputHyteresis = 2500
+--
+local satBoostThreshold = 25
+local satBoost1 = 35
+local satBoostOutput1 = 350000
+local satBoost2 = 45
+local satBoostOutput2 = 600000
 
 local activateOnCharged = true
 
@@ -350,14 +360,14 @@ function update()
         end
 
         -- Saturation too low, regulate Output
-        if satPercent < 25 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+        if satPercent < satBoostThreshold and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             satthreshold = 0
             getThreshold()
-        elseif satPercent < 35 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            satthreshold = 350000
+        elseif satPercent < satBoost1 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+            satthreshold = satBoost1Output
             getThreshold()
-        elseif satPercent < 45 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            satthreshold = 600000
+        elseif satPercent < satBoost2 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+            satthreshold = satBoost2Output
             getThreshold()
         else
             satthreshold = -1
@@ -369,7 +379,7 @@ function update()
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            fieldthreshold = 200000
+            fieldthreshold = fieldBoostOutput
             getThreshold()
         else
             emergencyFlood = false
