@@ -82,27 +82,27 @@ end
 --write settings to config file
 function save_config()
     sw = fs.open("config.txt", "w")
-    sw.writeLine("version:" .. version)
+    sw.writeLine("version: " .. version)
     if autoInputGate then
-        sw.writeLine("autoInputGate:true")
+        sw.writeLine("autoInputGate: true")
     else
-        sw.writeLine("autoInputGate:false")
+        sw.writeLine("autoInputGate: false")
     end
     if activateOnCharged then
-        sw.writeLine("activateOnCharged:true")
+        sw.writeLine("activateOnCharged: true")
     else
-        sw.writeLine("activateOnCharged:false")
+        sw.writeLine("activateOnCharged: false")
     end
-    sw.writeLine("curInputGate:" .. curInputGate)
-    sw.writeLine("curOutput:" .. curOutput)
-    sw.writeLine("targetStrength:" .. targetStrength)
-    sw.writeLine("safeTemperature:" .. safeTemperature)
-    sw.writeLine("oldOutput:" .. oldOutput)
-    sw.writeLine("outputInputHyteresis:" .. outputInputHyteresis)
-    sw.writeLine("reactorPeripheral:" .. reactorPeripheral)
-    sw.writeLine("internalInput:" .. internalInput)
-    sw.writeLine("internalOutput:" .. internalOutput)
-    sw.writeLine("externalOutput:" .. externalOutput)
+    sw.writeLine("curInputGate: " .. curInputGate)
+    sw.writeLine("curOutput: " .. curOutput)
+    sw.writeLine("targetStrength: " .. targetStrength)
+    sw.writeLine("safeTemperature: " .. safeTemperature)
+    sw.writeLine("oldOutput: " .. oldOutput)
+    sw.writeLine("outputInputHyteresis: " .. outputInputHyteresis)
+    sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
+    sw.writeLine("internalInput: " .. internalInput)
+    sw.writeLine("internalOutput: " .. internalOutput)
+    sw.writeLine("externalOutput: " .. externalOutput)
     sw.close()
 end
 
@@ -112,32 +112,32 @@ function load_config()
     local curVersion
     local line = sr.readLine()
     while line do
-        if split(line, ":")[1] == "version" then
-            curVersion = split(line, ":")[2]
-        elseif split(line, ":")[1] == "autoInputGate" then
-            autoInputGate = split(line, ":")[2]
-        elseif split(line, ":")[1] == "activateOnCharged" then
-            activateOnCharged = split(line, ":")[2]
-        elseif split(line, ":")[1] == "curInputGate" then
-            curInputGate = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "curOutput" then
-            curOutput = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "targetStrength" then
-            targetStrength = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "safeTemperature" then
-            safeTemperature = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "oldOutput" then
-            oldOutput = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "outputInputHyteresis" then
-            outputInputHyteresis = tonumber(split(line, ":")[2])
-        elseif split(line, ":")[1] == "reactorPeripheral" then
-            reactorPeripheral = split(line, ":")[2]
-        elseif split(line, ":")[1] == "internalInput" then
-            internalInput = split(line, ":")[2]
-        elseif split(line, ":")[1] == "internalOutput" then
-            internalOutput = split(line, ":")[2]
-        elseif split(line, ":")[1] == "externalOutput" then
-            externalOutput = split(line, ":")[2]
+        if split(line, ": ")[1] == "version" then
+            curVersion = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "autoInputGate" then
+            autoInputGate = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "activateOnCharged" then
+            activateOnCharged = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "curInputGate" then
+            curInputGate = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "curOutput" then
+            curOutput = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "targetStrength" then
+            targetStrength = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "safeTemperature" then
+            safeTemperature = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "oldOutput" then
+            oldOutput = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "outputInputHyteresis" then
+            outputInputHyteresis = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "reactorPeripheral" then
+            reactorPeripheral = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "internalInput" then
+            internalInput = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "internalOutput" then
+            internalOutput = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "externalOutput" then
+            externalOutput = split(line, ": ")[2]
         end
         line = sr.readLine()
     end
