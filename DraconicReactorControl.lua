@@ -409,12 +409,12 @@ function update()
 		end
 
 		local energyPercent, energyColor
-		energyPercent = math.ceil(core.getEnergyStored / core.getMaxEnergyStored * 10000)*.01
+		energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
 		if energyPercent == math.huge or isnan(energyPercent) then
 			energyPercent = 0
 		end
 		
-		energyColor = color.red
+		energyColor = colors.red
 		if energyPercent >= 70 then
 			energyColor = colors. green
 		elseif energyPercent < 70 and energyPercent > 30 then
@@ -442,18 +442,18 @@ function update()
         end
 
         if fuelPercent > 15 then
-            gui.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+            gui.draw_text_lr(mon, mon.X-24, 2, 2, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+            gui.draw_text_lr(mon, mon.X-24, 2, 2, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
         end
 
-        gui.draw_text_lr(mon, 2, 2, 22, "Generation", gui.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
+        gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
-		gui.draw_text_lr(mon, 2, 4, 22, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
-        gui.draw_text_lr(mon, mon.X-23, 4, 2, "Output Gate", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-24, 4, 2, "Output Gate", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
-        gui.draw_text_lr(mon, 2, 7, 22, "Input Gate: H: ".. outputInputHyteresis, gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate: H: ".. outputInputHyteresis, gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
             gui.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
@@ -462,27 +462,27 @@ function update()
             drawButtons(10)
         end
 
-        gui.draw_line(mon, 0, 10, mon.X-21, colors.yellow)
-        gui.draw_column(mon, mon.X-21, 0, mon.Y, colors.yellow)
+        gui.draw_line(mon, 0, 10, mon.X-27, colors.yellow)
+        gui.draw_column(mon, mon.X-26, 0, mon.Y, colors.yellow)
 
-        gui.draw_text_lr(mon, 2, 12, 22, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
-        gui.progress_bar(mon, 2, 13, mon.X-24, satPercent, 100, colors.blue, colors.gray)
+        gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
+        gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue, colors.gray)
 
-        gui.draw_text_lr(mon, 2, 15, 22, "Temperature: T: ".. safeTemperature, gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        gui.progress_bar(mon, 2, 16, mon.X-24, tempPercent, 100, tempColor, colors.gray)
+        gui.draw_text_lr(mon, 2, 15, 28, "Temperature: T: ".. safeTemperature, gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
-            gui.draw_text_lr(mon, 2, 18, 22, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
-            gui.draw_text_lr(mon, 2, 18, 22, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        gui.progress_bar(mon, 2, 19, mon.X-24, fieldPercent, 100, fieldColor, colors.gray)
+        gui.progress_bar(mon, 2, 19, mon.X-30, fieldPercent, 100, fieldColor, colors.gray)
 		
 		gui.draw_text_lr(mon, 2, 21, 22, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
-		gui.progress_bar(mon, 2, 22, mon.X-24, energyPercent, 100, energyColor, colors.gray)
+		gui.progress_bar(mon, 2, 22, mon.X-30, energyPercent, 100, energyColor, colors.gray)
 
         gui.draw_text_lr(mon, 2, 24, 22, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        gui.progress_bar(mon, 2, 25, mon.X-24, fuelPercent, 100, fuelColor, colors.gray)
+        gui.progress_bar(mon, 2, 25, mon.X-30, fuelPercent, 100, fuelColor, colors.gray)
 
         gui.draw_text_lr(mon, 2, 26, 22, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
@@ -667,7 +667,7 @@ function getThreshold()
         threshold = -1
     end
     updateOutput(ri)
-    if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow	> threshold then
+    if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow()	> threshold then
         if outputfluxgate.getSignalLowFlow() > threshold then
             outputfluxgate.setSignalLowFlow(threshold)
             externalfluxgate.setSignalLowFlow(0)
