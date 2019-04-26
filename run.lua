@@ -4,5 +4,5 @@ while true do
     newTabID = shell.openTab("DraconicReactor")
     multishell.setTitle(newTabID, "Draconic Reactor")
   end
-  os.sleep(0.5);
+  os.sleep(2.5);
 end
