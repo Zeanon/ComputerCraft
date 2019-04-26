@@ -1,6 +1,6 @@
 while true do
   if multishell.getCount() < 3 then
-    if multishell.getTitle(1) ~= "DraconicReactor" and multishell.getTitle(2) ~= "DraconicReactor" and multishell.getTitle(3) ~= "DraconicReactor" then
+    if multishell.getTitle(1) ~= "Draconic Reactor" and multishell.getTitle(2) ~= "Draconic Reactor" and multishell.getTitle(3) ~= "Draconic Reactor" then
       newTabID = shell.openTab("DraconicReactor")
       multishell.setTitle(newTabID, "Draconic Reactor")
     end
