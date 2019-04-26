@@ -1,2 +1,2 @@
 local newTabID = shell.openTab("run")
-multishell.setTitle(newTabID, "Run")
+multishell.setTitle(newTabID, "Draconic Reactor")
