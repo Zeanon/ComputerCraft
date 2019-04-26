@@ -2,7 +2,7 @@
 
 -- modifiable variables
 -- Peripherals
---local reactorPeripheral = "back"
+local reactorPeripheral = "back"
 local internalInput = "flux_gate_7"
 local internalOutput = "flux_gate_9"
 local externalOutput = "flux_gate_8"
@@ -41,6 +41,7 @@ local version = "0.25"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
+local curInput= 0
 local curOutput = 0
 local threshold = -1
 local tempthreshold = -1
@@ -172,9 +173,9 @@ function load_config()
 			satBoost2Output = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "genTolerance" then
 			genTolerance = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satTolerance") then
+		elseif split(line, ": ")[1] == "satTolerance" then
 			satTolerance = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "tempTolerance") then
+		elseif split(line, ": ")[1] == "tempTolerance" then
 			tempTolerance = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "reactorPeripheral" then
             reactorPeripheral = split(line, ": ")[2]
@@ -196,7 +197,7 @@ end
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
     save_config()
-	for i=1,10 do
+	for i=1,50 do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
@@ -204,7 +205,7 @@ if fs.exists("config.txt") == false then
 	end
 else
 	load_config()
-	for i=1,10 do
+	for i=1,50 do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
@@ -257,7 +258,7 @@ function buttons()
         -- reactor control
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if yPos >= 1 and yPos <= 3 and fuelPercent > 15 then
+        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-19 and fuelPercent > 15 then
             if ri.status == "charging" then
                 reactor.stopReactor()
             elseif ri.status == "online" then
@@ -291,10 +292,7 @@ function buttons()
             if isnan(curOutput) then
                 curOutput = 0
             end
-            if threshold >= 0 and curOutput > threshold then
-                curOutput = threshold
-            end
-            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+            getThreshold()
             save_config()
         end
 
@@ -316,8 +314,7 @@ function buttons()
                 curInputGate = curInputGate+1000
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
-            outputfluxgate.setSignalLowFlow(curInputGate + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+            getThreshold()
             save_config()
         end
 
@@ -368,7 +365,7 @@ function update()
 		satColor = colors.red
 		if satPercent >= 70 then
 			satColor = colors.green
-		elseif satPercent < 70 and satPercent > 30
+		elseif satPercent < 70 and satPercent > 30 then
 			satColor = colors.orange
 		end
 
@@ -453,7 +450,7 @@ function update()
         f.draw_text_lr(mon, 2, 2, 22, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
 		f.draw_text_lr(mon, 2, 4, 22, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
-        f.draw_text_lr(mon, mon.X-23 4, 2, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        f.draw_text_lr(mon, mon.X-23, 4, 2, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
         f.draw_text_lr(mon, 2, 7, 22, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
@@ -630,11 +627,12 @@ function update()
             if autoInputGate then
                 fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
                 inputfluxgate.setSignalLowFlow(fluxval)
-                outputfluxgate.setSignalLowFlow(fluxval + outputInputHyteresis)
+                curInput = fluxval
+                getThreshold()
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
-                outputfluxgate.setSignalLowFlow(curInputGate + outputInputHyteresis)
-				outputfluxgate.setSignalLowFlow(fluxval + outputInputHyteresis)
+                curInput = curInputGate
+                getThreshold()
             end
         end
 		
@@ -663,45 +661,47 @@ function getThreshold()
         threshold = fieldthreshold
     elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold == -1) and (fuelthreshold <= tempthreshold or tempthreshold == -1) and (fuelthreshold <= fieldthreshold or fieldthreshold == -1) and (fuelthreshold <= energythreshold or energythreshold == -1) then
         threshold = fuelthreshold
-	elseif energythreshold >= 0 and (energythreshold <= satthreshold or satthreshold == -1) and (energythreshold <= tempthreshold or tempthreshold == -1) and (energythreshold <= fieldthreshold or fieldthreshold == -1) and energythreshold <= fuelthreshold or fuelthreshold == -1) then
+	elseif energythreshold >= 0 and (energythreshold <= satthreshold or satthreshold == -1) and (energythreshold <= tempthreshold or tempthreshold == -1) and (energythreshold <= fieldthreshold or fieldthreshold == -1) and (energythreshold <= fuelthreshold or fuelthreshold == -1) then
 		threshold = energythreshold
 	else
         threshold = -1
     end
-    if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow	> threshold and thresholded == false then
-        externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
-        thresholded = true
-    elseif threshold >= 0 and thresholded then
-        if threshold < curOutput then
-            curOutput = threshold
-            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-        elseif threshold >= curOutput then
-            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-            thresholded = false
+    updateOutput(ri)
+    if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow	> threshold then
+        if outputfluxgate.getSignalLowFlow() > threshold then
+            outputfluxgate.setSignalLowFlow(threshold)
+            externalfluxgate.setSignalLowFlow(0)
+        elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow > threshold and checkOutput() then
+            local tempOutput = externalfluxgate.getSignalLowFlow() + ((threshold - ri.generationRate) / 4)
+            outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
+            externalfluxgate.setSignalLowFlow(tempOutput)
         end
     elseif threshold == -1 and curOutput > -1 then
-        externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-        thresholded = false
+        if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput - genTolerance or externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput + genTolerance) and  checkOutput() then
+            local tempOutput = externalfluxgate.getSignalLowFlow() + ((curOutput - ri.generationRate) / 4)
+            outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
+            externalfluxgate.setSignalLowFlow(tempOutput)
+        end
     end
 end
 
-function getOutput()
-	for i=1,10 do
-		if i < 10 then
+function updateOutput(ri)
+	for i=1,50 do
+		if i < 50 then
 			lastGen[i] = lastGen[i + 1]
 			lastSat[i] = lastSat[i + 1]
 			lastTemp[i] = lastTemp[i + 1]
 		else
 			lastGen[i] = ri.generationRate
-			lastSat[i] = satPercent
-			lastTemp[i] = tempPercent
+			lastSat[i] = ri.energySaturation
+			lastTemp[i] = ri.temperature
 		end
     end
 end
 
 function checkOutput()
 local checked = true
-	for i=2,10 do
+	for i=2,50 do
 		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
 			checked = false
 		end
@@ -709,7 +709,7 @@ local checked = true
 			checked = false
 		end
 		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
-			checkes = false
+			checked = false
 		end
 	end
 	return checked
