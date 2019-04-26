@@ -2,7 +2,7 @@
 
 -- modifiable variables
 -- Peripherals
-local reactorPeripheral = "back"
+--local reactorPeripheral = "back"
 local internalInput = "flux_gate_7"
 local internalOutput = "flux_gate_9"
 local externalOutput = "flux_gate_8"
@@ -40,7 +40,6 @@ local version = "0.25"
 local autoInputGate = true
 local curInputGate = 222000
 local curOutput = 0
-local oldOutput = -1
 local threshold = -1
 local tempthreshold = -1
 local satthreshold = -1
@@ -54,6 +53,7 @@ local mon, monitor, monX, monY
 
 -- peripherals
 local reactor
+local core 
 local externalfluxgate
 local inputfluxgate
 local outputfluxgate
@@ -97,8 +97,6 @@ function save_config()
     sw.writeLine("curOutput: " .. curOutput)
     sw.writeLine("targetStrength: " .. targetStrength)
     sw.writeLine("safeTemperature: " .. safeTemperature)
-    sw.writeLine("oldOutput: " .. oldOutput)
-    sw.writeLine("outputInputHyteresis: " .. outputInputHyteresis)
     sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
@@ -126,10 +124,6 @@ function load_config()
             targetStrength = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "safeTemperature" then
             safeTemperature = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "oldOutput" then
-            oldOutput = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "outputInputHyteresis" then
-            outputInputHyteresis = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "reactorPeripheral" then
             reactorPeripheral = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalInput" then
@@ -159,6 +153,7 @@ inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)
 reactor = peripheral.wrap(reactorPeripheral)
+core = peripheral.find("draconic_rf_storage")
 
 if monitor == null then
     error("No valid monitor was found")
@@ -178,6 +173,10 @@ end
 
 if outputfluxgate == null then
     error("No valid internal output flux gate was found")
+end
+
+if core == null then
+    error("No valid energy core was found")
 end
 
 monX, monY = monitor.getSize()
