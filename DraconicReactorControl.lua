@@ -20,14 +20,16 @@ local safeTemperature = 5000
 local lowestFieldPercent = 15
 local fieldBoost = 25
 local fieldBoostOutput = 200000
--- the difference between the internal output and internal input (if you use a buffer core, so that the core will be filled)
-local outputInputHyteresis = 2500
---
+-- different boost levels for energySaturation
 local satBoostThreshold = 25
 local satBoost1 = 35
 local satBoost1Output = 350000
 local satBoost2 = 45
 local satBoost2Output = 600000
+-- tolerances for auto boosting
+local genTolerance = 500
+local satTolerance = 1
+local tempTolerance = 1
 
 local activateOnCharged = true
 
@@ -45,6 +47,11 @@ local tempthreshold = -1
 local satthreshold = -1
 local fieldthreshold = -1
 local fuelthreshold = -1
+local energythreshold = -1
+local outputInputHyteresis = 25000
+local lastTemp = {}
+local lastGen = {}
+local lastSat = {}
 local thresholded = false
 local emergencyFlood = false
 
@@ -97,6 +104,21 @@ function save_config()
     sw.writeLine("curOutput: " .. curOutput)
     sw.writeLine("targetStrength: " .. targetStrength)
     sw.writeLine("safeTemperature: " .. safeTemperature)
+	sw.writeLine("maxTemperature: " .. maxTemperature)
+	sw.writeLine("tempBoost1Output: " .. tempBoost1Output)
+	sw.writeLine("tempBoost2Output: " .. tempBoost2Output)
+	sw.writeLine("tempBoost3Output: " .. tempBoost3Output)
+	sw.writeLine("lowestFieldPercent: " .. lowestFieldPercent)
+	sw.writeLine("fieldBoost: " .. fieldBoost)
+	sw.writeLine("fieldBoostOutput: " .. fieldBoostOutput)
+	sw.writeLine("satBoostThreshold: " .. satBoostThreshold)
+	sw.writeLine("satBoost1: " .. satBoost1)
+	sw.writeLine("satBoost1Output: " .. satBoost1Output)
+	sw.writeLine("satBoost2: " .. satBoost2)
+	sw.writeLine("satBoost2Output: " .. satBoost2Output)
+	sw.writeLine("genTolerance: " .. genTolerance)
+	sw.writeLine("satTolerance: " .. satTolerance)
+	sw.writeLine("tempTolerance: " .. tempTolerance)
     sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
@@ -124,6 +146,36 @@ function load_config()
             targetStrength = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "safeTemperature" then
             safeTemperature = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "maxTemperature" then
+			maxTemperature = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "tempBoost1Output" then
+			tempBoost1Output = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "tempBoost2Output" then
+			tempBoost2Output = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "tempBoost3Output" then
+			tempBoost3Output = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "lowestFieldPercent" then
+			lowestFieldPercent = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "fieldBoost" then
+			fieldBoost = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "fieldBoostOutput" then
+			fieldBoostOutput = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "satBoostThreshold" then
+			satBoostThreshold = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "satBoost1" then
+			satBoost1 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "satBoost1Output" then
+			satBoost1Output = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "satBoost2" then
+			satBoost2 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "satBoost2Output" then
+			satBoost2Output = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "genTolerance" then
+			genTolerance = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "satTolerance") then
+			satTolerance = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "tempTolerance") then
+			tempTolerance = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "reactorPeripheral" then
             reactorPeripheral = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalInput" then
@@ -144,8 +196,20 @@ end
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
     save_config()
+	for i=1,10 do
+		lastGen[i] = 0
+		lastSat[i] = 0
+		lastTemp[i] = 0
+		i = i + 1
+	end
 else
-    load_config()
+	load_config()
+	for i=1,10 do
+		lastGen[i] = 0
+		lastSat[i] = 0
+		lastTemp[i] = 0
+		i = i + 1
+	end
 end
 
 monitor = f.periphSearch("monitor")
@@ -230,7 +294,6 @@ function buttons()
             if threshold >= 0 and curOutput > threshold then
                 curOutput = threshold
             end
-            oldOutput = curOutput
             externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
             save_config()
         end
@@ -296,11 +359,18 @@ function update()
         ri = reactor.getReactorInfo()
 
         -- monitor output
-        local satPercent
+        local satPercent, satColor
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if isnan(satPercent) then
             satPercent = 0
         end
+		
+		satColor = colors.red
+		if satPercent >= 70 then
+			satColor = colors.green
+		elseif satPercent < 70 and satPercent > 30
+			satColor = colors.orange
+		end
 
         local tempPercent, tempColor
         tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
@@ -310,8 +380,8 @@ function update()
 
         temperatureColor = colors.red
         if ri.temperature <= (maxTemperature / 8) * 5 then
-            tempColor = colors.green end
-        if ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
+            tempColor = colors.green
+        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
             tempColor = colors.orange
         end
 
@@ -323,8 +393,8 @@ function update()
 
         fieldColor = colors.red
         if fieldPercent >= 50 then
-            fieldColor = colors.green end
-        if fieldPercent < 50 and fieldPercent > 30 then
+            fieldColor = colors.green
+        elseif fieldPercent < 50 and fieldPercent > 30 then
             fieldColor = colors.orange
         end
 
@@ -336,10 +406,24 @@ function update()
 
         fuelColor = colors.red
         if fuelPercent >= 70 then
-            fuelColor = colors.green end
-        if fuelPercent < 70 and fuelPercent > 30 then
-            fuelColor = colors.orange end
+            fuelColor = colors.green
+        elseif fuelPercent < 70 and fuelPercent > 30 then
+            fuelColor = colors.orange
+		end
 
+		local energyPercent, energyColor
+		energyPercent = math.ceil(core.getEnergyStored / core.getMaxEnergyStored * 10000)*.01
+		if energyPercent == math.huge or isnan(energyPercent) then
+			energyPercent = 0
+		end
+		
+		energyColor = color.red
+		if energyPercent >= 70 then
+			energyColor = colors. green
+		elseif energyPercent < 70 and energyPercent > 30 then
+			energyColor = colors.orange
+		end
+		
         local statusColor
 
         statusColor = colors.red
@@ -361,48 +445,49 @@ function update()
         end
 
         if fuelPercent > 15 then
-            f.draw_text_lr(mon, 2, 2, 20, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
-        end
-        if fuelPercent <= 15 then
-            f.draw_text_lr(mon, 2, 2, 20, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
-        end
-
-        f.draw_text_lr(mon, 2, 4, 20, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
-
-        f.draw_text_lr(mon, 2, 6, 20, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
-
-        -- buttons
-        drawButtons(7)
-
-        f.draw_text_lr(mon, 2, 9, 20, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
-
-        if autoInputGate then
-            f.draw_text(mon, 14, 10, "AU", colors.white, colors.gray)
+            f.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
-            f.draw_text(mon, 14, 10, "MA", colors.white, colors.green)
+            f.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+        end
+
+        f.draw_text_lr(mon, 2, 2, 22, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
+
+		f.draw_text_lr(mon, 2, 4, 22, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
+        f.draw_text_lr(mon, mon.X-23 4, 2, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+		drawButtons(5)
+		
+        f.draw_text_lr(mon, 2, 7, 22, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+		
+        if autoInputGate then
+            f.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
+        else
+            f.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
             drawButtons(10)
         end
 
-        f.draw_line(mon, 0, 12, mon.X-19, colors.yellow)
-        f.draw_column(mon, mon.X-19, 0, mon.Y, colors.yellow)
+        f.draw_line(mon, 0, 10, mon.X-21, colors.yellow)
+        f.draw_column(mon, mon.X-21, 0, mon.Y, colors.yellow)
 
-        f.draw_text_lr(mon, 2, 14, 20, "Energy Saturation", satPercent .. "%", colors.white, colors.white, colors.black)
-        f.progress_bar(mon, 2, 15, mon.X-22, satPercent, 100, colors.blue, colors.gray)
+        f.draw_text_lr(mon, 2, 12, 22, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
+        f.progress_bar(mon, 2, 13, mon.X-24, satPercent, 100, colors.blue, colors.gray)
 
-        f.draw_text_lr(mon, 2, 17, 20, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        f.progress_bar(mon, 2, 18, mon.X-22, tempPercent, 100, tempColor, colors.gray)
+        f.draw_text_lr(mon, 2, 15, 22, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        f.progress_bar(mon, 2, 16, mon.X-24, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
-            f.draw_text_lr(mon, 2, 20, 20, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            f.draw_text_lr(mon, 2, 18, 22, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
-            f.draw_text_lr(mon, 2, 20, 20, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            f.draw_text_lr(mon, 2, 18, 22, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        f.progress_bar(mon, 2, 21, mon.X-22, fieldPercent, 100, fieldColor, colors.gray)
+        f.progress_bar(mon, 2, 19, mon.X-24, fieldPercent, 100, fieldColor, colors.gray)
+		
+		f.draw_text_lr(mon, 2, 21, 22, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
+		f.progress_bar(mon, 2, 22, mon.X-24, energyPercent, 100, energyColor, colors.gray)
 
-        f.draw_text_lr(mon, 2, 23, 20, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        f.progress_bar(mon, 2, 24, mon.X-22, fuelPercent, 100, fuelColor, colors.gray)
+        f.draw_text_lr(mon, 2, 24, 22, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
+        f.progress_bar(mon, 2, 25, mon.X-24, fuelPercent, 100, fuelColor, colors.gray)
 
-        f.draw_text_lr(mon, 2, 26, 20, "Last action due to:", action, colors.gray, colors.gray, colors.black)
+        f.draw_text_lr(mon, 2, 26, 22, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
 
         -- safeguards
@@ -519,6 +604,26 @@ function update()
             emergencyCharge = false
         end
 
+		-- get the hysteresis for the internal output gate
+		if core.getEnergyStored() > core.getMaxEnergyStored()*0.9 then
+			outputInputHyteresis = 2500
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.8 then
+			outputInputHyteresis = 5000
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.7 then
+			outputInputHyteresis = 7500
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.6 then
+			outputInputHyteresis = 10000
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.5 then
+			outputInputHyteresis = 12500
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.4 then
+			outputInputHyteresis = 25000
+		elseif core.getEnergyStored() < core.getMaxEnergyStored()*0.2 then
+			action = "not enough buffer energy left"
+			reactor.stopReactor()
+			satthreshold = 0
+			getThreshold()
+		end
+		
         -- are we on? regulate the input fludgate to our target field strength
         -- or set it to our saved setting since we are on manual
         if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
@@ -529,8 +634,10 @@ function update()
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
                 outputfluxgate.setSignalLowFlow(curInputGate + outputInputHyteresis)
+				outputfluxgate.setSignalLowFlow(fluxval + outputInputHyteresis)
             end
         end
+		
 
         print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
 
@@ -548,39 +655,64 @@ end
 function getThreshold()
     if ri.status == "charging" then
         threshold = 0
-    elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) then
+    elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) and (satthreshold<= energythreshold or energythreshold == -1) then
         threshold = satthreshold
-    elseif tempthreshold >= 0 and (tempthreshold <= satthreshold or satthreshold == -1) and (tempthreshold <= fieldthreshold or fieldthreshold == -1) and (tempthreshold <= fuelthreshold or fuelthreshold == -1) then
+    elseif tempthreshold >= 0 and (tempthreshold <= satthreshold or satthreshold == -1) and (tempthreshold <= fieldthreshold or fieldthreshold == -1) and (tempthreshold <= fuelthreshold or fuelthreshold == -1) and (tempthreshold <= energythreshold or energythreshold == -1) then
         threshold = tempthreshold
-    elseif fieldthreshold >= 0 and (fieldthreshold <= satthreshold or satthreshold == -1) and (fieldthreshold <= tempthreshold or tempthreshold == -1) and (fieldthreshold <= fuelthreshold or fuelthreshold == -1) then
+    elseif fieldthreshold >= 0 and (fieldthreshold <= satthreshold or satthreshold == -1) and (fieldthreshold <= tempthreshold or tempthreshold == -1) and (fieldthreshold <= fuelthreshold or fuelthreshold == -1) and (fieldthreshold <= energythreshold or energythreshold == -1) then
         threshold = fieldthreshold
-    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold == -1) and (fuelthreshold <= tempthreshold or tempthreshold == -1) and (fuelthreshold <= fieldthreshold or fieldthreshold == -1) then
+    elseif fuelthreshold >= 0 and (fuelthreshold <= satthreshold or satthreshold == -1) and (fuelthreshold <= tempthreshold or tempthreshold == -1) and (fuelthreshold <= fieldthreshold or fieldthreshold == -1) and (fuelthreshold <= energythreshold or energythreshold == -1) then
         threshold = fuelthreshold
-    else
+	elseif energythreshold >= 0 and (energythreshold <= satthreshold or satthreshold == -1) and (energythreshold <= tempthreshold or tempthreshold == -1) and (energythreshold <= fieldthreshold or fieldthreshold == -1) and energythreshold <= fuelthreshold or fuelthreshold == -1) then
+		threshold = energythreshold
+	else
         threshold = -1
     end
-    if threshold >= 0 and externalfluxgate.getSignalLowFlow() > threshold and thresholded == false then
-        oldOutput = curOutput
-        curOutput = threshold
-        externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+    if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow	> threshold and thresholded == false then
+        externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
         thresholded = true
     elseif threshold >= 0 and thresholded then
-        if threshold < oldOutput then
+        if threshold < curOutput then
             curOutput = threshold
             externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-        elseif threshold >= oldOutput then
-            curOutput = oldOutput
+        elseif threshold >= curOutput then
             externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-            oldOutput = -1
             thresholded = false
         end
-    elseif threshold == -1 and oldOutput > -1 then
-        curOutput = oldOutput
+    elseif threshold == -1 and curOutput > -1 then
         externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-        oldOutput = -1
         thresholded = false
     end
-    save_config()
+end
+
+function getOutput()
+	for i=1,10 do
+		if i < 10 then
+			lastGen[i] = lastGen[i + 1]
+			lastSat[i] = lastSat[i + 1]
+			lastTemp[i] = lastTemp[i + 1]
+		else
+			lastGen[i] = ri.generationRate
+			lastSat[i] = satPercent
+			lastTemp[i] = tempPercent
+		end
+    end
+end
+
+function checkOutput()
+local checked = true
+	for i=2,10 do
+		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
+			checked = false
+		end
+		if lastSat[1] - satTolerance > lastSat[i] or lastSat[1] + satTolerance < lastSat[i] then
+			checked = false
+		end
+		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
+			checkes = false
+		end
+	end
+	return checked
 end
 
 function isnan(x)
