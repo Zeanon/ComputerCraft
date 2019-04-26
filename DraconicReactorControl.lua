@@ -30,6 +30,8 @@ local satBoost2Output = 600000
 local genTolerance = 500
 local satTolerance = 1
 local tempTolerance = 1
+local maxIncrease = 50000
+local safeTarget = 200000
 
 local activateOnCharged = true
 
@@ -650,7 +652,7 @@ function update()
     end
 end
 
-function getThreshold()
+function getThreshold(ri)
     if ri.status == "charging" then
         threshold = 0
     elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) and (satthreshold<= energythreshold or energythreshold == -1) then
@@ -667,20 +669,57 @@ function getThreshold()
         threshold = -1
     end
     updateOutput(ri)
-    if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow()	> threshold then
-        if outputfluxgate.getSignalLowFlow() > threshold then
-            outputfluxgate.setSignalLowFlow(threshold)
-            externalfluxgate.setSignalLowFlow(0)
-        elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow > threshold and checkOutput() then
-            local tempOutput = externalfluxgate.getSignalLowFlow() + ((threshold - ri.generationRate) / 4)
+    if ri.generationRate > safeTarget then
+        if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > threshold then
+            if outputfluxgate.getSignalLowFlow() > threshold then
+                outputfluxgate.setSignalLowFlow(threshold)
+                externalfluxgate.setSignalLowFlow(0)
+            elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow > threshold and checkOutput() then
+                local tempOutput = ((threshold - ri.generationRate) / 4)
+                if tempOutput > maxIncrease then
+                    tempOutput = maxIncrease
+                end
+                outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() + tempOutput)
+            end
+        elseif threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold and curOutput > threshold then
+            local tempOutput = ((threshold - ri.generationRate) / 4)
+            if tempOutput > maxIncrease then
+                tempOutput = maxIncrease
+            end
             outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(tempOutput)
+            externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() + tempOutput)
+        else
+            if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput - genTolerance and checkOutput() then
+                local tempOutput = ((curOutput - ri.generationRate) / 4)
+                if tempOutput > maxIncrease then
+                    tempOutput = maxIncrease
+                end
+                outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() + tempOutput)
+            elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput and checkOutput() then
+                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow() - genTolerance)
+            end
         end
-    elseif threshold == -1 and curOutput > -1 then
-        if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput - genTolerance or externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput + genTolerance) and  checkOutput() then
-            local tempOutput = externalfluxgate.getSignalLowFlow() + ((curOutput - ri.generationRate) / 4)
+    else
+        if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > threshold then
+            if outputfluxgate.getSignalLowFlow() > threshold then
+                outputfluxgate.setSignalLowFlow(threshold)
+                externalfluxgate.setSignalLowFlow(0)
+            elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow > threshold then
+                outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFLow())
+            end
+        elseif threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold and curOutput > threshold then
             outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(tempOutput)
+            externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFLow())
+        else
+            if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput - genTolerance then
+                outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFLow())
+            elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
+                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow() - genTolerance)
+            end
         end
     end
 end
