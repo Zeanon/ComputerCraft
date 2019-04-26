@@ -1,2 +1,2 @@
-newTabID = shell.openTab("run")
+local newTabID = shell.openTab("run")
 multishell.setTitle(newTabID, "Run")
