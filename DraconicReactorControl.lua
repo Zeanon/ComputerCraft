@@ -652,7 +652,7 @@ function update()
     end
 end
 
-function getThreshold(ri)
+function getThreshold()
     if ri.status == "charging" then
         threshold = 0
     elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) and (satthreshold<= energythreshold or energythreshold == -1) then
@@ -668,7 +668,7 @@ function getThreshold(ri)
 	else
         threshold = -1
     end
-    updateOutput(ri)
+    updateOutput()
     if ri.generationRate > safeTarget then
         if threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > threshold then
             if outputfluxgate.getSignalLowFlow() > threshold then
@@ -724,7 +724,7 @@ function getThreshold(ri)
     end
 end
 
-function updateOutput(ri)
+function updateOutput()
 	for i=1,50 do
 		if i < 50 then
 			lastGen[i] = lastGen[i + 1]
