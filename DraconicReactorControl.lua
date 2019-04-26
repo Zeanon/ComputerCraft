@@ -34,7 +34,7 @@ local tempTolerance = 1
 local activateOnCharged = true
 
 -- please leave things untouched from here on
-os.loadAPI("lib/f")
+os.loadAPI("lib/gui")
 os.loadAPI("lib/surface")
 
 local version = "0.25"
@@ -213,7 +213,7 @@ else
 	end
 end
 
-monitor = f.periphSearch("monitor")
+monitor = gui.periphSearch("monitor")
 inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)
@@ -339,20 +339,20 @@ function drawButtons(y)
     -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
     -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
 
-    f.draw_text(mon, 2, y, " < ", colors.white, colors.lightBlue)
-    f.draw_text(mon, 6, y, " <<", colors.white, colors.lightBlue)
-    f.draw_text(mon, 10, y, "<<<", colors.white, colors.lightBlue)
+    gui.draw_text(mon, 2, y, " < ", colors.white, colors.lightBlue)
+    gui.draw_text(mon, 6, y, " <<", colors.white, colors.lightBlue)
+    gui.draw_text(mon, 10, y, "<<<", colors.white, colors.lightBlue)
 
-    f.draw_text(mon, 17, y, ">>>", colors.white, colors.purple)
-    f.draw_text(mon, 21, y, ">> ", colors.white, colors.purple)
-    f.draw_text(mon, 25, y, " > ", colors.white, colors.purple)
+    gui.draw_text(mon, 17, y, ">>>", colors.white, colors.purple)
+    gui.draw_text(mon, 21, y, ">> ", colors.white, colors.purple)
+    gui.draw_text(mon, 25, y, " > ", colors.white, colors.purple)
 end
 
 
 
 function update()
     while true do
-        f.clear(mon)
+        gui.clear(mon)
         ri = reactor.getReactorInfo()
 
         -- monitor output
@@ -442,49 +442,49 @@ function update()
         end
 
         if fuelPercent > 15 then
-            f.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+            gui.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
-            f.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+            gui.draw_text_lr(mon, mon.X-23, 2, 2, "Reactor Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
         end
 
-        f.draw_text_lr(mon, 2, 2, 22, "Generation", f.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
+        gui.draw_text_lr(mon, 2, 2, 22, "Generation", gui.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
-		f.draw_text_lr(mon, 2, 4, 22, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
-        f.draw_text_lr(mon, mon.X-23, 4, 2, "Output Gate", f.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+		gui.draw_text_lr(mon, 2, 4, 22, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-23, 4, 2, "Output Gate", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
-        f.draw_text_lr(mon, 2, 7, 22, "Input Gate: H: ".. outputInputHyteresis, f.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 7, 22, "Input Gate: H: ".. outputInputHyteresis, gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
-            f.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
+            gui.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
         else
-            f.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
+            gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
             drawButtons(10)
         end
 
-        f.draw_line(mon, 0, 10, mon.X-21, colors.yellow)
-        f.draw_column(mon, mon.X-21, 0, mon.Y, colors.yellow)
+        gui.draw_line(mon, 0, 10, mon.X-21, colors.yellow)
+        gui.draw_column(mon, mon.X-21, 0, mon.Y, colors.yellow)
 
-        f.draw_text_lr(mon, 2, 12, 22, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
-        f.progress_bar(mon, 2, 13, mon.X-24, satPercent, 100, colors.blue, colors.gray)
+        gui.draw_text_lr(mon, 2, 12, 22, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
+        gui.progress_bar(mon, 2, 13, mon.X-24, satPercent, 100, colors.blue, colors.gray)
 
-        f.draw_text_lr(mon, 2, 15, 22, "Temperature: T: ".. safeTemperature, f.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        f.progress_bar(mon, 2, 16, mon.X-24, tempPercent, 100, tempColor, colors.gray)
+        gui.draw_text_lr(mon, 2, 15, 22, "Temperature: T: ".. safeTemperature, gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        gui.progress_bar(mon, 2, 16, mon.X-24, tempPercent, 100, tempColor, colors.gray)
 
         if autoInputGate then
-            f.draw_text_lr(mon, 2, 18, 22, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 22, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
-            f.draw_text_lr(mon, 2, 18, 22, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 22, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        f.progress_bar(mon, 2, 19, mon.X-24, fieldPercent, 100, fieldColor, colors.gray)
+        gui.progress_bar(mon, 2, 19, mon.X-24, fieldPercent, 100, fieldColor, colors.gray)
 		
-		f.draw_text_lr(mon, 2, 21, 22, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
-		f.progress_bar(mon, 2, 22, mon.X-24, energyPercent, 100, energyColor, colors.gray)
+		gui.draw_text_lr(mon, 2, 21, 22, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
+		gui.progress_bar(mon, 2, 22, mon.X-24, energyPercent, 100, energyColor, colors.gray)
 
-        f.draw_text_lr(mon, 2, 24, 22, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        f.progress_bar(mon, 2, 25, mon.X-24, fuelPercent, 100, fuelColor, colors.gray)
+        gui.draw_text_lr(mon, 2, 24, 22, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
+        gui.progress_bar(mon, 2, 25, mon.X-24, fuelPercent, 100, fuelColor, colors.gray)
 
-        f.draw_text_lr(mon, 2, 26, 22, "Last action due to:", action, colors.gray, colors.gray, colors.black)
+        gui.draw_text_lr(mon, 2, 26, 22, "Last action due to:", action, colors.gray, colors.gray, colors.black)
 
 
         -- safeguards
