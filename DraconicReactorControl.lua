@@ -266,7 +266,7 @@ function buttons()
         -- reactor control
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-26 and fuelPercent > 15 then
+        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 and fuelPercent > 15 then
             if ri.status == "charging" then
                 reactor.stopReactor()
             elseif ri.status == "online" then
@@ -280,11 +280,11 @@ function buttons()
 
         -- edit Config
         if yPos >= 7 and yPos <= 9 then
-            if xPos >= mon.X-25 and xPos <= mon.X-14 then
+            if xPos >= mon.X-24 and xPos <= mon.X-14 then
                 local newTabID = shell.openTab("edit", "config.txt")
                 multishell.setTitle(newTabID, "Config")
                 multishell.setFocus(newTabID)
-            elseif xPos >= mon.X-12 and xPos <= 1 then
+            elseif xPos >= mon.X-12 and xPos <= 2 then
                 load_config()
                 print("test")
             end
