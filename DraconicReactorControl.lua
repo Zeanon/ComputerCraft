@@ -481,7 +481,6 @@ function update()
             drawButtons(8)
         end
 
-
         gui.draw_line(mon, mon.X-25, 12, 12, colors.lightBlue)
         gui.draw_line(mon, mon.X-12, 12, 12, colors.red)
         gui.draw_text(mon, mon.X-25, 13, " Edit Config", colors.white, colors.lightBlue)
