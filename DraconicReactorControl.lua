@@ -284,7 +284,7 @@ function buttons()
                 local newTabID = shell.openTab("edit", "config.txt")
                 multishell.setTitle(newTabID, "Config")
                 multishell.setFocus(newTabID)
-            elseif xPos >= mon.X-13 and xPos <= mon.X-2 then
+            elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
                 load_config()
             end
         end
