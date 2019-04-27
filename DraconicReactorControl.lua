@@ -205,7 +205,7 @@ end
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
     save_config()
-	for i=1,20 do
+	for i=1,20,1 do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
@@ -213,7 +213,7 @@ if fs.exists("config.txt") == false then
 	end
 else
 	load_config()
-	for i=1,20 do
+	for i=1,20,1 do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
@@ -754,7 +754,7 @@ function getThreshold()
 end
 
 function updateOutput()
-	for i=1,20 do
+	for i=1,20,1 do
 		if i < 20 then
 			lastGen[i] = lastGen[i + 1]
 			lastSat[i] = lastSat[i + 1]
@@ -769,7 +769,7 @@ end
 
 function checkOutput()
 local checked = true
-	for i=2,20 do
+	for i=2,20,1 do
 		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
             print(lastGen[i])
 			checked = false
