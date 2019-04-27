@@ -653,6 +653,7 @@ function update()
 end
 
 function getThreshold()
+    print(outputfluxgate.getSignalLowFlow())
     if ri.status == "charging" then
         threshold = 0
     elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) and (satthreshold<= energythreshold or energythreshold == -1) then
