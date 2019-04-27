@@ -721,7 +721,7 @@ function getThreshold()
             else
                 tempCap = curOutput
             end
-            local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow) / 4
+            local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow()) / 4
             if tempOutput > maxIncrease then
                 tempOutput = maxIncrease
             end
@@ -766,19 +766,18 @@ function checkOutput()
 	while i <= 20 do
 		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
 			checked = false
+            print("gen")
 		end
 		if lastSat[1] - satTolerance > lastSat[i] or lastSat[1] + satTolerance < lastSat[i] then
 			checked = false
+            print("sat")
 		end
 		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
 			checked = false
+            action = lastTemp[i]
+            print("temp")
         end
         i = i + 1
-    end
-    if checked then
-        action = "true"
-    else
-        action = "false"
     end
 	return checked
 end
