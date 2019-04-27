@@ -519,6 +519,7 @@ function update()
 
         -- field strength is close to dangerous, fire up input
         if fieldPercent <= fieldBoost and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+            action = "Field Str close to dangerous"
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
