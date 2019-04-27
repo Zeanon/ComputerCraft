@@ -474,12 +474,12 @@ function update()
             drawButtons(8)
         end
 
-        gui.drawLine(mon, mon.X-25, 7, mon.X-14, colors.lightBlue)
-        gui.drawLine(mon, mon.X-12, 7, mon.X-1, colors.red)
+        gui.draw_line(mon, mon.X-25, 7, mon.X-14, colors.lightBlue)
+        gui.draw_line(mon, mon.X-12, 7, mon.X-1, colors.red)
         gui.draw_text(mon, mon.X-25, 8, "Edit Config", colors.white)
         gui.draw_text(mon, mon.X-12, 8, "Save Config", colors.white)
-        gui.drawLine(mon, mon.X-25, 9, mon.X-14, colors.lightBlue)
-        gui.drawLine(mon, mon.X-12, 9, mon.X-1, colors.red)
+        gui.draw_line(mon, mon.X-25, 9, mon.X-14, colors.lightBlue)
+        gui.draw_line(mon, mon.X-12, 9, mon.X-1, colors.red)
 
         gui.draw_line(mon, 0, 10, mon.X-27, colors.yellow)
         gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.yellow)
