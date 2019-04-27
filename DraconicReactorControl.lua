@@ -630,6 +630,7 @@ function update()
                 fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
                 inputfluxgate.setSignalLowFlow(fluxval)
                 curInput = fluxval
+                print(fluxval)
                 getThreshold()
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
@@ -718,7 +719,7 @@ function getThreshold()
                 outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
                 externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
             elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
-                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow() - genTolerance)
+                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
             end
         end
     end
