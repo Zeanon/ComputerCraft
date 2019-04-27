@@ -461,7 +461,6 @@ function update()
             end
         end
 
-
         if fuelPercent > 15 then
             gui.draw_text_lr(mon, mon.X-25, 2, 1, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
