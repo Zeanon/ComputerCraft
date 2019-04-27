@@ -205,19 +205,23 @@ end
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
     save_config()
-	for i=1,20,1 do
+    local i = 1
+    while i <= 20 do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
         print(i)
+        i = i + 1
 	end
 else
 	load_config()
-	for i=1,20,1 do
+	local i = 1
+    while i <= 20 do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
         print(i)
+        i = i + 1
 	end
 end
 
@@ -754,22 +758,26 @@ function getThreshold()
 end
 
 function updateOutput()
-	for i=1,20,1 do
+    local i = 1
+	while i <= 20 do
 		if i < 20 then
 			lastGen[i] = lastGen[i + 1]
 			lastSat[i] = lastSat[i + 1]
 			lastTemp[i] = lastTemp[i + 1]
+            i = i + 1
 		else
 			lastGen[i] = ri.generationRate
 			lastSat[i] = ri.energySaturation
 			lastTemp[i] = ri.temperature
+            i = i + 1
 		end
     end
 end
 
 function checkOutput()
-local checked = true
-	for i=2,20,1 do
+    local checked = true
+    local i = 1
+	while i <= 20 do
 		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
             print(lastGen[i])
 			checked = false
@@ -779,7 +787,8 @@ local checked = true
 		end
 		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
 			checked = false
-		end
+        end
+        i = i + 1
     end
     if checked then
         action = "true"
