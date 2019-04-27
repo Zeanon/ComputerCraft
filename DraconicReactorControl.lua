@@ -104,7 +104,7 @@ function save_config()
         sw.writeLine("activateOnCharged: false")
     end
     sw.writeLine("curInputGate: " .. curInputGate)
-    sw.writeLine("curOutput: " .. curOutput)
+    sw.writeLine("targetOutput: " .. curOutput)
     sw.writeLine("targetStrength: " .. targetStrength)
     sw.writeLine("safeTemperature: " .. safeTemperature)
 	sw.writeLine("maxTemperature: " .. maxTemperature)
@@ -145,7 +145,7 @@ function load_config()
             activateOnCharged = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "curOutput" then
+        elseif split(line, ": ")[1] == "targetOutput" then
             curOutput = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "targetStrength" then
             targetStrength = tonumber(split(line, ": ")[2])
@@ -286,6 +286,7 @@ function buttons()
                 multishell.setFocus(newTabID)
             elseif xPos >= mon.X-12 and xPos <= 1 then
                 load_config()
+                print("test")
             end
         end
 
