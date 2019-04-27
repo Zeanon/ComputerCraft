@@ -279,14 +279,13 @@ function buttons()
         end
 
         -- edit Config
-        if yPos >= 7 and yPos <= 9 then
-            if xPos >= mon.X-24 and xPos <= mon.X-14 then
+        if yPos >= 12 and yPos <= 14 then
+            if xPos >= mon.X-25 and xPos <= mon.X-14 then
                 local newTabID = shell.openTab("edit", "config.txt")
                 multishell.setTitle(newTabID, "Config")
                 multishell.setFocus(newTabID)
-            elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
+            elseif xPos >= mon.X-13 and xPos <= mon.X-2 then
                 load_config()
-                action = "test"
             end
         end
 
@@ -482,14 +481,14 @@ function update()
             drawButtons(8)
         end
 
-        gui.draw_line(mon, mon.X-25, 7, 11, colors.lightBlue)
-        gui.draw_line(mon, mon.X-12, 7, 11, colors.red)
-        gui.draw_text(mon, mon.X-25, 8, "Edit Config ", colors.white, colors.lightBlue)
-        gui.draw_text(mon, mon.X-12, 8, "Save Config ", colors.white, colors.red)
-        gui.draw_line(mon, mon.X-25, 9, 11, colors.lightBlue)
-        gui.draw_line(mon, mon.X-12, 9, 11, colors.red)
+        gui.draw_line(mon, mon.X-25, 12, 12, colors.lightBlue)
+        gui.draw_line(mon, mon.X-12, 12, 12, colors.red)
+        gui.draw_text(mon, mon.X-25, 13, "Edit Config ", colors.white, colors.lightBlue)
+        gui.draw_text(mon, mon.X-12, 13, "Save Config ", colors.white, colors.red)
+        gui.draw_line(mon, mon.X-25, 14, 12, colors.lightBlue)
+        gui.draw_line(mon, mon.X-12, 14, 12, colors.red)
 
-        gui.draw_line(mon, 0, 10, mon.X-27, colors.yellow)
+        gui.draw_line(mon, 0, 10, mon.X, colors.yellow)
         gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.yellow)
 
         gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
