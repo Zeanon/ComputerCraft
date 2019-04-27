@@ -209,7 +209,7 @@ if fs.exists("config.txt") == false then
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
-		i = i + 1
+        print(i)
 	end
 else
 	load_config()
@@ -217,7 +217,7 @@ else
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
-		i = i + 1
+        print(i)
 	end
 end
 
@@ -771,6 +771,7 @@ function checkOutput()
 local checked = true
 	for i=2,20 do
 		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
+            print(lastGen[i])
 			checked = false
 		end
 		if lastSat[1] - satTolerance > lastSat[i] or lastSat[1] + satTolerance < lastSat[i] then
