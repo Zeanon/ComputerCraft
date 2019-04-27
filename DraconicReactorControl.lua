@@ -286,7 +286,7 @@ function buttons()
                 multishell.setFocus(newTabID)
             elseif xPos >= mon.X-12 and xPos <= 2 then
                 load_config()
-                print("test")
+                action = "test"
             end
         end
 
@@ -482,12 +482,12 @@ function update()
             drawButtons(8)
         end
 
-        gui.draw_line(mon, mon.X-24, 7, mon.X-14, colors.lightBlue)
-        gui.draw_line(mon, mon.X-12, 7, mon.X-2, colors.red)
-        gui.draw_text(mon, mon.X-24, 8, "Edit Config ", colors.white, colors.lightBlue)
+        gui.draw_line(mon, mon.X-24, 7, mon.X-13, colors.lightBlue)
+        gui.draw_line(mon, mon.X-12, 7, mon.X-3, colors.red)
+        gui.draw_text(mon, mon.X-24, 8, "Edit Config", colors.white, colors.lightBlue)
         gui.draw_text(mon, mon.X-12, 8, "Save Config ", colors.white, colors.red)
-        gui.draw_line(mon, mon.X-24, 9, mon.X-14, colors.lightBlue)
-        gui.draw_line(mon, mon.X-12, 9, mon.X-2, colors.red)
+        gui.draw_line(mon, mon.X-24, 9, mon.X-13, colors.lightBlue)
+        gui.draw_line(mon, mon.X-12, 9, mon.X-3, colors.red)
 
         gui.draw_line(mon, 0, 10, mon.X-26, colors.yellow)
         gui.draw_column(mon, mon.X-26, 0, mon.Y, colors.yellow)
