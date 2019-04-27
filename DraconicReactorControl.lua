@@ -717,9 +717,9 @@ function getThreshold()
         if checkOutput() then
             local tempCap
             if threshold < curOutput and threshold ~= -1 then
-                tempCap = threshold
+                tempCap = threshold - outputfluxgate.getSignalLowFlow
             else
-                tempCap = curOutput
+                tempCap = curOutput - outputfluxgate.getSignalLowFlow
             end
             local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow()) / 4
             if tempOutput > maxIncrease then
