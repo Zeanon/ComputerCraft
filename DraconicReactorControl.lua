@@ -260,7 +260,7 @@ function buttons()
         -- reactor control
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-25 and fuelPercent > 15 then
+        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-26 and fuelPercent > 15 then
             if ri.status == "charging" then
                 reactor.stopReactor()
             elseif ri.status == "online" then
@@ -269,6 +269,16 @@ function buttons()
                 reactor.chargeReactor()
             elseif ri.status == "stopping" then
                 reactor.chargeReactor()
+            end
+        end
+
+        -- edit Config
+        if yPos >= 7 and yPos <= 9 then
+            if xPos >= mon.X-25 and xPos <= mon.X-14 then
+                local newTabID = shell.openTab("edit", "config.txt")
+                multishell.setTitle(newTabID, "Config")
+            elseif xPos >= mon.X-12 and xPos <= 1 then
+                load_config()
             end
         end
 
@@ -464,6 +474,13 @@ function update()
             drawButtons(8)
         end
 
+        gui.drawLine(mon, mon.X-25, 7, mon.X-14, colors.lightBlue)
+        gui.drawLine(mon, mon.X-12, 7, mon.X-1, colors.red)
+        gui.draw_text(mon, mon.X-25, 8, "Edit Config", colors.white)
+        gui.draw_text(mon, mon.X-12, 8, "Save Config", colors.white)
+        gui.drawLine(mon, mon.X-25, 9, mon.X-14, colors.lightBlue)
+        gui.drawLine(mon, mon.X-12, 9, mon.X-1, colors.red)
+
         gui.draw_line(mon, 0, 10, mon.X-27, colors.yellow)
         gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.yellow)
 
@@ -654,7 +671,6 @@ function update()
 end
 
 function getThreshold()
-    print(outputfluxgate.getSignalLowFlow())
     if ri.status == "charging" then
         threshold = 0
     elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) and (satthreshold<= energythreshold or energythreshold == -1) then
@@ -710,15 +726,15 @@ function getThreshold()
                 externalfluxgate.setSignalLowFlow(0)
             elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > threshold then
                 outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
-                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
+                externalfluxgate.setSignalLowFlow((safeTarget + maxIncrease) - outputfluxgate.getSignalLowFlow())
             end
         elseif threshold >= 0 and externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold and curOutput > threshold then
             outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
+            externalfluxgate.setSignalLowFlow((safeTarget + maxIncrease)  - outputfluxgate.getSignalLowFlow())
         else
             if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput - genTolerance then
                 outputfluxgate.setSignalLowFlow(curInput + outputInputHyteresis)
-                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
+                externalfluxgate.setSignalLowFlow((safeTarget + maxIncrease)  - outputfluxgate.getSignalLowFlow())
             elseif externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
                 externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
                 print(outputfluxgate.getSignalLowFlow())
