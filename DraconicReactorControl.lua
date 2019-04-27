@@ -122,6 +122,8 @@ function save_config()
 	sw.writeLine("genTolerance: " .. genTolerance)
 	sw.writeLine("satTolerance: " .. satTolerance)
 	sw.writeLine("tempTolerance: " .. tempTolerance)
+    sw.writeLine("maxIncrease: " ..  maxIncrease)
+    sw.writeLine("safeTarget: " .. safeTarget)
     sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
@@ -179,6 +181,10 @@ function load_config()
 			satTolerance = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "tempTolerance" then
 			tempTolerance = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "maxIncrease" then
+            maxIncrease = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "safeTarget" then
+            safeTarget = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "reactorPeripheral" then
             reactorPeripheral = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalInput" then
@@ -277,6 +283,7 @@ function buttons()
             if xPos >= mon.X-25 and xPos <= mon.X-14 then
                 local newTabID = shell.openTab("edit", "config.txt")
                 multishell.setTitle(newTabID, "Config")
+                multishell.setFocus(newTabID)
             elseif xPos >= mon.X-12 and xPos <= 1 then
                 load_config()
             end
@@ -476,8 +483,8 @@ function update()
 
         gui.draw_line(mon, mon.X-25, 7, mon.X-14, colors.lightBlue)
         gui.draw_line(mon, mon.X-12, 7, mon.X-1, colors.red)
-        gui.draw_text(mon, mon.X-25, 8, "Edit Config", colors.white, colors.lightBlue)
-        gui.draw_text(mon, mon.X-12, 8, "Save Config", colors.white, colors.red)
+        gui.draw_text(mon, mon.X-25, 8, " Edit Config ", colors.white, colors.lightBlue)
+        gui.draw_text(mon, mon.X-12, 8, " Save Config ", colors.white, colors.red)
         gui.draw_line(mon, mon.X-25, 9, mon.X-14, colors.lightBlue)
         gui.draw_line(mon, mon.X-12, 9, mon.X-1, colors.red)
 
