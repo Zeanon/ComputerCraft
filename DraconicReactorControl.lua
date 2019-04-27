@@ -725,7 +725,7 @@ function getThreshold()
             if tempOutput > maxIncrease then
                 tempOutput = maxIncrease
             end
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
+            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
             externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() + tempOutput)
         end
     end
@@ -770,11 +770,9 @@ function checkOutput()
 		end
 		if lastSat[1] - satTolerance > lastSat[i] or lastSat[1] + satTolerance < lastSat[i] then
 			checked = false
-            print("sat")
 		end
 		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
 			checked = false
-            action = lastTemp[i]
             print("temp")
         end
         i = i + 1
