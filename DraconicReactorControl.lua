@@ -260,7 +260,7 @@ function buttons()
         -- reactor control
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-19 and fuelPercent > 15 then
+        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-25 and fuelPercent > 15 then
             if ri.status == "charging" then
                 reactor.stopReactor()
             elseif ri.status == "online" then
@@ -277,7 +277,7 @@ function buttons()
         -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
         local satPercent
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
-        if yPos == 7 then
+        if yPos == 5 then
             if xPos >= 2 and xPos <= 4 then
                 curOutput = curOutput-1000
             elseif xPos >= 6 and xPos <= 9 then
@@ -301,7 +301,7 @@ function buttons()
         -- input gate controls
         -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
         -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
-        if yPos == 10 and autoInputGate == false and xPos ~= 14 and xPos ~= 15 then
+        if yPos == 8 and autoInputGate == false and xPos ~= 14 and xPos ~= 15 then
             if xPos >= 2 and xPos <= 4 then
                 curInputGate = curInputGate-1000
             elseif xPos >= 6 and xPos <= 9 then
@@ -321,7 +321,7 @@ function buttons()
         end
 
         -- input gate toggle
-        if yPos == 10 and ( xPos == 14 or xPos == 15) then
+        if yPos == 8 and ( xPos == 14 or xPos == 15) then
             if autoInputGate then
                 autoInputGate = false
             else
@@ -444,15 +444,15 @@ function update()
         end
 
         if fuelPercent > 15 then
-            gui.draw_text_lr(mon, mon.X-24, 2, 1, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 2, 1, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-24, 2, 1, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 2, 1, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
         end
 
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
 		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
-        gui.draw_text_lr(mon, mon.X-24, 4, 1, "Output Gate", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-25, 4, 1, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
@@ -461,7 +461,7 @@ function update()
             gui.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
         else
             gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
-            drawButtons(10)
+            drawButtons(8)
         end
 
         gui.draw_line(mon, 0, 10, mon.X-27, colors.yellow)
