@@ -461,15 +461,15 @@ function update()
         end
 
         if fuelPercent > 15 then
-            gui.draw_text_lr(mon, mon.X-25, 2, 1, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 2, 1, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
         end
 
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
 		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
-        gui.draw_text_lr(mon, mon.X-25, 4, 1, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
@@ -483,12 +483,12 @@ function update()
 
         gui.draw_line(mon, mon.X-25, 12, 12, colors.lightBlue)
         gui.draw_line(mon, mon.X-12, 12, 12, colors.red)
-        gui.draw_text(mon, mon.X-25, 13, "Edit Config ", colors.white, colors.lightBlue)
-        gui.draw_text(mon, mon.X-12, 13, "Save Config ", colors.white, colors.red)
+        gui.draw_text(mon, mon.X-25, 13, " Edit Config", colors.white, colors.lightBlue)
+        gui.draw_text(mon, mon.X-12, 13, " Save Config", colors.white, colors.red)
         gui.draw_line(mon, mon.X-25, 14, 12, colors.lightBlue)
         gui.draw_line(mon, mon.X-12, 14, 12, colors.red)
 
-        gui.draw_line(mon, 0, 10, mon.X, colors.yellow)
+        gui.draw_line(mon, 0, 10, mon.X+1, colors.yellow)
         gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.yellow)
 
         gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
