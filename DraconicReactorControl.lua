@@ -36,6 +36,8 @@ local safeTarget = 200000
 local minChangeWait = 5
 -- the amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 25
+-- maximum output lvl
+local maxOutput = 1000000
 
 local activateOnCharged = true
 
@@ -139,6 +141,7 @@ function save_config()
     sw.writeLine("safeTarget: " .. safeTarget)
     sw.writeLine("minChangeWait: " .. minChangeWait)
     sw.writeLine("stableTurns: " .. stableTurns)
+    sw.writeLine("maxOutput: " .. maxOutput)
     sw.close()
 end
 
@@ -200,6 +203,8 @@ function load_config()
             minChangeWait = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "stableTurns" then
             stableTurns = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "maxOutput" then
+            maxOutput = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "reactorPeripheral" then
             reactorPeripheral = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalInput" then
@@ -336,6 +341,11 @@ function buttons()
             end
             if isnan(curOutput) then
                 curOutput = 0
+            end
+            if curOutput < 0 then
+                curOutput = 0
+            elseif curOutput > maxOutput then
+                curOutput = maxOutput
             end
             getThreshold()
             save_config()
