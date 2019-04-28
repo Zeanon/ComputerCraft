@@ -28,10 +28,15 @@ local satBoost2 = 45
 local satBoost2Output = 600000
 -- tolerances for auto boosting
 local genTolerance = 500
-local satTolerance = 1
-local tempTolerance = 1
+
+local satTolerance = 2
+local tempTolerance = 2
 local maxIncrease = 50000
 local safeTarget = 200000
+-- the amount of loops the program goes through until the output can be changed again
+local minChangeWait = 5
+-- the amount of turns the program will save to check whether the reactor is stable
+local stableTurns = 20
 
 local activateOnCharged = true
 
@@ -56,6 +61,7 @@ local lastGen = {}
 local lastSat = {}
 local thresholded = false
 local emergencyFlood = false
+local sinceOutputChange = 0
 
 -- monitor
 local mon, monitor, monX, monY
@@ -123,6 +129,8 @@ function save_config()
 	sw.writeLine("tempTolerance: " .. tempTolerance)
     sw.writeLine("maxIncrease: " ..  maxIncrease)
     sw.writeLine("safeTarget: " .. safeTarget)
+    sw.writeLine("minChangeWait: " .. minChangeWait)
+    sw.writeLine("stableTurns: " .. stableTurns)
     sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
@@ -184,6 +192,10 @@ function load_config()
             maxIncrease = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "safeTarget" then
             safeTarget = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "minChangeWait" then
+            minChangeWait = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "stableTurns" then
+            stableTurns = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "reactorPeripheral" then
             reactorPeripheral = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalInput" then
@@ -205,7 +217,7 @@ end
 if fs.exists("config.txt") == false then
     save_config()
     local i = 1
-    while i <= 20 do
+    while i <= stableTurns do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
@@ -215,7 +227,7 @@ if fs.exists("config.txt") == false then
 else
 	load_config()
 	local i = 1
-    while i <= 20 do
+    while i <= stableTurns do
 		lastGen[i] = 0
 		lastSat[i] = 0
 		lastTemp[i] = 0
@@ -674,6 +686,10 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
 
+        if sinceOutputChange ~= 0 then
+            sinceOutputChange = sinceOutputChange - 1
+        end
+
         sleep(0.5)
     end
 end
@@ -695,7 +711,18 @@ function getThreshold()
         threshold = -1
     end
     updateOutput()
-    if ri.generationRate < safeTarget then
+    local tempCap
+    if threshold < curOutput and threshold ~= -1 then
+        tempCap = threshold - outputfluxgate.getSignalLowFlow
+    else
+        tempCap = curOutput - outputfluxgate.getSignalLowFlow
+    end
+    local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow()) / 4
+    if tempOutput > maxIncrease then
+        tempOutput = maxIncrease
+    end
+    tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
+    if tempOutput < safeTarget then
        if threshold < safeTarget and threshold ~= -1 then
            if threshold < curOutput then
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
@@ -703,30 +730,26 @@ function getThreshold()
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowfFlow())
+               sinceOutputChange = minChangeWait
            end
        else
            if curOutput < safeTarget then
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowfFlow())
+               sinceOutputChange = minChangeWait
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowfFlow())
+               sinceOutputChange = minChangeWait
            end
        end
     else
-        if checkOutput() then
-            local tempCap
-            if threshold < curOutput and threshold ~= -1 then
-                tempCap = threshold - outputfluxgate.getSignalLowFlow
-            else
-                tempCap = curOutput - outputfluxgate.getSignalLowFlow
-            end
-            local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow()) / 4
-            if tempOutput > maxIncrease then
-                tempOutput = maxIncrease
-            end
+        if checkOutput()and sinceOutputChange == 0 then
             outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() + tempOutput)
+            externalfluxgate.setSignalLowFlow(tempOutput)
+            if threshold > curOutput or threshold == -1 then
+                sinceOutputChange = minChangeWait
+            end
         end
     end
     if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
@@ -744,17 +767,19 @@ function getThreshold()
 end
 
 function updateOutput()
+    local satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
+    local tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
     local i = 1
-	while i <= 20 do
-		if i < 20 then
+	while i <= stableTurns do
+		if i < stableTurns then
 			lastGen[i] = lastGen[i + 1]
 			lastSat[i] = lastSat[i + 1]
 			lastTemp[i] = lastTemp[i + 1]
             i = i + 1
 		else
 			lastGen[i] = ri.generationRate
-			lastSat[i] = ri.energySaturation
-			lastTemp[i] = ri.temperature
+			lastSat[i] = satPercent
+			lastTemp[i] = tempPercent
             i = i + 1
 		end
     end
@@ -763,7 +788,7 @@ end
 function checkOutput()
     local checked = true
     local i = 1
-	while i <= 20 do
+	while i <= stableTurns do
 		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
 			checked = false
             print("gen")
