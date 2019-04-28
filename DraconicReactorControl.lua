@@ -212,27 +212,23 @@ function load_config()
     end
 end
 
+function initTables()
+    local i = 1
+    while i <= stableTurns do
+        lastGen[i] = 0
+        lastSat[i] = 0
+        lastTemp[i] = 0
+        i = i + 1
+    end
+end
+
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
     save_config()
-    local i = 1
-    while i <= stableTurns do
-		lastGen[i] = 0
-		lastSat[i] = 0
-		lastTemp[i] = 0
-        print(i)
-        i = i + 1
-	end
+    initTables()
 else
 	load_config()
-	local i = 1
-    while i <= stableTurns do
-		lastGen[i] = 0
-		lastSat[i] = 0
-		lastTemp[i] = 0
-        print(i)
-        i = i + 1
-	end
+    initTables()
 end
 
 monitor = gui.periphSearch("monitor")
