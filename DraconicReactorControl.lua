@@ -727,7 +727,7 @@ function getThreshold()
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowfFlow())
            else
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
+               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowfFlow())
                sinceOutputChange = minChangeWait
            end
