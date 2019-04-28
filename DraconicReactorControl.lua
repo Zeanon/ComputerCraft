@@ -45,7 +45,7 @@ local activateOnCharged = true
 os.loadAPI("lib/gui")
 os.loadAPI("lib/surface")
 
-local version = "0.25"
+local version = "1.00"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
@@ -98,7 +98,9 @@ end
 --write settings to config file
 function save_config()
     local sw = fs.open("config.txt", "w")
+    sw.writeLine("-- Config for Draconig Reactor Control Program")
     sw.writeLine("version: " .. version)
+    sw.writeLine(" ")
     sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
