@@ -27,7 +27,7 @@ local satBoost1Output = 350000
 local satBoost2 = 45
 local satBoost2Output = 600000
 -- tolerances for auto boosting
-local genTolerance = 500
+local genTolerance = 250
 local satTolerance = 2
 local tempTolerance = 2
 local maxIncrease = 50000
@@ -35,7 +35,7 @@ local safeTarget = 200000
 -- the amount of loops the program goes through until the output can be changed again
 local minChangeWait = 5
 -- the amount of turns the program will save to check whether the reactor is stable
-local stableTurns = 20
+local stableTurns = 25
 
 local activateOnCharged = true
 
