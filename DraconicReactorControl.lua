@@ -811,6 +811,11 @@ function checkOutput()
         end
         i = i + 1
     end
+    if checked then
+        action = "true"
+    else
+        action = "false"
+    end
 	return checked
 end
 
