@@ -507,7 +507,8 @@ function update()
 		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
         gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
-		
+
+        gui.draw_text_lr(mon, mon.X-25, 6, 0, "Hyteresis", outputInputHyteresis .. " rf", colors.white, colors.blue, colors.black)
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
@@ -515,6 +516,11 @@ function update()
         else
             gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
             drawButtons(8)
+        end
+        if threshold >= 0 then
+            gui.draw_text_lr(mon, mon.X-25, 8, 0, "Threshold", threshold .. " rf", colors.white, colors.blue, colors.black)
+        else
+            gui.draw_text_lr(mon, mon.X-25, 8, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
         end
 
         gui.draw_line(mon, mon.X-25, 12, 12, colors.lightBlue)
@@ -665,8 +671,10 @@ function update()
         end
 
 		-- get the hysteresis for the internal output gate
-		if core.getEnergyStored() > core.getMaxEnergyStored()*0.9 then
-			outputInputHyteresis = 2500
+		if core.getEnergyStored() > core.getMaxEnergyStored()*0.95 then
+			outputInputHyteresis = 1000
+        elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.9 and core.getEnergyStored() < core.getMaxEnergyStored()*0.95 then
+            outputInputHyteresis = 2500
 		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.8 and core.getEnergyStored() < core.getMaxEnergyStored()*0.9 then
 			outputInputHyteresis = 5000
 		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.7 and core.getEnergyStored() < core.getMaxEnergyStored()*0.8 then
