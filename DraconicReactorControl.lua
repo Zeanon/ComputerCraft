@@ -721,20 +721,20 @@ function getThreshold()
        if threshold < safeTarget and threshold ~= -1 then
            if threshold < curOutput then
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowfFlow())
+               externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowfFlow())
+               externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
                sinceOutputChange = minChangeWait
            end
        else
            if curOutput < safeTarget then
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowfFlow())
+               externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
                sinceOutputChange = minChangeWait
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowfFlow())
+               externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
                sinceOutputChange = minChangeWait
            end
        end
