@@ -693,6 +693,7 @@ function update()
             print("Threshold: false")
         end
         print("Hyteresis: ".. outputInputHyteresis)
+        print("Till next change: " .. sinceOutputChange)
 
         if sinceOutputChange ~= 0 then
             sinceOutputChange = sinceOutputChange - 1
