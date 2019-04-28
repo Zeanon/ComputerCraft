@@ -31,7 +31,7 @@ local genTolerance = 250
 local satTolerance = 2
 local tempTolerance = 10
 local maxIncrease = 25000
-local safeTarget = 200000
+local safeTarget = 50000
 -- the amount of loops the program goes through until the output can be changed again
 local minChangeWait = 5
 -- the amount of turns the program will save to check whether the reactor is stable
