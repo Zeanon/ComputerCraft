@@ -536,11 +536,11 @@ function update()
             gui.draw_text_lr(mon, mon.X-25, 8, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
         end
 
-        gui.draw_line(mon, mon.X-25, 12, 12, colors.lightBlue)
+        gui.draw_line(mon, mon.X-25, 12, 12, colors.cyan)
         gui.draw_line(mon, mon.X-12, 12, 12, colors.red)
-        gui.draw_text(mon, mon.X-25, 13, " Edit Config", colors.white, colors.lightBlue)
+        gui.draw_text(mon, mon.X-25, 13, " Edit Config", colors.white, colors.cyan)
         gui.draw_text(mon, mon.X-12, 13, " Load Config", colors.white, colors.red)
-        gui.draw_line(mon, mon.X-25, 14, 12, colors.lightBlue)
+        gui.draw_line(mon, mon.X-25, 14, 12, colors.cyan)
         gui.draw_line(mon, mon.X-12, 14, 12, colors.red)
 
         gui.draw_line(mon, 0, 10, mon.X+1, colors.yellow)
