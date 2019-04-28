@@ -461,7 +461,7 @@ function update()
 		
 		energyColor = colors.red
 		if energyPercent >= 70 then
-			energyColor = colors. green
+			energyColor = colors.green
 		elseif energyPercent < 70 and energyPercent > 30 then
 			energyColor = colors.orange
 		end
