@@ -803,6 +803,7 @@ function checkOutput()
 		end
 		if lastSat[1] - satTolerance > lastSat[i] or lastSat[1] + satTolerance < lastSat[i] then
 			checked = false
+            print("sat")
 		end
 		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
 			checked = false
