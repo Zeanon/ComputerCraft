@@ -63,6 +63,7 @@ local lastSat = {}
 local thresholded = false
 local emergencyFlood = false
 local sinceOutputChange = 0
+local oldOutput = 0
 
 -- monitor
 local mon, monitor, monX, monY
@@ -118,6 +119,7 @@ function save_config()
     else
         sw.writeLine("activateOnCharged: false")
     end
+    sw.writeLine("oldOutput: " .. oldOutput)
     sw.writeLine("curInputGate: " .. curInputGate)
     sw.writeLine("targetOutput: " .. curOutput)
     sw.writeLine("targetStrength: " .. targetStrength)
@@ -170,6 +172,8 @@ function load_config()
             autoInputGate = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "activateOnCharged" then
             activateOnCharged = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "oldOutput" then
+            oldOutput = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "targetOutput" then
@@ -693,7 +697,11 @@ function update()
 			action = "not enough buffer energy left"
 			reactor.stopReactor()
 			satthreshold = 0
-		end
+        end
+
+        if ri.status == "stopping" and oldOutput == 0 then
+            oldOutput = ri.generationRate - outputfluxgate.getSignalLowFlow()
+        end
 		
         -- are we on? regulate the input fludgate to our target field strength
         -- or set it to our saved setting since we are on manual
@@ -749,7 +757,13 @@ function getThreshold()
     else
         tempCap = curOutput - outputfluxgate.getSignalLowFlow()
     end
-    local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow()) / 4
+    if ri.generationRate > oldOutput and oldOutput ~= 0 then
+        oldOutput = 0
+    end
+    if oldOutput ~= 0 then
+        tempCap = oldOutput
+    end
+    local tempOutput = tempCap - (externalfluxgate.getSignalLowFlow() / 2)
     if tempOutput > maxIncrease then
         tempOutput = maxIncrease
     end
