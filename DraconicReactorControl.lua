@@ -697,7 +697,7 @@ function update()
             end
         end
 
-        if sinceOutputChange ~= 0 then
+        if sinceOutputChange > 0 then
             sinceOutputChange = sinceOutputChange - 1
         end
 
@@ -751,17 +751,14 @@ function getThreshold()
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-               sinceOutputChange = minChangeWait
            end
        else
            if curOutput < safeTarget then
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-               sinceOutputChange = minChangeWait
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
-               sinceOutputChange = minChangeWait
            end
        end
     else
