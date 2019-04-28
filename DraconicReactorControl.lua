@@ -30,7 +30,7 @@ local satBoost2Output = 600000
 local genTolerance = 250
 local satTolerance = 2
 local tempTolerance = 10
-local maxIncrease = 50000
+local maxIncrease = 25000
 local safeTarget = 200000
 -- the amount of loops the program goes through until the output can be changed again
 local minChangeWait = 5
@@ -788,6 +788,15 @@ function getThreshold()
             else
                 outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                 externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+            end
+        end
+        if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > threshold and threshold ~= -1 then
+            if outputfluxgate.getSignalLowFlow() > threshold then
+                outputfluxgate.setSignalLowFlow(threshold)
+                externalfluxgate.setSignalLowFlow(0)
+            else
+                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
             end
         end
     end
