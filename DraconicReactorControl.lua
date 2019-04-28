@@ -29,7 +29,7 @@ local satBoost2Output = 600000
 -- tolerances for auto boosting
 local genTolerance = 250
 local satTolerance = 2
-local tempTolerance = 2
+local tempTolerance = 10
 local maxIncrease = 50000
 local safeTarget = 200000
 -- the amount of loops the program goes through until the output can be changed again
@@ -101,6 +101,7 @@ function save_config()
     sw.writeLine("-- Config for Draconig Reactor Control Program")
     sw.writeLine("version: " .. version)
     sw.writeLine(" ")
+    sw.writeLine("-- reactorPeripheral modem names")
     sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
@@ -120,29 +121,38 @@ function save_config()
     sw.writeLine("targetOutput: " .. curOutput)
     sw.writeLine("targetStrength: " .. targetStrength)
     sw.writeLine(" ")
+    sw.writeLine("-- the numbers for the temperatureBoost steps")
     sw.writeLine("safeTemperature: " .. safeTemperature)
 	sw.writeLine("maxTemperature: " .. maxTemperature)
 	sw.writeLine("tempBoost1Output: " .. tempBoost1Output)
 	sw.writeLine("tempBoost2Output: " .. tempBoost2Output)
 	sw.writeLine("tempBoost3Output: " .. tempBoost3Output)
     sw.writeLine(" ")
+    sw.writeLine("-- numbers for the fielBoost steps")
 	sw.writeLine("lowestFieldPercent: " .. lowestFieldPercent)
 	sw.writeLine("fieldBoost: " .. fieldBoost)
 	sw.writeLine("fieldBoostOutput: " .. fieldBoostOutput)
     sw.writeLine(" ")
+    sw.writeLine("-- numbers for the saturationBoost steps")
 	sw.writeLine("satBoostThreshold: " .. satBoostThreshold)
 	sw.writeLine("satBoost1: " .. satBoost1)
 	sw.writeLine("satBoost1Output: " .. satBoost1Output)
 	sw.writeLine("satBoost2: " .. satBoost2)
 	sw.writeLine("satBoost2Output: " .. satBoost2Output)
     sw.writeLine(" ")
+    sw.writeLine("-- genTolerance and tempTolerance are absolute numbers, satTolerance is in percent")
 	sw.writeLine("genTolerance: " .. genTolerance)
 	sw.writeLine("satTolerance: " .. satTolerance)
 	sw.writeLine("tempTolerance: " .. tempTolerance)
+    sw.writeLine("-- maxIncrease is the maximum amount the externalOutput can be increased by in one step")
     sw.writeLine("maxIncrease: " ..  maxIncrease)
+    sw.writeLine("-- under this generation limit the algorythm won't do anyrhing and the output will just be set to this amoun")
     sw.writeLine("safeTarget: " .. safeTarget)
+    sw.writeLine("-- the minimum turns to wait for the next output increase after one was done")
     sw.writeLine("minChangeWait: " .. minChangeWait)
+    sw.writeLine("-- the amount of turns to be checked if stable")
     sw.writeLine("stableTurns: " .. stableTurns)
+    sw.writeLine("-- the maximum allowed output")
     sw.writeLine("maxOutput: " .. maxOutput)
     sw.close()
 end
@@ -799,7 +809,7 @@ function updateOutput()
 		else
 			lastGen[i] = ri.generationRate
 			lastSat[i] = satPercent
-			lastTemp[i] = tempPercent
+			lastTemp[i] = ri.temperature
             i = i + 1
 		end
     end
