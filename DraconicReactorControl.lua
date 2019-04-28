@@ -63,7 +63,6 @@ local lastSat = {}
 local thresholded = false
 local emergencyFlood = false
 local sinceOutputChange = 0
-local oldOutput = 0
 
 -- monitor
 local mon, monitor, monX, monY
@@ -119,7 +118,6 @@ function save_config()
     else
         sw.writeLine("activateOnCharged: false")
     end
-    sw.writeLine("oldOutput: " .. oldOutput)
     sw.writeLine("curInputGate: " .. curInputGate)
     sw.writeLine("targetOutput: " .. curOutput)
     sw.writeLine("targetStrength: " .. targetStrength)
@@ -172,8 +170,6 @@ function load_config()
             autoInputGate = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "activateOnCharged" then
             activateOnCharged = split(line, ": ")[2]
-        elseif split(line, ": ")[1] == "oldOutput" then
-            oldOutput = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "targetOutput" then
@@ -698,10 +694,6 @@ function update()
 			reactor.stopReactor()
 			satthreshold = 0
         end
-
-        if ri.status == "stopping" and oldOutput == 0 then
-            oldOutput = ri.generationRate - outputfluxgate.getSignalLowFlow()
-        end
 		
         -- are we on? regulate the input fludgate to our target field strength
         -- or set it to our saved setting since we are on manual
@@ -716,10 +708,6 @@ function update()
             end
         end
 
-        if sinceOutputChange > 0 then
-            sinceOutputChange = sinceOutputChange - 1
-        end
-
         print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
 
         if threshold >= 0 then
@@ -729,6 +717,10 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
+
+        if sinceOutputChange > 0 then
+            sinceOutputChange = sinceOutputChange - 1
+        end
 
         sleep(0.5)
     end
@@ -756,12 +748,6 @@ function getThreshold()
         tempCap = threshold - outputfluxgate.getSignalLowFlow()
     else
         tempCap = curOutput - outputfluxgate.getSignalLowFlow()
-    end
-    if ri.generationRate > oldOutput and oldOutput ~= 0 then
-        oldOutput = 0
-    end
-    if oldOutput ~= 0 then
-        tempCap = oldOutput
     end
     local tempOutput = tempCap - (externalfluxgate.getSignalLowFlow() / 2)
     if tempOutput > maxIncrease then
