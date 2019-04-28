@@ -696,7 +696,10 @@ function update()
                 getThreshold()
             end
         end
-		
+
+        if sinceOutputChange ~= 0 then
+            sinceOutputChange = sinceOutputChange - 1
+        end
 
         print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
 
@@ -707,10 +710,6 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
-
-        if sinceOutputChange ~= 0 then
-            sinceOutputChange = sinceOutputChange - 1
-        end
 
         sleep(0.5)
     end
