@@ -669,6 +669,7 @@ function update()
                 local fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
                 inputfluxgate.setSignalLowFlow(fluxval)
                 getThreshold()
+
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
                 getThreshold()
