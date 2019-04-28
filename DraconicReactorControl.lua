@@ -498,7 +498,7 @@ function update()
                 redstone.setOutput(v, false)
             end
         elseif ri.status == "offline" then
-            statusColor = colors.gray
+            statusColor =  colors.lightGray
             for k,v in pairs(redstone.getSides()) do
                 redstone.setOutput(v, true)
             end
@@ -525,7 +525,7 @@ function update()
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
-            gui.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
+            gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
         else
             gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
             drawButtons(8)
@@ -543,29 +543,29 @@ function update()
         gui.draw_line(mon, mon.X-25, 14, 12, colors.cyan)
         gui.draw_line(mon, mon.X-12, 14, 12, colors.red)
 
-        gui.draw_line(mon, 0, 10, mon.X+1, colors.yellow)
-        gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.yellow)
+        gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
+        gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.gray)
 
         gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
-        gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue, colors.gray)
+        gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
 
         gui.draw_text_lr(mon, 2, 15, 28, "Temperature", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor, colors.gray)
+        gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor,  colors.lightGray)
 
         if autoInputGate then
             gui.draw_text_lr(mon, 2, 18, 28, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
             gui.draw_text_lr(mon, 2, 18, 28, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        gui.progress_bar(mon, 2, 19, mon.X-30, fieldPercent, 100, fieldColor, colors.gray)
+        gui.progress_bar(mon, 2, 19, mon.X-30, fieldPercent, 100, fieldColor,  colors.lightGray)
 		
 		gui.draw_text_lr(mon, 2, 21, 28, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
-		gui.progress_bar(mon, 2, 22, mon.X-30, energyPercent, 100, energyColor, colors.gray)
+		gui.progress_bar(mon, 2, 22, mon.X-30, energyPercent, 100, energyColor,  colors.lightGray)
 
         gui.draw_text_lr(mon, 2, 24, 28, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        gui.progress_bar(mon, 2, 25, mon.X-30, fuelPercent, 100, fuelColor, colors.gray)
+        gui.progress_bar(mon, 2, 25, mon.X-30, fuelPercent, 100, fuelColor,  colors.lightGray)
 
-        gui.draw_text_lr(mon, 2, 26, 28, "Last:", action, colors.gray, colors.gray, colors.black)
+        gui.draw_text_lr(mon, 2, 26, 28, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
 
 
         -- safeguards
