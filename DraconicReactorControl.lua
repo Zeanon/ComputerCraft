@@ -420,7 +420,7 @@ function update()
             tempPercent = 0
         end
 
-        local temperatureColor = colors.red
+        local tempColor = colors.red
         if ri.temperature <= (maxTemperature / 8) * 5 then
             tempColor = colors.green
         elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
