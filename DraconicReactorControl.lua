@@ -483,10 +483,10 @@ function update()
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " rf/t", colors.white, colors.lime, colors.black)
 
 		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", curOutput .. " rf/t", colors.white, colors.blue, colors.black)
-        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFLow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
-        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFLow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
             gui.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
@@ -620,8 +620,8 @@ function update()
             reactor.chargeReactor()
         end
 
-        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
-        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
+        print("Output Gate: ", externalfluxgate.getSignalLowFLow())
+        print("Input Gate: ", inputfluxgate.getSignalLowFLow())
 
         -- are we stopping from a shutdown and our temp is better? activate
         if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
@@ -676,7 +676,7 @@ function update()
         end
 		
 
-        print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
+        print("Target Gate: ".. inputfluxgate.getSignalLowFLow())
 
         if threshold >= 0 then
             print("Threshold: ".. threshold)
@@ -712,19 +712,19 @@ function getThreshold()
     updateOutput()
     local tempCap
     if threshold < curOutput and threshold ~= -1 then
-        tempCap = threshold - outputfluxgate.getSignalLowFlow()
+        tempCap = threshold - outputfluxgate.getSignalLowFLow()
     else
-        tempCap = curOutput - outputfluxgate.getSignalLowFlow()
+        tempCap = curOutput - outputfluxgate.getSignalLowFLow()
     end
-    local tempOutput = (tempCap - externalfluxgate.getSignalLowFlow()) / 4
+    local tempOutput = (tempCap - externalfluxgate.getSignalLowFLow()) / 4
     if tempOutput > maxIncrease then
         tempOutput = maxIncrease
     end
-    tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
+    tempOutput = externalfluxgate.getSignalLowFLow() + tempOutput
     if tempOutput < safeTarget then
        if threshold < safeTarget and threshold ~= -1 then
            if threshold < curOutput then
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
+               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowfFlow())
            else
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
@@ -733,34 +733,34 @@ function getThreshold()
            end
        else
            if curOutput < safeTarget then
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
+               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowfFlow())
                sinceOutputChange = minChangeWait
            else
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowfLow() + outputInputHyteresis)
+               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
                externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowfFlow())
                sinceOutputChange = minChangeWait
            end
        end
     else
         if checkOutput()and sinceOutputChange == 0 then
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
             externalfluxgate.setSignalLowFlow(tempOutput)
             if threshold > curOutput or threshold == -1 then
                 sinceOutputChange = minChangeWait
             end
         end
     end
-    if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
-        if outputfluxgate.getSignalLowFlow() > curOutput then
+    if externalfluxgate.getSignalLowFLow() + outputfluxgate.getSignalLowFLow() > curOutput then
+        if outputfluxgate.getSignalLowFLow() > curOutput then
             outputfluxgate.setSignalLowFlow(curOutput)
             externalfluxgate.setSignalLowFlow(0)
         else
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFLow() + outputInputHyteresis)
+            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFLow())
         end
     end
-    if externalfluxgate.getSignalLowFlow() < 0 then
+    if externalfluxgate.getSignalLowFLow() < 0 then
         externalfluxgate.setSignalLowFlow(0)
     end
 end
