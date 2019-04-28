@@ -841,22 +841,14 @@ function checkOutput()
         end
 		if leastGen + genTolerance < lastGen[i] then
 			checked = false
-            print("gen")
 		end
 		if leastSat - satTolerance > lastSat[i] then
 			checked = false
-            print("sat")
 		end
 		if leastTemp + tempTolerance < lastTemp[i] then
 			checked = false
-            print("temp")
         end
         i = i + 1
-    end
-    if checked then
-        action = "true"
-    else
-        action = "false"
     end
 	return checked
 end
