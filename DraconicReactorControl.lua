@@ -3,9 +3,9 @@
 -- modifiable variables
 -- Peripherals
 local reactorPeripheral = "back"
-local internalInput = "flux_gate_7"
-local internalOutput = "flux_gate_9"
-local externalOutput = "flux_gate_8"
+local internalInput = "flux_gate_0"
+local internalOutput = "flux_gate_1"
+local externalOutput = "flux_gate_2"
 
 -- target strength of the containment field
 local targetStrength = 50
