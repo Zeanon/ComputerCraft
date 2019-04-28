@@ -843,15 +843,15 @@ function checkOutput()
     local checked = true
     local i = 1
 	while i <= stableTurns do
-		if lastGen[1] - genTolerance > lastGen[i] or lastGen[1] + genTolerance < lastGen[i] then
+		if lastGen[1] + genTolerance < lastGen[i] then
 			checked = false
             print("gen")
 		end
-		if lastSat[1] - satTolerance > lastSat[i] or lastSat[1] + satTolerance < lastSat[i] then
+		if lastSat[1] - satTolerance > lastSat[i] then
 			checked = false
             print("sat")
 		end
-		if lastTemp[1] - tempTolerance > lastTemp[i] or lastTemp[1] + tempTolerance < lastTemp[i] then
+		if lastTemp[1] + tempTolerance < lastTemp[i] then
 			checked = false
             print("temp")
         end
