@@ -28,7 +28,6 @@ local satBoost2 = 45
 local satBoost2Output = 600000
 -- tolerances for auto boosting
 local genTolerance = 500
-
 local satTolerance = 2
 local tempTolerance = 2
 local maxIncrease = 50000
@@ -96,7 +95,7 @@ end
 
 --write settings to config file
 function save_config()
-    sw = fs.open("config.txt", "w")
+    local sw = fs.open("config.txt", "w")
     sw.writeLine("version: " .. version)
     if autoInputGate then
         sw.writeLine("autoInputGate: true")
@@ -140,7 +139,7 @@ end
 
 --read settings from file
 function load_config()
-    sr = fs.open("config.txt", "r")
+    local sr = fs.open("config.txt", "r")
     local curVersion
     local line = sr.readLine()
     while line do
@@ -276,7 +275,7 @@ function buttons()
 
     while true do
         -- button handler
-        event, side, xPos, yPos = os.pullEvent("monitor_touch")
+        local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
         -- reactor control
         local fuelPercent
@@ -409,7 +408,7 @@ function update()
             tempPercent = 0
         end
 
-        temperatureColor = colors.red
+        local temperatureColor = colors.red
         if ri.temperature <= (maxTemperature / 8) * 5 then
             tempColor = colors.green
         elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
@@ -667,7 +666,7 @@ function update()
         -- or set it to our saved setting since we are on manual
         if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
             if autoInputGate then
-                fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
+                local fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
                 inputfluxgate.setSignalLowFlow(fluxval)
                 getThreshold()
             else
