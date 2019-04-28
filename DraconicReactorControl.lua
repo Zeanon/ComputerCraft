@@ -173,7 +173,7 @@ function load_config()
         elseif split(line, ": ")[1] == "activateOnCharged" then
             activateOnCharged = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "oldOutput" then
-            oldOutput = split(line, ": ")[2]
+            oldOutput = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "targetOutput" then
