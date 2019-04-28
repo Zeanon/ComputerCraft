@@ -107,6 +107,7 @@ function save_config()
     sw.writeLine("internalOutput: " .. internalOutput)
     sw.writeLine("externalOutput: " .. externalOutput)
     sw.writeLine(" ")
+    sw.writeLine("-- just some saved data")
     if autoInputGate then
         sw.writeLine("autoInputGate: true")
     else
