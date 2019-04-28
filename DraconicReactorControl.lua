@@ -482,7 +482,7 @@ function update()
         gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 		
-        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()()) .. " rf/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " rf/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
             gui.draw_text(mon, 14, 8, "AU", colors.white, colors.gray)
