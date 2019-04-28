@@ -296,6 +296,14 @@ function buttons()
         -- edit Config
         if yPos >= 12 and yPos <= 14 then
             if xPos >= mon.X-25 and xPos <= mon.X-14 then
+                local i = 1
+                while i <= multishell.getCount() do
+                    if multishell.getTitle(i) == "Config" then
+                        multishell.setFocus(i)
+                        return
+                    end
+                    i = i + 1
+                end
                 local newTabID = shell.openTab("edit", "config.txt")
                 multishell.setTitle(newTabID, "Config")
                 multishell.setFocus(newTabID)
