@@ -731,7 +731,7 @@ function getThreshold()
         tempOutput = maxIncrease
     end
     tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
-    if tempOutput < safeTarget then
+    if ri.generation < safeTarget then
        if threshold < safeTarget and threshold ~= -1 then
            if threshold < curOutput then
                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
