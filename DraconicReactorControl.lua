@@ -592,11 +592,9 @@ function update()
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
             fieldthreshold = fieldBoostOutput
-            getThreshold()
         else
             emergencyFlood = false
             fieldthreshold = -1
-            getThreshold()
         end
 
         -- field strength is too dangerous, kill it and try to charge it before it blows
@@ -606,10 +604,8 @@ function update()
             reactor.chargeReactor()
             emergencyCharge = true
             fieldthreshold = 0
-            getThreshold()
         else
             fieldthreshold = -1
-            getThreshold()
         end
 
 
@@ -619,19 +615,14 @@ function update()
             reactor.stopReactor()
             emergencyTemp = true
             tempthreshold = 0
-            getThreshold()
         elseif ri.temperature > maxTemperature - ((maxTemperature - safeTemperature)/4) then
             tempthreshold = tempBoost1Output
-            getThreshold()
         elseif ri.temperature > maxTemperature - ((maxTemperature - safeTemperature)/2) then
             tempthreshold = tempBoost2Output
-            getThreshold()
         elseif ri.temperature > safeTemperature + ((maxTemperature - safeTemperature)/4) then
             tempthreshold = tempBoost3Output
-            getThreshold()
         else
             tempthreshold = -1
-            getThreshold()
         end
 
 
@@ -666,10 +657,10 @@ function update()
 
         -- are we charging? open the floodgates
         if ri.status == "charging" then
-            getThreshold()
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
             emergencyCharge = false
+            getThreshold()
         end
 
 		-- get the hysteresis for the internal output gate
@@ -691,7 +682,6 @@ function update()
 			action = "not enough buffer energy left"
 			reactor.stopReactor()
 			satthreshold = 0
-			getThreshold()
 		end
 		
         -- are we on? regulate the input fludgate to our target field strength
@@ -753,40 +743,42 @@ function getThreshold()
         tempOutput = maxIncrease
     end
     tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
-    if ri.generationRate < safeTarget - 2500 then
-       if threshold < safeTarget and threshold ~= -1 then
-           if threshold < curOutput then
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
+    if emergencyFlood == false then
+        if ri.generationRate < safeTarget - 2500 then
+           if threshold < safeTarget and threshold ~= -1 then
+               if threshold < curOutput then
+                   outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                   externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
+               else
+                   outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                   externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+               end
            else
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+               if curOutput < safeTarget then
+                   outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                   externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+               else
+                   outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                   externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
+               end
            end
-       else
-           if curOutput < safeTarget then
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-           else
-               outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-               externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
-           end
-       end
-    else
-        if checkOutput()and sinceOutputChange == 0 then
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(tempOutput)
-            if threshold > curOutput or threshold == -1 then
-                sinceOutputChange = minChangeWait
+        else
+            if checkOutput()and sinceOutputChange == 0 then
+                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(tempOutput)
+                if threshold > curOutput or threshold == -1 then
+                    sinceOutputChange = minChangeWait
+                end
             end
         end
-    end
-    if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
-        if outputfluxgate.getSignalLowFlow() > curOutput then
-            outputfluxgate.setSignalLowFlow(curOutput)
-            externalfluxgate.setSignalLowFlow(0)
-        else
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
-            externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+        if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
+            if outputfluxgate.getSignalLowFlow() > curOutput then
+                outputfluxgate.setSignalLowFlow(curOutput)
+                externalfluxgate.setSignalLowFlow(0)
+            else
+                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+            end
         end
     end
     if externalfluxgate.getSignalLowFlow() < 0 then
