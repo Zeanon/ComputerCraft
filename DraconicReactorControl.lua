@@ -645,15 +645,15 @@ function update()
 		-- get the hysteresis for the internal output gate
 		if core.getEnergyStored() > core.getMaxEnergyStored()*0.9 then
 			outputInputHyteresis = 2500
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.8 then
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.8 and core.getEnergyStored() < core.getMaxEnergyStored()*0.9 then
 			outputInputHyteresis = 5000
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.7 then
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.7 and core.getEnergyStored() < core.getMaxEnergyStored()*0.8 then
 			outputInputHyteresis = 7500
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.6 then
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.6 and core.getEnergyStored() < core.getMaxEnergyStored()*0.7 then
 			outputInputHyteresis = 10000
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.5 then
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.5 and core.getEnergyStored() < core.getMaxEnergyStored()*0.6 then
 			outputInputHyteresis = 12500
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.4 then
+		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.4 and core.getEnergyStored() < core.getMaxEnergyStored()*0.5 then
 			outputInputHyteresis = 25000
 		elseif core.getEnergyStored() < 1000000 then
 			action = "not enough buffer energy left"
