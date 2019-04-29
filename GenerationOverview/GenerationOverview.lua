@@ -65,7 +65,7 @@ function update()
         a = gui.getInteger(output / 1000000)
         if a ~= 0 then
             gui.draw_number(output, 1000000, mon, 3, 4, color)
-            mon.monitor.setCursorPos(7,9)
+            mon.monitor.setCursorPos(7,8)
             mon.monitor.write(" ")
         end
         output = output - (1000000 * gui.getInteger(output / 1000000))
@@ -82,7 +82,7 @@ function update()
         d = gui.getInteger(output / 1000)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
             gui.draw_number(output, 1000, mon, 17, 4, color)
-            mon.monitor.setCursorPos(21,9)
+            mon.monitor.setCursorPos(21,8)
             mon.monitor.write(" ")
         end
         output = output - (1000 * gui.getInteger(output / 1000))
