@@ -1,7 +1,8 @@
+-- confiigure color
 local color = colors.red
+-- program
 local mon, monitor, monX, monY
 local oldOutput = 0
-
 os.loadAPI("lib/gui")
 
 monitor = peripheral.find("monitor")
@@ -10,9 +11,11 @@ mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function getOutput()
-  local reactor1, reactor2 = peripheral.find("draconic_reactor")
-  local totalOutput = reactor1.getSignalLowFlow() + reactor2.getSignalLowFlow()
-  return totalOutput
+    local reactor1, reactor2 = peripheral.find("draconic_reactor")
+    local ri1 = reactor1.getReactorInfo()
+    local ri2 = reactor2.getReactorInfo()
+    local totalOutput = ri1.generationRate + ri2.generationRate
+    return totalOutput
 end
 
 function update()

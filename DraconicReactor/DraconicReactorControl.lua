@@ -489,17 +489,17 @@ function update()
         if ri.status == "online" or ri.status == "charged" then
             statusColor = colors.green
             for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, false)
+                redstone.setOutput(v, true)
             end
         elseif ri.status == "offline" then
             statusColor =  colors.lightGray
             for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, true)
+                redstone.setOutput(v, false)
             end
         elseif ri.status == "charging" then
             statusColor = colors.orange
             for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, false)
+                redstone.setOutput(v, true)
             end
         end
 
