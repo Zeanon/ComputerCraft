@@ -56,35 +56,35 @@ function update()
         print("Total reactor output: " .. output)
         a = gui.getInteger(output / 1000000)
         if a ~= 0 then
-            gui.draw_number(output, 1000000, mon, 6, 4, color)
+            gui.draw_number(output, 1000000, mon, 4, 4, color)
         end
         output = output - (1000000 * gui.getInteger(output / 1000000))
         b = gui.getInteger(output / 100000)
         if a ~= 0 or b ~= 0 then
-            gui.draw_number(output, 100000, mon, 10, 4, color)
+            gui.draw_number(output, 100000, mon, 8, 4, color)
         end
         output = output - (100000 * gui.getInteger(output / 100000))
         c = gui.getInteger(output / 10000)
         if a ~= 0 or b ~= 0 or c ~= 0 then
-            gui.draw_number(output, 10000, mon, 14, 4, color)
+            gui.draw_number(output, 10000, mon, 12, 4, color)
         end
         output = output - (10000 * gui.getInteger(output / 10000))
         d = gui.getInteger(output / 1000)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
-            gui.draw_number(output, 1000, mon, 18, 4, color)
+            gui.draw_number(output, 1000, mon, 16, 4, color)
         end
         output = output - (1000 * gui.getInteger(output / 1000))
         e = gui.getInteger(output / 100)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
-            gui.draw_number(output, 100, mon, 22, 4, color)
+            gui.draw_number(output, 100, mon, 20, 4, color)
         end
         output = output - (100 * gui.getInteger(output / 100))
         f = gui.getInteger(output / 10)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
-            gui.draw_number(output, 10, mon, 26, 4, color)
+            gui.draw_number(output, 10, mon, 24, 4, color)
         end
         output = output - (10 * gui.getInteger(output / 10))
-        gui.draw_number(output, 1, mon, 30, 4, color)
+        gui.draw_number(output, 1, mon, 28, 4, color)
 
         drawRFT(mon, 33, 4, color)
     end
