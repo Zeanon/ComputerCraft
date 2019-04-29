@@ -64,7 +64,9 @@ function update()
         print("Total drainback: " .. gui.format_int(totalDrainback))
         a = gui.getInteger(output / 1000000)
         if a ~= 0 then
-            gui.draw_number(output, 1000000, mon, 5, 4, color)
+            gui.draw_number(output, 1000000, mon, 3, 4, color)
+            mon.monitor.setCursorPos(7,9)
+            mon.monitor.write(" ")
         end
         output = output - (1000000 * gui.getInteger(output / 1000000))
         b = gui.getInteger(output / 100000)
@@ -80,21 +82,23 @@ function update()
         d = gui.getInteger(output / 1000)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
             gui.draw_number(output, 1000, mon, 17, 4, color)
+            mon.monitor.setCursorPos(21,9)
+            mon.monitor.write(" ")
         end
         output = output - (1000 * gui.getInteger(output / 1000))
         e = gui.getInteger(output / 100)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
-            gui.draw_number(output, 100, mon, 21, 4, color)
+            gui.draw_number(output, 100, mon, 23, 4, color)
         end
         output = output - (100 * gui.getInteger(output / 100))
         f = gui.getInteger(output / 10)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
-            gui.draw_number(output, 10, mon, 25, 4, color)
+            gui.draw_number(output, 10, mon, 27, 4, color)
         end
         output = output - (10 * gui.getInteger(output / 10))
-        gui.draw_number(output, 1, mon, 29, 4, color)
+        gui.draw_number(output, 1, mon, 31, 4, color)
 
-        drawRFT(mon, 34, 4, rftcolor)
+        drawRFT(mon, 36, 4, rftcolor)
     end
     sleep(0.5)
 end
