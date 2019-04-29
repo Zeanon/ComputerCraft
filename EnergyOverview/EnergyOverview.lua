@@ -16,8 +16,9 @@ end
 
 function update()
     gui.clear(mon)
-    print("Displaying total reactor energy output on monitor")
     local output = getOutput()
+    print("Displaying total reactor energy output on monitor")
+    print("Total output: " .. output)
     gui.draw_number(output, 1000000, 0, mon, 9, 4, color)
     output = output - (1000000 * gui.getInteger(output / 1000000))
     gui.draw_number(output, 100000, 10, mon, 13, 4, color)
