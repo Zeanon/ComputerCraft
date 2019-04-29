@@ -1,9 +1,10 @@
-local monitor = peripheral.find("monitor")
+local mon, monitor, monX, monY
 
 os.loadAPI("lib/gui")
 
-local monX, monY = monitor.getSize()
-local mon = {}
+monitor = peripheral.find("monitor")
+monX, monY = monitor.getSize()
+mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function getOutput()
