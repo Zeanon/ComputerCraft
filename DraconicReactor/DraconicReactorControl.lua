@@ -686,7 +686,7 @@ function update()
         -- or set it to our saved setting since we are on manual
         if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
             if autoInputGate then
-                local fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
+                local fluxval = ri.fieldDrainRate / (1 - (targetStrength/100))
                 inputfluxgate.setSignalLowFlow(fluxval)
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)

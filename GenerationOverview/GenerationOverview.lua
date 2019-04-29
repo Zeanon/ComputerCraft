@@ -13,9 +13,12 @@ mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function getOutput()
     local reactor1, reactor2 = peripheral.find("draconic_reactor")
+    local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
     local ri1 = reactor1.getReactorInfo()
     local ri2 = reactor2.getReactorInfo()
-    local totalOutput = ri1.generationRate + ri2.generationRate
+    local totalGeneration = ri1.generationRate + ri2.generationRate
+    local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow
+    local totalOutput = totalGeneration - totalDrainback
     return totalOutput
 end
 
