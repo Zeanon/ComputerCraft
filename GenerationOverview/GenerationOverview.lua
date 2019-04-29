@@ -17,7 +17,7 @@ function getOutput()
     local ri1 = reactor1.getReactorInfo()
     local ri2 = reactor2.getReactorInfo()
     local totalGeneration = ri1.generationRate + ri2.generationRate
-    local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow
+    local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
     local totalOutput = totalGeneration - totalDrainback
     return totalOutput
 end
