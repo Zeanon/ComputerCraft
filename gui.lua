@@ -51,7 +51,7 @@ function draw_column(mon, x, y, height, color)
         height = 0
     end
     mon.monitor.setBackgroundColor(color)
-    local i = 0
+    local i = 1
     while i <= height do
         mon.monitor.setCursorPos(x,y)
         mon.monitor.write(" ")
@@ -70,11 +70,15 @@ function progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
     draw_line(mon, x, y, barSize, bar_color) --progress so far
 end
 
-function draw1(mon, x, y, color)
+function draw_0(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw_1(mon, x, y, color)
     draw_column(mon, x+2, y, 4, color)
 end
 
-function draw2(mon, x, y, color)
+function draw_2(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
@@ -85,7 +89,7 @@ function draw2(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw3(mon, x, y, color)
+function draw_3(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
@@ -96,7 +100,7 @@ function draw3(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw4(mon, x, y, color)
+function draw_4(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_column(mon, x, y, 2, color)
     draw_column(mon, x+2, y, 4, color)
@@ -104,7 +108,7 @@ function draw4(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw5(mon, x, y, color)
+function draw_5(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
@@ -115,7 +119,7 @@ function draw5(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw6(mon, x, y, color)
+function draw_6(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
@@ -128,22 +132,18 @@ function draw6(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw7(mon, x, y, color)
+function draw_7(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_column(mon, x+2, y, 4, color)
     mon.monitor.setCursorPos(x,y)
     mon.monitor.write("  ")
 end
 
-function draw8(mon, x, y, color)
+function draw_8(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
 end
 
-function draw9(mon, x, y, color)
-    mon.monitor.setBackgroundColor(color)
-end
-
-function draw0(mon, x, y, color)
+function draw_9(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
 end
 

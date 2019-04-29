@@ -542,7 +542,7 @@ function update()
         gui.draw_line(mon, mon.X-12, 14, 12, colors.red)
 
         gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
-        gui.draw_column(mon, mon.X-27, 0, mon.Y, colors.gray)
+        gui.draw_column(mon, mon.X-27, 0, mon.Y+1, colors.gray)
 
         gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
         gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
@@ -590,7 +590,7 @@ function update()
 
         -- field strength is close to dangerous, fire up input
         if fieldPercent <= fieldBoost and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-            action = "Field Str close to dangerous"
+            action = "Field Str dangerous"
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
