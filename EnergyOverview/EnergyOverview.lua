@@ -15,6 +15,7 @@ end
 
 function update()
   gui.draw1(mon, 2, 2, colors.red)
+  gui.draw2(mon, 9, 2, colors.red)
 end
 
 while true do
