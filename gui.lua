@@ -65,11 +65,58 @@ end
 --background line of bg_color
 --main line of bar_color as a percentage of minVal/maxVal
 function progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
-  draw_line(mon, x, y, length, bg_color) --backgoround bar
-  local barSize = math.floor((minVal/maxVal) * length)
-  draw_line(mon, x, y, barSize, bar_color) --progress so far
+    draw_line(mon, x, y, length, bg_color) --backgoround bar
+    local barSize = math.floor((minVal/maxVal) * length)
+    draw_line(mon, x, y, barSize, bar_color) --progress so far
 end
 
+function draw1(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+    draw_column(mon, x+2, y, 5, color)
+end
+
+function draw2(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+    draw_line(mon, x, y, 3, color)
+    draw_line(mon, x, y+2, 3, color)
+    draw_line(mon, x, y+4, 3, color)
+    mon.monitor.setCursorPos(x+2,y+1)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x,y+3)
+    mon.monitor.write(" ")
+end
+
+function draw3(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw4(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw5(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw6(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw7(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw8(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw9(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
+
+function draw0(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+end
 
 function clear(mon)
   term.clear()
