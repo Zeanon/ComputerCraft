@@ -1,7 +1,6 @@
 local monitor = peripheral.find("monitor")
 
 os.loadAPI("lib/gui")
-os.loadAPI("lib/surface")
 
 monX, monY = monitor.getSize()
 mon = {}
