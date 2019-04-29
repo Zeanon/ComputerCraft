@@ -17,21 +17,40 @@ end
 function update()
     gui.clear(mon)
     local output = getOutput()
+    local a,b,c,d,e,f
     print("Displaying total reactor energy output on monitor")
     print("Total output: " .. output)
-    gui.draw_number(output, 1000000, 0, mon, 11, 4, color)
+    a = gui.getInteger(output / 1000000)
+    if a ~= 0 then
+        gui.draw_number(output, 1000000, mon, 11, 4, color)
+    end
     output = output - (1000000 * gui.getInteger(output / 1000000))
-    gui.draw_number(output, 100000, 10, mon, 15, 4, color)
+    b = gui.getInteger(output / 100000)
+    if a ~= 0 or b ~= 0 then
+        gui.draw_number(output, 100000, mon, 15, 4, color)
+    end
     output = output - (100000 * gui.getInteger(output / 100000))
-    gui.draw_number(output, 10000, 100, mon, 19, 4, color)
+    c = gui.getInteger(output / 10000)
+    if a ~= 0 or b ~= 0 or c ~= 0 then
+        gui.draw_number(output, 10000, mon, 19, 4, color)
+    end
     output = output - (10000 * gui.getInteger(output/ 10000))
-    gui.draw_number(output, 1000, 1000, mon, 23, 4, color)
+    d = gui.getInteger(output / 1000)
+    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
+        gui.draw_number(output, 1000, mon, 23, 4, color)
+    end
     output = output - (1000 * gui.getInteger(output / 1000))
-    gui.draw_number(output, 100, 10000, mon, 27, 4, color)
+    e = gui.getInteger(output / 100)
+    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
+        gui.draw_number(output, 100, mon, 27, 4, color)
+    end
     output = output - (100 * gui.getInteger(output / 100))
-    gui.draw_number(output, 10, 100000, mon, 31, 4, color)
+    f = gui.getInteger(output / 10)
+    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
+        gui.draw_number(output, 10, mon, 31, 4, color)
+    end
     output = output - (10 * gui.getInteger(output / 10))
-    gui.draw_number(output, 1, 1000000, mon, 35, 4, color)
+    gui.draw_number(output, 1, mon, 35, 4, color)
     sleep(0.5)
 end
 

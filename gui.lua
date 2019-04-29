@@ -179,15 +179,7 @@ function draw_9(mon, x, y, color)
 end
 
 function draw_number(number, divider, checkNumber, mon, x, y, color)
-    local print0 = false
-    local i = 10
-    while i <= checkNumber do
-        if gui.getInteger(number / divider * i) ~= 0 then
-           print0 = true
-        end
-        i = i * 10
-    end
-    if gui.getInteger(number / divider) == 0 and print0 then
+    if gui.getInteger(number / divider) == 0 then
         gui.draw_0(mon, x, y, color)
     elseif gui.getInteger(number / divider) == 1 then
         gui.draw_1(mon, x, y, color)
@@ -208,6 +200,7 @@ function draw_number(number, divider, checkNumber, mon, x, y, color)
     elseif gui.getInteger(number / divider) == 9 then
         gui.draw_9(mon, x, y, color)
     end
+
 end
 
 function clear(mon)
