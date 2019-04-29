@@ -19,7 +19,7 @@ function update()
     local output = getOutput()
     local a,b,c,d,e,f
     print("Displaying total reactor energy output on monitor")
-    print("Total output: " .. output)
+    print("Total reactor output: " .. output)
     a = gui.getInteger(output / 1000000)
     if a ~= 0 then
         gui.draw_number(output, 1000000, mon, 13, 4, color)
