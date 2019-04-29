@@ -1,3 +1,4 @@
+local color = colors.red
 local mon, monitor, monX, monY
 
 os.loadAPI("lib/gui")
@@ -17,13 +18,13 @@ function update()
     gui.clear(mon)
     print("Displaying total reactor energy output on monitor")
     local output = getOutput()
-    gui.draw_number(output, 1000000, 0, mon, 9, 4, colors.red)
+    gui.draw_number(output, 1000000, 0, mon, 9, 4, color)
     output = output - (1000000 * gui.getInteger(output / 1000000))
-    gui.draw_number(output, 100000, 10, mon, 13, 4, colors.red)
+    gui.draw_number(output, 100000, 10, mon, 13, 4, color)
     output = output - (100000 * gui.getInteger(output / 100000))
-    gui.draw_number(output, 10000, 100, mon, 17, 4, colors.red)
+    gui.draw_number(output, 10000, 100, mon, 17, 4, color)
     output = output - (10000 * gui.getInteger(output/ 10000))
-    gui.draw_number(output, 1000, 1000, mon, 21, 4, colors.red)
+    gui.draw_number(output, 1000, 1000, mon, 21, 4, color)
     output = output - (1000 * gui.getInteger(output / 1000))
     gui.draw_number(output, 100, 10000, mon, 25, 4, colors.red)
     output = output - (100 * gui.getInteger(output / 100))
