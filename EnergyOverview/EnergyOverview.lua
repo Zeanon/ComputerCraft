@@ -39,6 +39,7 @@ function update()
         gui.draw_number(output, 10000, mon, 21, 4, color)
     end
     if c ~= 0 then
+        print(output)
         output = output - (10000 * gui.getInteger(output/ 10000))
     end
     d = gui.getInteger(output / 1000)
