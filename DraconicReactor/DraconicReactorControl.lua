@@ -287,7 +287,7 @@ end
 
 monX, monY = monitor.getSize()
 mon = {}
-mon.monitor,mon.X, mon.Y = monitor, monX, monY
+mon.monitor,mon.X, mon.Y = monitor, X, monY
 
 
 function buttons()
