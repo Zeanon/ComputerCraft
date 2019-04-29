@@ -38,8 +38,8 @@ function update()
     if a ~= 0 or b ~= 0 or c ~= 0 then
         gui.draw_number(output, 10000, mon, 21, 4, color)
     end
+    print(output)
     if c ~= 0 then
-        print(output)
         output = output - (10000 * gui.getInteger(output/ 10000))
     end
     d = gui.getInteger(output / 1000)
