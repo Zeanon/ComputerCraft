@@ -59,9 +59,9 @@ function update()
         gui.clear(mon)
         local a,b,c,d,e,f
         print("Displaying total reactor energy output on monitor")
-        print("Total reactor output: " .. output)
-        print("Total generation: " .. totalGeneration)
-        print("Total drainback: " .. totalDrainback)
+        print("Total reactor output: " .. gui.format_int(output))
+        print("Total generation: " .. gui.format_int(totalGeneration))
+        print("Total drainback: " .. gui.format_int(totalDrainback))
         a = gui.getInteger(output / 1000000)
         if a ~= 0 then
             gui.draw_number(output, 1000000, mon, 5, 4, color)
