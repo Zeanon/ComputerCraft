@@ -64,41 +64,41 @@ function update()
         print("Total drainback: " .. gui.format_int(totalDrainback))
         a = gui.getInteger(output / 1000000)
         if a ~= 0 then
-            gui.draw_number(output, 1000000, mon, 3, 4, color)
-            mon.monitor.setCursorPos(7,8)
+            gui.draw_number(output, 1000000, mon, 2, 4, color)
+            mon.monitor.setCursorPos(6,8)
             mon.monitor.write(" ")
         end
         output = output - (1000000 * gui.getInteger(output / 1000000))
         b = gui.getInteger(output / 100000)
         if a ~= 0 or b ~= 0 then
-            gui.draw_number(output, 100000, mon, 9, 4, color)
+            gui.draw_number(output, 100000, mon, 8, 4, color)
         end
         output = output - (100000 * gui.getInteger(output / 100000))
         c = gui.getInteger(output / 10000)
         if a ~= 0 or b ~= 0 or c ~= 0 then
-            gui.draw_number(output, 10000, mon, 13, 4, color)
+            gui.draw_number(output, 10000, mon, 12, 4, color)
         end
         output = output - (10000 * gui.getInteger(output / 10000))
         d = gui.getInteger(output / 1000)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
-            gui.draw_number(output, 1000, mon, 17, 4, color)
-            mon.monitor.setCursorPos(21,8)
+            gui.draw_number(output, 1000, mon, 16, 4, color)
+            mon.monitor.setCursorPos(20,8)
             mon.monitor.write(" ")
         end
         output = output - (1000 * gui.getInteger(output / 1000))
         e = gui.getInteger(output / 100)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
-            gui.draw_number(output, 100, mon, 23, 4, color)
+            gui.draw_number(output, 100, mon, 22, 4, color)
         end
         output = output - (100 * gui.getInteger(output / 100))
         f = gui.getInteger(output / 10)
         if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
-            gui.draw_number(output, 10, mon, 27, 4, color)
+            gui.draw_number(output, 10, mon, 26, 4, color)
         end
         output = output - (10 * gui.getInteger(output / 10))
-        gui.draw_number(output, 1, mon, 31, 4, color)
+        gui.draw_number(output, 1, mon, 30, 4, color)
 
-        drawRFT(mon, 36, 4, rftcolor)
+        drawRFT(mon, 35, 4, rftcolor)
     end
     sleep(0.5)
 end
