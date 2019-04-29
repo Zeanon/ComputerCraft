@@ -18,7 +18,7 @@ function update()
     gui.clear(mon)
     local output = getOutput()
     local a,b,c,d,e,f
-    print("Displaying total reactor energy output on monitor TEST")
+    print("Displaying total reactor energy output on monitor")
     print("Total output: " .. output)
     a = gui.getInteger(output / 1000000)
     if a ~= 0 then
