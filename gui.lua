@@ -52,7 +52,7 @@ function draw_column(mon, x, y, height, color)
     end
     mon.monitor.setBackgroundColor(color)
     local i = 0
-    while i < height do
+    while i <= height do
         mon.monitor.setCursorPos(x,y)
         mon.monitor.write(" ")
         y = y + 1
@@ -71,7 +71,6 @@ function progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
 end
 
 function draw1(mon, x, y, color)
-    mon.monitor.setBackgroundColor(color)
     draw_column(mon, x+2, y, 4, color)
 end
 
@@ -88,22 +87,52 @@ end
 
 function draw3(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_line(mon, x, y, 3, color)
+    draw_line(mon, x, y+2, 3, color)
+    draw_line(mon, x, y+4, 3, color)
+    mon.monitor.setCursorPos(x+2,y+1)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+2,y+3)
+    mon.monitor.write(" ")
 end
 
 function draw4(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_column(mon, x, y, 2, color)
+    draw_column(mon, x+2, y, 4, color)
+    mon.monitor.setCursorPos(x+1,y+2)
+    mon.monitor.write(" ")
 end
 
 function draw5(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_line(mon, x, y, 3, color)
+    draw_line(mon, x, y+2, 3, color)
+    draw_line(mon, x, y+4, 3, color)
+    mon.monitor.setCursorPos(x,y+1)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+2,y+3)
+    mon.monitor.write(" ")
 end
 
 function draw6(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_line(mon, x, y, 3, color)
+    draw_line(mon, x, y+2, 3, color)
+    draw_line(mon, x, y+4, 3, color)
+    mon.monitor.setCursorPos(x,y+1)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+2,y+1)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+2,y+3)
+    mon.monitor.write(" ")
 end
 
 function draw7(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_column(mon, x+2, y, 4, color)
+    mon.monitor.setCursorPos(x,y)
+    mon.monitor.write("  ")
 end
 
 function draw8(mon, x, y, color)
