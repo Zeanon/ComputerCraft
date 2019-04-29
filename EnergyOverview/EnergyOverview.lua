@@ -13,20 +13,18 @@ function getOutput()
 end
 
 function update()
-  gui.clear(mon)
-  gui.draw_0(mon, 2, 2, colors.red)
-  gui.draw_1(mon, 6, 2, colors.red)
-  gui.draw_2(mon, 10, 2, colors.red)
-  gui.draw_3(mon, 14, 2, colors.red)
-  gui.draw_4(mon, 18, 2, colors.red)
-  gui.draw_5(mon, 22, 2, colors.red)
-  gui.draw_6(mon, 26, 2, colors.red)
-  gui.draw_7(mon, 30, 2, colors.red)
-  gui.draw_8(mon, 34, 2, colors.red)
-  gui.draw_9(mon, 38, 2, colors.red)
-  sleep(0.5)
+    gui.clear(mon)
+    gui.draw_number(getOutput(), 1000000, mon, 4, 2, colors.red)
+    gui.draw_number(getOutput(), 100000, mon, 4, 6, colors.red)
+    gui.draw_number(getOutput(), 10000, mon, 4, 10, colors.red)
+    gui.draw_number(getOutput(), 1000, mon, 4, 14, colors.red)
+    gui.draw_number(getOutput(), 100, mon, 4, 18, colors.red)
+    gui.draw_number(getOutput(), 10, mon, 4, 22, colors.red)
+    gui.draw_number(getOutput(), 1, mon, 4, 26, colors.red)
+    sleep(0.5)
 end
 
+print("Displaying total reactor energy output on monitor")
 while true do
   update()
 end

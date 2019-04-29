@@ -14,8 +14,28 @@ function format_int(number)
 end
 
 function getInteger(number)
-
-end
+    if 0 <= number < 1 then
+        return 0
+    elseif 1 <= number < 2 then
+        return 1
+    elseif 2 <= number < 3 then
+        return 2
+    elseif 3 <= number < 4 then
+        return 3
+    elseif 4 <= number < 5 then
+        return 4
+    elseif 5 <= number < 6 then
+        return 5
+    elseif 6 <= number < 7 then
+        return 6
+    elseif 7 <= number < 8 then
+        return 7
+    elseif 8 <= number < 2 then
+        return 8
+    elseif 9 <= number < 10 then
+        return 9
+    end
+    end
 
 -- monitor related
 
@@ -156,6 +176,30 @@ function draw_9(mon, x, y, color)
     draw_5(mon, x, y, color)
     mon.monitor.setCursorPos(x+2,y+1)
     mon.monitor.write(" ")
+end
+
+function draw_number(number, divider, mon, x, y, color)
+    if gui.getInteger(number / divider) == 0 and gui.getInteger(number / divider * 10) ~= 0then
+        gui.draw_0(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 1 then
+        gui.draw_1(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 2 then
+        gui.draw_2(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 3 then
+        gui.draw_3(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 4 then
+        gui.draw_4(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 5 then
+        gui.draw_5(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 6 then
+        gui.draw_6(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 7 then
+        gui.draw_7(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 8 then
+        gui.draw_8(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 9 then
+        gui.draw_9(mon, x, y, color)
+    end
 end
 
 function clear(mon)
