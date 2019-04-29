@@ -72,10 +72,17 @@ end
 
 function draw_0(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_column(mon, x, y, 5, color)
+    draw_column(mon, x+2, y, 5, color)
+    mon.monitor.setCursorPos(x+1,y)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+1,y+4)
+    mon.monitor.write(" ")
+
 end
 
 function draw_1(mon, x, y, color)
-    draw_column(mon, x+2, y, 4, color)
+    draw_column(mon, x+2, y, 5, color)
 end
 
 function draw_2(mon, x, y, color)
@@ -83,9 +90,9 @@ function draw_2(mon, x, y, color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
     draw_line(mon, x, y+4, 3, color)
-    mon.monitor.setCursorPos(x+2,y+1)
+    mon.monitor.setCursorPos(x+2,y)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x,y+3)
+    mon.monitor.setCursorPos(x,y+2)
     mon.monitor.write(" ")
 end
 
@@ -94,16 +101,16 @@ function draw_3(mon, x, y, color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
     draw_line(mon, x, y+4, 3, color)
-    mon.monitor.setCursorPos(x+2,y+1)
+    mon.monitor.setCursorPos(x+2,y)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+3)
+    mon.monitor.setCursorPos(x+2,y+2)
     mon.monitor.write(" ")
 end
 
 function draw_4(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    draw_column(mon, x, y, 2, color)
-    draw_column(mon, x+2, y, 4, color)
+    draw_column(mon, x, y, 3, color)
+    draw_column(mon, x+2, y, 5, color)
     mon.monitor.setCursorPos(x+1,y+2)
     mon.monitor.write(" ")
 end
@@ -115,36 +122,36 @@ function draw_5(mon, x, y, color)
     draw_line(mon, x, y+4, 3, color)
     mon.monitor.setCursorPos(x,y+1)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+3)
+    mon.monitor.setCursorPos(x+2,y+2)
     mon.monitor.write(" ")
 end
 
 function draw_6(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    draw_line(mon, x, y, 3, color)
-    draw_line(mon, x, y+2, 3, color)
-    draw_line(mon, x, y+4, 3, color)
-    mon.monitor.setCursorPos(x,y+1)
-    mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+1)
-    mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+3)
+    draw_5(mon, x, y, color)
+    mon.monitor.setCursorPos(x,y+3)
     mon.monitor.write(" ")
 end
 
 function draw_7(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    draw_column(mon, x+2, y, 4, color)
+    draw_column(mon, x+2, y, 5, color)
     mon.monitor.setCursorPos(x,y)
     mon.monitor.write("  ")
 end
 
 function draw_8(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_0(mon, x, y, color)
+    mon.monitor.setCursorPos(x+1,y+2)
+    mon.monitor.write(" ")
 end
 
 function draw_9(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
+    draw_5(mon, x, y, color)
+    mon.monitor.setCursorPos(x+2,y+1)
+    mon.monitor.write(" ")
 end
 
 function clear(mon)
