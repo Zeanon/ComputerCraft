@@ -90,9 +90,9 @@ function draw_2(mon, x, y, color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
     draw_line(mon, x, y+4, 3, color)
-    mon.monitor.setCursorPos(x+2,y)
+    mon.monitor.setCursorPos(x+2,y+1)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x,y+2)
+    mon.monitor.setCursorPos(x,y+3)
     mon.monitor.write(" ")
 end
 
