@@ -179,11 +179,11 @@ function draw_9(mon, x, y, color)
 end
 
 function draw_number(number, divider, checkNumber, mon, x, y, color)
-    local print0 = true
+    local print0 = false
     local i = 10
     while i <= checkNumber do
-        if gui.getInteger(number / divider * i) == 0 then
-           print0 = false
+        if gui.getInteger(number / divider * i) ~= 0 then
+           print0 = true
         end
         i = i * 10
     end
