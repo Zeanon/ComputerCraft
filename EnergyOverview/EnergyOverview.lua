@@ -34,7 +34,7 @@ function update()
     if a ~= 0 or b ~= 0 or c ~= 0 then
         gui.draw_number(output, 10000, mon, 21, 4, color)
     end
-    output = output - (100000 * gui.getInteger(output / 100000))
+    output = output - (10000 * gui.getInteger(output / 10000))
     d = gui.getInteger(output / 1000)
     if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
         gui.draw_number(output, 1000, mon, 25, 4, color)
@@ -51,6 +51,8 @@ function update()
     end
     output = output - (10 * gui.getInteger(output / 10))
     gui.draw_number(output, 1, mon, 37, 4, color)
+
+
     sleep(0.5)
 end
 
