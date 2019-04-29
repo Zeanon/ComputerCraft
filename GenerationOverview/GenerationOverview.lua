@@ -4,6 +4,8 @@ local rftcolor = colors.gray
 -- program
 local mon, monitor, monX, monY
 local oldOutput = 0
+local totalGeneration
+local totalDrainback
 os.loadAPI("lib/gui")
 
 monitor = peripheral.find("monitor")
@@ -16,8 +18,8 @@ function getOutput()
     local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
     local ri1 = reactor1.getReactorInfo()
     local ri2 = reactor2.getReactorInfo()
-    local totalGeneration = ri1.generationRate + ri2.generationRate
-    local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
+    totalGeneration = ri1.generationRate + ri2.generationRate
+    totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
     local totalOutput = totalGeneration - totalDrainback
     return totalOutput
 end
@@ -58,6 +60,8 @@ function update()
         local a,b,c,d,e,f
         print("Displaying total reactor energy output on monitor")
         print("Total reactor output: " .. output)
+        print("Total generation: " .. totalGeneration)
+        print("Total drainback: " .. totalDrainback)
         a = gui.getInteger(output / 1000000)
         if a ~= 0 then
             gui.draw_number(output, 1000000, mon, 5, 4, color)
