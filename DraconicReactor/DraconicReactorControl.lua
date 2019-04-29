@@ -341,7 +341,7 @@ function buttons()
         if yPos == 5 then
             if xPos >= 2 and xPos <= 4 then
                 curOutput = curOutput-1000
-            elseif xPos >= 6 and xPos <= 9 then
+            elseif xPos >= 6 and xPos <= 8 then
                 curOutput = curOutput-10000
             elseif xPos >= 10 and xPos <= 12 then
                 curOutput = curOutput-100000
