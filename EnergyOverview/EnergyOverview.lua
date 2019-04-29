@@ -15,18 +15,24 @@ end
 
 function update()
     gui.clear(mon)
-    gui.draw_number(getOutput(), 1000000, mon, 7, 5, colors.red)
-    gui.draw_number(getOutput(), 100000, mon, 11, 5, colors.red)
-    gui.draw_number(getOutput(), 10000, mon, 15, 5, colors.red)
-    gui.draw_number(getOutput(), 1000, mon, 19, 5, colors.red)
-    gui.draw_number(getOutput(), 100, mon, 23, 5, colors.red)
-    gui.draw_number(getOutput(), 10, mon, 27, 5, colors.red)
-    gui.draw_number(getOutput(), 1, mon, 31, 5, colors.red)
+    print("Displaying total reactor energy output on monitor")
+    local output = getOutput()
+    gui.draw_number(output, 1000000, mon, 7, 5, colors.red)
+    output = output - (1000000 * getInteger(output))
+    gui.draw_number(output, 100000, mon, 11, 5, colors.red)
+    output = output - (100000 * getInteger(output))
+    gui.draw_number(output, 10000, mon, 15, 5, colors.red)
+    output = output - (10000 * getInteger(output))
+    gui.draw_number(output, 1000, mon, 19, 5, colors.red)
+    output = output - (1000 * getInteger(output))
+    gui.draw_number(output, 100, mon, 23, 5, colors.red)
+    output = output - (100 * getInteger(output))
+    gui.draw_number(output, 10, mon, 27, 5, colors.red)
+    output = output - (10 * getInteger(output))
+    gui.draw_number(output, 1, mon, 31, 5, colors.red)
     sleep(0.5)
 end
 
-
 while true do
-    print("Displaying total reactor energy output on monitor")
     update()
 end

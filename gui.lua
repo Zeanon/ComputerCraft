@@ -16,7 +16,8 @@ end
 function getInteger(number)
     if 0 <= number and number < 1 then
         return 0
-    elseif 1 <= number and number < 2 then
+    end
+    if 1 <= number and number < 2 then
         return 1
     elseif 2 <= number and number < 3 then
         return 2
@@ -179,9 +180,7 @@ function draw_9(mon, x, y, color)
 end
 
 function draw_number(number, divider, mon, x, y, color)
-    if gui.getInteger(number / divider) == 0 and gui.getInteger(number / divider * 10) ~= 0 then
-        gui.draw_0(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 1 then
+    if gui.getInteger(number / divider) == 1 then
         gui.draw_1(mon, x, y, color)
     elseif gui.getInteger(number / divider) == 2 then
         gui.draw_2(mon, x, y, color)
@@ -199,6 +198,8 @@ function draw_number(number, divider, mon, x, y, color)
         gui.draw_8(mon, x, y, color)
     elseif gui.getInteger(number / divider) == 9 then
         gui.draw_9(mon, x, y, color)
+    elseif gui.getInteger(number / divider) == 0 and gui.getInteger(number / divider * 10) ~= 0 then
+        gui.draw_0(mon, x, y, color)
     end
 end
 
