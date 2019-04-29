@@ -515,11 +515,11 @@ function update()
 
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", curOutput .. " RF/t", colors.white, colors.blue, colors.black)
+		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
         gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 		drawButtons(5)
 
-        gui.draw_text_lr(mon, mon.X-25, 6, 0, "Hyteresis", outputInputHyteresis .. " RF", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-25, 6, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 		
         if autoInputGate then
@@ -529,7 +529,7 @@ function update()
             drawButtons(8)
         end
         if threshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 8, 0, "Threshold", threshold .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 8, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.blue, colors.black)
         else
             gui.draw_text_lr(mon, mon.X-25, 8, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
         end
