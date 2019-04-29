@@ -179,7 +179,7 @@ function draw_9(mon, x, y, color)
 end
 
 function draw_number(number, divider, mon, x, y, color)
-    if gui.getInteger(number / divider) == 0 and gui.getInteger(number / divider * 10) ~= 0then
+    if gui.getInteger(number / divider) == 0 and gui.getInteger(number / divider * 10) ~= 0 then
         gui.draw_0(mon, x, y, color)
     elseif gui.getInteger(number / divider) == 1 then
         gui.draw_1(mon, x, y, color)
