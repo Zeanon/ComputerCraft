@@ -14,28 +14,28 @@ function format_int(number)
 end
 
 function getInteger(number)
-    if 0 <= number < 1 then
+    if 0 <= number and number < 1 then
         return 0
-    elseif 1 <= number < 2 then
+    elseif 1 <= number and number < 2 then
         return 1
-    elseif 2 <= number < 3 then
+    elseif 2 <= number and number < 3 then
         return 2
-    elseif 3 <= number < 4 then
+    elseif 3 <= number and number < 4 then
         return 3
-    elseif 4 <= number < 5 then
+    elseif 4 <= number and number < 5 then
         return 4
-    elseif 5 <= number < 6 then
+    elseif 5 <= number and number < 6 then
         return 5
-    elseif 6 <= number < 7 then
+    elseif 6 <= number and number < 7 then
         return 6
-    elseif 7 <= number < 8 then
+    elseif 7 <= number and number < 8 then
         return 7
-    elseif 8 <= number < 2 then
+    elseif 8 <= number and number < 2 then
         return 8
-    elseif 9 <= number < 10 then
+    elseif 9 <= number and number < 10 then
         return 9
     end
-    end
+end
 
 -- monitor related
 
