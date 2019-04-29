@@ -149,8 +149,8 @@ end
 
 function draw_9(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    draw_2(mon, x, y, color)
-    mon.monitor.setCursorPos(x,y+1)
+    draw_5(mon, x, y, color)
+    mon.monitor.setCursorPos(x+2,y+1)
     mon.monitor.write(" ")
 end
 
