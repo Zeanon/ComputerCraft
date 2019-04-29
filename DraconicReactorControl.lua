@@ -360,7 +360,6 @@ function buttons()
             elseif curOutput > maxOutput then
                 curOutput = maxOutput
             end
-            getThreshold()
             save_config()
         end
 
@@ -382,7 +381,6 @@ function buttons()
                 curInputGate = curInputGate+1000
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
-            getThreshold()
             save_config()
         end
 
@@ -575,25 +573,19 @@ function update()
             action = "Fuel below 15%"
             reactor.stopReactor()
             fuelthreshold = 0
-            getThreshold()
         else
             fuelthreshold = -1
-            getThreshold()
         end
 
         -- Saturation too low, regulate Output
         if satPercent < satBoostThreshold and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             satthreshold = 0
-            getThreshold()
         elseif satPercent < satBoost1 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             satthreshold = satBoost1Output
-            getThreshold()
         elseif satPercent < satBoost2 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             satthreshold = satBoost2Output
-            getThreshold()
         else
             satthreshold = -1
-            getThreshold()
         end
 
         -- field strength is close to dangerous, fire up input
@@ -671,7 +663,6 @@ function update()
             inputfluxgate.setSignalLowFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
             emergencyCharge = false
-            getThreshold()
         end
 
 		-- get the hysteresis for the internal output gate
@@ -701,10 +692,8 @@ function update()
             if autoInputGate then
                 local fluxval = ri.fieldDrainRate / (1 - (targetStrength/100) )
                 inputfluxgate.setSignalLowFlow(fluxval)
-                getThreshold()
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
-                getThreshold()
             end
         end
 
@@ -717,6 +706,8 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
+
+        getThreshold()
 
         if sinceOutputChange > 0 then
             sinceOutputChange = sinceOutputChange - 1
