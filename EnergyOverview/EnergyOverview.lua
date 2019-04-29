@@ -25,7 +25,8 @@ function update()
     sleep(0.5)
 end
 
-print("Displaying total reactor energy output on monitor")
+
 while true do
-  update()
+    print("Displaying total reactor energy output on monitor")
+    update()
 end
