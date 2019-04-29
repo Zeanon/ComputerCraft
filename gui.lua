@@ -52,7 +52,7 @@ function draw_column(mon, x, y, height, color)
     end
     mon.monitor.setBackgroundColor(color)
     local i = 0
-    while i <= height do
+    while i < height do
         mon.monitor.setCursorPos(x,y)
         mon.monitor.write(" ")
         y = y + 1
@@ -72,7 +72,7 @@ end
 
 function draw1(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    draw_column(mon, x+2, y, 5, color)
+    draw_column(mon, x+2, y, 4, color)
 end
 
 function draw2(mon, x, y, color)
