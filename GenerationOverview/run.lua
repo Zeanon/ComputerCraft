@@ -1,4 +1,4 @@
 while true do
-  shell.run("EnergyOverview")
+  shell.run("GenerationOverview")
   os.sleep(2.5);
 end
