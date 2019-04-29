@@ -1,4 +1,4 @@
--- confiigure color
+-- configure color
 local color = colors.red
 -- program
 local mon, monitor, monX, monY
