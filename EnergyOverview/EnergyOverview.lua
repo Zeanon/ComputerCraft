@@ -3,6 +3,10 @@ local monitor = peripheral.find("monitor")
 os.loadAPI("lib/gui")
 os.loadAPI("lib/surface")
 
+monX, monY = monitor.getSize()
+mon = {}
+mon.monitor,mon.X, mon.Y = monitor, monX, monY
+
 function getOutput()
   local reactor1, reactor2 = peripheral.find("flux_gate")
   local totalOutput = reactor1.getSignalLowFlow() + reactor2.getSignalLowFlow()
@@ -10,7 +14,7 @@ function getOutput()
 end
 
 function update()
-  gui.draw1(monitor, 2, 2, colors.red)
+  gui.draw1(mon, 2, 2, colors.red)
 end
 
 while true do
