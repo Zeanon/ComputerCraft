@@ -178,7 +178,7 @@ function draw_9(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw_number(number, divider, checkNumber, mon, x, y, color)
+function draw_number(number, divider, mon, x, y, color)
     if gui.getInteger(number / divider) == 0 then
         gui.draw_0(mon, x, y, color)
     elseif gui.getInteger(number / divider) == 1 then
