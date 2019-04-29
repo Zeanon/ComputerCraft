@@ -2,7 +2,6 @@
 
 -- modifiable variables
 -- Peripherals
-local reactorPeripheral = "back"
 local internalInput = "flux_gate_0"
 local internalOutput = "flux_gate_1"
 local externalOutput = "flux_gate_2"
@@ -102,7 +101,6 @@ function save_config()
     sw.writeLine("version: " .. version)
     sw.writeLine(" ")
     sw.writeLine("-- reactorPeripheral modem names")
-    sw.writeLine("reactorPeripheral: " .. reactorPeripheral)
     sw.writeLine("internalInput: " .. internalInput)
     sw.writeLine("internalOutput: " .. internalOutput)
     sw.writeLine("externalOutput: " .. externalOutput)
@@ -218,8 +216,6 @@ function load_config()
             stableTurns = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "maxOutput" then
             maxOutput = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "reactorPeripheral" then
-            reactorPeripheral = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalInput" then
             internalInput = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalOutput" then
@@ -258,7 +254,7 @@ monitor = peripheral.find("monitor")
 inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)
-reactor = peripheral.wrap(reactorPeripheral)
+reactor = peripheral.find("draconic_reactor")
 core = peripheral.find("draconic_rf_storage")
 
 if monitor == null then
