@@ -122,7 +122,7 @@ function draw_5(mon, x, y, color)
     draw_line(mon, x, y+4, 3, color)
     mon.monitor.setCursorPos(x,y+1)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+3)w
+    mon.monitor.setCursorPos(x+2,y+3)
     mon.monitor.write(" ")
 end
 
