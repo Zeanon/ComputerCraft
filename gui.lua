@@ -30,7 +30,7 @@ function getInteger(number)
         return 6
     elseif 7 <= number and number < 8 then
         return 7
-    elseif 8 <= number and number < 2 then
+    elseif 8 <= number and number < 9 then
         return 8
     elseif 9 <= number and number < 10 then
         return 9
