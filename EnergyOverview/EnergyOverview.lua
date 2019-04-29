@@ -14,13 +14,13 @@ end
 
 function update()
     gui.clear(mon)
-    gui.draw_number(getOutput(), 1000000, mon, 4, 2, colors.red)
-    gui.draw_number(getOutput(), 100000, mon, 4, 6, colors.red)
-    gui.draw_number(getOutput(), 10000, mon, 4, 10, colors.red)
-    gui.draw_number(getOutput(), 1000, mon, 4, 14, colors.red)
-    gui.draw_number(getOutput(), 100, mon, 4, 18, colors.red)
-    gui.draw_number(getOutput(), 10, mon, 4, 22, colors.red)
-    gui.draw_number(getOutput(), 1, mon, 4, 26, colors.red)
+    gui.draw_number(getOutput(), 1000000, mon, 7, 5, colors.red)
+    gui.draw_number(getOutput(), 100000, mon, 11, 5, colors.red)
+    gui.draw_number(getOutput(), 10000, mon, 15, 5, colors.red)
+    gui.draw_number(getOutput(), 1000, mon, 19, 5, colors.red)
+    gui.draw_number(getOutput(), 100, mon, 23, 5, colors.red)
+    gui.draw_number(getOutput(), 10, mon, 27, 5, colors.red)
+    gui.draw_number(getOutput(), 1, mon, 31, 5, colors.red)
     sleep(0.5)
 end
 
