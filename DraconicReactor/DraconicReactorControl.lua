@@ -235,6 +235,7 @@ function load_config()
     end
 end
 
+
 function initTables()
     local i = 1
     while i <= stableTurns do
