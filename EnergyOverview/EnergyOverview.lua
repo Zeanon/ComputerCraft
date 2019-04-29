@@ -13,6 +13,7 @@ function getOutput()
 end
 
 function update()
+  gui.clear(mon)
   gui.draw_0(mon, 2, 2, colors.red)
   gui.draw_1(mon, 6, 2, colors.red)
   gui.draw_2(mon, 10, 2, colors.red)

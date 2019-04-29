@@ -101,9 +101,9 @@ function draw_3(mon, x, y, color)
     draw_line(mon, x, y, 3, color)
     draw_line(mon, x, y+2, 3, color)
     draw_line(mon, x, y+4, 3, color)
-    mon.monitor.setCursorPos(x+2,y)
+    mon.monitor.setCursorPos(x+2,y+1)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+2)
+    mon.monitor.setCursorPos(x+2,y+3)
     mon.monitor.write(" ")
 end
 
@@ -122,7 +122,7 @@ function draw_5(mon, x, y, color)
     draw_line(mon, x, y+4, 3, color)
     mon.monitor.setCursorPos(x,y+1)
     mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+2,y+2)
+    mon.monitor.setCursorPos(x+2,y+3)w
     mon.monitor.write(" ")
 end
 
@@ -149,8 +149,8 @@ end
 
 function draw_9(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    draw_5(mon, x, y, color)
-    mon.monitor.setCursorPos(x+2,y+1)
+    draw_2(mon, x, y, color)
+    mon.monitor.setCursorPos(x,y+1)
     mon.monitor.write(" ")
 end
 
