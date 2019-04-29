@@ -200,7 +200,6 @@ function draw_number(number, divider, mon, x, y, color)
     elseif gui.getInteger(number / divider) == 9 then
         gui.draw_9(mon, x, y, color)
     end
-
 end
 
 function clear(mon)
