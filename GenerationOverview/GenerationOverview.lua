@@ -1,5 +1,6 @@
 -- configure color
 local color = colors.red
+local rftcolor = colors.gray
 -- program
 local mon, monitor, monX, monY
 local oldOutput = 0
@@ -86,7 +87,7 @@ function update()
         output = output - (10 * gui.getInteger(output / 10))
         gui.draw_number(output, 1, mon, 28, 4, color)
 
-        drawRFT(mon, 33, 4, color)
+        drawRFT(mon, 33, 4, rftcolor)
     end
     sleep(0.5)
 end
