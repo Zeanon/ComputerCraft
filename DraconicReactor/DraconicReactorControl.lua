@@ -254,7 +254,7 @@ else
     initTables()
 end
 
-monitor = gui.periphSearch("monitor")
+monitor = peripheral.find("monitor")
 inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)
