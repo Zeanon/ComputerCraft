@@ -22,35 +22,35 @@ function update()
     print("Total output: " .. output)
     a = gui.getInteger(output / 1000000)
     if a ~= 0 then
-        gui.draw_number(output, 1000000, mon, 11, 4, color)
+        gui.draw_number(output, 1000000, mon, 13, 4, color)
     end
     output = output - (1000000 * gui.getInteger(output / 1000000))
     b = gui.getInteger(output / 100000)
     if a ~= 0 or b ~= 0 then
-        gui.draw_number(output, 100000, mon, 15, 4, color)
+        gui.draw_number(output, 100000, mon, 17, 4, color)
     end
     output = output - (100000 * gui.getInteger(output / 100000))
     c = gui.getInteger(output / 10000)
     if a ~= 0 or b ~= 0 or c ~= 0 then
-        gui.draw_number(output, 10000, mon, 19, 4, color)
+        gui.draw_number(output, 10000, mon, 21, 4, color)
     end
     output = output - (10000 * gui.getInteger(output/ 10000))
     d = gui.getInteger(output / 1000)
     if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
-        gui.draw_number(output, 1000, mon, 23, 4, color)
+        gui.draw_number(output, 1000, mon, 25, 4, color)
     end
     output = output - (1000 * gui.getInteger(output / 1000))
     e = gui.getInteger(output / 100)
     if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
-        gui.draw_number(output, 100, mon, 27, 4, color)
+        gui.draw_number(output, 100, mon, 29, 4, color)
     end
     output = output - (100 * gui.getInteger(output / 100))
     f = gui.getInteger(output / 10)
     if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
-        gui.draw_number(output, 10, mon, 31, 4, color)
+        gui.draw_number(output, 10, mon, 33, 4, color)
     end
     output = output - (10 * gui.getInteger(output / 10))
-    gui.draw_number(output, 1, mon, 35, 4, color)
+    gui.draw_number(output, 1, mon, 37, 4, color)
     sleep(0.5)
 end
 
