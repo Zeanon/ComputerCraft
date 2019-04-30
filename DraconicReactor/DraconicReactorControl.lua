@@ -105,21 +105,6 @@ function save_config()
     sw.writeLine("internalOutput: " .. internalOutput)
     sw.writeLine("externalOutput: " .. externalOutput)
     sw.writeLine(" ")
-    sw.writeLine("-- just some saved data")
-    if autoInputGate then
-        sw.writeLine("autoInputGate: true")
-    else
-        sw.writeLine("autoInputGate: false")
-    end
-    if activateOnCharged then
-        sw.writeLine("activateOnCharged: true")
-    else
-        sw.writeLine("activateOnCharged: false")
-    end
-    sw.writeLine("curInputGate: " .. curInputGate)
-    sw.writeLine("targetOutput: " .. curOutput)
-    sw.writeLine("targetStrength: " .. targetStrength)
-    sw.writeLine(" ")
     sw.writeLine("-- the numbers for the temperatureBoost steps")
     sw.writeLine("safeTemperature: " .. safeTemperature)
 	sw.writeLine("maxTemperature: " .. maxTemperature)
@@ -127,7 +112,8 @@ function save_config()
 	sw.writeLine("tempBoost2Output: " .. tempBoost2Output)
 	sw.writeLine("tempBoost3Output: " .. tempBoost3Output)
     sw.writeLine(" ")
-    sw.writeLine("-- numbers for the fielBoost steps")
+    sw.writeLine("-- numbers for the fieldBoost steps")
+    sw.writeLine("targetStrength: " .. targetStrength)
 	sw.writeLine("lowestFieldPercent: " .. lowestFieldPercent)
 	sw.writeLine("fieldBoost: " .. fieldBoost)
 	sw.writeLine("fieldBoostOutput: " .. fieldBoostOutput)
@@ -153,6 +139,20 @@ function save_config()
     sw.writeLine("stableTurns: " .. stableTurns)
     sw.writeLine("-- the maximum allowed output")
     sw.writeLine("maxOutput: " .. maxOutput)
+    sw.writeLine(" ")
+    sw.writeLine("-- just some saved data")
+    if autoInputGate then
+        sw.writeLine("autoInputGate: true")
+    else
+        sw.writeLine("autoInputGate: false")
+    end
+    if activateOnCharged then
+        sw.writeLine("activateOnCharged: true")
+    else
+        sw.writeLine("activateOnCharged: false")
+    end
+    sw.writeLine("curInputGate: " .. curInputGate)
+    sw.writeLine("targetOutput: " .. curOutput)
     sw.close()
 end
 
