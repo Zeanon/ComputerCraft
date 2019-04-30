@@ -1,11 +1,10 @@
--- Installer for GenerationOverview
+-- Installer for GenerationOverview by Zeanon
 -- get it with pastebin get VT6ezUgB install
 -- pastebin link: https://pastebin.com/VT6ezUgB
-
-local libURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/gui.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/GenerationOverview/startup.lua"
-local runURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/GenerationOverview/run.lua"
-local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/GenerationOverview/GenerationOverview.lua"
+local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/startup.lua"
+local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/run.lua"
+local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/GenerationOverview.lua"
 local lib, startup, run, generationOverview
 local libFile, startupFile, runFile, generationOverviewFile
 
