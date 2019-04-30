@@ -430,6 +430,7 @@ function update()
 
         gui.clear(mon)
         ri = reactor.getReactorInfo()
+        local fluxval
 
         local satPercent, satColor
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
@@ -479,7 +480,7 @@ function update()
             fuelColor = colors.orange
         end
 
-        local energyPercent, energyColorw
+        local energyPercent, energyColor
         energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
@@ -556,7 +557,6 @@ function update()
             fieldthreshold = -1
         end
 
-
         -- temperature too high, kill it and activate it when its cool
         if ri.temperature > maxTemperature then
             action = "Temp > " .. maxTemperature
@@ -573,7 +573,6 @@ function update()
             tempthreshold = -1
         end
 
-
         -- check, if reactor has valid setup
         if ri == nil then
             error("reactor has an invalid setup")
@@ -584,8 +583,8 @@ function update()
             reactor.chargeReactor()
         end
 
-        -- actual reactor interaction
 
+        -- actual reactor interaction
 
         -- are we stopping from a shutdown and our temp is better? activate
         if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
@@ -625,40 +624,27 @@ function update()
 			reactor.stopReactor()
 			satthreshold = 0
         end
-		
+
         -- are we on? regulate the input fludgate to our target field strength
         -- or set it to our saved setting since we are on manual
         if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
             if autoInputGate then
-                local fluxval = ri.fieldDrainRate / (1 - (targetStrength/100))
+                fluxval = ri.fieldDrainRate / (1 - (targetStrength/100))
                 inputfluxgate.setSignalLowFlow(fluxval)
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
             end
         end
 
-        -- get the different outputs
+        -- get the different output values
         getOutput()
 
-        -- monitor output
-        if fuelPercent > 10 then
-            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
-        else
-            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
-        end
 
+        -- monitor output
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
         gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
-        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
         drawButtons(5)
-
-        gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
-        gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
-        gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
-        gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
-        gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
-        gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
 
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
@@ -693,6 +679,22 @@ function update()
 
         gui.draw_text_lr(mon, 2, 26, 28, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
 
+
+
+        if fuelPercent > 10 then
+            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+        else
+            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+        end
+
+        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+
+        gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
+        gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
+        gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
+        gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
+        gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
+        gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
 
         gui.draw_text_lr(mon, mon.X-25, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
 
@@ -736,16 +738,14 @@ function update()
             gui.draw_line(mon, mon.X-26, 16, 27, colors.gray)
         end
 
+
         -- print information on the computer
         for k, v in pairs (ri) do
             print(k.. ": ".. v)
         end
-
         print("Output Gate: ", externalfluxgate.getSignalLowFlow())
         print("Input Gate: ", inputfluxgate.getSignalLowFlow())
-
-        print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
-
+        print("Target Gate: ".. fluxval)
         if threshold >= 0 then
             print("Threshold: ".. threshold)
         else
@@ -754,6 +754,7 @@ function update()
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
 
+        -- count down till external output can be changed again
         if sinceOutputChange > 0 then
             sinceOutputChange = sinceOutputChange - 1
         end
