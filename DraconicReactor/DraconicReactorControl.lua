@@ -351,6 +351,7 @@ function buttons()
             elseif xPos >= 25 and xPos <= 27 then
                 curOutput = curOutput+1000
             end
+
             if curOutput == math.huge or isnan(curOutput) or curOutput < 0 then
                 curOutput = 0
             end
@@ -378,6 +379,7 @@ function buttons()
             elseif xPos >= 25 and xPos <= 27 then
                 curInputGate = curInputGate+1000
             end
+
             if curInputGate == math.huge or isnan(curInputGate) or curInputGate < 0 then
                 curInputGate = 0
             end
