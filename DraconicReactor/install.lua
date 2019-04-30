@@ -1,11 +1,11 @@
--- drmon and Zeanon installation script
+-- Installer for DraconicReactorControl by drmon and Zeanon
 -- get it with pastebin get UKxFmqXx install
 -- pastebin link: https://pastebin.com/UKxFmqXx
 
-local libURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/gui.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/DraconicReactor/startup.lua"
-local runURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/DraconicReactor/run.lua"
-local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/DraconicReactor/DraconicReactorControl.lua"
+local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/startup.lua"
+local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/run.lua"
+local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/DraconicReactorControl.lua"
 local lib, startup, run, reactorControl
 local libFile, startupFile, runFile, reactorControlFile
 
