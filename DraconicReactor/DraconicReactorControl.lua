@@ -15,7 +15,7 @@ local tempBoost2Output = 750000
 local tempBoost3Output = 1000000
 -- temperature the programm should keep the reactor at
 local safeTemperature = 5000
--- if the containment field gets below this value the reactor will be shut down (if it's 10% higher, the output will be capped to fieldBoostOutput)
+-- if the containment field gets below this value the reactor will be shut down
 local lowestFieldPercent = 15
 local fieldBoost = 25
 local fieldBoostOutput = 200000
