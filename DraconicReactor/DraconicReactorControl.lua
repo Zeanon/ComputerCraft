@@ -424,7 +424,92 @@ function update()
         gui.clear(mon)
         ri = reactor.getReactorInfo()
 
-        -- safeguards
+        local satPercent, satColor
+        satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
+        if isnan(satPercent) then
+            satPercent = 0
+        end
+
+        satColor = colors.red
+        if satPercent >= 70 then
+            satColor = colors.green
+        elseif satPercent < 70 and satPercent > 30 then
+            satColor = colors.orange
+        end
+
+        local tempPercent, tempColor
+        tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
+        if isnan(tempPercent) then
+            tempPercent = 0
+        end
+
+        local tempColor = colors.red
+        if ri.temperature <= (maxTemperature / 8) * 5 then
+            tempColor = colors.green
+        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
+            tempColor = colors.orange
+        end
+
+        local fieldPercent, fieldColor
+        fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000)*.01
+        if  isnan(fieldPercent) then
+            fieldPercent = 0
+        end
+
+        fieldColor = colors.red
+        if fieldPercent >= 50 then
+            fieldColor = colors.green
+        elseif fieldPercent < 50 and fieldPercent > 30 then
+            fieldColor = colors.orange
+        end
+
+        local fuelPercent, fuelColor
+        fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
+        if fuelPercent == math.huge or isnan(fuelPercent) then
+            fuelPercent = 0
+        end
+
+        fuelColor = colors.red
+        if fuelPercent >= 70 then
+            fuelColor = colors.green
+        elseif fuelPercent < 70 and fuelPercent > 30 then
+            fuelColor = colors.orange
+        end
+
+        local energyPercent, energyColor
+        energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
+        if energyPercent == math.huge or isnan(energyPercent) then
+            energyPercent = 0
+        end
+
+        energyColor = colors.red
+        if energyPercent >= 70 then
+            energyColor = colors.green
+        elseif energyPercent < 70 and energyPercent > 30 then
+            energyColor = colors.orange
+        end
+
+        local statusColor
+
+        statusColor = colors.red
+        if ri.status == "online" or ri.status == "charged" then
+            statusColor = colors.green
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, true)
+            end
+        elseif ri.status == "offline" then
+            statusColor =  colors.lightGray
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, false)
+            end
+        elseif ri.status == "charging" then
+            statusColor = colors.orange
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, true)
+            end
+        end
+
+        -- SAFEGUARDS -- DONT EDIT
 
         -- out of fuel, kill it
         if fuelPercent <= 15 then
@@ -555,91 +640,6 @@ function update()
         end
 
         -- monitor output
-        local satPercent, satColor
-        satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
-        if isnan(satPercent) then
-            satPercent = 0
-        end
-
-        satColor = colors.red
-        if satPercent >= 70 then
-            satColor = colors.green
-        elseif satPercent < 70 and satPercent > 30 then
-            satColor = colors.orange
-        end
-
-        local tempPercent, tempColor
-        tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
-        if isnan(tempPercent) then
-            tempPercent = 0
-        end
-
-        local tempColor = colors.red
-        if ri.temperature <= (maxTemperature / 8) * 5 then
-            tempColor = colors.green
-        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
-            tempColor = colors.orange
-        end
-
-        local fieldPercent, fieldColor
-        fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000)*.01
-        if  isnan(fieldPercent) then
-            fieldPercent = 0
-        end
-
-        fieldColor = colors.red
-        if fieldPercent >= 50 then
-            fieldColor = colors.green
-        elseif fieldPercent < 50 and fieldPercent > 30 then
-            fieldColor = colors.orange
-        end
-
-        local fuelPercent, fuelColor
-        fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if fuelPercent == math.huge or isnan(fuelPercent) then
-            fuelPercent = 0
-        end
-
-        fuelColor = colors.red
-        if fuelPercent >= 70 then
-            fuelColor = colors.green
-        elseif fuelPercent < 70 and fuelPercent > 30 then
-            fuelColor = colors.orange
-        end
-
-        local energyPercent, energyColor
-        energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
-        end
-
-        energyColor = colors.red
-        if energyPercent >= 70 then
-            energyColor = colors.green
-        elseif energyPercent < 70 and energyPercent > 30 then
-            energyColor = colors.orange
-        end
-
-        local statusColor
-
-        statusColor = colors.red
-        if ri.status == "online" or ri.status == "charged" then
-            statusColor = colors.green
-            for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, true)
-            end
-        elseif ri.status == "offline" then
-            statusColor =  colors.lightGray
-            for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, false)
-            end
-        elseif ri.status == "charging" then
-            statusColor = colors.orange
-            for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, true)
-            end
-        end
-
         if fuelPercent > 15 then
             gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
