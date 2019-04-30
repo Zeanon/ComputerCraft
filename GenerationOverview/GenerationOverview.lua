@@ -36,7 +36,7 @@ function update()
         if mon.Y < 15 then
             local y = gui.getInteger((mon.Y - 5) / 2)
             gui.draw_number(mon, output, 2, y, color, rftcolor)
-        elseif mon.Y >= 15 and mon.y < 23 then
+        elseif mon.Y >= 15 and mon.Y < 23 then
             local y = gui.getInteger((mon.Y - 13) / 2)
             gui.draw_number(mon, output, 2, y, color, rftcolor)
             gui.draw_number(mon, totalGeneration, 2, y + 8, color, rftcolor)
