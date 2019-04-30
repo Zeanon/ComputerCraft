@@ -383,7 +383,6 @@ function buttons()
             if curInputGate == math.huge or isnan(curInputGate) or curInputGate < 0 then
                 curInputGate = 0
             end
-
             inputfluxgate.setSignalLowFlow(curInputGate)
             save_config()
         end
