@@ -34,6 +34,8 @@ function getInteger(number)
         return 8
     elseif 9 <= number and number < 10 then
         return 9
+    else
+        return 10
     end
 end
 
