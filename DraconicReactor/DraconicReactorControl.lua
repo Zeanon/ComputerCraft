@@ -512,8 +512,8 @@ function update()
         -- SAFEGUARDS -- DONT EDIT
 
         -- out of fuel, kill it
-        if fuelPercent <= 15 then
-            action = "Fuel below 15%"
+        if fuelPercent <= 10 then
+            action = "Fuel below 10%"
             reactor.stopReactor()
             fuelthreshold = 0
         else
@@ -635,10 +635,6 @@ function update()
 
         getThreshold()
 
-        if sinceOutputChange > 0 then
-            sinceOutputChange = sinceOutputChange - 1
-        end
-
         -- monitor output
         if fuelPercent > 15 then
             gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
@@ -752,6 +748,10 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
+
+        if sinceOutputChange > 0 then
+            sinceOutputChange = sinceOutputChange - 1
+        end
 
         sleep(0.5)
     end
