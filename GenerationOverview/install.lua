@@ -41,4 +41,6 @@ local file4 = fs.open("GenerationOverview", "w")
 file4.write(generationOverviewFile)
 file4.close()
 
+shell.run("delete install")
+shell.run("pastebin get VT6ezUgB install")
 shell.run("reboot")
