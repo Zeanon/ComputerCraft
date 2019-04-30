@@ -333,6 +333,8 @@ function buttons()
                 gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
                 gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
                 gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
+
+                shell.run("reboot")
             end
         end
 
@@ -424,186 +426,6 @@ function update()
         gui.clear(mon)
         ri = reactor.getReactorInfo()
 
-        -- monitor output
-        local satPercent, satColor
-        satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
-        if isnan(satPercent) then
-            satPercent = 0
-        end
-		
-		satColor = colors.red
-		if satPercent >= 70 then
-			satColor = colors.green
-		elseif satPercent < 70 and satPercent > 30 then
-			satColor = colors.orange
-		end
-
-        local tempPercent, tempColor
-        tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
-        if isnan(tempPercent) then
-            tempPercent = 0
-        end
-
-        local tempColor = colors.red
-        if ri.temperature <= (maxTemperature / 8) * 5 then
-            tempColor = colors.green
-        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
-            tempColor = colors.orange
-        end
-
-        local fieldPercent, fieldColor
-        fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000)*.01
-        if  isnan(fieldPercent) then
-            fieldPercent = 0
-        end
-
-        fieldColor = colors.red
-        if fieldPercent >= 50 then
-            fieldColor = colors.green
-        elseif fieldPercent < 50 and fieldPercent > 30 then
-            fieldColor = colors.orange
-        end
-
-        local fuelPercent, fuelColor
-        fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if fuelPercent == math.huge or isnan(fuelPercent) then
-            fuelPercent = 0
-        end
-
-        fuelColor = colors.red
-        if fuelPercent >= 70 then
-            fuelColor = colors.green
-        elseif fuelPercent < 70 and fuelPercent > 30 then
-            fuelColor = colors.orange
-		end
-
-		local energyPercent, energyColor
-		energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
-		if energyPercent == math.huge or isnan(energyPercent) then
-			energyPercent = 0
-		end
-		
-		energyColor = colors.red
-		if energyPercent >= 70 then
-			energyColor = colors.green
-		elseif energyPercent < 70 and energyPercent > 30 then
-			energyColor = colors.orange
-		end
-		
-        local statusColor
-
-        statusColor = colors.red
-        if ri.status == "online" or ri.status == "charged" then
-            statusColor = colors.green
-            for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, true)
-            end
-        elseif ri.status == "offline" then
-            statusColor =  colors.lightGray
-            for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, false)
-            end
-        elseif ri.status == "charging" then
-            statusColor = colors.orange
-            for k,v in pairs(redstone.getSides()) do
-                redstone.setOutput(v, true)
-            end
-        end
-
-        if fuelPercent > 15 then
-            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
-        else
-            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
-        end
-
-        gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
-
-		gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
-        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
-		drawButtons(5)
-
-        gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
-        gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
-        gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
-        gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
-        gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
-        gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
-
-        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
-		
-        if autoInputGate then
-            gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
-        else
-            gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
-            drawButtons(8)
-        end
-
-        gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
-        gui.draw_column(mon, mon.X-27, 0, mon.Y+1, colors.gray)
-
-        gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
-        gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
-
-        gui.draw_text_lr(mon, 2, 15, 28, "Temperature", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor,  colors.lightGray)
-
-        if autoInputGate then
-            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
-        else
-            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
-        end
-        gui.progress_bar(mon, 2, 19, mon.X-30, fieldPercent, 100, fieldColor,  colors.lightGray)
-		
-		gui.draw_text_lr(mon, 2, 21, 28, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
-		gui.progress_bar(mon, 2, 22, mon.X-30, energyPercent, 100, energyColor,  colors.lightGray)
-
-        gui.draw_text_lr(mon, 2, 24, 28, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        gui.progress_bar(mon, 2, 25, mon.X-30, fuelPercent, 100, fuelColor,  colors.lightGray)
-
-        gui.draw_text_lr(mon, 2, 26, 28, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
-
-
-        gui.draw_text_lr(mon, mon.X-25, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
-
-        if threshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.blue, colors.black)
-
-            gui.draw_line(mon, mon.X-26, 16, 27, colors.gray)
-
-            if satthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 18, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.blue, colors.black)
-            else
-                gui.draw_text_lr(mon, mon.X-25, 18, 0, "SatThreshold", "false", colors.white, colors.blue, colors.black)
-            end
-
-            if fieldthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 20, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.blue, colors.black)
-            else
-                gui.draw_text_lr(mon, mon.X-25, 20, 0, "FieldThreshold", "false", colors.white, colors.blue, colors.black)
-            end
-
-            if fuelthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 22, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.blue, colors.black)
-            else
-                gui.draw_text_lr(mon, mon.X-25, 22, 0, "FuelThreshold", "false", colors.white, colors.blue, colors.black)
-            end
-
-            if tempthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 24, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.blue, colors.black)
-            else
-                gui.draw_text_lr(mon, mon.X-25, 24, 0, "TempThreshold", "false", colors.white, colors.blue, colors.black)
-            end
-
-            if energythreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 26, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.blue, colors.black)
-            else
-                gui.draw_text_lr(mon, mon.X-25, 26, 0, "EnergyThreshold", "false", colors.white, colors.blue, colors.black)
-            end
-        else
-            gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
-        end
-
-
         -- safeguards
 
         -- out of fuel, kill it
@@ -667,13 +489,9 @@ function update()
         end
 
 
-        -- print out all the infos from .getReactorInfo() to term
+        -- check, if reactor has valid setup
         if ri == nil then
             error("reactor has an invalid setup")
-        end
-
-        for k, v in pairs (ri) do
-            print(k.. ": ".. v)
         end
 
         -- actual reactor interaction
@@ -681,9 +499,6 @@ function update()
         if emergencyCharge == true then
             reactor.chargeReactor()
         end
-
-        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
-        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
 
         -- are we stopping from a shutdown and our temp is better? activate
         if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
@@ -735,6 +550,201 @@ function update()
             end
         end
 
+        getThreshold()
+
+        if sinceOutputChange > 0 then
+            sinceOutputChange = sinceOutputChange - 1
+        end
+
+        -- monitor output
+        local satPercent, satColor
+        satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
+        if isnan(satPercent) then
+            satPercent = 0
+        end
+
+        satColor = colors.red
+        if satPercent >= 70 then
+            satColor = colors.green
+        elseif satPercent < 70 and satPercent > 30 then
+            satColor = colors.orange
+        end
+
+        local tempPercent, tempColor
+        tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
+        if isnan(tempPercent) then
+            tempPercent = 0
+        end
+
+        local tempColor = colors.red
+        if ri.temperature <= (maxTemperature / 8) * 5 then
+            tempColor = colors.green
+        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
+            tempColor = colors.orange
+        end
+
+        local fieldPercent, fieldColor
+        fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000)*.01
+        if  isnan(fieldPercent) then
+            fieldPercent = 0
+        end
+
+        fieldColor = colors.red
+        if fieldPercent >= 50 then
+            fieldColor = colors.green
+        elseif fieldPercent < 50 and fieldPercent > 30 then
+            fieldColor = colors.orange
+        end
+
+        local fuelPercent, fuelColor
+        fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
+        if fuelPercent == math.huge or isnan(fuelPercent) then
+            fuelPercent = 0
+        end
+
+        fuelColor = colors.red
+        if fuelPercent >= 70 then
+            fuelColor = colors.green
+        elseif fuelPercent < 70 and fuelPercent > 30 then
+            fuelColor = colors.orange
+        end
+
+        local energyPercent, energyColor
+        energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
+        if energyPercent == math.huge or isnan(energyPercent) then
+            energyPercent = 0
+        end
+
+        energyColor = colors.red
+        if energyPercent >= 70 then
+            energyColor = colors.green
+        elseif energyPercent < 70 and energyPercent > 30 then
+            energyColor = colors.orange
+        end
+
+        local statusColor
+
+        statusColor = colors.red
+        if ri.status == "online" or ri.status == "charged" then
+            statusColor = colors.green
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, true)
+            end
+        elseif ri.status == "offline" then
+            statusColor =  colors.lightGray
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, false)
+            end
+        elseif ri.status == "charging" then
+            statusColor = colors.orange
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, true)
+            end
+        end
+
+        if fuelPercent > 15 then
+            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+        else
+            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+        end
+
+        gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
+
+        gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+        drawButtons(5)
+
+        gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
+        gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
+        gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
+        gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
+        gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
+        gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
+
+        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+
+        if autoInputGate then
+            gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
+        else
+            gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
+            drawButtons(8)
+        end
+
+        gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
+        gui.draw_column(mon, mon.X-27, 0, mon.Y+1, colors.gray)
+
+        gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
+        gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
+
+        gui.draw_text_lr(mon, 2, 15, 28, "Temperature", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor,  colors.lightGray)
+
+        if autoInputGate then
+            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+        else
+            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
+        end
+        gui.progress_bar(mon, 2, 19, mon.X-30, fieldPercent, 100, fieldColor,  colors.lightGray)
+
+        gui.draw_text_lr(mon, 2, 21, 28, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
+        gui.progress_bar(mon, 2, 22, mon.X-30, energyPercent, 100, energyColor,  colors.lightGray)
+
+        gui.draw_text_lr(mon, 2, 24, 28, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
+        gui.progress_bar(mon, 2, 25, mon.X-30, fuelPercent, 100, fuelColor,  colors.lightGray)
+
+        gui.draw_text_lr(mon, 2, 26, 28, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
+
+
+        gui.draw_text_lr(mon, mon.X-25, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
+
+        if threshold >= 0 then
+            gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.blue, colors.black)
+
+            gui.draw_line(mon, mon.X-26, 16, 27, colors.gray)
+
+            if satthreshold >= 0 then
+                gui.draw_text_lr(mon, mon.X-25, 18, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            else
+                gui.draw_text_lr(mon, mon.X-25, 18, 0, "SatThreshold", "false", colors.white, colors.blue, colors.black)
+            end
+
+            if fieldthreshold >= 0 then
+                gui.draw_text_lr(mon, mon.X-25, 20, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            else
+                gui.draw_text_lr(mon, mon.X-25, 20, 0, "FieldThreshold", "false", colors.white, colors.blue, colors.black)
+            end
+
+            if fuelthreshold >= 0 then
+                gui.draw_text_lr(mon, mon.X-25, 22, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            else
+                gui.draw_text_lr(mon, mon.X-25, 22, 0, "FuelThreshold", "false", colors.white, colors.blue, colors.black)
+            end
+
+            if tempthreshold >= 0 then
+                gui.draw_text_lr(mon, mon.X-25, 24, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            else
+                gui.draw_text_lr(mon, mon.X-25, 24, 0, "TempThreshold", "false", colors.white, colors.blue, colors.black)
+            end
+
+            if energythreshold >= 0 then
+                gui.draw_text_lr(mon, mon.X-25, 26, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.blue, colors.black)
+            else
+                gui.draw_text_lr(mon, mon.X-25, 26, 0, "EnergyThreshold", "false", colors.white, colors.blue, colors.black)
+            end
+        else
+            gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
+
+            gui.draw_line(mon, mon.X-26, 16, 27, colors.gray)
+        end
+
+        -- print information on the computer
+        for k, v in pairs (ri) do
+            print(k.. ": ".. v)
+        end
+
+        print("Output Gate: ", externalfluxgate.getSignalLowFlow())
+        print("Input Gate: ", inputfluxgate.getSignalLowFlow())
+
         print("Target Gate: ".. inputfluxgate.getSignalLowFlow())
 
         if threshold >= 0 then
@@ -744,12 +754,6 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
-
-        getThreshold()
-
-        if sinceOutputChange > 0 then
-            sinceOutputChange = sinceOutputChange - 1
-        end
 
         sleep(0.5)
     end
