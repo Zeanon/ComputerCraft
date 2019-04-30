@@ -408,7 +408,6 @@ function buttons()
 end
 
 function drawButtons(y)
-
     -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
     -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
 
@@ -498,7 +497,6 @@ function update()
         end
 
         local statusColor
-
         statusColor = colors.red
         if ri.status == "online" or ri.status == "charged" then
             statusColor = colors.green
