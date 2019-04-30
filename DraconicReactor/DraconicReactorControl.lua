@@ -572,33 +572,33 @@ function update()
         end
 
         if satthreshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 16, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 17, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.blue, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 16, 0, "SatThreshold", "false", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 17, 0, "SatThreshold", "false", colors.white, colors.blue, colors.black)
         end
 
         if fieldthreshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 18, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 19, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.blue, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 18, 0, "FieldThreshold", "false", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 19, 0, "FieldThreshold", "false", colors.white, colors.blue, colors.black)
         end
 
         if fuelthreshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 20, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 21, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.blue, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 20, 0, "FuelThreshold", "false", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 21, 0, "FuelThreshold", "false", colors.white, colors.blue, colors.black)
         end
 
         if tempthreshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 22, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 23, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.blue, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 22, 0, "TempThreshold", "false", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 23, 0, "TempThreshold", "false", colors.white, colors.blue, colors.black)
         end
 
         if energythreshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 24, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 25, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.blue, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 24, 0, "EnergyThreshold", "false", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-25, 25, 0, "EnergyThreshold", "false", colors.white, colors.blue, colors.black)
         end
 
 
