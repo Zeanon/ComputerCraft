@@ -24,81 +24,28 @@ function getOutput()
     return totalOutput
 end
 
-function drawRFT(mon, x, y, color)
-    mon.monitor.setBackgroundColor(color)
-    gui.draw_column(mon, x, y, 5, color)
-    mon.monitor.setCursorPos(x+1,y)
-    mon.monitor.write(" ")
-    mon.monitor.setCursorPos(x+1,y+2)
-    mon.monitor.write(" ")
-    gui.draw_column(mon, x+2, y, 2, color)
-    gui.draw_column(mon, x+2, y+3, 2, color)
-
-    gui.draw_column(mon, x+4, y, 5, color)
-    mon.monitor.setCursorPos(x+5,y)
-    mon.monitor.write("  ")
-    mon.monitor.setCursorPos(x+5,y+2)
-    mon.monitor.write(" ")
-
-    gui.draw_column(mon, x+8, y+3, 2, color)
-    gui.draw_column(mon, x+9, y+1, 2, color)
-    mon.monitor.setCursorPos(x+10,y)
-    mon.monitor.write(" ")
-
-    mon.monitor.setCursorPos(x+12,y)
-    mon.monitor.write(" ")
-    gui.draw_column(mon, x+13, y, 5, color)
-    mon.monitor.setCursorPos(x+14,y)
-    mon.monitor.write(" ")
-end
-
 function update()
     local output = getOutput()
     if output ~= oldOutput then
         oldOutput = output
         gui.clear(mon)
-        local a,b,c,d,e,f
         print("Displaying total reactor energy output on monitor")
         print("Total reactor output: " .. gui.format_int(output))
         print("Total generation: " .. gui.format_int(totalGeneration))
         print("Total drainback: " .. gui.format_int(totalDrainback))
-        a = gui.getInteger(output / 1000000)
-        if a ~= 0 then
-            gui.draw_number(output, 1000000, mon, 2, 4, color)
-            mon.monitor.setCursorPos(6,8)
-            mon.monitor.write(" ")
+        if mon.Y < 15 then
+            local y = gui.getInteger((mon.Y - 5) / 2)
+            gui.draw_number(mon, output, 2, y, color, rftcolor)
+        elseif mon.Y >= 15 and mon.y < 23 then
+            local y = gui.getInteger((mon.Y - 13) / 2)
+            gui.draw_number(mon, output, 2, y, color, rftcolor)
+            gui.draw_number(mon, totalGeneration, 2, y + 8, color, rftcolor)
+        else
+            local y = gui.getInteger((mon.Y - 21) / 2)
+            gui.draw_number(mon, output, 2, y, color, rftcolor)
+            gui.draw_number(mon, totalGeneration, 2, y + 8, color, rftcolor)
+            gui.draw_number(mon, totalDrainback, 2, y + 16, color, rftcolor)
         end
-        output = output - (1000000 * gui.getInteger(output / 1000000))
-        b = gui.getInteger(output / 100000)
-        if a ~= 0 or b ~= 0 then
-            gui.draw_number(output, 100000, mon, 8, 4, color)
-        end
-        output = output - (100000 * gui.getInteger(output / 100000))
-        c = gui.getInteger(output / 10000)
-        if a ~= 0 or b ~= 0 or c ~= 0 then
-            gui.draw_number(output, 10000, mon, 12, 4, color)
-        end
-        output = output - (10000 * gui.getInteger(output / 10000))
-        d = gui.getInteger(output / 1000)
-        if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
-            gui.draw_number(output, 1000, mon, 16, 4, color)
-            mon.monitor.setCursorPos(20,8)
-            mon.monitor.write(" ")
-        end
-        output = output - (1000 * gui.getInteger(output / 1000))
-        e = gui.getInteger(output / 100)
-        if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
-            gui.draw_number(output, 100, mon, 22, 4, color)
-        end
-        output = output - (100 * gui.getInteger(output / 100))
-        f = gui.getInteger(output / 10)
-        if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
-            gui.draw_number(output, 10, mon, 26, 4, color)
-        end
-        output = output - (10 * gui.getInteger(output / 10))
-        gui.draw_number(output, 1, mon, 30, 4, color)
-
-        drawRFT(mon, 35, 4, rftcolor)
     end
     sleep(0.5)
 end

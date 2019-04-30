@@ -178,28 +178,97 @@ function draw_9(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function draw_number(number, divider, mon, x, y, color)
-    if gui.getInteger(number / divider) == 0 then
-        gui.draw_0(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 1 then
-        gui.draw_1(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 2 then
-        gui.draw_2(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 3 then
-        gui.draw_3(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 4 then
-        gui.draw_4(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 5 then
-        gui.draw_5(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 6 then
-        gui.draw_6(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 7 then
-        gui.draw_7(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 8 then
-        gui.draw_8(mon, x, y, color)
-    elseif gui.getInteger(number / divider) == 9 then
-        gui.draw_9(mon, x, y, color)
+function draw_digit(number, divider, mon, x, y, color)
+    if getInteger(number / divider) == 0 then
+        draw_0(mon, x, y, color)
+    elseif getInteger(number / divider) == 1 then
+        draw_1(mon, x, y, color)
+    elseif getInteger(number / divider) == 2 then
+        draw_2(mon, x, y, color)
+    elseif getInteger(number / divider) == 3 then
+        draw_3(mon, x, y, color)
+    elseif getInteger(number / divider) == 4 then
+        draw_4(mon, x, y, color)
+    elseif getInteger(number / divider) == 5 then
+        draw_5(mon, x, y, color)
+    elseif getInteger(number / divider) == 6 then
+        draw_6(mon, x, y, color)
+    elseif getInteger(number / divider) == 7 then
+        draw_7(mon, x, y, color)
+    elseif getInteger(number / divider) == 8 then
+        draw_8(mon, x, y, color)
+    elseif getInteger(number / divider) == 9 then
+        draw_9(mon, x, y, color)
     end
+end
+
+function draw_number(mon, output, x, y, color, rftcolor)
+    local a,b,c,d,e,f
+    a = getInteger(output / 1000000)
+    if a ~= 0 then
+        draw_digit(output, 1000000, mon, x, y, color)
+        mon.monitor.setCursorPos(x+4,y+4)
+        mon.monitor.write(" ")
+    end
+    output = output - (1000000 * getInteger(output / 1000000))
+    b = getInteger(output / 100000)
+    if a ~= 0 or b ~= 0 then
+        draw_digit(output, 100000, mon, x+6, y, color)
+    end
+    output = output - (100000 * getInteger(output / 100000))
+    c = getInteger(output / 10000)
+    if a ~= 0 or b ~= 0 or c ~= 0 then
+        draw_digit(output, 10000, mon, x+10, y, color)
+    end
+    output = output - (10000 * getInteger(output / 10000))
+    d = getInteger(output / 1000)
+    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
+        draw_digit(output, 1000, mon, x+14, y, color)
+        mon.monitor.setCursorPos(x+18,y+4)
+        mon.monitor.write(" ")
+    end
+    output = output - (1000 * getInteger(output / 1000))
+    e = getInteger(output / 100)
+    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
+        draw_digit(output, 100, mon, x+20, y, color)
+    end
+    output = output - (100 * getInteger(output / 100))
+    f = getInteger(output / 10)
+    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
+        draw_digit(output, 10, mon, x+24, y, color)
+    end
+    output = output - (10 * getInteger(output / 10))
+    draw_digit(output, 1, mon, x+28, y, color)
+
+    drawRFT(mon, x+33, y, rftcolor)
+end
+
+function drawRFT(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+    gui.draw_column(mon, x, y, 5, color)
+    mon.monitor.setCursorPos(x+1,y)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+1,y+2)
+    mon.monitor.write(" ")
+    gui.draw_column(mon, x+2, y, 2, color)
+    gui.draw_column(mon, x+2, y+3, 2, color)
+
+    gui.draw_column(mon, x+4, y, 5, color)
+    mon.monitor.setCursorPos(x+5,y)
+    mon.monitor.write("  ")
+    mon.monitor.setCursorPos(x+5,y+2)
+    mon.monitor.write(" ")
+
+    gui.draw_column(mon, x+8, y+3, 2, color)
+    gui.draw_column(mon, x+9, y+1, 2, color)
+    mon.monitor.setCursorPos(x+10,y)
+    mon.monitor.write(" ")
+
+    mon.monitor.setCursorPos(x+12,y)
+    mon.monitor.write(" ")
+    gui.draw_column(mon, x+13, y, 5, color)
+    mon.monitor.setCursorPos(x+14,y)
+    mon.monitor.write(" ")
 end
 
 function clear(mon)
