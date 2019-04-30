@@ -96,6 +96,14 @@ end
 
 --write settings to config file
 function save_config()
+    local i = 1
+    while i <= multishell.getCount() do
+        if multishell.getTitle(i) == "Config" then
+            multishell.setFocus(i)
+            shell.exit()
+        end
+        i = i + 1
+    end
     local sw = fs.open("config.txt", "w")
     sw.writeLine("-- Config for Draconig Reactor Control Program")
     sw.writeLine("version: " .. version)
