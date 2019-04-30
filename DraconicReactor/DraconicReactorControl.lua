@@ -436,7 +436,6 @@ function update()
         if isnan(satPercent) then
             satPercent = 0
         end
-
         satColor = colors.red
         if satPercent >= 70 then
             satColor = colors.green
@@ -449,7 +448,6 @@ function update()
         if isnan(tempPercent) then
             tempPercent = 0
         end
-
         local tempColor = colors.red
         if ri.temperature <= (maxTemperature / 8) * 5 then
             tempColor = colors.green
@@ -462,7 +460,6 @@ function update()
         if  isnan(fieldPercent) then
             fieldPercent = 0
         end
-
         fieldColor = colors.red
         if fieldPercent >= 50 then
             fieldColor = colors.green
@@ -475,7 +472,6 @@ function update()
         if fuelPercent == math.huge or isnan(fuelPercent) then
             fuelPercent = 0
         end
-
         fuelColor = colors.red
         if fuelPercent >= 70 then
             fuelColor = colors.green
@@ -483,12 +479,11 @@ function update()
             fuelColor = colors.orange
         end
 
-        local energyPercent, energyColor
+        local energyPercent, energyColorw
         energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
         end
-
         energyColor = colors.red
         if energyPercent >= 70 then
             energyColor = colors.green
@@ -514,6 +509,7 @@ function update()
                 redstone.setOutput(v, true)
             end
         end
+
 
         -- SAFEGUARDS -- DONT EDIT
 
@@ -583,11 +579,13 @@ function update()
             error("reactor has an invalid setup")
         end
 
-        -- actual reactor interaction
-
+        -- check for emergenyCharge
         if emergencyCharge == true then
             reactor.chargeReactor()
         end
+
+        -- actual reactor interaction
+
 
         -- are we stopping from a shutdown and our temp is better? activate
         if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
@@ -639,7 +637,8 @@ function update()
             end
         end
 
-        getThreshold()
+        -- get the different outputs
+        getOutput()
 
         -- monitor output
         if fuelPercent > 10 then
@@ -763,7 +762,7 @@ function update()
     end
 end
 
-function getThreshold()
+function getOutput()
     if ri.status == "charging" then
         threshold = 0
     elseif satthreshold >= 0 and (satthreshold <= tempthreshold or tempthreshold == -1) and (satthreshold <= fieldthreshold or fieldthreshold == -1) and (satthreshold <= fuelthreshold or fuelthreshold == -1) and (satthreshold<= energythreshold or energythreshold == -1) then
