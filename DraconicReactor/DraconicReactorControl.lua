@@ -351,12 +351,11 @@ function buttons()
             elseif xPos >= 25 and xPos <= 27 then
                 curOutput = curOutput+1000
             end
-            if isnan(curOutput) then
+            if curOutput == math.huge or isnan(curOutput) or curOutput < 0 then
                 curOutput = 0
             end
-            if curOutput < 0 then
-                curOutput = 0
-            elseif curOutput > maxOutput then
+
+            if curOutput > maxOutput then
                 curOutput = maxOutput
             end
             save_config()
@@ -379,6 +378,10 @@ function buttons()
             elseif xPos >= 25 and xPos <= 27 then
                 curInputGate = curInputGate+1000
             end
+            if curInputGate == math.huge or isnan(curInputGate) or curInputGate < 0 then
+                curInputGate = 0
+            end
+
             inputfluxgate.setSignalLowFlow(curInputGate)
             save_config()
         end
