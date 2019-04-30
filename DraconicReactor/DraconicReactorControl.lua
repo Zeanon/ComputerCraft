@@ -571,7 +571,7 @@ function update()
             gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
         end
 
-        if satthreshold >= 0 and threshold >= 0then
+        if satthreshold >= 0 and threshold >= 0 then
             gui.draw_text_lr(mon, mon.X-25, 17, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.blue, colors.black)
         else
             gui.draw_text_lr(mon, mon.X-25, 17, 0, "SatThreshold", "false", colors.white, colors.blue, colors.black)
