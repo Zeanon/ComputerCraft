@@ -281,10 +281,6 @@ if core == null then
     error("No valid energy core was found")
 end
 
-monX, monY = monitor.getSize()
-mon = {}
-mon.monitor,mon.X, mon.Y = monitor, monX, monY
-
 
 function buttons()
 
@@ -421,6 +417,10 @@ end
 
 function update()
     while true do
+        monX, monY = monitor.getSize()
+        mon = {}
+        mon.monitor,mon.X, mon.Y = monitor, monX, monY
+
         gui.clear(mon)
         ri = reactor.getReactorInfo()
 
