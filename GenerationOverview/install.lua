@@ -1,4 +1,6 @@
 -- Installer for GenerationOverview
+-- get it with pastebin get VT6ezUgB install
+-- pastebin link: https://pastebin.com/VT6ezUgB
 local libURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/gui.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/GenerationOverview/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/DraconicReactor/master/GenerationOverview/run.lua"
