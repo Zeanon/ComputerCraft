@@ -341,7 +341,7 @@ function buttons()
         -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
         local satPercent
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
-        if yPos == 5 then
+        if yPos >= 5 and yPos <= 6 then
             if xPos >= 2 and xPos <= 4 then
                 curOutput = curOutput-1000
             elseif xPos >= 6 and xPos <= 8 then
