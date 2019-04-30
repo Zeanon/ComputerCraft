@@ -36,7 +36,7 @@ local minChangeWait = 5
 -- the amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 20
 -- maximum output lvl
-local maxOutput = 1000000
+local maxOutput = 1200000
 
 local activateOnCharged = true
 
