@@ -291,14 +291,14 @@ function buttons()
         -- reactor control
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 and fuelPercent > 15 then
+        if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
             if ri.status == "charging" then
                 reactor.stopReactor()
             elseif ri.status == "online" then
                 reactor.stopReactor()
-            elseif ri.status == "offline" then
+            elseif ri.status == "offline" and fuelPercent > 10 then
                 reactor.chargeReactor()
-            elseif ri.status == "stopping" then
+            elseif ri.status == "stopping" and fuelPercent > 10 then
                 reactor.chargeReactor()
             end
         end
@@ -636,7 +636,7 @@ function update()
         getThreshold()
 
         -- monitor output
-        if fuelPercent > 15 then
+        if fuelPercent > 10 then
             gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
             gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
