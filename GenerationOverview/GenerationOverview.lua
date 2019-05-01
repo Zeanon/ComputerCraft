@@ -56,7 +56,7 @@ function update()
         gui.draw_number(mon, totalDrainback, 2, y + 18, color, rftcolor)
     end
 
-    sleep(0.2)
+    sleep(0.5)
 end
 
 while true do
