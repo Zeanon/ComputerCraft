@@ -605,19 +605,21 @@ function update()
         end
 
 		-- get the hysteresis for the internal output gate
-		if core.getEnergyStored() > core.getMaxEnergyStored()*0.95 then
+        if energyPercent == 100 then
+            outputInputHyteresis = 0
+		elseif energyPercent >= 95 and energyPercent < 100  then
 			outputInputHyteresis = 1000
-        elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.9 and core.getEnergyStored() < core.getMaxEnergyStored()*0.95 then
+        elseif energyPercent >= 90 and energyPercent < 95 then
             outputInputHyteresis = 2500
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.8 and core.getEnergyStored() < core.getMaxEnergyStored()*0.9 then
+		elseif energyPercent >= 80 and energyPercent < 90 then
 			outputInputHyteresis = 5000
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.7 and core.getEnergyStored() < core.getMaxEnergyStored()*0.8 then
+		elseif energyPercent >= 70 and energyPercent < 80 then
 			outputInputHyteresis = 7500
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.6 and core.getEnergyStored() < core.getMaxEnergyStored()*0.7 then
+		elseif energyPercent >= 60 and energyPercent < 70 then
 			outputInputHyteresis = 10000
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.5 and core.getEnergyStored() < core.getMaxEnergyStored()*0.6 then
+		elseif energyPercent >= 50 and energyPercent < 60 then
 			outputInputHyteresis = 12500
-		elseif core.getEnergyStored() > core.getMaxEnergyStored()*0.4 and core.getEnergyStored() < core.getMaxEnergyStored()*0.5 then
+		elseif energyPercent >= 40 and energyPercent < 50 then
 			outputInputHyteresis = 25000
 		elseif core.getEnergyStored() < 1000000 then
 			action = "not enough buffer energy left"
