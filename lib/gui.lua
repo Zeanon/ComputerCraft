@@ -106,7 +106,6 @@ function draw_0(mon, x, y, color)
     mon.monitor.write(" ")
     mon.monitor.setCursorPos(x+1,y+4)
     mon.monitor.write(" ")
-
 end
 
 function draw_1(mon, x, y, color)
