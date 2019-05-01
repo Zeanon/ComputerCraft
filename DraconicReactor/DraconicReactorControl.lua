@@ -32,9 +32,9 @@ local tempTolerance = 10
 local maxIncrease = 10000
 local safeTarget = 20000
 -- the amount of loops the program goes through until the output can be changed again
-local minChangeWait = 25
+local minChangeWait = 15
 -- the amount of turns the program will save to check whether the reactor is stable
-local stableTurns = 100
+local stableTurns = 50
 -- maximum output level
 local maxOutput = 1200000
 
@@ -325,12 +325,12 @@ function buttons()
                 gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
                 gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
                 gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
-                editConfigButton = 5
+                editConfigButton = 3
             elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
                 gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
                 gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
                 gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
-                loadConfigButton = 5
+                loadConfigButton = 3
             end
         end
 
