@@ -758,7 +758,7 @@ function update()
             sinceOutputChange = sinceOutputChange - 1
         end
 
-        sleep(0.5)
+        sleep(0.25)
     end
 end
 
