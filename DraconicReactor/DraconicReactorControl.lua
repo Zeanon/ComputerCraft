@@ -501,7 +501,6 @@ function update()
             for k,v in pairs(redstone.getSides()) do
                 redstone.setOutput(v, false)
             end
-            inputfluxgate.setSignalLowFlow(0)
         elseif ri.status == "charging" then
             statusColor = colors.orange
             for k,v in pairs(redstone.getSides()) do
@@ -791,7 +790,7 @@ function getOutput()
         tempOutput = maxIncrease
     end
     tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
-    if emergencyFlood == false then
+    if emergencyFlood == false and ri.status ~= "offline" then
         if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < threshold or threshold == -1) then
             outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
         end
@@ -835,6 +834,10 @@ function getOutput()
                 externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
             end
         end
+    end
+    if ri.status == "offline" then
+        outputfluxgate.setSignalLowFlow(0)
+        externalfluxgate.setSignalLowFlow(0)
     end
     if externalfluxgate.getSignalLowFlow() < 0 then
         externalfluxgate.setSignalLowFlow(0)
