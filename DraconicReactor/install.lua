@@ -42,6 +42,9 @@ local file4 = fs.open("DraconicReactor", "w")
 file4.write(reactorControlFile)
 file4.close()
 
-shell.run("delete install")
-shell.run("pastebin get UKxFmqXx install")
+if fs.exists("update") then
+    shell.run("delete update")
+end
+shell.run("pastebin get UEi3KkwM update")
+
 shell.run("reboot")
