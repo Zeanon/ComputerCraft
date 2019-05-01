@@ -6,7 +6,7 @@ function format_int(number)
         number = 0
     end
 
-    local minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
+    local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
     -- reverse the int-string and append a comma to all blocks of 3 digits
     int = int:reverse():gsub("(%d%d%d)", "%1,")
 
