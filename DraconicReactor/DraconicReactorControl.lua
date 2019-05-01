@@ -427,7 +427,7 @@ function update()
 
         gui.clear(mon)
         ri = reactor.getReactorInfo()
-        local fluxval
+        local fluxval = 0
 
         local satPercent, satColor
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
@@ -745,7 +745,7 @@ function update()
         end
         print("Output Gate: ", externalfluxgate.getSignalLowFlow())
         print("Input Gate: ", inputfluxgate.getSignalLowFlow())
-        print("Target Gate: ".. fluxval)
+        print("Target Gate: ", fluxval)
         if threshold >= 0 then
             print("Threshold: ".. threshold)
         else
