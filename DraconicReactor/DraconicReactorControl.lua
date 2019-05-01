@@ -502,6 +502,7 @@ function update()
             for k,v in pairs(redstone.getSides()) do
                 redstone.setOutput(v, false)
             end
+            inputfluxgate.setSignalLowFlow(0)
         elseif ri.status == "charging" then
             statusColor = colors.orange
             for k,v in pairs(redstone.getSides()) do
