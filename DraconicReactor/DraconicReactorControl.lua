@@ -292,9 +292,7 @@ function buttons()
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
-            if ri.status == "charging" then
-                reactor.stopReactor()
-            elseif ri.status == "online" then
+            if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
             elseif ri.status == "offline" and fuelPercent > 10 then
                 reactor.chargeReactor()
