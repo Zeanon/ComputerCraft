@@ -709,11 +709,6 @@ function update()
             gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
             gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
         end
-        if loadConfigReboot then
-            shell.run("reboot")
-        elseif loadConfigButton == 1 then
-            loadConfigReboot = true
-        end
 
         gui.draw_text_lr(mon, mon.X-25, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
 
@@ -772,6 +767,15 @@ function update()
         end
         print("Hyteresis: ".. outputInputHyteresis)
         print("Till next change: " .. sinceOutputChange)
+
+
+        -- reboot if config has been reloaded
+        if loadConfigReboot then
+            shell.run("reboot")
+        elseif loadConfigButton == 1 then
+            loadConfigReboot = true
+        end
+
 
         -- count down till external output can be changed again
         if sinceOutputChange > 0 then
