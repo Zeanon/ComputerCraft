@@ -1,12 +1,13 @@
--- Installer for GenerationOverview by Zeanon
--- get it with pastebin get VT6ezUgB install
--- pastebin link: https://pastebin.com/VT6ezUgB
+-- Installer for DraconicReactorControl by drmon and Zeanon
+-- get it with pastebin get UKxFmqXx install
+-- pastebin link: https://pastebin.com/UKxFmqXx
+
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/startup.lua"
-local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/run.lua"
-local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/GenerationOverview.lua"
-local lib, startup, run, generationOverview
-local libFile, startupFile, runFile, generationOverviewFile
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/startup.lua"
+local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/run.lua"
+local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/DraconicReactorControl.lua"
+local lib, startup, run, reactorControl
+local libFile, startupFile, runFile, reactorControlFile
 
 fs.makeDir("lib")
 
@@ -34,16 +35,16 @@ file3.write(runFile)
 file3.close()
 
 
-generationOverview = http.get(generationOverviewURL)
-generationOverviewFile = generationOverview.readAll()
+reactorControl = http.get(reactorControlURL)
+reactorControlFile = reactorControl.readAll()
 
-local file4 = fs.open("GenerationOverview", "w")
-file4.write(generationOverviewFile)
+local file4 = fs.open("DraconicReactor", "w")
+file4.write(reactorControlFile)
 file4.close()
 
 if fs.exists("update") then
-	shell.run("delete update")
+    shell.run("delete update")
 end
-shell.run("pastebin get HZ7ffzMn update")
+shell.run("pastebin get UEi3KkwM update")
 
 shell.run("reboot")
