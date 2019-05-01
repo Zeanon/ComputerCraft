@@ -32,9 +32,9 @@ local tempTolerance = 10
 local maxIncrease = 10000
 local safeTarget = 20000
 -- the amount of loops the program goes through until the output can be changed again
-local minChangeWait = 5
+local minChangeWait = 25
 -- the amount of turns the program will save to check whether the reactor is stable
-local stableTurns = 20
+local stableTurns = 100
 -- maximum output level
 local maxOutput = 1200000
 
@@ -62,6 +62,9 @@ local lastSat = {}
 local thresholded = false
 local emergencyFlood = false
 local sinceOutputChange = 0
+local editConfigButton = 0
+local loadConfigButton = 0
+local loadConfigReboot = false
 
 -- monitor
 local mon, monitor, monX, monY
@@ -322,12 +325,12 @@ function buttons()
                 gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
                 gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
                 gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
+                editConfigButton = 5
             elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
                 gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
                 gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
                 gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
-
-                shell.run("reboot")
+                loadConfigButton = 5
             end
         end
 
@@ -688,12 +691,29 @@ function update()
 
         gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
-        gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
-        gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
-        gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
-        gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
-        gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
-        gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
+        if editConfigButton == 0 then
+            gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
+            gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
+            gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
+        else
+            gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
+            gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
+            gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
+        end
+        if loadConfigButton == 0 then
+            gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
+            gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
+            gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
+        else
+            gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
+            gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
+            gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
+        end
+        if loadConfigReboot then
+            shell.run("reboot")
+        elseif loadConfigButton == 1 then
+            loadConfigReboot = true
+        end
 
         gui.draw_text_lr(mon, mon.X-25, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
 
