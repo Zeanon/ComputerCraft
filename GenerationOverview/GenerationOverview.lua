@@ -4,8 +4,6 @@ local rftcolor = colors.gray
 -- program
 local mon, monitor, monX, monY
 local oldOutput = 0
-local totalGeneration
-local totalDrainback
 os.loadAPI("lib/gui")
 
 monitor = peripheral.find("monitor")
@@ -13,12 +11,17 @@ monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
-function getOutput()
-    local reactor1, reactor2 = peripheral.find("draconic_reactor")
+function getDrainback()
     local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
+    local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
+    return totalDrainback
+end
+
+function getGeneration()
+    local reactor1, reactor2 = peripheral.find("draconic_reactor")
     local ri1 = reactor1.getReactorInfo()
     local ri2 = reactor2.getReactorInfo()
-    totalGeneration = ri1.generationRate + ri2.generationRate
+    local totalGeneration = ri1.generationRate + ri2.generationRate
     if ri1.status == "offline" then
         totalGeneration = ri2.generationRate
     elseif ri2.status == "offline" then
@@ -26,13 +29,11 @@ function getOutput()
     else
         totalGeneration = ri1.generationRate + ri2.generationRate
     end
-    totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
-    local totalOutput = totalGeneration - totalDrainback
-    return totalOutput
+    return totalGeneration
 end
 
 function update()
-    local output = getOutput()
+    local output = getGeneration() - getDrainback()
     if output ~= oldOutput then
         oldOutput = output
         gui.clear(mon)
@@ -44,11 +45,14 @@ function update()
             local y = gui.getInteger((mon.Y - 6) / 2)
             gui.draw_number(mon, output, 2, y, color, rftcolor)
         elseif mon.Y >= 16 and mon.Y < 24 then
+            local totalGeneration = getGeneration()
             local y = gui.getInteger((mon.Y - 14) / 2)
             gui.draw_number(mon, output, 2, y, color, rftcolor)
             gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
             gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
         else
+            local totalGeneration = getGeneration()
+            local totalDrainback = getDrainback()
             local y = gui.getInteger((mon.Y - 22) / 2)
             gui.draw_number(mon, output, 2, y, color, rftcolor)
             gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
