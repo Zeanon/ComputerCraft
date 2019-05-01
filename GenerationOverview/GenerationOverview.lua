@@ -3,7 +3,6 @@ local color = colors.red
 local rftcolor = colors.gray
 -- program
 local mon, monitor, monX, monY
-local oldOutput = 0
 os.loadAPI("lib/gui")
 
 monitor = peripheral.find("monitor")
@@ -34,32 +33,29 @@ end
 
 function update()
     local output = getGeneration() - getDrainback()
-    if output ~= oldOutput then
-        oldOutput = output
-        gui.clear(mon)
-        print("Displaying total reactor energy output on monitor")
-        print("Total reactor output: " .. gui.format_int(output))
-        print("Total generation: " .. gui.format_int(totalGeneration))
-        print("Total drainback: " .. gui.format_int(totalDrainback))
-        if mon.Y < 16 then
-            local y = gui.getInteger((mon.Y - 6) / 2)
-            gui.draw_number(mon, output, 2, y, color, rftcolor)
-        elseif mon.Y >= 16 and mon.Y < 24 then
-            local totalGeneration = getGeneration()
-            local y = gui.getInteger((mon.Y - 14) / 2)
-            gui.draw_number(mon, output, 2, y, color, rftcolor)
-            gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-            gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
-        else
-            local totalGeneration = getGeneration()
-            local totalDrainback = getDrainback()
-            local y = gui.getInteger((mon.Y - 22) / 2)
-            gui.draw_number(mon, output, 2, y, color, rftcolor)
-            gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-            gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
-            gui.draw_number(mon, totalDrainback, 2, y + 18, color, rftcolor)
-        end
+    local totalGeneration = getGeneration()
+    local totalDrainback = getDrainback()
+    gui.clear(mon)
+    print("Displaying total reactor energy output on monitor")
+    print("Total reactor output: " .. gui.format_int(output))
+    print("Total generation: " .. gui.format_int(totalGeneration))
+    print("Total drainback: " .. gui.format_int(totalDrainback))
+    if mon.Y < 16 then
+        local y = gui.getInteger((mon.Y - 6) / 2)
+        gui.draw_number(mon, output, 2, y, color, rftcolor)
+    elseif mon.Y >= 16 and mon.Y < 24 then
+        local y = gui.getInteger((mon.Y - 14) / 2)
+        gui.draw_number(mon, output, 2, y, color, rftcolor)
+        gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+        gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
+    else
+        local y = gui.getInteger((mon.Y - 22) / 2)
+        gui.draw_number(mon, output, 2, y, color, rftcolor)
+        gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+        gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
+        gui.draw_number(mon, totalDrainback, 2, y + 18, color, rftcolor)
     end
+
     sleep(0.5)
 end
 
