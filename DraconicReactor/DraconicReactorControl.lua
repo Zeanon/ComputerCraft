@@ -294,9 +294,7 @@ function buttons()
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
-            elseif ri.status == "offline" and fuelPercent > 10 then
-                reactor.chargeReactor()
-            elseif ri.status == "stopping" and fuelPercent > 10 then
+            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > 10 then
                 reactor.chargeReactor()
             end
         end
