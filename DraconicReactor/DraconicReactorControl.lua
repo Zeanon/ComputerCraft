@@ -627,7 +627,7 @@ function update()
 
         -- are we on? regulate the input fludgate to our target field strength
         -- or set it to our saved setting since we are on manual
-        if emergencyFlood == false and (ri.status == "online" or ri.status == "offline" or ri.status == "stopping") then
+        if emergencyFlood == false and (ri.status == "online" or ri.status == "stopping") then
             if autoInputGate then
                 fluxval = ri.fieldDrainRate / (1 - (targetStrength/100))
                 inputfluxgate.setSignalLowFlow(fluxval)
