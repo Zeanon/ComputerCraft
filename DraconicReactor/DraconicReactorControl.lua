@@ -777,6 +777,12 @@ function update()
         if sinceOutputChange > 0 then
             sinceOutputChange = sinceOutputChange - 1
         end
+        if editConfigButton > 0 then
+            editConfigButton = editConfigButton -1
+        end
+        if loadConfigButton > 0 then
+            loadConfigButton = loadConfigButton - 1
+        end
 
         sleep(0.1)
     end
