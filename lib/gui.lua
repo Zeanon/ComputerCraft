@@ -15,6 +15,7 @@ function format_int(number)
     return minus .. int:reverse():gsub("^,", "") .. fraction
 end
 
+--get the integer value of a number under 10
 function getInteger(number)
     if 0 <= number and number < 1 then
         return 0
@@ -63,7 +64,7 @@ function draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color,
 	draw_text_right(mon, offset, y, text2, text2_color, bg_color)
 end
 
---draw line on computer terminal
+--draw line on computer terminal(mon)
 function draw_line(mon, x, y, length, color)
     if length < 0 then
       length = 0
@@ -73,7 +74,7 @@ function draw_line(mon, x, y, length, color)
     mon.monitor.write(string.rep(" ", length))
 end
 
---draw vertical line
+--draw vertical line on computer terminal(mon)
 function draw_column(mon, x, y, height, color)
     if height < 0 then
         height = 0
@@ -98,6 +99,7 @@ function progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
     draw_line(mon, x, y, barSize, bar_color) --progress so far
 end
 
+--draw numbers from 0 to 9
 function draw_0(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     draw_column(mon, x, y, 5, color)
@@ -181,6 +183,7 @@ function draw_9(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
+--convert number to integer digit and draw it on monitor
 function draw_digit(number, divider, mon, x, y, color)
     if getInteger(number / divider) == 0 then
         draw_0(mon, x, y, color)
@@ -205,6 +208,7 @@ function draw_digit(number, divider, mon, x, y, color)
     end
 end
 
+--draw number under 9,999,999 on computer terminal
 function draw_number(mon, output, x, y, color, rftcolor)
     local a,b,c,d,e,f
     a = getInteger(output / 1000000)
@@ -246,6 +250,7 @@ function draw_number(mon, output, x, y, color, rftcolor)
     drawRFT(mon, x+33, y, rftcolor)
 end
 
+--draw RF/T on computer terminal(mon)
 function drawRFT(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
     gui.draw_column(mon, x, y, 5, color)
@@ -274,6 +279,7 @@ function drawRFT(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
+--clear computer terminal(mon)
 function clear(mon)
     term.clear()
     term.setCursorPos(1,1)
