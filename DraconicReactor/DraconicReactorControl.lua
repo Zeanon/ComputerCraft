@@ -291,6 +291,9 @@ function buttons()
         -- reactor control
         local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
+        if fuelPercent == math.huge or isnan(fuelPercent) then
+            fuelPercent = 0
+        end
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
@@ -331,8 +334,6 @@ function buttons()
         -- output gate controls
         -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
         -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
-        local satPercent
-        satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if yPos >= 5 and yPos <= 6 then
             if xPos >= 2 and xPos <= 4 then
                 curOutput = curOutput-1000
