@@ -608,19 +608,19 @@ function update()
         if energyPercent == 100 then
             outputInputHyteresis = 0
 		elseif energyPercent >= 95 and energyPercent < 100  then
-			outputInputHyteresis = 1000
-        elseif energyPercent >= 90 and energyPercent < 95 then
-            outputInputHyteresis = 2500
-		elseif energyPercent >= 80 and energyPercent < 90 then
-			outputInputHyteresis = 5000
-		elseif energyPercent >= 70 and energyPercent < 80 then
-			outputInputHyteresis = 7500
-		elseif energyPercent >= 60 and energyPercent < 70 then
 			outputInputHyteresis = 10000
+        elseif energyPercent >= 90 and energyPercent < 95 then
+            outputInputHyteresis = 25000
+		elseif energyPercent >= 80 and energyPercent < 90 then
+			outputInputHyteresis = 50000
+		elseif energyPercent >= 70 and energyPercent < 80 then
+			outputInputHyteresis = 75000
+		elseif energyPercent >= 60 and energyPercent < 70 then
+			outputInputHyteresis = 100000
 		elseif energyPercent >= 50 and energyPercent < 60 then
-			outputInputHyteresis = 12500
+			outputInputHyteresis = 125000
 		elseif energyPercent >= 40 and energyPercent < 50 then
-			outputInputHyteresis = 25000
+			outputInputHyteresis = 250000
 		elseif core.getEnergyStored() < 1000000 then
 			action = "not enough buffer energy left"
 			reactor.stopReactor()
