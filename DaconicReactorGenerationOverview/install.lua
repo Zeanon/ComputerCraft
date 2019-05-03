@@ -37,7 +37,7 @@ file3.close()
 generationOverview = http.get(generationOverviewURL)
 generationOverviewFile = generationOverview.readAll()
 
-local file4 = fs.open("GenerationOverview", "w")
+local file4 = fs.open("DraconicReactorGenerationOverview", "w")
 file4.write(generationOverviewFile)
 file4.close()
 
