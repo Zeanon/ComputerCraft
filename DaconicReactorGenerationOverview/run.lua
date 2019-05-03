@@ -1,4 +1,4 @@
 while true do
-  shell.run("GenerationOverview")
+  shell.run("DraconicReactorGenerationOverview")
   os.sleep(2.5);
 end
