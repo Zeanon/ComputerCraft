@@ -36,7 +36,7 @@ local minChangeWait = 15
 -- the amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 50
 -- maximum output level
-local maxOutput = 1200000
+local maxTargetOutput = 1200000
 
 local activateOnCharged = true
 
@@ -141,7 +141,7 @@ function save_config()
     sw.writeLine("-- the amount of turns to be checked if stable")
     sw.writeLine("stableTurns: " .. stableTurns)
     sw.writeLine("-- the maximum allowed output")
-    sw.writeLine("maxOutput: " .. maxOutput)
+    sw.writeLine("maxTargetOutput: " .. maxTargetOutput)
     sw.writeLine(" ")
     sw.writeLine("-- just some saved data")
     if autoInputGate then
@@ -217,8 +217,8 @@ function load_config()
             minChangeWait = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "stableTurns" then
             stableTurns = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "maxOutput" then
-            maxOutput = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "maxTargetOutput" then
+            maxTargetOutput = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "internalInput" then
             internalInput = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalOutput" then
@@ -356,8 +356,8 @@ function buttons()
                 curOutput = 0
             end
 
-            if curOutput > maxOutput then
-                curOutput = maxOutput
+            if curOutput > maxTargetOutput then
+                curOutput = maxTargetOutput
             end
             save_config()
         end
@@ -384,8 +384,8 @@ function buttons()
                 curInputGate = 0
             end
 
-            if curInputGate > maxOutput then
-                curInputGate = maxOutput
+            if curInputGate > maxTargetOutput then
+                curInputGate = maxTargetOutput
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
             save_config()
