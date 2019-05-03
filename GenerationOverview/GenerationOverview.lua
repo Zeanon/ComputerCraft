@@ -31,6 +31,14 @@ function getGeneration()
     return totalGeneration
 end
 
+function printGeneration()
+    local reactor1, reactor2 = peripheral.find("draconic_reactor")
+    local ri1 = reactor1.getReactorInfo()
+    local ri2 = reactor2.getReactorInfo()
+    print("Reactor 1 Generation: " .. gui.format_int(ri1.generationRate))
+    print("Reactor 2 Generation: " .. gui.format_int(ri2.generationRate))
+end
+
 function update()
     local output = getGeneration() - getDrainback()
     local totalGeneration = getGeneration()
