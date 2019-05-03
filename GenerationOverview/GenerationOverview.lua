@@ -47,6 +47,7 @@ function update()
     print("Displaying total reactor energy output on monitor")
     print("Total reactor output: " .. gui.format_int(output))
     print("Total generation: " .. gui.format_int(totalGeneration))
+    printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
     if mon.Y < 16 then
         local y = gui.getInteger((mon.Y - 6) / 2)
