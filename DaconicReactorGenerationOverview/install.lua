@@ -2,7 +2,7 @@
 -- get it with pastebin get VT6ezUgB install
 -- pastebin link: https://pastebin.com/VT6ezUgB
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/GenerationOverview/startup.lua"
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/run.lua"
 local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/DaconicReactorGenerationOverview.lua"
 local lib, startup, run, generationOverview
