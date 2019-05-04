@@ -18,19 +18,19 @@ local safeTemperature = 5000
 -- if the containment field gets below this value the reactor will be shut down
 local lowestFieldPercent = 15
 local fieldBoost = 25
-local fieldBoostOutput = 200000
+local fieldBoostOutput = 400000
 -- different boost levels for energySaturation
 local satBoostThreshold = 25
 local satBoost1 = 35
-local satBoost1Output = 350000
+local satBoost1Output = 600000
 local satBoost2 = 45
-local satBoost2Output = 600000
+local satBoost2Output = 1000000
 -- tolerances for auto boosting
 local genTolerance = 250
 local satTolerance = 2
 local tempTolerance = 10
 local maxIncrease = 10000
-local safeTarget = 20000
+local safeTarget = 100000
 -- the amount of loops the program goes through until the output can be changed again
 local minChangeWait = 15
 -- the amount of turns the program will save to check whether the reactor is stable
