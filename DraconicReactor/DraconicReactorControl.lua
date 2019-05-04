@@ -400,10 +400,6 @@ function buttons()
             end
             save_config()
         end
-
-        -- Numpad
-
-
     end
 end
 
