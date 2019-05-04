@@ -432,6 +432,10 @@ function update()
         ri = reactor.getReactorInfo()
         local fluxval = 0
 
+        inputfluxgate.setOverrideEnabled(false)
+        outputfluxgate.setOverrideEnabled(false)
+        externalfluxgate.setOverrideEnabled(false)
+
         local satPercent, satColor
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if isnan(satPercent) then
