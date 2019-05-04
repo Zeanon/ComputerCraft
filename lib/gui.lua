@@ -89,6 +89,16 @@ function draw_column(mon, x, y, height, color)
     end
 end
 
+function drawButtons(mon, x, y, color, bgcolor1, bgcolor2)
+    draw_text(mon, x, y, " < ", color, bgcolor1)
+    draw_text(mon, x+4, y, " <<", color, bgcolor1)
+    draw_text(mon, x+8, y, "<<<", color, bgcolor1)
+
+    draw_text(mon, x+15, y, ">>>", color, bgcolor2)
+    draw_text(mon, x+19, y, ">> ", color, bgcolor2)
+    draw_text(mon, x+23, y, " > ", color, bgcolor2)
+end
+
 --create progress bar
 --draws two overlapping lines
 --background line of bg_color

@@ -412,15 +412,10 @@ end
 function drawButtons(y)
     -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
     -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
-
-    gui.draw_text(mon, 2, y, " < ", colors.white, colors.lightBlue)
-    gui.draw_text(mon, 6, y, " <<", colors.white, colors.lightBlue)
-    gui.draw_text(mon, 10, y, "<<<", colors.white, colors.lightBlue)
-
-    gui.draw_text(mon, 17, y, ">>>", colors.white, colors.purple)
-    gui.draw_text(mon, 21, y, ">> ", colors.white, colors.purple)
-    gui.draw_text(mon, 25, y, " > ", colors.white, colors.purple)
+    gui.drawButtons(2, y, colors.white, colors.lightBlue, colors.purple)
 end
+
+
 
 
 
