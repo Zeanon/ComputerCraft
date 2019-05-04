@@ -1,6 +1,7 @@
 -- configure color
 local color = colors.red
 local rftcolor = colors.gray
+
 -- program
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
