@@ -388,8 +388,7 @@ function buttons()
             if curInputGate > maxTargetGeneration then
                 curInputGate = maxTargetGeneration
             end
-            inputfluxgate.setSignalLowFlow(curInputGate)
-            inputfluxgate.setSignalHighFlow(curInputGate)
+            inputfluxgate.setFlowOverride(curInputGate)
             gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(curInputGate) .. " RF/t", colors.white, colors.blue, colors.black)
             save_config()
         end
@@ -539,10 +538,8 @@ function update()
         if fieldPercent <= fieldBoost and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
             action = "Field Str dangerous"
             emergencyFlood = true
-            inputfluxgate.setSignalLowFlow(900000)
-            inputfluxgate.setSignalHighFlow(900000)
-            outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(900000 + outputInputHyteresis)
+            inputfluxgate.setFlowOverride(900000)
+            outputfluxgate.setFlowOverride(900000 + outputInputHyteresis)
             fieldthreshold = fieldBoostOutput
         else
             emergencyFlood = false
@@ -602,10 +599,8 @@ function update()
 
         -- are we charging? open the floodgates
         if ri.status == "charging" then
-            inputfluxgate.setSignalLowFlow(900000)
-            inputfluxgate.setSignalHighFlow(900000)
-            outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(900000 + outputInputHyteresis)
+            inputfluxgate.setFlowOverride(900000)
+            outputfluxgate.setFlowOverride(900000 + outputInputHyteresis)
             emergencyCharge = false
         end
 
@@ -637,11 +632,9 @@ function update()
         if emergencyFlood == false and (ri.status == "online" or ri.status == "stopping") then
             if autoInputGate then
                 fluxval = ri.fieldDrainRate / (1 - (targetStrength/100))
-                inputfluxgate.setSignalLowFlow(fluxval)
-                inputfluxgate.setSignalHighFlow(fluxval)
+                inputfluxgate.setFlowOverride(fluxval)
             else
-                inputfluxgate.setSignalLowFlow(curInputGate)
-                inputfluxgate.setSignalHighFlow(curInputGate)
+                inputfluxgate.setFlowOverride(curInputGate)
             end
         end
 
@@ -829,31 +822,25 @@ function getOutput()
     tempOutput = externalfluxgate.getFlow() + tempOutput
     if emergencyFlood == false and ri.status ~= "offline" then
         if (externalfluxgate.getFlow() + outputfluxgate.getFlow() < curOutput) and (externalfluxgate.getFlow() + outputfluxgate.getFlow() < threshold or threshold == -1) then
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getFlow() + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(outputfluxgate.getFlow())
+            outputfluxgate.setFlowOverride(inputfluxgate.getFlow() + outputInputHyteresis)
         end
         if ri.generationRate < safeTarget - 2500 then
            if threshold < safeTarget and threshold ~= -1 then
                if threshold < curOutput then
-                   externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getFlow())
-                   externalfluxgate.setSignalHighFlow(externalfluxgate.getFlow())
+                   externalfluxgate.setFlowOverride(threshold - outputfluxgate.getFlow())
                else
-                   externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getFlow())
-                   externalfluxgate.setSignalHighFlow(externalfluxgate.getFlow())
+                   externalfluxgate.setFlowOverride(curOutput - outputfluxgate.getFlow())
                end
            else
                if curOutput < safeTarget then
-                   externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getFlow())
-                   externalfluxgate.setSignalHighFlow(externalfluxgate.getFlow())
+                   externalfluxgate.setFlowOverride(curOutput - outputfluxgate.getFlow())
                else
-                   externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getFlow())
-                   externalfluxgate.setSignalHighFlow(externalfluxgate.getFlow())
+                   externalfluxgate.setFlowOverride(safeTarget - outputfluxgate.getFlow())
                end
            end
         else
             if checkOutput()and sinceOutputChange == 0 then
-                externalfluxgate.setSignalLowFlow(tempOutput)
-                externalfluxgate.setSignalHighFlow(tempOutput)
+                externalfluxgate.setFlowOverride(tempOutput)
                 if threshold > curOutput or threshold == -1 then
                     sinceOutputChange = minChangeWait
                 end
@@ -861,40 +848,29 @@ function getOutput()
         end
         if externalfluxgate.getFlow() + outputfluxgate.getFlow() > curOutput then
             if outputfluxgate.getFlow() > curOutput then
-                outputfluxgate.setSignalLowFlow(curOutput)
-                outputfluxgate.setSignalHighFlow(curOutput)
-                externalfluxgate.setSignalLowFlow(0)
-                externalfluxgate.setSignalHighFlow(0)
+                outputfluxgate.setFlowOverride(curOutput)
+                externalfluxgate.setFlowOverride(0)
             else
-                outputfluxgate.setSignalLowFlow(inputfluxgate.getFlow() + outputInputHyteresis)
-                outputfluxgate.setSignalHighFlow(outputfluxgate.getFlow())
-                externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getFlow())
-                externalfluxgate.setSignalHighFlow(externalfluxgate.getFlow())
+                outputfluxgate.setFlowOverride(inputfluxgate.getFlow() + outputInputHyteresis)
+                externalfluxgate.setFlowOverride(curOutput - outputfluxgate.getFlow())
             end
         end
         if externalfluxgate.getFlow() + outputfluxgate.getFlow() > threshold and threshold ~= -1 then
             if outputfluxgate.getFlow() > threshold then
-                outputfluxgate.setSignalLowFlow(threshold)
-                outputfluxgate.setSignalHighFlow(threshold)
-                externalfluxgate.setSignalLowFlow(0)
-                externalfluxgate.setSignalHighFlow(0)
+                outputfluxgate.setFlowOverride(threshold)
+                externalfluxgate.setFlowOverride(0)
             else
-                outputfluxgate.setSignalLowFlow(inputfluxgate.getFlow() + outputInputHyteresis)
-                outputfluxgate.setSignalHighFlow(outputfluxgate.getFlow())
-                externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getFlow())
-                externalfluxgate.setSignalHighFlow(externalfluxgate.getFlow())
+                outputfluxgate.setFlowOverride(inputfluxgate.getFlow() + outputInputHyteresis)
+                externalfluxgate.setFlowOverride(threshold - outputfluxgate.getFlow())
             end
         end
     end
     if ri.status == "offline" then
-        outputfluxgate.setSignalLowFlow(0)
-        outputfluxgate.setSignalHighFlow(0)
-        externalfluxgate.setSignalLowFlow(0)
-        externalfluxgate.setSignalHighFlow(0)
+        outputfluxgate.setFlowOverride(0)
+        externalfluxgate.setFlowOverride(0)
     end
     if externalfluxgate.getFlow() < 0 then
-        externalfluxgate.setSignalLowFlow(0)
-        externalfluxgate.setSignalHighFlow(0)
+        externalfluxgate.setFlowOverride(0)
     end
 end
 
