@@ -390,7 +390,7 @@ function buttons()
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
             inputfluxgate.setSignalHighFlow(curInputGate)
-            gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(curInputGate) .. " RF/t", colors.white, colors.blue, colors.black)
             save_config()
         end
 
