@@ -36,7 +36,7 @@ local minChangeWait = 15
 -- the amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 50
 -- maximum output level
-local maxTargetOutput = 1200000
+local maxTargetGeneration = 1400000
 
 local activateOnCharged = true
 
@@ -44,7 +44,7 @@ local activateOnCharged = true
 os.loadAPI("lib/gui")
 os.loadAPI("lib/surface")
 
-local version = "1.1.5"
+local version = "1.2.0"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
@@ -141,7 +141,7 @@ function save_config()
     sw.writeLine("-- the amount of turns to be checked if stable")
     sw.writeLine("stableTurns: " .. stableTurns)
     sw.writeLine("-- the maximum allowed output")
-    sw.writeLine("maxTargetOutput: " .. maxTargetOutput)
+    sw.writeLine("maxTargetGeneration: " .. maxTargetGeneration)
     sw.writeLine(" ")
     sw.writeLine("-- just some saved data")
     if autoInputGate then
@@ -217,8 +217,8 @@ function load_config()
             minChangeWait = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "stableTurns" then
             stableTurns = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "maxTargetOutput" then
-            maxTargetOutput = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "maxTargetGeneration" then
+            maxTargetGeneration = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "internalInput" then
             internalInput = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalOutput" then
@@ -356,8 +356,8 @@ function buttons()
                 curOutput = 0
             end
 
-            if curOutput > maxTargetOutput then
-                curOutput = maxTargetOutput
+            if curOutput > maxTargetGeneration then
+                curOutput = maxTargetGeneration
             end
             save_config()
         end
@@ -384,10 +384,11 @@ function buttons()
                 curInputGate = 0
             end
 
-            if curInputGate > maxTargetOutput then
-                curInputGate = maxTargetOutput
+            if curInputGate > maxTargetGeneration then
+                curInputGate = maxTargetGeneration
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
+            inputfluxgate.setSignalHighFlow(curInputGate)
             save_config()
         end
 
@@ -539,7 +540,9 @@ function update()
             action = "Field Str dangerous"
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
+            inputfluxgate.setSignalHighFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
+            outputfluxgate.setSignalHighFlow(900000 + outputInputHyteresis)
             fieldthreshold = fieldBoostOutput
         else
             emergencyFlood = false
@@ -600,7 +603,9 @@ function update()
         -- are we charging? open the floodgates
         if ri.status == "charging" then
             inputfluxgate.setSignalLowFlow(900000)
+            inputfluxgate.setSignalHighFlow(900000)
             outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
+            outputfluxgate.setSignalHighFlow(900000 + outputInputHyteresis)
             emergencyCharge = false
         end
 
@@ -633,8 +638,10 @@ function update()
             if autoInputGate then
                 fluxval = ri.fieldDrainRate / (1 - (targetStrength/100))
                 inputfluxgate.setSignalLowFlow(fluxval)
+                inputfluxgate.setSignalHighFlow(fluxval)
             else
                 inputfluxgate.setSignalLowFlow(curInputGate)
+                inputfluxgate.setSignalHighFlow(curInputGate)
             end
         end
 
@@ -823,24 +830,30 @@ function getOutput()
     if emergencyFlood == false and ri.status ~= "offline" then
         if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < threshold or threshold == -1) then
             outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+            outputfluxgate.setSignalHighFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
         end
         if ri.generationRate < safeTarget - 2500 then
            if threshold < safeTarget and threshold ~= -1 then
                if threshold < curOutput then
                    externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
+                   externalfluxgate.setSignalHighFlow(threshold - outputfluxgate.getSignalLowFlow())
                else
                    externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+                   externalfluxgate.setSignalHighFlow(curOutput - outputfluxgate.getSignalLowFlow())
                end
            else
                if curOutput < safeTarget then
                    externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+                   externalfluxgate.setSignalHighFlow(curOutput - outputfluxgate.getSignalLowFlow())
                else
                    externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
+                   externalfluxgate.setSignalHighFlow(safeTarget - outputfluxgate.getSignalLowFlow())
                end
            end
         else
             if checkOutput()and sinceOutputChange == 0 then
                 externalfluxgate.setSignalLowFlow(tempOutput)
+                externalfluxgate.setSignalHighFlow(tempOutput)
                 if threshold > curOutput or threshold == -1 then
                     sinceOutputChange = minChangeWait
                 end
@@ -849,28 +862,39 @@ function getOutput()
         if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
             if outputfluxgate.getSignalLowFlow() > curOutput then
                 outputfluxgate.setSignalLowFlow(curOutput)
+                outputfluxgate.setSignalHighFlow(curOutput)
                 externalfluxgate.setSignalLowFlow(0)
+                externalfluxgate.setSignalHighFlow(0)
             else
                 outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                outputfluxgate.setSignalHighFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                 externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+                externalfluxgate.setSignalHighFlow(curOutput - outputfluxgate.getSignalLowFlow())
             end
         end
         if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > threshold and threshold ~= -1 then
             if outputfluxgate.getSignalLowFlow() > threshold then
                 outputfluxgate.setSignalLowFlow(threshold)
+                outputfluxgate.setSignalHighFlow(threshold)
                 externalfluxgate.setSignalLowFlow(0)
+                externalfluxgate.setSignalHighFlow(0)
             else
                 outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                outputfluxgate.setSignalHighFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                 externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
+                externalfluxgate.setSignalHighFlow(threshold - outputfluxgate.getSignalLowFlow())
             end
         end
     end
     if ri.status == "offline" then
         outputfluxgate.setSignalLowFlow(0)
+        outputfluxgate.setSignalHighFlow(0)
         externalfluxgate.setSignalLowFlow(0)
+        externalfluxgate.setSignalHighFlow(0)
     end
     if externalfluxgate.getSignalLowFlow() < 0 then
         externalfluxgate.setSignalLowFlow(0)
+        externalfluxgate.setSignalHighFlow(0)
     end
 end
 
