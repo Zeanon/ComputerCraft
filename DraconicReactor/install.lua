@@ -5,9 +5,10 @@
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/run.lua"
+local disableOverrideURL = ""
 local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/DraconicReactorControl.lua"
-local lib, startup, run, reactorControl
-local libFile, startupFile, runFile, reactorControlFile
+local lib, startup, run, disableOverride, reactorControl
+local libFile, startupFile, runFile, disableOverrideFile, reactorControlFile
 
 fs.makeDir("lib")
 
@@ -35,12 +36,20 @@ file3.write(runFile)
 file3.close()
 
 
+disableOverride = http.get(disableOverrideURL)
+disableOverrideFile = disableOverride.readAll()
+
+local file4 = fs.open("disableOverride", "w")
+file4.write(disableOverrideFile)
+file4.close()
+
+
 reactorControl = http.get(reactorControlURL)
 reactorControlFile = reactorControl.readAll()
 
-local file4 = fs.open("DraconicReactor", "w")
-file4.write(reactorControlFile)
-file4.close()
+local file5 = fs.open("DraconicReactor", "w")
+file5.write(reactorControlFile)
+file5.close()
 
 if fs.exists("update") then
     shell.run("delete update")
