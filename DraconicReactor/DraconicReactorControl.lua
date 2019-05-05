@@ -325,12 +325,12 @@ function buttons()
                 gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
                 gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
                 gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
-                editConfigButton = 1
+                editConfigButton = 3
             elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
                 gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
                 gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
                 gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
-                loadConfigButton = 1
+                loadConfigButton = 3
             end
         end
 
@@ -359,7 +359,7 @@ function buttons()
             if curOutput > maxTargetGeneration then
                 curOutput = maxTargetGeneration
             end
-            gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
+            --gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
             save_config()
         end
 
@@ -390,7 +390,7 @@ function buttons()
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
             inputfluxgate.setSignalHighFlow(curInputGate)
-            gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(curInputGate) .. " RF/t", colors.white, colors.blue, colors.black)
+            --gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(curInputGate) .. " RF/t", colors.white, colors.blue, colors.black)
             save_config()
         end
 
@@ -398,12 +398,12 @@ function buttons()
         if yPos == 8 and ( xPos == 14 or xPos == 15) then
             if autoInputGate then
                 autoInputGate = false
-                gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
+                --gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
                 drawButtons(8)
             else
                 autoInputGate = true
-                gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
-                gui.draw_line(mon, 2, 8, 30, colors.black)
+                --gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
+                --gui.draw_line(mon, 2, 8, 30, colors.black)
             end
             save_config()
         end
@@ -793,7 +793,7 @@ function update()
             loadConfigButton = loadConfigButton - 1
         end
 
-        sleep(0.5)
+        sleep(0.2)
     end
 end
 
