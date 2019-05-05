@@ -796,6 +796,7 @@ function update()
     end
 end
 
+
 function getOutput()
     if ri.status == "charging" then
         threshold = 0
