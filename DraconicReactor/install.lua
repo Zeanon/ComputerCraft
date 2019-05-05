@@ -5,7 +5,7 @@
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/run.lua"
-local disableOverrideURL = ""
+local disableOverrideURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/disableOverride.lua"
 local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/DraconicReactorControl.lua"
 local lib, startup, run, disableOverride, reactorControl
 local libFile, startupFile, runFile, disableOverrideFile, reactorControlFile
