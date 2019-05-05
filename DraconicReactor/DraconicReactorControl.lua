@@ -32,11 +32,11 @@ local tempTolerance = 10
 local maxIncrease = 10000
 local safeTarget = 100000
 -- the amount of loops the program goes through until the output can be changed again
-local minChangeWait = 15
+local minChangeWait = 10
 -- the amount of turns the program will save to check whether the reactor is stable
-local stableTurns = 50
+local stableTurns = 25
 -- maximum output level
-local maxTargetGeneration = 1400000
+local maxTargetGeneration = 1200000
 
 local activateOnCharged = true
 
