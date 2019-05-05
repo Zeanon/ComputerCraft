@@ -68,5 +68,5 @@ end
 
 while true do
     update()
-    sleep(0.75)
+    sleep(1)
 end
