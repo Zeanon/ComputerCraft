@@ -260,6 +260,10 @@ externalfluxgate = peripheral.wrap(externalOutput)
 reactor = peripheral.find("draconic_reactor")
 core = peripheral.find("draconic_rf_storage")
 
+monX, monY = monitor.getSize()
+mon = {}
+mon.monitor,mon.X, mon.Y = monitor, monX, monY
+
 if monitor == null then
     error("No valid monitor was found")
 end
@@ -419,10 +423,6 @@ end
 
 function update()
     while true do
-        monX, monY = monitor.getSize()
-        mon = {}
-        mon.monitor,mon.X, mon.Y = monitor, monX, monY
-
         gui.clear(mon)
         ri = reactor.getReactorInfo()
         local fluxval = 0
