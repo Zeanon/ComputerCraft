@@ -359,8 +359,8 @@ function buttons()
             if curOutput > maxTargetGeneration then
                 curOutput = maxTargetGeneration
             end
-            gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
             save_config()
+            gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
         end
 
         -- input gate controls
@@ -390,8 +390,8 @@ function buttons()
             end
             inputfluxgate.setSignalLowFlow(curInputGate)
             inputfluxgate.setSignalHighFlow(curInputGate)
-            gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(curInputGate) .. " RF/t", colors.white, colors.blue, colors.black)
             save_config()
+            gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
         end
 
         -- input gate toggle
@@ -650,7 +650,7 @@ function update()
         -- monitor output
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-        gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
         drawButtons(5)
 
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
