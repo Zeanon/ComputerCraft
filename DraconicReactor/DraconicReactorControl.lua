@@ -360,6 +360,7 @@ function buttons()
                 curOutput = maxTargetGeneration
             end
             save_config()
+            gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
         end
 
         -- input gate controls
@@ -390,19 +391,21 @@ function buttons()
             inputfluxgate.setSignalLowFlow(curInputGate)
             inputfluxgate.setSignalHighFlow(curInputGate)
             save_config()
+            gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
         end
 
         -- input gate toggle
         if yPos == 8 and ( xPos == 14 or xPos == 15) then
             if autoInputGate then
                 autoInputGate = false
+                save_config()
                 gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
                 drawButtons(8)
             else
                 autoInputGate = true
+                save_config()
                 gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
             end
-            save_config()
         end
     end
 end
