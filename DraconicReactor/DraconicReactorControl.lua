@@ -663,7 +663,7 @@ function update()
         end
 
         gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
-        gui.draw_column(mon, mon.X-27, 0, mon.Y+1, colors.gray)
+        gui.draw_column(mon, mon.X-27, 1, mon.Y, colors.gray)
 
         gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
         gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
