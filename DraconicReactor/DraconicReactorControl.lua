@@ -412,6 +412,9 @@ end
 function drawButtons(y)
     -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
     -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
+    monX, monY = monitor.getSize()
+    mon = {}
+    mon.monitor,mon.X, mon.Y = monitor, monX, monY
     gui.drawButtons(mon, 2, y, colors.white, colors.lightBlue, colors.purple)
 end
 
