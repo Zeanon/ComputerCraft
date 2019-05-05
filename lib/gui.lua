@@ -17,7 +17,9 @@ end
 
 --get the integer value of a number under 10
 function getInteger(number)
-    if 0 <= number and number < 1 then
+    if number < 0 then
+        return 0
+    elseif 0 <= number and number < 1 then
         return 0
     elseif 1 <= number and number < 2 then
         return 1

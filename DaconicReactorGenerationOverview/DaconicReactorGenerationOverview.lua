@@ -49,20 +49,21 @@ function update()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
+    local x = gui.getInteger((mon.X - 44) / 2)
     if mon.Y < 16 then
         local y = gui.getInteger((mon.Y - 6) / 2)
-        gui.draw_number(mon, output, 2, y, color, rftcolor)
+        gui.draw_number(mon, output, x, y, color, rftcolor)
     elseif mon.Y >= 16 and mon.Y < 24 then
         local y = gui.getInteger((mon.Y - 14) / 2)
-        gui.draw_number(mon, output, 2, y, color, rftcolor)
+        gui.draw_number(mon, output, x, y, color, rftcolor)
         gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-        gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
+        gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
     else
         local y = gui.getInteger((mon.Y - 22) / 2)
-        gui.draw_number(mon, output, 2, y, color, rftcolor)
+        gui.draw_number(mon, output, x, y, color, rftcolor)
         gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-        gui.draw_number(mon, totalGeneration, 2, y + 10, color, rftcolor)
-        gui.draw_number(mon, totalDrainback, 2, y + 18, color, rftcolor)
+        gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
+        gui.draw_number(mon, totalDrainback, x, y + 18, color, rftcolor)
     end
 end
 
