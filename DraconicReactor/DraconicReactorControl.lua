@@ -325,12 +325,12 @@ function buttons()
                 gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
                 gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
                 gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
-                editConfigButton = 3
+                editConfigButton = 2
             elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
                 gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
                 gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
                 gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
-                loadConfigButton = 3
+                loadConfigButton = 2
             end
         end
 
