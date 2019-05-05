@@ -403,6 +403,7 @@ function buttons()
             else
                 autoInputGate = true
                 gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
+                gui.draw_line(mon, 2, 8, 30, colors.black)
             end
             save_config()
         end
