@@ -13,7 +13,7 @@ mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function getDrainback()
     local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
-    local totalDrainback = fluxgate1.getFlow() + fluxgate2.getFlow()
+    local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
     return totalDrainback
 end
 
