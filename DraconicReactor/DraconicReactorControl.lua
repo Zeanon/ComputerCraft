@@ -416,9 +416,6 @@ function drawButtons(y)
 end
 
 
-
-
-
 function update()
     while true do
         monX, monY = monitor.getSize()
