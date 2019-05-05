@@ -49,7 +49,7 @@ function update()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 44) / 2)
+    local x = gui.getInteger((mon.X - 45) / 2)
     if mon.Y < 16 then
         local y = gui.getInteger((mon.Y - 6) / 2)
         gui.draw_number(mon, output, x, y, color, rftcolor)
