@@ -396,12 +396,11 @@ function buttons()
         if yPos == 8 and ( xPos == 14 or xPos == 15) then
             if autoInputGate then
                 autoInputGate = false
-                --gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
+                gui.draw_text(mon, 14, 8, "MA", colors.white, colors.green)
                 drawButtons(8)
             else
                 autoInputGate = true
-                --gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
-                --gui.draw_line(mon, 2, 8, 30, colors.black)
+                gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
             end
             save_config()
         end
@@ -648,7 +647,7 @@ function update()
         -- monitor output
         gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-        gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 4, 28, "Target Output", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
         drawButtons(5)
 
         gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
