@@ -668,11 +668,11 @@ function update()
         gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
         gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
 
-        gui.draw_text_lr(mon, 2, 15, 28, "Temperature", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        gui.draw_text_lr(mon, 2, 15, 28, "Temperature   max:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
         gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor,  colors.lightGray)
 
         if autoInputGate then
-            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength   T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
             gui.draw_text_lr(mon, 2, 18, 28, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
