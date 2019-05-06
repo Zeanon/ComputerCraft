@@ -40,7 +40,7 @@ function printGeneration()
     print("Reactor 2 Generation: " .. gui.format_int(ri2.generationRate))
 end
 
-function update()
+function update1()
     local output = getGeneration() - getDrainback()
     local totalGeneration = getGeneration()
     local totalDrainback = getDrainback()
@@ -50,24 +50,56 @@ function update()
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
     local x = gui.getInteger((mon.X - 45) / 2)
-    if mon.Y < 16 then
-        local y = gui.getInteger((mon.Y - 6) / 2)
-        gui.draw_number(mon, output, x, y, color, rftcolor)
-    elseif mon.Y >= 16 and mon.Y < 24 then
-        local y = gui.getInteger((mon.Y - 14) / 2)
-        gui.draw_number(mon, output, x, y, color, rftcolor)
-        gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-        gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
-    else
-        local y = gui.getInteger((mon.Y - 22) / 2)
-        gui.draw_number(mon, output, x, y, color, rftcolor)
-        gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-        gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
-        gui.draw_number(mon, totalDrainback, x, y + 18, color, rftcolor)
-    end
+    local y = gui.getInteger((mon.Y - 6) / 2)
+    gui.draw_number(mon, output, x, y, color, rftcolor)
 end
 
-while true do
-    update()
-    sleep(1)
+function update2()
+    local output = getGeneration() - getDrainback()
+    local totalGeneration = getGeneration()
+    local totalDrainback = getDrainback()
+    gui.clear(mon)
+    print("Total reactor output: " .. gui.format_int(output))
+    print("Total generation: " .. gui.format_int(totalGeneration))
+    printGeneration()
+    print("Total drainback: " .. gui.format_int(totalDrainback))
+    local x = gui.getInteger((mon.X - 45) / 2)
+    local y = gui.getInteger((mon.Y - 14) / 2)
+    gui.draw_number(mon, output, x, y, color, rftcolor)
+    gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+    gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
+end
+
+function update3()
+    local output = getGeneration() - getDrainback()
+    local totalGeneration = getGeneration()
+    local totalDrainback = getDrainback()
+    gui.clear(mon)
+    print("Total reactor output: " .. gui.format_int(output))
+    print("Total generation: " .. gui.format_int(totalGeneration))
+    printGeneration()
+    print("Total drainback: " .. gui.format_int(totalDrainback))
+    local x = gui.getInteger((mon.X - 45) / 2)
+    local y = gui.getInteger((mon.Y - 22) / 2)
+    gui.draw_number(mon, output, x, y, color, rftcolor)
+    gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+    gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
+    gui.draw_number(mon, totalDrainback, x, y + 18, color, rftcolor)
+end
+
+if mon.Y < 16 then
+    while true do
+        update1()
+        sleep(1)
+    end
+elseif mon.Y >= 16 and mon.Y < 24 then
+    while true do
+        update3()
+        sleep(1)
+    end
+else
+    while true do
+        update5()
+        sleep(1)
+    end
 end
