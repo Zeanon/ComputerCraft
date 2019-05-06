@@ -94,12 +94,12 @@ if mon.Y < 16 then
     end
 elseif mon.Y >= 16 and mon.Y < 24 then
     while true do
-        update3()
+        update2()
         sleep(1)
     end
 else
     while true do
-        update4()
+        update3()
         sleep(1)
     end
 end
