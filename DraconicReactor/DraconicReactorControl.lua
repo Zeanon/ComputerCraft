@@ -509,6 +509,11 @@ function update()
                 redstone.setOutput(v, true)
             end
         end
+        if ri.status == "stopping" then
+            for k,v in pairs(redstone.getSides()) do
+                redstone.setOutput(v, true)
+            end
+        end
 
 
         -- SAFEGUARDS -- DONT EDIT
