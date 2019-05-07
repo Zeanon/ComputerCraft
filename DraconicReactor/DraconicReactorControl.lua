@@ -260,10 +260,6 @@ externalfluxgate = peripheral.wrap(externalOutput)
 reactor = peripheral.find("draconic_reactor")
 core = peripheral.find("draconic_rf_storage")
 
-monX, monY = monitor.getSize()
-mon = {}
-mon.monitor,mon.X, mon.Y = monitor, monX, monY
-
 if monitor == null then
     error("No valid monitor was found")
 end
@@ -287,6 +283,10 @@ end
 if core == null then
     error("No valid energy core was found")
 end
+
+monX, monY = monitor.getSize()
+mon = {}
+mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 
 function buttons()
