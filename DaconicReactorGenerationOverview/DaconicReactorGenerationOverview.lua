@@ -49,7 +49,7 @@ function update1()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 44) / 2) + 1
+    local x = gui.getInteger((mon.X - 47) / 2) + 1
     local y = gui.getInteger((mon.Y - 6) / 2)
     gui.draw_number(mon, output, x, y, color, rftcolor)
 end
@@ -63,7 +63,7 @@ function update2()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 45) / 2)
+    local x = gui.getInteger((mon.X - 47) / 2) + 1
     local y = gui.getInteger((mon.Y - 14) / 2)
     gui.draw_number(mon, output, x, y, color, rftcolor)
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
@@ -79,7 +79,7 @@ function update3()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 45) / 2)
+    local x = gui.getInteger((mon.X - 47) / 2) + 1
     local y = gui.getInteger((mon.Y - 22) / 2)
     gui.draw_number(mon, output, x, y, color, rftcolor)
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
