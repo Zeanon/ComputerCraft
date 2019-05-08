@@ -1,5 +1,4 @@
 -- formatting
-
 function format_int(number)
 
     if number == nil then
@@ -66,7 +65,7 @@ function draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color,
 	draw_text_right(mon, offset, y, text2, text2_color, bg_color)
 end
 
---draw line on computer terminal(mon)
+--draw horizontal line on computer terminal(mon)
 function draw_line(mon, x, y, length, color)
     if length < 0 then
       length = 0
