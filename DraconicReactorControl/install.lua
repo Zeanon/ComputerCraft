@@ -3,9 +3,9 @@
 -- pastebin link: https://pastebin.com/UKxFmqXx
 
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/startup.lua"
-local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/run.lua"
-local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactor/DraconicReactorControl.lua"
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorControl/startup.lua"
+local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorControl/run.lua"
+local reactorControlURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorControl/DraconicReactorControl.lua"
 local lib, startup, run, reactorControl
 local libFile, startupFile, runFile, reactorControlFile
 
