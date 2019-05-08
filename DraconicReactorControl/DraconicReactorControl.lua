@@ -866,7 +866,7 @@ function getOutput()
                end
            end
         else
-            if checkOutput()and sinceOutputChange == 0 and ri.temperature <= safeTemperature and satPercent > targetSat - 5 then
+            if checkOutput()and sinceOutputChange == 0 and ri.temperature <= safeTemperature and satPercent > targetSat then
                 externalfluxgate.setSignalLowFlow(tempOutput)
                 externalfluxgate.setSignalHighFlow(tempOutput)
                 if threshold > curOutput or threshold == -1 then
@@ -957,7 +957,7 @@ function checkOutput()
         end
         i = i + 1
     end
-    if lastTemp[stableTurns] > safeTemperature - (500 / tempTolerance) or lastSat[stableTurns] < targetSat + satTolerance then
+    if lastTemp[stableTurns] > safeTemperature - (500 / tempTolerance) or lastSat[stableTurns] < targetSat + (10 / satTolerance) then
         return false
     end
 	return true
