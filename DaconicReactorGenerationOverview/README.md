@@ -1,4 +1,4 @@
-# GenerationOverview
+# DraconicReactorGenerationOverview
 ## Setup
 just connect the 2 reactors via peripheral proxys and the 2 internalOutput fluxgates to the computer and add a screen(5 wide)
 <br> the items displayed on the screen will adjust depending on the height of the screen
