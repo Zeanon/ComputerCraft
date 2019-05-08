@@ -37,6 +37,8 @@ local minChangeWait = 10
 local stableTurns = 25
 -- maximum output level
 local maxTargetGeneration = 1200000
+-- target saturation
+local targetSat = 50
 
 local activateOnCharged = true
 
@@ -84,6 +86,14 @@ local action = "None since reboot"
 local emergencyCharge = false
 local emergencyTemp = false
 
+-- some percentages
+local fuelPercent
+local satPercent
+local tempPercent
+local fieldPercent
+local fuelPercent
+local energyPercent
+
 function split(string, delimiter)
     local result = { }
     local from = 1
@@ -122,6 +132,7 @@ function save_config()
 	sw.writeLine("fieldBoostOutput: " .. fieldBoostOutput)
     sw.writeLine(" ")
     sw.writeLine("-- numbers for the saturationBoost steps")
+    sw.writeLine("targetSat: " .. targetSat)
 	sw.writeLine("satBoostThreshold: " .. satBoostThreshold)
 	sw.writeLine("satBoost1: " .. satBoost1)
 	sw.writeLine("satBoost1Output: " .. satBoost1Output)
@@ -134,7 +145,7 @@ function save_config()
 	sw.writeLine("tempTolerance: " .. tempTolerance)
     sw.writeLine("-- maxIncrease is the maximum amount the externalOutput can be increased by in one step")
     sw.writeLine("maxIncrease: " ..  maxIncrease)
-    sw.writeLine("-- under this generation limit the algorythm won't do anyrhing and the output will just be set to this amoun")
+    sw.writeLine("-- under this generation limit the algorythm won't do anything and the output will just be set to this amount")
     sw.writeLine("safeTarget: " .. safeTarget)
     sw.writeLine("-- the minimum turns to wait for the next output increase after one was done")
     sw.writeLine("minChangeWait: " .. minChangeWait)
@@ -219,6 +230,8 @@ function load_config()
             stableTurns = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "maxTargetGeneration" then
             maxTargetGeneration = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "targetSat" then
+            targetSat = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "internalInput" then
             internalInput = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "internalOutput" then
@@ -296,7 +309,6 @@ function buttons()
         local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
         -- reactor control
-        local fuelPercent
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
         if fuelPercent == math.huge or isnan(fuelPercent) then
             fuelPercent = 0
@@ -431,7 +443,7 @@ function update()
         outputfluxgate.setOverrideEnabled(false)
         externalfluxgate.setOverrideEnabled(false)
 
-        local satPercent, satColor
+        local satColor
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
         if isnan(satPercent) then
             satPercent = 0
@@ -443,7 +455,7 @@ function update()
             satColor = colors.orange
         end
 
-        local tempPercent, tempColor
+        local tempColor
         tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
         if isnan(tempPercent) then
             tempPercent = 0
@@ -455,7 +467,7 @@ function update()
             tempColor = colors.orange
         end
 
-        local fieldPercent, fieldColor
+        local fieldColor
         fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000)*.01
         if  isnan(fieldPercent) then
             fieldPercent = 0
@@ -467,7 +479,7 @@ function update()
             fieldColor = colors.orange
         end
 
-        local fuelPercent, fuelColor
+        local fuelColor
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
         if fuelPercent == math.huge or isnan(fuelPercent) then
             fuelPercent = 0
@@ -479,7 +491,7 @@ function update()
             fuelColor = colors.orange
         end
 
-        local energyPercent, energyColor
+        local energyColor
         energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000)*.01
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
@@ -854,12 +866,15 @@ function getOutput()
                end
            end
         else
-            if checkOutput()and sinceOutputChange == 0 then
+            if checkOutput()and sinceOutputChange == 0 and ri.temperature <= safeTemperature and satPercent > targetSat - 5 then
                 externalfluxgate.setSignalLowFlow(tempOutput)
                 externalfluxgate.setSignalHighFlow(tempOutput)
                 if threshold > curOutput or threshold == -1 then
                     sinceOutputChange = minChangeWait
                 end
+            elseif ri.temperature > safeTemperature or satPercent <= targetSat - 5 then
+                externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() - maxIncrease)
+                externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
             end
         end
         if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
@@ -903,21 +918,16 @@ end
 
 function updateOutput()
     local satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
-    local tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
     local i = 1
-	while i <= stableTurns do
-		if i < stableTurns then
-			lastGen[i] = lastGen[i + 1]
-			lastSat[i] = lastSat[i + 1]
-			lastTemp[i] = lastTemp[i + 1]
-            i = i + 1
-		else
-			lastGen[i] = ri.generationRate
-			lastSat[i] = satPercent
-			lastTemp[i] = ri.temperature
-            i = i + 1
-		end
+	while i < stableTurns do
+        lastGen[i] = lastGen[i + 1]
+        lastSat[i] = lastSat[i + 1]
+        lastTemp[i] = lastTemp[i + 1]
+        i = i + 1
     end
+    lastGen[stableTurns] = ri.generationRate
+    lastSat[stableTurns] = satPercent
+    lastTemp[stableTurns] = ri.temperature
 end
 
 function checkOutput()
@@ -937,17 +947,20 @@ function checkOutput()
             leastTemp = lastTemp[i]
         end
 		if leastGen + genTolerance < lastGen[i] then
-			checked = false
+			return false
 		end
 		if leastSat - satTolerance > lastSat[i] then
-			checked = false
+            return false
 		end
 		if leastTemp + tempTolerance < lastTemp[i] then
-			checked = false
+            return false
         end
         i = i + 1
     end
-	return checked
+    if lastTemp[stableTurns] > safeTemperature - 100 or lastSat[stableTurns] < targetSat then
+        return false
+    end
+	return true
 end
 
 function isnan(x)
