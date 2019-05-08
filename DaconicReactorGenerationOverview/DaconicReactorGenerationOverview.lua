@@ -11,6 +11,9 @@ monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
+local x
+local y
+
 function getDrainback()
     local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
     local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
@@ -49,8 +52,6 @@ function update1()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 47) / 2) + 1
-    local y = gui.getInteger((mon.Y - 6) / 2)
     gui.draw_number(mon, output, x, y, color, rftcolor)
 end
 
@@ -63,8 +64,6 @@ function update2()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 47) / 2) + 1
-    local y = gui.getInteger((mon.Y - 14) / 2)
     gui.draw_number(mon, output, x, y, color, rftcolor)
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
     gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
@@ -79,8 +78,6 @@ function update3()
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
     print("Total drainback: " .. gui.format_int(totalDrainback))
-    local x = gui.getInteger((mon.X - 47) / 2) + 1
-    local y = gui.getInteger((mon.Y - 22) / 2)
     gui.draw_number(mon, output, x, y, color, rftcolor)
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
     gui.draw_number(mon, totalGeneration, x, y + 10, color, rftcolor)
@@ -88,16 +85,22 @@ function update3()
 end
 
 if mon.Y < 16 then
+    x = gui.getInteger((mon.X - 47) / 2) + 1
+    y = gui.getInteger((mon.Y - 6) / 2)
     while true do
         update1()
         sleep(1)
     end
 elseif mon.Y >= 16 and mon.Y < 24 then
+    x = gui.getInteger((mon.X - 47) / 2) + 1
+    y = gui.getInteger((mon.Y - 14) / 2)
     while true do
         update2()
         sleep(1)
     end
 else
+    x = gui.getInteger((mon.X - 47) / 2) + 1
+    y = gui.getInteger((mon.Y - 22) / 2)
     while true do
         update3()
         sleep(1)
