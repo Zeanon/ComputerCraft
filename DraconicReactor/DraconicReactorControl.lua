@@ -831,7 +831,7 @@ function getOutput()
     end
     tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
     if emergencyFlood == false and ri.status ~= "offline" then
-        if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < curOutput) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() < threshold or threshold == -1) then
+        if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= curOutput) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold or threshold == -1) then
             outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
             outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
         end
