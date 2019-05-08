@@ -931,7 +931,6 @@ function updateOutput()
 end
 
 function checkOutput()
-    local checked = true
     local leastGen = lastGen[1]
     local leastSat = lastSat[1]
     local leastTemp = lastTemp[1]
