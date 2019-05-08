@@ -46,7 +46,7 @@ local activateOnCharged = true
 os.loadAPI("lib/gui")
 os.loadAPI("lib/surface")
 
-local version = "1.2.0"
+local version = "1.3.0"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
