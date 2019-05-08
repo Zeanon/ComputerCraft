@@ -1,4 +1,4 @@
-# DraconicReactor
+# DraconicReactorControl
 ## Reactor Setup
 the Setup needs: 
 <br>-a fully working reactor 
