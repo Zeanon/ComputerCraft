@@ -46,4 +46,8 @@ if fs.exists("update") then
 end
 shell.run("pastebin get HZ7ffzMn update")
 
+if os.getComputerLabel() == null then
+    os.setComputerLabel("Reactor-Generation-Overview")
+end
+
 shell.run("reboot")

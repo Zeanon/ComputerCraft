@@ -47,4 +47,8 @@ if fs.exists("update") then
 end
 shell.run("pastebin get UEi3KkwM update")
 
+if os.getComputerLabel() == null then
+	os.setComputerLabel("Draconic-Reactor")
+end
+
 shell.run("reboot")
