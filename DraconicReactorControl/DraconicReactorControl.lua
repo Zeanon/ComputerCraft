@@ -956,7 +956,7 @@ function checkOutput()
         end
         i = i + 1
     end
-    if lastTemp[stableTurns] > safeTemperature - (500 / tempTolerance) or lastSat[stableTurns] < targetSat + (10 / satTolerance) then
+    if lastTemp[stableTurns] > safeTemperature - (500 / tempTolerance) or lastSat[stableTurns] < targetSat + (5 / satTolerance) then
         return false
     end
 	return true
