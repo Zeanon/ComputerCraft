@@ -156,15 +156,15 @@ function update1()
 	if line1 == 1 then
 		drawOutput(y, output)
 		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, " Gen", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, " Out", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Out", colors.white, buttoncolor)
 	end
 end
 
@@ -194,29 +194,29 @@ function update3()
 	if line1 == 1 then
 		drawOutput(y, output)
 		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, " Gen", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, " Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Out ", colors.white, buttoncolor)
 	end
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
 	if line2 == 1 then
 		drawOutput(y + 10, output)
 		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 12, " Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " Gen ", colors.white, buttoncolor)
 	elseif line2 == 2 then
 		drawGeneration(y + 10, totalGeneration)
 		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 12, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 10, totalDrainback)
 		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 12, " Out", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " Out", colors.white, buttoncolor)
 	end
 end
 
@@ -249,42 +249,42 @@ function update5()
 	if line1 == 1 then
 		drawOutput(y, output)
 		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, " Gen", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 2, " Out", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Out", colors.white, buttoncolor)
 	end
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
 	if line2 == 1 then
 		drawOutput(y + 10, output)
 		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 12, " Gen", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " Gen", colors.white, buttoncolor)
 	elseif line2 == 2 then
 		drawGeneration(y + 10, totalGeneration)
 		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 12, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 10, totalDrainback)
 		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 12, " Out", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " Out", colors.white, buttoncolor)
 	end
 	if line3 == 1 then
 		drawOutput(y + 18, output)
 		gui.draw_text(mon, 2, y + 20, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 20, " Gen", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 20, " Gen", colors.white, buttoncolor)
 	elseif line3 == 2 then
 		drawGeneration(y + 18, totalGeneration)
 		gui.draw_text(mon, 2, y + 20, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 20, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 20, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 18, totalDrainback)
 		gui.draw_text(mon, 2, y + 20, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 1, y + 20, " Out", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 20, " Out", colors.white, buttoncolor)
 	end
 end
 
