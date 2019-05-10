@@ -283,13 +283,7 @@ function buttons1()
 					line1 = 1
 				end
 			end
-			if line1 == 1 then
-				drawOutput(y, output)
-			elseif line1 == 2 then
-				drawGeneration(y, totalGeneration)
-			else
-				drawDrainback(y, totalDrainback)
-			end
+			update1()
 		end
 	end
 end
@@ -309,13 +303,7 @@ function buttons2()
 					line1 = 1
 				end
 			end
-			if line1 == 1 then
-				drawOutput(y, output)
-			elseif line1 == 2 then
-				drawGeneration(y, totalGeneration)
-			else
-				drawDrainback(y, totalDrainback)
-			end
+			update3()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
 			if xPos >= 2 and xPos <= 4 then
 				line2 = line2 - 1
@@ -328,13 +316,7 @@ function buttons2()
 					line2 = 1
 				end
 			end
-			if line2 == 1 then
-				drawOutput(y + 10, output)
-			elseif line2 == 2 then
-				drawGeneration(y + 10, totalGeneration)
-			else
-				drawDrainback(y + 10, totalDrainback)
-			end
+			update3()
 		end
 	end
 end
@@ -354,13 +336,7 @@ function buttons3()
 					line1 = 1
 				end
 			end
-			if line1 == 1 then
-				drawOutput(y, output)
-			elseif line1 == 2 then
-				drawGeneration(y, totalGeneration)
-			else
-				drawDrainback(y, totalDrainback)
-			end
+			update5()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
 			if xPos >= 2 and xPos <= 4 then
 				line2 = line2 - 1
@@ -373,13 +349,7 @@ function buttons3()
 					line2 = 1
 				end
 			end
-			if line2 == 1 then
-				drawOutput(y + 10, output)
-			elseif line2 == 2 then
-				drawGeneration(y + 10, totalGeneration)
-			else
-				drawDrainback(y + 10, totalDrainback)
-			end
+			update5()
 		elseif buttonLine3 ~= null and yPos >= buttonLine3 and yPos <= buttonLine3 + 4 then
 			if xPos >= 2 and xPos <= 4 then
 				line3 = line3 - 1
@@ -392,13 +362,7 @@ function buttons3()
 					line3 = 1
 				end
 			end
-			if line3 == 1 then
-				drawOutput(y + 18, output)
-			elseif line3 == 2 then
-				drawGeneration(y + 18, totalGeneration)
-			else
-				drawDrainback(y + 18, totalDrainback)
-			end
+			update5()
 		end
 	end
 end
