@@ -370,6 +370,7 @@ end
 function updateLine1()
     x = gui.getInteger((mon.X - 47) / 2) + 1
     y = gui.getInteger((mon.Y - 6) / 2)
+	buttonLine1 = y
     while true do
         update1()
         sleep(refresh)
@@ -379,6 +380,8 @@ end
 function updateLine2()
     x = gui.getInteger((mon.X - 47) / 2) + 1
     y = gui.getInteger((mon.Y - 14) / 2)
+	buttonLine1 = y
+	buttonLine2 = y + 10
     while true do
         update3()
         sleep(refresh)
@@ -388,6 +391,9 @@ end
 function updateLine3()
     x = gui.getInteger((mon.X - 47) / 2) + 1
     y = gui.getInteger((mon.Y - 22) / 2)
+	buttonLine1 = y
+	buttonLine2 = y + 10
+	buttonLine3 = y + 18
     while true do
         update5()
         sleep(refresh)
