@@ -1,7 +1,7 @@
 -- configure color
 local color = colors.red
 local rftcolor = colors.gray
-local buttoncolor = colors.purple
+local buttoncolor = colors.lightGray
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
@@ -155,10 +155,16 @@ function update1()
 	drawButtons(y)
 	if line1 == 1 then
 		drawOutput(y, output)
+		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
+		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
+		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
 	end
 end
 
@@ -167,7 +173,6 @@ function update2()
     local totalGeneration = getGeneration()
     local totalDrainback = getDrainback()
     gui.clear(mon)
-
     print("Total reactor output: " .. gui.format_int(output))
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
@@ -188,18 +193,30 @@ function update3()
 	drawButtons(y + 10)
 	if line1 == 1 then
 		drawOutput(y, output)
+		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
+		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
+		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
 	end
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
 	if line2 == 1 then
 		drawOutput(y + 10, output)
+		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
 	elseif line2 == 2 then
 		drawGeneration(y + 10, totalGeneration)
+		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 12, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 10, totalDrainback)
+		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
 	end
 end
 
@@ -231,25 +248,43 @@ function update5()
 	drawButtons(y + 18)
 	if line1 == 1 then
 		drawOutput(y, output)
+		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
+		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
+		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
 	end
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
 	if line2 == 1 then
 		drawOutput(y + 10, output)
+		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
 	elseif line2 == 2 then
 		drawGeneration(y + 10, totalGeneration)
+		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 12, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 10, totalDrainback)
+		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
 	end
 	if line3 == 1 then
 		drawOutput(y + 18, output)
+		gui.draw_text(mon, 2, y + 20, "Back", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 20, "Gen ", colors.white, buttoncolor)
 	elseif line3 == 2 then
 		drawGeneration(y + 18, totalGeneration)
+		gui.draw_text(mon, 2, y + 20, "Out ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 20, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 18, totalDrainback)
+		gui.draw_text(mon, 2, y + 20, "Gen ", colors.white, buttoncolor)
+		draw_text_right(mon, 2, y + 20, "Out ", colors.white, buttoncolor)
 	end
 end
 
@@ -283,8 +318,8 @@ function buttons1()
 					line1 = 1
 				end
 			end
-                        save_config()
 			update1()
+			save_config()
 		end
 	end
 end
@@ -304,8 +339,8 @@ function buttons2()
 					line1 = 1
 				end
 			end
-                        save_config()
 			update3()
+			save_config()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
 			if xPos >= 2 and xPos <= 4 then
 				line2 = line2 - 1
@@ -318,8 +353,8 @@ function buttons2()
 					line2 = 1
 				end
 			end
-                        save_config()
 			update3()
+			save_config()
 		end
 	end
 end
@@ -339,8 +374,8 @@ function buttons3()
 					line1 = 1
 				end
 			end
-                        save_config()
 			update5()
+			save_config()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
 			if xPos >= 2 and xPos <= 4 then
 				line2 = line2 - 1
@@ -353,8 +388,8 @@ function buttons3()
 					line2 = 1
 				end
 			end
-                        save_config()
 			update5()
+			save_config()
 		elseif buttonLine3 ~= null and yPos >= buttonLine3 and yPos <= buttonLine3 + 4 then
 			if xPos >= 2 and xPos <= 4 then
 				line3 = line3 - 1
@@ -367,8 +402,8 @@ function buttons3()
 					line3 = 1
 				end
 			end
-                        save_config()
 			update5()
+			save_config()
 		end
 	end
 end
