@@ -317,37 +317,37 @@ end
 --get a color value from a string
 function getColor(color)
 	color = string.lower(color)
-	if color == white then
+	if color == "white" then
 		return colors.white
-	elseif color == orange then
+	elseif color == "orange" then
 		return colors.orange
-	elseif color == magenta then
+	elseif color == "magenta" then
 		return colors.magenta
-	elseif color == lightblue then
+	elseif color == "lightblue" then
 		return colors.lightBlue
-	elseif color == yellow then
+	elseif color == "yellow" then
 		return colors.yellow
-	elseif color == lime then
+	elseif color == "lime" then
 		return colors.lime
-	elseif color == pink then
+	elseif color == "pink" then
 		return colors.pink
-	elseif color == gray then
+	elseif color == "gray" then
 		return colors.gray
-	elseif color == lightgray then
+	elseif color == "lightgray" then
 		return colors.lightGray
-	elseif color == cyan then
+	elseif color == "cyan" then
 		return colors.cyan
-	elseif color == purple then
+	elseif color == "purple" then
 		return colors.purple
-	elseif color == blue then
+	elseif color == "blue" then
 		return colors.blue
-	elseif color == brown then
+	elseif color == "brown" then
 		return colors.brown
-	elseif color == green then
+	elseif color == "green" then
 		return colors.green
-	elseif color == red then
+	elseif color == "red" then
 		return colors.red
-	elseif color == black then
+	elseif color == "black" then
 		return colors.black
 	else
 		return null
