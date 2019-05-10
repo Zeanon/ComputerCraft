@@ -283,6 +283,7 @@ function buttons1()
 					line1 = 1
 				end
 			end
+                        save_config()
 			update1()
 		end
 	end
@@ -303,6 +304,7 @@ function buttons2()
 					line1 = 1
 				end
 			end
+                        save_config()
 			update3()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
 			if xPos >= 2 and xPos <= 4 then
@@ -316,6 +318,7 @@ function buttons2()
 					line2 = 1
 				end
 			end
+                        save_config()
 			update3()
 		end
 	end
@@ -336,6 +339,7 @@ function buttons3()
 					line1 = 1
 				end
 			end
+                        save_config()
 			update5()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
 			if xPos >= 2 and xPos <= 4 then
@@ -349,6 +353,7 @@ function buttons3()
 					line2 = 1
 				end
 			end
+                        save_config()
 			update5()
 		elseif buttonLine3 ~= null and yPos >= buttonLine3 and yPos <= buttonLine3 + 4 then
 			if xPos >= 2 and xPos <= 4 then
@@ -362,6 +367,7 @@ function buttons3()
 					line3 = 1
 				end
 			end
+                        save_config()
 			update5()
 		end
 	end
