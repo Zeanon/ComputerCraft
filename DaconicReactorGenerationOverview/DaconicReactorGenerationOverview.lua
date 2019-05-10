@@ -10,10 +10,14 @@ local version = "1.0.0"
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
 
+local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
+local reactor1, reactor2 = peripheral.find("draconic_reactor")
 monitor = peripheral.find("monitor")
 monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
+local ri1 = reactor1.getReactorInfo()
+local ri2 = reactor2.getReactorInfo()
 
 local x
 local y
@@ -99,208 +103,263 @@ else
 end
 
 function getDrainback()
-    local fluxgate1, fluxgate2 = peripheral.find("flux_gate")
     local totalDrainback = fluxgate1.getSignalLowFlow() + fluxgate2.getSignalLowFlow()
     return totalDrainback
 end
 
-function getGeneration()
-    local reactor1, reactor2 = peripheral.find("draconic_reactor")
-    local ri1 = reactor1.getReactorInfo()
-    local ri2 = reactor2.getReactorInfo()
-    local totalGeneration = ri1.generationRate + ri2.generationRate
+function getGeneration1()
     if ri1.status == "offline" then
-        totalGeneration = ri2.generationRate
-    elseif ri2.status == "offline" then
-        totalGeneration = ri1.generationRate
+        return 0
     else
-        totalGeneration = ri1.generationRate + ri2.generationRate
+        return ri1.generationRate
     end
-    return totalGeneration
 end
 
-function printGeneration()
-    local reactor1, reactor2 = peripheral.find("draconic_reactor")
-    local ri1 = reactor1.getReactorInfo()
-    local ri2 = reactor2.getReactorInfo()
-    print("Reactor 1 Generation: " .. gui.format_int(ri1.generationRate))
-    print("Reactor 2 Generation: " .. gui.format_int(ri2.generationRate))
+function getGeneration2()
+	if ri2.status == "offline" then
+		return 0
+	else
+		return ri2.generationRate
+	end
 end
 
 function drawButtons(localY)
 	gui.drawSideButtons(mon, x, localY, buttoncolor)
 end
 
-function drawOutput(localY, output)
+function drawNumber(localY, output)
     gui.draw_number(mon, output, x, localY, color, rftcolor)
 end
 
-function drawGeneration(localY, totalGeneration)
-	gui.draw_number(mon, totalGeneration, x, localY, color, rftcolor)
-end
-
-function drawDrainback(localY, totalDrainback)
-	gui.draw_number(mon, totalDrainback, x, localY, color, rftcolor)
-end
-
 function update1()
-    local output = getGeneration() - getDrainback()
-    local totalGeneration = getGeneration()
-    local totalDrainback = getDrainback()
+	local generation1 = getGeneration1()
+	local generation2 = getGeneration2()
+	local totalDrainback = getDrainback()
+	local totalGeneration = generation1 + generation2
+	local output = totalGeneration - totalDrainback
     gui.clear(mon)
-    print("Total reactor output: " .. gui.format_int(output))
-    print("Total generation: " .. gui.format_int(totalGeneration))
-    printGeneration()
-    print("Total drainback: " .. gui.format_int(totalDrainback))
+	print("Total reactor output: " .. gui.format_int(output))
+	print("Total generation: " .. gui.format_int(totalGeneration))
+	print("Reactor 1 Generation: " .. gui.format_int(generation1))
+	print("Reactor 2 Generation: " .. gui.format_int(generation2))
+	print("Total drainback: " .. gui.format_int(totalDrainback))
 	drawButtons(y)
 	if line1 == 1 then
-		drawOutput(y, output)
-		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		drawNumber(y, output)
+		gui.draw_text(mon, 2, y + 2, "DR2 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
-		drawGeneration(y, totalGeneration)
+		drawNumber(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, "Back", colors.white, buttoncolor)
-	else
-		drawDrainback(y, totalDrainback)
+	elseif line1 == 3 then
+		drawNumber(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " DR1", colors.white, buttoncolor)
+	elseif line1 == 4 then
+		drawNumber(y, generation1)
+		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " DR2", colors.white, buttoncolor)
+	else
+		drawNumber(y, generation2)
+		gui.draw_text(mon, 2, y + 2, "DR1 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, " Out", colors.white, buttoncolor)
 	end
 end
 
 function update2()
-    local output = getGeneration() - getDrainback()
-    local totalGeneration = getGeneration()
-    local totalDrainback = getDrainback()
+	local generation1 = getGeneration1()
+	local generation2 = getGeneration2()
+	local totalDrainback = getDrainback()
+	local totalGeneration = generation1 + generation2
+	local output = totalGeneration - totalDrainback
     gui.clear(mon)
-    print("Total reactor output: " .. gui.format_int(output))
-    print("Total generation: " .. gui.format_int(totalGeneration))
-    printGeneration()
-    print("Total drainback: " .. gui.format_int(totalDrainback))
-    drawOutput(y, output)
+	print("Total reactor output: " .. gui.format_int(output))
+	print("Total generation: " .. gui.format_int(totalGeneration))
+	print("Reactor 1 Generation: " .. gui.format_int(generation1))
+	print("Reactor 2 Generation: " .. gui.format_int(generation2))
+	print("Total drainback: " .. gui.format_int(totalDrainback))
+    drawNumber(y, output)
 end
 
 function update3()
-    local output = getGeneration() - getDrainback()
-    local totalGeneration = getGeneration()
-    local totalDrainback = getDrainback()
+	local generation1 = getGeneration1()
+	local generation2 = getGeneration2()
+	local totalDrainback = getDrainback()
+	local totalGeneration = generation1 + generation2
+	local output = totalGeneration - totalDrainback
     gui.clear(mon)
-    print("Total reactor output: " .. gui.format_int(output))
-    print("Total generation: " .. gui.format_int(totalGeneration))
-    printGeneration()
-    print("Total drainback: " .. gui.format_int(totalDrainback))
+	print("Total reactor output: " .. gui.format_int(output))
+	print("Total generation: " .. gui.format_int(totalGeneration))
+	print("Reactor 1 Generation: " .. gui.format_int(generation1))
+	print("Reactor 2 Generation: " .. gui.format_int(generation2))
+	print("Total drainback: " .. gui.format_int(totalDrainback))
 	drawButtons(y)
 	drawButtons(y + 10)
 	if line1 == 1 then
-		drawOutput(y, output)
-		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		drawNumber(y, output)
+		gui.draw_text(mon, 2, y + 2, "DR2 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
-		drawGeneration(y, totalGeneration)
+		drawNumber(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, "Back", colors.white, buttoncolor)
-	else
-		drawDrainback(y, totalDrainback)
+	elseif line1 == 3 then
+		drawNumber(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 0, y + 2, " Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " DR1", colors.white, buttoncolor)
+	elseif line1 == 4 then
+		drawNumber(y, generation1)
+		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " DR2", colors.white, buttoncolor)
+	else
+		drawNumber(y, generation2)
+		gui.draw_text(mon, 2, y + 2, "DR1 ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " Out", colors.white, buttoncolor)
 	end
+
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+
 	if line2 == 1 then
-		drawOutput(y + 10, output)
-		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		drawNumber(y + 10, output)
+		gui.draw_text(mon, 2, y + 12, "DR2 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 12, " Gen ", colors.white, buttoncolor)
 	elseif line2 == 2 then
-		drawGeneration(y + 10, totalGeneration)
+		drawNumber(y + 10, totalGeneration)
 		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 12, "Back", colors.white, buttoncolor)
-	else
-		drawDrainback(y + 10, totalDrainback)
+	elseif line2 == 3 then
+		drawNumber(y + 10, totalDrainback)
 		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " DR1", colors.white, buttoncolor)
+	elseif line2 == 4 then
+		drawNumber(y, generation1)
+		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " DR2", colors.white, buttoncolor)
+	else
+		drawNumber(y, generation2)
+		gui.draw_text(mon, 2, y + 12, "DR1 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 12, " Out", colors.white, buttoncolor)
 	end
 end
 
 function update4()
-    local output = getGeneration() - getDrainback()
-    local totalGeneration = getGeneration()
-    local totalDrainback = getDrainback()
+	local generation1 = getGeneration1()
+	local generation2 = getGeneration2()
+	local totalDrainback = getDrainback()
+	local totalGeneration = generation1 + generation2
+	local output = totalGeneration - totalDrainback
     gui.clear(mon)
-    print("Total reactor output: " .. gui.format_int(output))
-    print("Total generation: " .. gui.format_int(totalGeneration))
-    printGeneration()
-    print("Total drainback: " .. gui.format_int(totalDrainback))
-	drawOutput(y, output)
+	print("Total reactor output: " .. gui.format_int(output))
+	print("Total generation: " .. gui.format_int(totalGeneration))
+	print("Reactor 1 Generation: " .. gui.format_int(generation1))
+	print("Reactor 2 Generation: " .. gui.format_int(generation2))
+	print("Total drainback: " .. gui.format_int(totalDrainback))
+	drawNumber(y, output)
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-	drawGeneration(y + 10, totalGeneration)
+	drawNumber(y + 10, totalGeneration)
 end
 
 function update5()
-    local output = getGeneration() - getDrainback()
-    local totalGeneration = getGeneration()
-    local totalDrainback = getDrainback()
+	local generation1 = getGeneration1()
+	local generation2 = getGeneration2()
+	local totalDrainback = getDrainback()
+	local totalGeneration = generation1 + generation2
+	local output = totalGeneration - totalDrainback
     gui.clear(mon)
-    print("Total reactor output: " .. gui.format_int(output))
-    print("Total generation: " .. gui.format_int(totalGeneration))
-    printGeneration()
-    print("Total drainback: " .. gui.format_int(totalDrainback))
+	print("Total reactor output: " .. gui.format_int(output))
+	print("Total generation: " .. gui.format_int(totalGeneration))
+	print("Reactor 1 Generation: " .. gui.format_int(generation1))
+	print("Reactor 2 Generation: " .. gui.format_int(generation2))
+	print("Total drainback: " .. gui.format_int(totalDrainback))
 	drawButtons(y)
 	drawButtons(y + 10)
 	drawButtons(y + 18)
 	if line1 == 1 then
-		drawOutput(y, output)
-		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		drawNumber(y, output)
+		gui.draw_text(mon, 2, y + 2, "DR2 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
-		drawGeneration(y, totalGeneration)
+		drawNumber(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, "Back", colors.white, buttoncolor)
-	else
-		drawDrainback(y, totalDrainback)
+	elseif line1 == 3 then
+		drawNumber(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " DR1", colors.white, buttoncolor)
+	elseif line1 == 4 then
+		drawNumber(y, generation1)
+		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 2, " DR2", colors.white, buttoncolor)
+	else
+		drawNumber(y, generation2)
+		gui.draw_text(mon, 2, y + 2, "DR1 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 2, " Out", colors.white, buttoncolor)
 	end
+
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+
 	if line2 == 1 then
-		drawOutput(y + 10, output)
-		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 0, y + 12, " Gen", colors.white, buttoncolor)
+		drawNumber(y + 10, output)
+		gui.draw_text(mon, 2, y + 12, "DR2 ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " Gen ", colors.white, buttoncolor)
 	elseif line2 == 2 then
-		drawGeneration(y + 10, totalGeneration)
+		drawNumber(y + 10, totalGeneration)
 		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 12, "Back", colors.white, buttoncolor)
-	else
-		drawDrainback(y + 10, totalDrainback)
+	elseif line2 == 3 then
+		drawNumber(y + 10, totalDrainback)
 		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " DR1", colors.white, buttoncolor)
+	elseif line2 == 4 then
+		drawNumber(y, generation1)
+		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 12, " DR2", colors.white, buttoncolor)
+	else
+		drawNumber(y, generation2)
+		gui.draw_text(mon, 2, y + 12, "DR1 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 12, " Out", colors.white, buttoncolor)
 	end
+
 	if line3 == 1 then
-		drawOutput(y + 18, output)
-		gui.draw_text(mon, 2, y + 20, "Back", colors.white, buttoncolor)
+		drawNumber(y + 18, output)
+		gui.draw_text(mon, 2, y + 20, "DR2 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 20, " Gen", colors.white, buttoncolor)
 	elseif line3 == 2 then
-		drawGeneration(y + 18, totalGeneration)
+		drawNumber(y + 18, totalGeneration)
 		gui.draw_text(mon, 2, y + 20, "Out ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 20, "Back", colors.white, buttoncolor)
-	else
-		drawDrainback(y + 18, totalDrainback)
+	elseif line3 == 3 then
+		drawNumber(y + 18, totalDrainback)
 		gui.draw_text(mon, 2, y + 20, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 20, " DR1", colors.white, buttoncolor)
+	elseif line3 == 4 then
+		drawNumber(y, generation1)
+		gui.draw_text(mon, 2, y + 20, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 0, y + 20, " DR2", colors.white, buttoncolor)
+	else
+		drawNumber(y, generation2)
+		gui.draw_text(mon, 2, y + 20, "DR1 ", colors.white, buttoncolor)
 		gui.draw_text_right(mon, 0, y + 20, " Out", colors.white, buttoncolor)
 	end
 end
 
 function update6()
-    local output = getGeneration() - getDrainback()
-    local totalGeneration = getGeneration()
-    local totalDrainback = getDrainback()
+	local generation1 = getGeneration1()
+	local generation2 = getGeneration2()
+	local totalDrainback = getDrainback()
+	local totalGeneration = generation1 + generation2
+	local output = totalGeneration - totalDrainback
     gui.clear(mon)
     print("Total reactor output: " .. gui.format_int(output))
     print("Total generation: " .. gui.format_int(totalGeneration))
-    printGeneration()
+	print("Reactor 1 Generation: " .. gui.format_int(generation1))
+	print("Reactor 2 Generation: " .. gui.format_int(generation2))
     print("Total drainback: " .. gui.format_int(totalDrainback))
-	drawOutput(y, output)
+	drawNumber(y, output)
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-	drawGeneration(y + 10, totalGeneration)
-	drawDrainback(y + 18, totalDrainback)
+	drawNumber(y + 10, totalGeneration)
+	drawNumber(y + 18, totalDrainback)
 end
 
 function buttons1()
@@ -310,11 +369,11 @@ function buttons1()
 			if xPos >= 1 and xPos <= 5 then
 				line1 = line1 - 1
 				if line1 < 1 then
-					line1 = 3
+					line1 = 5
 				end
 			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line1 = line1 + 1
-				if line1 > 3 then
+				if line1 > 5 then
 					line1 = 1
 				end
 			end
@@ -331,11 +390,11 @@ function buttons2()
 			if xPos >= 1 and xPos <= 5 then
 				line1 = line1 - 1
 				if line1 < 1 then
-					line1 = 3
+					line1 = 5
 				end
 			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line1 = line1 + 1
-				if line1 > 3 then
+				if line1 > 5 then
 					line1 = 1
 				end
 			end
@@ -345,11 +404,11 @@ function buttons2()
 			if xPos >= 1 and xPos <= 5 then
 				line2 = line2 - 1
 				if line2 < 1 then
-					line2 = 3
+					line2 = 5
 				end
 			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line2 = line2 + 1
-				if line2 > 3 then
+				if line2 > 5 then
 					line2 = 1
 				end
 			end
@@ -366,11 +425,11 @@ function buttons3()
 			if xPos >= 1 and xPos <= 5 then
 				line1 = line1 - 1
 				if line1 < 1 then
-					line1 = 3
+					line1 = 5
 				end
 			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line1 = line1 + 1
-				if line1 > 3 then
+				if line1 > 5 then
 					line1 = 1
 				end
 			end
@@ -380,11 +439,11 @@ function buttons3()
 			if xPos >= 1 and xPos <= 5 then
 				line2 = line2 - 1
 				if line2 < 1 then
-					line2 = 3
+					line2 = 5
 				end
 			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line2 = line2 + 1
-				if line2 > 3 then
+				if line2 > 5 then
 					line2 = 1
 				end
 			end
@@ -394,11 +453,11 @@ function buttons3()
 			if xPos >= 1 and xPos <= 5 then
 				line3 = line3 - 1
 				if line3 < 1 then
-					line3 = 3
+					line3 = 5
 				end
 			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line3 = line3 + 1
-				if line3 > 3 then
+				if line3 > 5 then
 					line3 = 1
 				end
 			end

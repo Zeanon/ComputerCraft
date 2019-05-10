@@ -70,7 +70,7 @@ end
 --draw horizontal line on computer terminal(mon)
 function draw_line(mon, x, y, length, color)
     if length < 0 then
-      length = 0
+        length = 0
     end
     mon.monitor.setBackgroundColor(color)
     mon.monitor.setCursorPos(x,y)
