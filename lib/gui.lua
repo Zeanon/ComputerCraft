@@ -45,7 +45,7 @@ end
 
 -- monitor related
 
---display text text on monitor, "mon" peripheral
+-- display text text on monitor, "mon" peripheral
 function draw_text(mon, x, y, text, text_color, bg_color)
     mon.monitor.setBackgroundColor(bg_color)
     mon.monitor.setTextColor(text_color)
@@ -53,6 +53,7 @@ function draw_text(mon, x, y, text, text_color, bg_color)
     mon.monitor.write(text)
 end
 
+-- display text text on the right side of monitor, "mon" peripheral
 function draw_text_right(mon, offset, y, text, text_color, bg_color)
     mon.monitor.setBackgroundColor(bg_color)
     mon.monitor.setTextColor(text_color)
@@ -60,6 +61,7 @@ function draw_text_right(mon, offset, y, text, text_color, bg_color)
     mon.monitor.write(text)
 end
 
+--display text text1 on the left side and text2 on the right side of monitor, "mon" peripheral
 function draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color, bg_color)
 	draw_text(mon, x, y, text1, text1_color, bg_color)
 	draw_text_right(mon, offset, y, text2, text2_color, bg_color)
@@ -90,6 +92,7 @@ function draw_column(mon, x, y, height, color)
     end
 end
 
+-- Draw six control buttons
 function drawButtons(mon, x, y, color, bgcolor1, bgcolor2)
     draw_text(mon, x, y, " < ", color, bgcolor1)
     draw_text(mon, x+4, y, " <<", color, bgcolor1)
@@ -100,6 +103,7 @@ function drawButtons(mon, x, y, color, bgcolor1, bgcolor2)
     draw_text(mon, x+23, y, " > ", color, bgcolor2)
 end
 
+-- Draw two big arrows on the left and right side of the screen
 function drawSideButtons(mon, x, y, color)
 	mon.monitor.setBackgroundColor(color)
 	mon.monitor.setCursorPos(2, y+2)
@@ -112,15 +116,15 @@ function drawSideButtons(mon, x, y, color)
     mon.monitor.write(" ")
 	mon.monitor.setCursorPos(4, y+4)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X, y+2)
+	mon.monitor.setCursorPos(mon.X - 1, y+2)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 1, y+1)
+	mon.monitor.setCursorPos(mon.X - 2, y+1)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 1, y+3)
+	mon.monitor.setCursorPos(mon.X - 2, y+3)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 2, y)
+	mon.monitor.setCursorPos(mon.X - 3, y)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 2, y+4)
+	mon.monitor.setCursorPos(mon.X - 3, y+4)
     mon.monitor.write(" ")
 end
 
