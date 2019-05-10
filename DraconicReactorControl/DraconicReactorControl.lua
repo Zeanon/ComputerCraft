@@ -333,14 +333,14 @@ function buttons()
                     multishell.setTitle(newTabID, "Config")
                     multishell.setFocus(newTabID)
                 end
-                gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
-                gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
-                gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
+                gui.draw_line(mon, mon.X-22, 6, 11, colors.lightBlue)
+                gui.draw_text(mon, mon.X-22, 7, "Edit Config", colors.white, colors.lightBlue)
+                gui.draw_line(mon, mon.X-22, 8, 11, colors.lightBlue)
                 editConfigButton = 3
             elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
-                gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
-                gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
-                gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
+                gui.draw_line(mon, mon.X-11, 6, 11, colors.orange)
+                gui.draw_text(mon, mon.X-11, 7, "Load Config", colors.white, colors.orange)
+                gui.draw_line(mon, mon.X-11, 8, 11, colors.orange)
                 loadConfigButton = 3
             end
         end
@@ -660,12 +660,12 @@ function update()
 
 
         -- monitor output
-        gui.draw_text_lr(mon, 2, 2, 28, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
+        gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-        gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.magenta, colors.black)
         drawButtons(5)
 
-        gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
         if autoInputGate then
             gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
@@ -675,98 +675,98 @@ function update()
         end
 
         gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
-        gui.draw_column(mon, mon.X-27, 1, mon.Y, colors.gray)
+        gui.draw_column(mon, mon.X-23, 1, mon.Y, colors.gray)
 
-        gui.draw_text_lr(mon, 2, 12, 28, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
-        gui.progress_bar(mon, 2, 13, mon.X-30, satPercent, 100, colors.blue,  colors.lightGray)
+        gui.draw_text_lr(mon, 2, 12, 26, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
+        gui.progress_bar(mon, 2, 13, mon.X-28, satPercent, 100, colors.blue,  colors.lightGray)
 
-        gui.draw_text_lr(mon, 2, 15, 28, "Temperature M:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        gui.progress_bar(mon, 2, 16, mon.X-30, tempPercent, 100, tempColor,  colors.lightGray)
+        gui.draw_text_lr(mon, 2, 15, 26, "Temperature M:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
+        gui.progress_bar(mon, 2, 16, mon.X-28, tempPercent, 100, tempColor,  colors.lightGray)
 
         if autoInputGate then
-            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 26, "Field Strength T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
         else
-            gui.draw_text_lr(mon, 2, 18, 28, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
+            gui.draw_text_lr(mon, 2, 18, 26, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
         end
-        gui.progress_bar(mon, 2, 19, mon.X-30, fieldPercent, 100, fieldColor,  colors.lightGray)
+        gui.progress_bar(mon, 2, 19, mon.X-28, fieldPercent, 100, fieldColor,  colors.lightGray)
 
-        gui.draw_text_lr(mon, 2, 21, 28, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
-        gui.progress_bar(mon, 2, 22, mon.X-30, energyPercent, 100, energyColor,  colors.lightGray)
+        gui.draw_text_lr(mon, 2, 21, 26, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
+        gui.progress_bar(mon, 2, 22, mon.X-28, energyPercent, 100, energyColor,  colors.lightGray)
 
-        gui.draw_text_lr(mon, 2, 24, 28, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
-        gui.progress_bar(mon, 2, 25, mon.X-30, fuelPercent, 100, fuelColor,  colors.lightGray)
+        gui.draw_text_lr(mon, 2, 24, 26, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
+        gui.progress_bar(mon, 2, 25, mon.X-28, fuelPercent, 100, fuelColor,  colors.lightGray)
 
-        gui.draw_text_lr(mon, 2, 26, 28, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
+        gui.draw_text_lr(mon, 2, 26, 26, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
 
 
 
         if fuelPercent > 10 then
-            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
+            gui.draw_text_lr(mon, mon.X-23, 2, 0, "Status", string.upper(ri.status), colors.white, statusColor, colors.black)
         else
-            gui.draw_text_lr(mon, mon.X-25, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
+            gui.draw_text_lr(mon, mon.X-23, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
         end
 
-        gui.draw_text_lr(mon, mon.X-25, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-23, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
         if editConfigButton == 0 then
-            gui.draw_line(mon, mon.X-25, 6, 12, colors.cyan)
-            gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.cyan)
-            gui.draw_line(mon, mon.X-25, 8, 12, colors.cyan)
+            gui.draw_line(mon, mon.X-22, 6, 11, colors.cyan)
+            gui.draw_text(mon, mon.X-22, 7, "Edit Config", colors.white, colors.cyan)
+            gui.draw_line(mon, mon.X-22, 8, 11, colors.cyan)
         else
-            gui.draw_line(mon, mon.X-25, 6, 12, colors.lightBlue)
-            gui.draw_text(mon, mon.X-25, 7, " Edit Config", colors.white, colors.lightBlue)
-            gui.draw_line(mon, mon.X-25, 8, 12, colors.lightBlue)
+            gui.draw_line(mon, mon.X-22, 6, 11, colors.lightBlue)
+            gui.draw_text(mon, mon.X-22, 7, "Edit Config", colors.white, colors.lightBlue)
+            gui.draw_line(mon, mon.X-22, 8, 11, colors.lightBlue)
         end
         if loadConfigButton == 0 then
-            gui.draw_line(mon, mon.X-12, 8, 12, colors.red)
-            gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.red)
-            gui.draw_line(mon, mon.X-12, 6, 12, colors.red)
+            gui.draw_line(mon, mon.X-11, 8, 11, colors.red)
+            gui.draw_text(mon, mon.X-11, 7, "Load Config", colors.white, colors.red)
+            gui.draw_line(mon, mon.X-11, 6, 11, colors.red)
         else
-            gui.draw_line(mon, mon.X-12, 8, 12, colors.orange)
-            gui.draw_text(mon, mon.X-12, 7, " Load Config", colors.white, colors.orange)
-            gui.draw_line(mon, mon.X-12, 6, 12, colors.orange)
+            gui.draw_line(mon, mon.X-11, 8, 11, colors.orange)
+            gui.draw_text(mon, mon.X-11, 7, "Load Config", colors.white, colors.orange)
+            gui.draw_line(mon, mon.X-11, 6, 11, colors.orange)
         end
 
-        gui.draw_text_lr(mon, mon.X-25, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X-23, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
 
         if threshold >= 0 then
-            gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-23, 14, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.magenta, colors.black)
 
-            gui.draw_line(mon, mon.X-26, 16, 27, colors.gray)
+            gui.draw_line(mon, mon.X-24, 16, 27, colors.gray)
 
             if satthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 18, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 18, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.magenta, colors.black)
             else
-                gui.draw_text_lr(mon, mon.X-25, 18, 0, "SatThreshold", "false", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-22, 18, 0, "SatThreshold", "false", colors.white, colors.magenta, colors.black)
             end
 
             if fieldthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 20, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 20, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.magenta, colors.black)
             else
-                gui.draw_text_lr(mon, mon.X-25, 20, 0, "FieldThreshold", "false", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 20, 0, "FieldThreshold", "false", colors.white, colors.magenta, colors.black)
             end
 
             if fuelthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 22, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 22, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.magenta, colors.black)
             else
-                gui.draw_text_lr(mon, mon.X-25, 22, 0, "FuelThreshold", "false", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 22, 0, "FuelThreshold", "false", colors.white, colors.magenta, colors.black)
             end
 
             if tempthreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 24, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 24, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.magenta, colors.black)
             else
-                gui.draw_text_lr(mon, mon.X-25, 24, 0, "TempThreshold", "false", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 24, 0, "TempThreshold", "false", colors.white, colors.magenta, colors.black)
             end
 
             if energythreshold >= 0 then
-                gui.draw_text_lr(mon, mon.X-25, 26, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 26, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.magenta, colors.black)
             else
-                gui.draw_text_lr(mon, mon.X-25, 26, 0, "EnergyThreshold", "false", colors.white, colors.blue, colors.black)
+                gui.draw_text_lr(mon, mon.X-23, 26, 0, "EnergyThreshold", "false", colors.white, colors.magenta, colors.black)
             end
         else
-            gui.draw_text_lr(mon, mon.X-25, 14, 0, "Threshold", "false", colors.white, colors.blue, colors.black)
+            gui.draw_text_lr(mon, mon.X-23, 14, 0, "Threshold", "false", colors.white, colors.magenta, colors.black)
 
-            gui.draw_line(mon, mon.X-26, 16, 27, colors.gray)
+            gui.draw_line(mon, mon.X-24, 16, 25, colors.gray)
         end
 
 
