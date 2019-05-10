@@ -87,7 +87,6 @@ local emergencyCharge = false
 local emergencyTemp = false
 
 -- some percentages
-local fuelPercent
 local satPercent
 local tempPercent
 local fieldPercent
@@ -309,10 +308,6 @@ function buttons()
         local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
         -- reactor control
-        fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000)*.01
-        if fuelPercent == math.huge or isnan(fuelPercent) then
-            fuelPercent = 0
-        end
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
