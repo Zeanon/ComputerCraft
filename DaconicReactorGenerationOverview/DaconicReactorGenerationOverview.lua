@@ -2,7 +2,7 @@
 local color = colors.red
 local rftcolor = colors.gray
 local buttoncolor = colors.purple
--- lower number means higher refresh rate but also increases server loadAPI
+-- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
 -- program
