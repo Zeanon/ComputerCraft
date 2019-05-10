@@ -269,95 +269,101 @@ function update6()
 end
 
 function buttons1()
-	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
-		if xPos >= 2 and xPos <= 4 then
-			line1 = line1 - 1
-			if line1 < 1 then
-				line1 = 3
+	while true do
+		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+		if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
+			if xPos >= 2 and xPos <= 4 then
+				line1 = line1 - 1
+				if line1 < 1 then
+					line1 = 3
+				end
+			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+				line1 = line1 + 1
+				if line1 > 3 then
+					line1 = 1
+				end
 			end
-		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
-			line1 = line1 + 1
-			if line1 > 3 then
-				line1 = 1
-			end
+			update1()
 		end
-		update1()
 	end
 end
 
 function buttons2()
-	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
-		if xPos >= 2 and xPos <= 4 then
-			line1 = line1 - 1
-			if line1 < 1 then
-				line1 = 3
+	while true do
+		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+		if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
+			if xPos >= 2 and xPos <= 4 then
+				line1 = line1 - 1
+				if line1 < 1 then
+					line1 = 3
+				end
+			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+				line1 = line1 + 1
+				if line1 > 3 then
+					line1 = 1
+				end
 			end
-		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
-			line1 = line1 + 1
-			if line1 > 3 then
-				line1 = 1
+			update1()
+		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
+			if xPos >= 2 and xPos <= 4 then
+				line2 = line2 - 1
+				if line2 < 1 then
+					line2 = 3
+				end
+			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+				line2 = line2 + 1
+				if line2 > 3 then
+					line2 = 1
+				end
 			end
+			update3()
 		end
-		update1()
-	elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
-		if xPos >= 2 and xPos <= 4 then
-			line2 = line2 - 1
-			if line2 < 1 then
-				line2 = 3
-			end
-		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
-			line2 = line2 + 1
-			if line2 > 3 then
-				line2 = 1
-			end
-		end
-		update3()
 	end
 end
 
 function buttons3()
-	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
-		if xPos >= 2 and xPos <= 4 then
-			line1 = line1 - 1
-			if line1 < 1 then
-				line1 = 3
+	while true do
+		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+		if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
+			if xPos >= 2 and xPos <= 4 then
+				line1 = line1 - 1
+				if line1 < 1 then
+					line1 = 3
+				end
+			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+				line1 = line1 + 1
+				if line1 > 3 then
+					line1 = 1
+				end
 			end
-		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
-			line1 = line1 + 1
-			if line1 > 3 then
-				line1 = 1
+			update1()
+		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
+			if xPos >= 2 and xPos <= 4 then
+				line2 = line2 - 1
+				if line2 < 1 then
+					line2 = 3
+				end
+			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+				line2 = line2 + 1
+				if line2 > 3 then
+					line2 = 1
+				end
 			end
+			update3()
+		elseif buttonLine3 ~= null and yPos >= buttonLine3 and yPos <= buttonLine3 + 4 then
+			if xPos >= 2 and xPos <= 4 then
+				line3 = line3 - 1
+				if line3 < 1 then
+					line3 = 3
+				end
+			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+				line3 = line3 + 1
+				if line3 > 3 then
+					line3 = 1
+				end
+			end
+			update5()
 		end
-		update1()
-	elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
-		if xPos >= 2 and xPos <= 4 then
-			line2 = line2 - 1
-			if line2 < 1 then
-				line2 = 3
-			end
-		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
-			line2 = line2 + 1
-			if line2 > 3 then
-				line2 = 1
-			end
-		end
-		update3()
-	elseif buttonLine3 ~= null and yPos >= buttonLine3 and yPos <= buttonLine3 + 4 then
-		if xPos >= 2 and xPos <= 4 then
-			line3 = line3 - 1
-			if line3 < 1 then
-				line3 = 3
-			end
-		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
-			line3 = line3 + 1
-			if line3 > 3 then
-				line3 = 1
-			end
-		end
-		update5()
 	end
 end
 
