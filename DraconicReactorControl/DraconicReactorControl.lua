@@ -333,9 +333,9 @@ function buttons()
                     multishell.setTitle(newTabID, "Config")
                     multishell.setFocus(newTabID)
                 end
-                gui.draw_line(mon, mon.X-22, 6, 11, colors.lightBlue)
-                gui.draw_text(mon, mon.X-22, 7, "Edit Config", colors.white, colors.lightBlue)
-                gui.draw_line(mon, mon.X-22, 8, 11, colors.lightBlue)
+                gui.draw_line(mon, mon.X-23, 6, 11, colors.lightBlue)
+                gui.draw_text(mon, mon.X-23, 7, "Edit Config", colors.white, colors.lightBlue)
+                gui.draw_line(mon, mon.X-23, 8, 11, colors.lightBlue)
                 editConfigButton = 3
             elseif xPos >= mon.X-12 and xPos <= mon.X-2 then
                 gui.draw_line(mon, mon.X-11, 6, 11, colors.orange)
@@ -709,13 +709,13 @@ function update()
         gui.draw_text_lr(mon, mon.X-23, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
         if editConfigButton == 0 then
-            gui.draw_line(mon, mon.X-22, 6, 11, colors.cyan)
-            gui.draw_text(mon, mon.X-22, 7, "Edit Config", colors.white, colors.cyan)
-            gui.draw_line(mon, mon.X-22, 8, 11, colors.cyan)
+            gui.draw_line(mon, mon.X-23, 6, 11, colors.cyan)
+            gui.draw_text(mon, mon.X-23, 7, "Edit Config", colors.white, colors.cyan)
+            gui.draw_line(mon, mon.X-23, 8, 11, colors.cyan)
         else
-            gui.draw_line(mon, mon.X-22, 6, 11, colors.lightBlue)
-            gui.draw_text(mon, mon.X-22, 7, "Edit Config", colors.white, colors.lightBlue)
-            gui.draw_line(mon, mon.X-22, 8, 11, colors.lightBlue)
+            gui.draw_line(mon, mon.X-23, 6, 11, colors.lightBlue)
+            gui.draw_text(mon, mon.X-23, 7, "Edit Config", colors.white, colors.lightBlue)
+            gui.draw_line(mon, mon.X-23, 8, 11, colors.lightBlue)
         end
         if loadConfigButton == 0 then
             gui.draw_line(mon, mon.X-11, 8, 11, colors.red)
