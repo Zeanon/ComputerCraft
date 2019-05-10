@@ -5,6 +5,7 @@ local buttoncolor = colors.purple
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
+
 -- program
 local version = "1.0.0"
 local mon, monitor, monX, monY
