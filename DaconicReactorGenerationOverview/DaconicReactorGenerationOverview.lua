@@ -56,7 +56,7 @@ function save_config()
 	sw.writeLine("-- just some saved data")
 	sw.writeLine("line1: " .. line1)
 	sw.writeLine("line2: " .. line2)
-	sw.writeLine("line3: " .. line3
+	sw.writeLine("line3: " .. line3)
 	sw.close()
 end
 
