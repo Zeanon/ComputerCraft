@@ -371,7 +371,7 @@ function buttons()
                 curOutput = maxTargetGeneration
             end
             save_config()
-            gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.lime, colors.black)
+            gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
         end
 
         -- input gate controls
@@ -662,7 +662,7 @@ function update()
         -- monitor output
         gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-        gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.lime, colors.black)
+        gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
         drawButtons(5)
 
         gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
