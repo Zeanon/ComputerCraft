@@ -467,7 +467,8 @@ function buttons3()
 	end
 end
 
-function updateLine1()
+
+function updateManual1()
     x = gui.getInteger((mon.X - 46) / 2) + 1
     y = gui.getInteger((mon.Y - 6) / 2)
 	buttonLine1 = y
@@ -477,7 +478,7 @@ function updateLine1()
     end
 end
 
-function updateLine2()
+function updateManual2()
     x = gui.getInteger((mon.X - 46) / 2) + 1
     y = gui.getInteger((mon.Y - 14) / 2)
 	buttonLine1 = y
@@ -488,7 +489,7 @@ function updateLine2()
     end
 end
 
-function updateLine3()
+function updateManual3()
     x = gui.getInteger((mon.X - 46) / 2) + 1
     y = gui.getInteger((mon.Y - 22) / 2)
 	buttonLine1 = y
@@ -500,39 +501,48 @@ function updateLine3()
     end
 end
 
-function update()
-    if mon.Y < 16 then
-        x = gui.getInteger((mon.X - 46) / 2) + 1
-        y = gui.getInteger((mon.Y - 6) / 2)
-        while true do
-            update2()
-            sleep(refresh)
-        end
-    elseif mon.Y >= 16 and mon.Y < 24 then
-        x = gui.getInteger((mon.X - 46) / 2) + 1
-        y = gui.getInteger((mon.Y - 14) / 2)
-        while true do
-            update4()
-            sleep(refresh)
-        end
-    else
-        x = gui.getInteger((mon.X - 46) / 2) + 1
-        y = gui.getInteger((mon.Y - 22) / 2)
-        while true do
-            update6()
-            sleep(refresh)
-        end
-    end
+function updateAutomatic1()
+	x = gui.getInteger((mon.X - 46) / 2) + 1
+	y = gui.getInteger((mon.Y - 6) / 2)
+	while true do
+		update2()
+		sleep(refresh)
+	end
 end
+
+function updateAutomatic2()
+	x = gui.getInteger((mon.X - 46) / 2) + 1
+	y = gui.getInteger((mon.Y - 14) / 2)
+	while true do
+		update4()
+		sleep(refresh)
+	end
+end
+
+function updateAutomatic3()
+	x = gui.getInteger((mon.X - 46) / 2) + 1
+	y = gui.getInteger((mon.Y - 22) / 2)
+	while true do
+		update6()
+		sleep(refresh)
+	end
+end
+
 
 if mon.X >= 57 then
 	if mon.Y < 16 then
-		parallel.waitForAny(buttons1, updateLine1)
+		parallel.waitForAny(buttons1, updateManual1)
 	elseif mon.Y >= 16 and mon.Y < 24 then
-		parallel.waitForAny(buttons2, updateLine2)
+		parallel.waitForAny(buttons2, updateManual2)
 	else 
-		parallel.waitForAny(buttons3, updateLine3)
+		parallel.waitForAny(buttons3, updateManual3)
 	end
 else
-	update()
+	if mon.Y < 16 then
+		updateAutomatic1()
+	elseif mon.Y >= 16 and mon.Y < 24 then
+		updateAutomatic2()
+	else
+		updateAutomatic3()
+	end
 end
