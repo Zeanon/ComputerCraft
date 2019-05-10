@@ -69,11 +69,11 @@ function load_config()
         if split(line, ": ")[1] == "version" then
             curVersion = split(line, ": ")[2]
 		elseif split(line, ": ")[1] == "color" then
-			color = split(line, ": ")[2]
+			color = gui.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "rftcolor" then
-			rftcolor = split(line, ": ")[2]
+			rftcolor = gui.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "buttoncolor" then
-			buttoncolor = split(line, ": ")[2]
+			buttoncolor = gui.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line1" then
