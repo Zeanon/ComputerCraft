@@ -269,7 +269,56 @@ function update6()
 	drawDrainback(y + 18, totalDrainback)
 end
 
-funtion buttons()
+funtion buttons1()
+	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
+		if xPos >= 2 and xPos <= 4 then
+			line1 = line1 - 1
+			if line1 < 1 then
+				line1 = 3
+			end	
+		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			line1 = line1 + 1
+			if line1 > 3
+				line1 = 1
+			end
+		end
+		update1()
+	end
+end
+
+funtion buttons2()
+	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
+		if xPos >= 2 and xPos <= 4 then
+			line1 = line1 - 1
+			if line1 < 1 then
+				line1 = 3
+			end	
+		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			line1 = line1 + 1
+			if line1 > 3
+				line1 = 1
+			end
+		end
+		update1()
+	elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
+		if xPos >= 2 and xPos <= 4 then
+			line2 = line2 - 1
+			if line2 < 1 then
+				line2 = 3
+			end	
+		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			line2 = line2 + 1
+			if line2 > 3
+				line2 = 1
+			end
+		end
+		update3()
+	end
+end
+
+funtion buttons3()
 	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
 		if xPos >= 2 and xPos <= 4 then
@@ -366,7 +415,13 @@ funtion update()
 end
 
 if mon.X >= 55 then
-	parallel.waitForAny(buttons, update)
+	if mon.Y < 16 then
+		parallel.waitForAny(buttons1, update)
+	elseif mon.Y >= 16 and mon.Y < 24 then
+		parallel.waitForAny(buttons2, update)
+	else 
+		parallel.waitForAny(buttons3, update)
+	end
 else
 	update()
 end
