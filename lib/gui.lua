@@ -100,6 +100,30 @@ function drawButtons(mon, x, y, color, bgcolor1, bgcolor2)
     draw_text(mon, x+23, y, " > ", color, bgcolor2)
 end
 
+function drawSideButtons(mon, x, y, color)
+	mon.monitor.setBackgroundColor(color)
+	mon.monitor.setCursorPos(2,y+2)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(3,y+1)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(3,y+3)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(4,y)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(4,y+4)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(mon.X - 2,y+2)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(mon.X - 3,y+1)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(mon.X - 3,y+3)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(mon.X - 4,y)
+    mon.monitor.write(" ")
+	mon.monitor.setCursorPos(mon.X - 4,y+4)
+    mon.monitor.write(" ")
+end
+
 --create progress bar
 --draws two overlapping lines
 --background line of bg_color
