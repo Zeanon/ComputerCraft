@@ -5,7 +5,6 @@ local buttoncolor = colors.purple
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
-
 -- program
 local version = "1.0.0"
 local mon, monitor, monX, monY
@@ -44,12 +43,17 @@ end
 function save_config()
     local sw = fs.open("config.txt", "w")
     sw.writeLine("-- Config for Draconig Reactor Generation Overview")
-    sw.writeLine("version: " .. version)
+    sw.writeLine("version: " .. version	)
     sw.writeLine(" ")
+	sw.writeLine("-- configure the display colors")
 	sw.writeLine("color: " .. gui.convertColor(color))
 	sw.writeLine("rftcolor: " .. gui.convertColor(rftcolor))
 	sw.writeLine("buttoncolor: " ..  gui.convertColor(buttoncolor))
+	sw.writeLine(" ")
+	sw.writeLine("-- lower number means higher refresh rate but also increases server load")
 	sw.writeLine("refresh: " ..  refresh)
+    sw.writeLine(" ")
+	sw.writeLine("-- just some saved data")
 	sw.writeLine("line1: " .. line1)
 	sw.writeLine("line2: " .. line2)
 	sw.writeLine("line3: " .. line3
