@@ -94,10 +94,8 @@ end
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
     save_config()
-    initTables()
 else
 	load_config()
-    initTables()
 end
 
 function getDrainback()
