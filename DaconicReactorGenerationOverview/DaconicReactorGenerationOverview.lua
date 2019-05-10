@@ -156,15 +156,15 @@ function update1()
 	if line1 == 1 then
 		drawOutput(y, output)
 		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, " Out", colors.white, buttoncolor)
 	end
 end
 
@@ -194,29 +194,29 @@ function update3()
 	if line1 == 1 then
 		drawOutput(y, output)
 		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, " Out ", colors.white, buttoncolor)
 	end
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
 	if line2 == 1 then
 		drawOutput(y + 10, output)
 		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 12, " Gen ", colors.white, buttoncolor)
 	elseif line2 == 2 then
 		drawGeneration(y + 10, totalGeneration)
 		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 12, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 10, totalDrainback)
 		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 12, " Out", colors.white, buttoncolor)
 	end
 end
 
@@ -249,42 +249,42 @@ function update5()
 	if line1 == 1 then
 		drawOutput(y, output)
 		gui.draw_text(mon, 2, y + 2, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, " Gen", colors.white, buttoncolor)
 	elseif line1 == 2 then
 		drawGeneration(y, totalGeneration)
 		gui.draw_text(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y, totalDrainback)
 		gui.draw_text(mon, 2, y + 2, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 2, "Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 2, " Out", colors.white, buttoncolor)
 	end
     gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
 	if line2 == 1 then
 		drawOutput(y + 10, output)
 		gui.draw_text(mon, 2, y + 12, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 12, " Gen", colors.white, buttoncolor)
 	elseif line2 == 2 then
 		drawGeneration(y + 10, totalGeneration)
 		gui.draw_text(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 12, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 12, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 10, totalDrainback)
 		gui.draw_text(mon, 2, y + 12, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 12, "Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 12, " Out", colors.white, buttoncolor)
 	end
 	if line3 == 1 then
 		drawOutput(y + 18, output)
 		gui.draw_text(mon, 2, y + 20, "Back", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 20, "Gen ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 20, " Gen", colors.white, buttoncolor)
 	elseif line3 == 2 then
 		drawGeneration(y + 18, totalGeneration)
 		gui.draw_text(mon, 2, y + 20, "Out ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 20, "Back", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 20, "Back", colors.white, buttoncolor)
 	else
 		drawDrainback(y + 18, totalDrainback)
 		gui.draw_text(mon, 2, y + 20, "Gen ", colors.white, buttoncolor)
-		gui.draw_text_right(mon, 2, y + 20, "Out ", colors.white, buttoncolor)
+		gui.draw_text_right(mon, 1, y + 20, " Out", colors.white, buttoncolor)
 	end
 end
 
@@ -307,12 +307,12 @@ function buttons1()
 	while true do
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 		if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
-			if xPos >= 2 and xPos <= 4 then
+			if xPos >= 1 and xPos <= 5 then
 				line1 = line1 - 1
 				if line1 < 1 then
 					line1 = 3
 				end
-			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line1 = line1 + 1
 				if line1 > 3 then
 					line1 = 1
@@ -328,12 +328,12 @@ function buttons2()
 	while true do
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 		if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
-			if xPos >= 2 and xPos <= 4 then
+			if xPos >= 1 and xPos <= 5 then
 				line1 = line1 - 1
 				if line1 < 1 then
 					line1 = 3
 				end
-			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line1 = line1 + 1
 				if line1 > 3 then
 					line1 = 1
@@ -342,12 +342,12 @@ function buttons2()
 			update3()
 			save_config()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
-			if xPos >= 2 and xPos <= 4 then
+			if xPos >= 1 and xPos <= 5 then
 				line2 = line2 - 1
 				if line2 < 1 then
 					line2 = 3
 				end
-			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line2 = line2 + 1
 				if line2 > 3 then
 					line2 = 1
@@ -363,12 +363,12 @@ function buttons3()
 	while true do
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 		if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
-			if xPos >= 2 and xPos <= 4 then
+			if xPos >= 1 and xPos <= 5 then
 				line1 = line1 - 1
 				if line1 < 1 then
 					line1 = 3
 				end
-			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line1 = line1 + 1
 				if line1 > 3 then
 					line1 = 1
@@ -377,12 +377,12 @@ function buttons3()
 			update5()
 			save_config()
 		elseif buttonLine2 ~= null and yPos >= buttonLine2 and yPos <= buttonLine2 + 4 then
-			if xPos >= 2 and xPos <= 4 then
+			if xPos >= 1 and xPos <= 5 then
 				line2 = line2 - 1
 				if line2 < 1 then
 					line2 = 3
 				end
-			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line2 = line2 + 1
 				if line2 > 3 then
 					line2 = 1
@@ -391,12 +391,12 @@ function buttons3()
 			update5()
 			save_config()
 		elseif buttonLine3 ~= null and yPos >= buttonLine3 and yPos <= buttonLine3 + 4 then
-			if xPos >= 2 and xPos <= 4 then
+			if xPos >= 1 and xPos <= 5 then
 				line3 = line3 - 1
 				if line3 < 1 then
 					line3 = 3
 				end
-			elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
+			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 				line3 = line3 + 1
 				if line3 > 3 then
 					line3 = 1
@@ -409,7 +409,7 @@ function buttons3()
 end
 
 function updateLine1()
-    x = gui.getInteger((mon.X - 47) / 2) + 1
+    x = gui.getInteger((mon.X - 46) / 2) + 1
     y = gui.getInteger((mon.Y - 6) / 2)
 	buttonLine1 = y
     while true do
@@ -419,7 +419,7 @@ function updateLine1()
 end
 
 function updateLine2()
-    x = gui.getInteger((mon.X - 47) / 2) + 1
+    x = gui.getInteger((mon.X - 46) / 2) + 1
     y = gui.getInteger((mon.Y - 14) / 2)
 	buttonLine1 = y
 	buttonLine2 = y + 10
@@ -430,7 +430,7 @@ function updateLine2()
 end
 
 function updateLine3()
-    x = gui.getInteger((mon.X - 47) / 2) + 1
+    x = gui.getInteger((mon.X - 46) / 2) + 1
     y = gui.getInteger((mon.Y - 22) / 2)
 	buttonLine1 = y
 	buttonLine2 = y + 10
@@ -443,21 +443,21 @@ end
 
 function update()
     if mon.Y < 16 then
-        x = gui.getInteger((mon.X - 47) / 2) + 1
+        x = gui.getInteger((mon.X - 46) / 2) + 1
         y = gui.getInteger((mon.Y - 6) / 2)
         while true do
             update2()
             sleep(refresh)
         end
     elseif mon.Y >= 16 and mon.Y < 24 then
-        x = gui.getInteger((mon.X - 47) / 2) + 1
+        x = gui.getInteger((mon.X - 46) / 2) + 1
         y = gui.getInteger((mon.Y - 14) / 2)
         while true do
             update4()
             sleep(refresh)
         end
     else
-        x = gui.getInteger((mon.X - 47) / 2) + 1
+        x = gui.getInteger((mon.X - 46) / 2) + 1
         y = gui.getInteger((mon.Y - 22) / 2)
         while true do
             update6()
