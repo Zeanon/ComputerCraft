@@ -7,3 +7,5 @@ just connect the 2 reactors via peripheral proxys and the 2 internalOutput fluxg
 pastebin URL of install script: https://pastebin.com/VT6ezUgB
 <br>use <code>pastebin get VT6ezUgB install</code> and then run install
 <br>to update just run <code>update</code>
+## Other Info
+to change the display colors, just open <code>config.txt</code> and edit the color values
