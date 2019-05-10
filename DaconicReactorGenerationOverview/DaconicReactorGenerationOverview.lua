@@ -73,7 +73,7 @@ function load_config()
 		elseif split(line, ": ")[1] == "rftcolor" then
 			rftcolor = split(line, ": ")[2]
 		elseif split(line, ": ")[1] == "buttoncolor" then
-			buttoncolor =  = split(line, ": ")[2]
+			buttoncolor = split(line, ": ")[2]
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line1" then
@@ -169,6 +169,7 @@ function update2()
     local totalGeneration = getGeneration()
     local totalDrainback = getDrainback()
     gui.clear(mon)
+
     print("Total reactor output: " .. gui.format_int(output))
     print("Total generation: " .. gui.format_int(totalGeneration))
     printGeneration()
@@ -269,17 +270,17 @@ function update6()
 	drawDrainback(y + 18, totalDrainback)
 end
 
-funtion buttons1()
+function buttons1()
 	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
 		if xPos >= 2 and xPos <= 4 then
 			line1 = line1 - 1
 			if line1 < 1 then
 				line1 = 3
-			end	
+			end
 		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
 			line1 = line1 + 1
-			if line1 > 3
+			if line1 > 3 then
 				line1 = 1
 			end
 		end
@@ -287,17 +288,17 @@ funtion buttons1()
 	end
 end
 
-funtion buttons2()
+function buttons2()
 	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
 		if xPos >= 2 and xPos <= 4 then
 			line1 = line1 - 1
 			if line1 < 1 then
 				line1 = 3
-			end	
+			end
 		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
 			line1 = line1 + 1
-			if line1 > 3
+			if line1 > 3 then
 				line1 = 1
 			end
 		end
@@ -307,10 +308,10 @@ funtion buttons2()
 			line2 = line2 - 1
 			if line2 < 1 then
 				line2 = 3
-			end	
+			end
 		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
 			line2 = line2 + 1
-			if line2 > 3
+			if line2 > 3 then
 				line2 = 1
 			end
 		end
@@ -318,17 +319,17 @@ funtion buttons2()
 	end
 end
 
-funtion buttons3()
+function buttons3()
 	local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 	if buttonLine1 ~= null and yPos >= buttonLine1 and yPos <= buttonLine1 + 4 then
 		if xPos >= 2 and xPos <= 4 then
 			line1 = line1 - 1
 			if line1 < 1 then
 				line1 = 3
-			end	
+			end
 		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
 			line1 = line1 + 1
-			if line1 > 3
+			if line1 > 3 then
 				line1 = 1
 			end
 		end
@@ -338,10 +339,10 @@ funtion buttons3()
 			line2 = line2 - 1
 			if line2 < 1 then
 				line2 = 3
-			end	
+			end
 		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
 			line2 = line2 + 1
-			if line2 > 3
+			if line2 > 3 then
 				line2 = 1
 			end
 		end
@@ -351,10 +352,10 @@ funtion buttons3()
 			line3 = line3 - 1
 			if line3 < 1 then
 				line3 = 3
-			end	
+			end
 		elseif xPos >= mon.X - 4 and xPos <= mon.X - 2 then
 			line3 = line3 + 1
-			if line3 > 3
+			if line3 > 3 then
 				line3 = 1
 			end
 		end
@@ -362,65 +363,65 @@ funtion buttons3()
 	end
 end
 
-funtion update()
-	if mon.Y < 16 then
-		if mon.X >= 55 then
-			x = gui.getInteger((mon.X - 47) / 2) + 1
-			y = gui.getInteger((mon.Y - 6) / 2)
-			while true do
-				update1()
-				sleep(refresh)
-			end
-		else
-			x = gui.getInteger((mon.X - 47) / 2) + 1
-			y = gui.getInteger((mon.Y - 6) / 2)
-			while true do
-				update2()
-				sleep(refresh)
-			end
-		end
-	elseif mon.Y >= 16 and mon.Y < 24 then
-		if mon.X >= 55 then
-			x = gui.getInteger((mon.X - 47) / 2) + 1
-			y = gui.getInteger((mon.Y - 14) / 2)
-			while true do
-				update3()
-				sleep(refresh)
-			end
-		else
-			x = gui.getInteger((mon.X - 47) / 2) + 1
-			y = gui.getInteger((mon.Y - 14) / 2)
-			while true do
-				update4()
-				sleep(refresh)
-			end
-		end
-	else
-		if mon.X >= 55 then
-			x = gui.getInteger((mon.X - 47) / 2) + 1
-			y = gui.getInteger((mon.Y - 22) / 2)
-			while true do
-				update5()
-				sleep(refresh)
-			end
-		else
-			x = gui.getInteger((mon.X - 47) / 2) + 1
-			y = gui.getInteger((mon.Y - 22) / 2)
-			while true do
-				update6()
-				sleep(refresh)
-			end
-		end
-	end
+function updateLine1()
+    x = gui.getInteger((mon.X - 47) / 2) + 1
+    y = gui.getInteger((mon.Y - 6) / 2)
+    while true do
+        update1()
+        sleep(refresh)
+    end
+end
+
+function updateLine2()
+    x = gui.getInteger((mon.X - 47) / 2) + 1
+    y = gui.getInteger((mon.Y - 14) / 2)
+    while true do
+        update3()
+        sleep(refresh)
+    end
+end
+
+function updateLine3()
+    x = gui.getInteger((mon.X - 47) / 2) + 1
+    y = gui.getInteger((mon.Y - 22) / 2)
+    while true do
+        update5()
+        sleep(refresh)
+    end
+end
+
+function update()
+    if mon.Y < 16 then
+        x = gui.getInteger((mon.X - 47) / 2) + 1
+        y = gui.getInteger((mon.Y - 6) / 2)
+        while true do
+            update2()
+            sleep(refresh)
+        end
+    elseif mon.Y >= 16 and mon.Y < 24 then
+        x = gui.getInteger((mon.X - 47) / 2) + 1
+        y = gui.getInteger((mon.Y - 14) / 2)
+        while true do
+            update4()
+            sleep(refresh)
+        end
+    else
+        x = gui.getInteger((mon.X - 47) / 2) + 1
+        y = gui.getInteger((mon.Y - 22) / 2)
+        while true do
+            update6()
+            sleep(refresh)
+        end
+    end
 end
 
 if mon.X >= 55 then
 	if mon.Y < 16 then
-		parallel.waitForAny(buttons1, update)
+		parallel.waitForAny(buttons1, updateLine1)
 	elseif mon.Y >= 16 and mon.Y < 24 then
-		parallel.waitForAny(buttons2, update)
+		parallel.waitForAny(buttons2, updateLine2)
 	else 
-		parallel.waitForAny(buttons3, update)
+		parallel.waitForAny(buttons3, updateLine3)
 	end
 else
 	update()
