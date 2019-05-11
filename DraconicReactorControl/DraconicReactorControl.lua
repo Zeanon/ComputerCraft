@@ -322,7 +322,6 @@ mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 
 function buttons()
-
     while true do
         -- button handler
         local event, side, xPos, yPos = os.pullEvent("monitor_touch")
