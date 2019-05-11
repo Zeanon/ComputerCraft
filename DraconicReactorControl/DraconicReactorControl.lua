@@ -246,6 +246,23 @@ function load_config()
     end
 end
 
+function editConfig()
+    local new = true
+    local i = 1
+    while i <= multishell.getCount() do
+        if multishell.getTitle(i) == "Config" then
+            multishell.setFocus(i)
+            new = false
+        end
+        i = i + 1
+    end
+    if new then
+        local newTabID = shell.openTab("edit", "config.txt")
+        multishell.setTitle(newTabID, "Config")
+        multishell.setFocus(newTabID)
+    end
+end
+
 function initTables()
     local i = 1
     while i <= stableTurns do
@@ -277,6 +294,7 @@ if monitor == null then
 end
 
 if externalfluxgate == null then
+    editConfig()
     error("No valid external output fluxgate was found")
 end
 
@@ -285,10 +303,12 @@ if reactor == null then
 end
 
 if inputfluxgate == null then
+    editConfig()
     error("No valid input flux gate was found")
 end
 
 if outputfluxgate == null then
+    editConfig()
     error("No valid internal output flux gate was found")
 end
 
@@ -319,20 +339,7 @@ function buttons()
         -- edit Config
         if yPos >= 6 and yPos <= 8 then
             if xPos >= mon.X-25 and xPos <= mon.X-14 then
-                local new = true
-                local i = 1
-                while i <= multishell.getCount() do
-                    if multishell.getTitle(i) == "Config" then
-                        multishell.setFocus(i)
-                        new = false
-                    end
-                    i = i + 1
-                end
-                if new then
-                    local newTabID = shell.openTab("edit", "config.txt")
-                    multishell.setTitle(newTabID, "Config")
-                    multishell.setFocus(newTabID)
-                end
+                editConfig()
                 gui.draw_line(mon, mon.X-23, 6, 11, colors.lightBlue)
                 gui.draw_text(mon, mon.X-23, 7, "Edit Config", colors.white, colors.lightBlue)
                 gui.draw_line(mon, mon.X-23, 8, 11, colors.lightBlue)
@@ -952,6 +959,9 @@ function checkOutput()
         i = i + 1
     end
     if lastTemp[stableTurns] > safeTemperature - (500 / tempTolerance) or lastSat[stableTurns] < targetSat + (5 / satTolerance) then
+        return false
+    end
+    if lastGen[stableTurns] + (2 * maxIncrease) < externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() then
         return false
     end
 	return true
