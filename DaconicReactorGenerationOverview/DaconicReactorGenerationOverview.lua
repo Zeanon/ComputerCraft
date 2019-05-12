@@ -14,12 +14,6 @@ local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
--- max size: 70x40(8 blocks x 6 blocks)
-monitor = peripheral.find("monitor")
-monX, monY = monitor.getSize()
-mon = {}
-mon.monitor,mon.X, mon.Y = monitor, monX, monY
-
 local x, y
 
 local line1 = 1
@@ -150,6 +144,11 @@ else
 	load_config()
 end
 
+-- max size: 70x40(8 blocks x 6 blocks)
+monitor = peripheral.find("monitor")
+monX, monY = monitor.getSize()
+mon = {}
+mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 -- get all connected reactors
 function checkValidity(periName)
@@ -1220,6 +1219,39 @@ function getGateFlow(number)
 	return gate.getSignalLowFlow()
 end
 
+-- check that every line displays something
+function checkLines()
+	if line1 > reactorCount + 3 then
+		line1 = reactorCount + 3
+	end
+	if line2 > reactorCount + 3 then
+		line2 = reactorCount + 3
+	end
+	if line3 > reactorCount + 3 then
+		line3 = reactorCount + 3
+	end
+	if line4 > reactorCount + 3 then
+		line4 = reactorCount + 3
+	end
+	if line5 > reactorCount + 3 then
+		line5 = reactorCount + 3
+	end
+	if line6 > reactorCount + 3 then
+		line6 = reactorCount + 3
+	end
+	if line7 > reactorCount + 3 then
+		line7 = reactorCount + 3
+	end
+	if line8 > reactorCount + 3 then
+		line8 = reactorCount + 3
+	end
+	if line9 > reactorCount + 3 then
+		line9 = reactorCount + 3
+	end
+	if line10 > reactorCount + 3 then
+		line10 = reactorCount + 3
+	end
+end
 
 --run
 if mon.Y >= 16 then
