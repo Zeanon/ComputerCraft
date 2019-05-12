@@ -173,9 +173,11 @@ function drawLines(amount, drawbuttons)
 end
 
 function buttons(amount)
-	while true do
-		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-		if amount >= 1 then
+	if amount >= 1 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
 			if  yPos >= y and yPos <= y + 4 then
 				if xPos >= 1 and xPos <= 5 then
 					line1 = line1 - 1
@@ -190,7 +192,26 @@ function buttons(amount)
 				end
 			end
 		end
-		if amount >= 2 then
+	end
+	if amount >= 2 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount then
+						line1 = 1
+					end
+				end
+			end
+
 			if  yPos >= y + 10 and yPos <= y + 14 then
 				if xPos >= 1 and xPos <= 5 then
 					line2 = line2 - 1
@@ -205,7 +226,40 @@ function buttons(amount)
 				end
 			end
 		end
-		if amount >= 3 then
+	end
+	if amount >= 3 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount then
+						line1 = 1
+					end
+				end
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount then
+						line2 = 1
+					end
+				end
+			end
+
 			if  yPos >= y + 18 and yPos <= y + 22 then
 				if xPos >= 1 and xPos <= 5 then
 					line3 = line3 - 1
@@ -220,7 +274,54 @@ function buttons(amount)
 				end
 			end
 		end
-		if amount >= 4 then
+	end
+	if amount >= 4 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount then
+						line1 = 1
+					end
+				end
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount then
+						line2 = 1
+					end
+				end
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount then
+						line3 = 1
+					end
+				end
+			end
+
 			if  yPos >= y + 26 and yPos <= y + 30 then
 				if xPos >= 1 and xPos <= 5 then
 					line4 = line4 - 1
@@ -312,16 +413,16 @@ end
 if mon.X >= 57 then
 	if mon.Y < 16 then
 		y = gui.getInteger((mon.Y - 6) / 2)
-		parallel.waitForAny(drawLines(1, true), buttons(1))
+		parallel.waitForAny(buttons(1), drawLines(1, true))
 	elseif mon.Y >= 16 and mon.Y < 24 then
 		y = gui.getInteger((mon.Y - 14) / 2)
-		parallel.waitForAny(drawLines(2, true), buttons(2))
+		parallel.waitForAny(buttons(2), drawLines(2, true))
 	elseif mon.Y >= 24 and mon.Y < 32 then
 		y = gui.getInteger((mon.Y - 22) / 2)
-		parallel.waitForAny(drawLines(3, true), buttons(3))
+		parallel.waitForAny(buttons(3), drawLines(3, true))
 	else
 		y = gui.getInteger((mon.Y - 30) / 2)
-		parallel.waitForAny(drawLines(4, true), buttons(4))
+		parallel.waitForAny(buttons(4), drawLines(4, true))
 	end
 else
 	if mon.Y < 16 then
