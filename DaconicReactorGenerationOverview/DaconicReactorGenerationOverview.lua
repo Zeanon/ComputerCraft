@@ -6,7 +6,7 @@ local buttonColor = colors.lightGray
 local refresh = 1
 
 -- program
-local version = "1.2.0"
+local version = "1.3.0"
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
