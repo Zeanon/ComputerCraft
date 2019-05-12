@@ -148,6 +148,12 @@ else
 	load_config()
 end
 
+if smallFont then
+	monitor.setTextScale(0.5)
+else
+	monitor.setTextScale(1)
+end
+
 -- max size: 70x40(8 blocks x 6 blocks)
 monitor = peripheral.find("monitor")
 monX, monY = monitor.getSize()
@@ -190,17 +196,11 @@ if monitor == null then
 	error("No valid monitor was found")
 end
 
-if smallFont then
-	monitor.setTextScale(0.5)
-else
-	monitor.setTextScale(1)
-end
-
 
 --update the monitor
 function update()
 	if smallFont then
-		x = gui.getInteger((mon.X - 92) / 2) - 1
+		x = gui.getInteger((mon.X - 23) / 2) - 1
 	else
 		x = gui.getInteger((mon.X - 46) / 2) - 1
 	end
