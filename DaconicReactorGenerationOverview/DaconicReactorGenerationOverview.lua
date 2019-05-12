@@ -2,6 +2,7 @@
 local numberColor = colors.red
 local rftColor = colors.gray
 local buttonColor = colors.lightGray
+local textColor = colors.white
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
@@ -61,6 +62,7 @@ function save_config()
 	sw.writeLine("numberColor: " .. color.toString(numberColor))
 	sw.writeLine("rftColor: " .. color.toString(rftColor))
 	sw.writeLine("buttonColor: " ..  color.toString(buttonColor))
+	sw.writeLine("textColor: " ..  color.toString(textColor))
 	sw.writeLine(" ")
 	sw.writeLine("-- lower number means higher refresh rate but also increases server load")
 	sw.writeLine("refresh: " ..  refresh)
@@ -83,10 +85,12 @@ function load_config()
 			curVersion = split(line, ": ")[2]
 		elseif split(line, ": ")[1] == "numberColor" then
 			numberColor = color.getColor(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "rftnumberColor" then
+		elseif split(line, ": ")[1] == "rftColor" then
 			rftColor = color.getColor(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "buttonnumberColor" then
+		elseif split(line, ": ")[1] == "buttonColor" then
 			buttonColor = color.getColor(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "textColor" then
+			textColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line1" then
@@ -360,19 +364,19 @@ function drawLine(localY, line)
 		gui.draw_number(mon, getGeneration() - getDrainback(), x, localY, numberColor, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, x, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", colors.white, colors.white, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
 		gui.draw_number(mon, getGeneration(), x, localY, numberColor, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, x, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", colors.white, colors.white, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
 		gui.draw_number(mon, getDrainback(), x, localY, numberColor, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, x, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", colors.white, colors.white, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
 		end
 	else
 		for i = 1, reactorCount do
@@ -381,13 +385,13 @@ function drawLine(localY, line)
 				if drawButtons then
 					gui.drawSideButtons(mon, x, localY, buttonColor)
 					if line == 4 and line == reactorCount + 3 then
-						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", colors.white, colors.white, buttonColor)
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
 					elseif line == 4 then
-						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "DR" .. i + 1 .. " ", colors.white, colors.white, buttonColor)
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "DR" .. i + 1 .. " ", textColor, textColor, buttonColor)
 					elseif line == reactorCount + 3 then
-						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", " Out", colors.white, colors.white, buttonColor)
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", " Out", textColor, textColor, buttonColor)
 					else
-						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", "DR" .. i + 1 .. " ", colors.white, colors.white, buttonColor)
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", "DR" .. i + 1 .. " ", textColor, textColor, buttonColor)
 					end
 				end
 			end
