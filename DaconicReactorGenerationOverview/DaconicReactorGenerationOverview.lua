@@ -142,7 +142,7 @@ for i,v in ipairs(periList) do
 	if isValid then periFunctions[isValid]() end
 end
 
---Check for storage cells and monitors before continuing
+--Check for reactor, fluxgates and monitors before continuing
 if reactorCount == 0 then
 	error("No valid reactor was found")
 end
@@ -155,6 +155,7 @@ if monitor == null then
 end
 
 
+--update the monitor
 function update()
 	x = gui.getInteger((mon.X - 46) / 2) + 1
 	while true do
@@ -163,6 +164,7 @@ function update()
 	end
 end
 
+--draw the different lines on the screen
 function drawLines()
 	gui.clear(mon)
 	print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
@@ -186,6 +188,7 @@ function drawLines()
 	end
 end
 
+--handle the monitor touch inputs
 function buttons()
 	if amount == 1 then
 		while true do
@@ -363,6 +366,7 @@ function buttons()
 	end
 end
 
+--draw line with information on the monitor
 function drawLine(localY, line)
 	if line == 1 then
 		gui.draw_number(mon, getGeneration() - getDrainback(), x, localY, numberColor, rftColor)
@@ -404,6 +408,7 @@ function drawLine(localY, line)
 end
 
 
+--get total generation
 function getGeneration()
 	local totalGeneration = 0
 	for i = 1, reactorCount do
@@ -412,6 +417,7 @@ function getGeneration()
 	return totalGeneration
 end
 
+--get total drainback
 function getDrainback()
 	local totalDrainback = 0
 	for i = 1, reactorCount do
@@ -420,6 +426,7 @@ function getDrainback()
 	return totalDrainback
 end
 
+--get generation of one specific reactor
 function getReactorGeneration(number)
 	local reactor = peripheral.wrap(connectedReactors[number])
 	local ri = reactor.getReactorInfo()
@@ -430,12 +437,14 @@ function getReactorGeneration(number)
 	end
 end
 
+--get flow of one specific gate
 function getGateFlow(number)
 	local gate = peripheral.wrap(connectedGates[number])
 	return gate.getSignalLowFlow()
 end
 
 
+--run
 if mon.X >= 57 then
 	if mon.Y < 16 then
 		amount = 1

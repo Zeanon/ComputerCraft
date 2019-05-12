@@ -324,7 +324,7 @@ mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 
---function to handle the monitor touch inputs
+--handle the monitor touch inputs
 function buttons()
     while true do
         -- button handler
