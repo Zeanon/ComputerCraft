@@ -190,6 +190,7 @@ function buttons(amount)
 						line1 = 1
 					end
 				end
+				drawLine(y, line1, true)
 			end
 		end
 	end
@@ -210,6 +211,7 @@ function buttons(amount)
 						line1 = 1
 					end
 				end
+				drawLine(y, line1, true)
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -224,6 +226,7 @@ function buttons(amount)
 						line2 = 1
 					end
 				end
+				drawLine(y + 10, line2, true)
 			end
 		end
 	end
@@ -244,6 +247,7 @@ function buttons(amount)
 						line1 = 1
 					end
 				end
+				drawLine(y, line1, true)
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -258,6 +262,7 @@ function buttons(amount)
 						line2 = 1
 					end
 				end
+				drawLine(y + 10, line2, true)
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -272,6 +277,7 @@ function buttons(amount)
 						line3 = 1
 					end
 				end
+				drawLine(y + 18, line3, true)
 			end
 		end
 	end
@@ -292,6 +298,7 @@ function buttons(amount)
 						line1 = 1
 					end
 				end
+				drawLine(y, line1, true)
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -306,6 +313,7 @@ function buttons(amount)
 						line2 = 1
 					end
 				end
+				drawLine(y + 10, line2, true)
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -320,6 +328,7 @@ function buttons(amount)
 						line3 = 1
 					end
 				end
+				drawLine(y + 18, line3, true)
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -334,6 +343,7 @@ function buttons(amount)
 						line4 = 1
 					end
 				end
+				drawLine(y + 26, line4, true)
 			end
 		end
 	end
