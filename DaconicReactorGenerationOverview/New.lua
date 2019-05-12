@@ -10,6 +10,7 @@ local version = "1.2.0"
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
 
+-- max size: 70x40(8 blocksx 6 blocks)
 monitor = peripheral.find("monitor")
 monX, monY = monitor.getSize()
 mon = {}
