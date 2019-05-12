@@ -1,7 +1,7 @@
--- configure color
-local color = colors.red
-local rftcolor = colors.gray
-local buttoncolor = colors.lightGray
+-- configure colors
+local numberColor = numberColors.red
+local rftColor = numberColors.gray
+local buttonColor = numberColors.lightGray
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
@@ -9,6 +9,7 @@ local refresh = 1
 local version = "1.2.0"
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
+os.loadAPI("lib/color")
 
 -- max size: 70x40(8 blocksx 6 blocks)
 monitor = peripheral.find("monitor")
@@ -46,10 +47,10 @@ function save_config()
     sw.writeLine("-- Config for Draconig Reactor Generation Overview")
     sw.writeLine("version: " .. version	)
     sw.writeLine(" ")
-    sw.writeLine("-- configure the display colors")
-    sw.writeLine("color: " .. gui.convertColor(color))
-    sw.writeLine("rftcolor: " .. gui.convertColor(rftcolor))
-    sw.writeLine("buttoncolor: " ..  gui.convertColor(buttoncolor))
+    sw.writeLine("-- configure the display numberColors")
+    sw.writeLine("numberColor: " .. color.toString(numberColor))
+    sw.writeLine("rftnumberColor: " .. color.toString(rftnumberColor))
+    sw.writeLine("buttonnumberColor: " ..  color.toString(buttonnumberColor))
     sw.writeLine(" ")
     sw.writeLine("-- lower number means higher refresh rate but also increases server load")
     sw.writeLine("refresh: " ..  refresh)
@@ -69,12 +70,12 @@ function load_config()
     while line do
         if split(line, ": ")[1] == "version" then
             curVersion = split(line, ": ")[2]
-        elseif split(line, ": ")[1] == "color" then
-            color = gui.getColor(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "rftcolor" then
-            rftcolor = gui.getColor(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "buttoncolor" then
-            buttoncolor = gui.getColor(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "numberColor" then
+            numberColor = gui.getColor(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "rftnumberColor" then
+            rftColor = gui.getColor(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "buttonnumberColor" then
+            buttonColor = gui.getColor(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "refresh" then
             refresh = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "line1" then
