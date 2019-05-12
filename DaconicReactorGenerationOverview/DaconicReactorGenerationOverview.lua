@@ -5,6 +5,8 @@ local buttonColor = colors.lightGray
 local textColor = colors.white
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
+-- font size
+local smallFont = false
 
 -- program
 local version = "1.3.0"
@@ -24,6 +26,12 @@ local line1 = 1
 local line2 = 2
 local line3 = 3
 local line4 = 4
+local line5 = 5
+local line6 = 6
+local line7 = 7
+local line8 = 8
+local line9 = 9
+local line10 = 10
 
 local amount, drawButtons
 
@@ -70,6 +78,12 @@ function save_config()
 	sw.writeLine("line2: " .. line2)
 	sw.writeLine("line3: " .. line3)
 	sw.writeLine("line4: " .. line4)
+	sw.writeLine("line5: " .. line5)
+	sw.writeLine("line6: " .. line6)
+	sw.writeLine("line7: " .. line7)
+	sw.writeLine("line8: " .. line8)
+	sw.writeLine("line9: " .. line9)
+	sw.writeLine("line10: " .. line10)
 	sw.close()
 end
 
@@ -99,6 +113,18 @@ function load_config()
 			line3 = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line4" then
 			line4 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line5" then
+			line5 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line6" then
+			line6 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line7" then
+			line7 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line8" then
+			line8 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line9" then
+			line9 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line10" then
+			line10 = tonumber(split(line, ": ")[2])
 		end
 		line = sr.readLine()
 	end
@@ -172,17 +198,35 @@ function drawLines()
 	end
 	print("Total drainback: " .. gui.format_int(getDrainback()))
 	if amount >= 1 then
-		drawLine(y, line1, drawButtons)
+		drawLine(y, line1)
 	end
 	if amount >= 2 then
 		gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-		drawLine(y + 10, line2, drawButtons)
+		drawLine(y + 10, line2)
 	end
 	if amount >= 3 then
-		drawLine(y + 18, line3, drawButtons)
+		drawLine(y + 18, line3)
 	end
 	if amount >= 4 then
-		drawLine(y + 26, line4, drawButtons)
+		drawLine(y + 26, line4)
+	end
+	if amount >= 5 then
+		drawLine(y + 34, line5)
+	end
+	if amount >= 6 then
+		drawLine(y + 42, line6)
+	end
+	if amount >= 7 then
+		drawLine(y + 50, line7)
+	end
+	if amount >= 8 then
+		drawLine(y + 58, line8)
+	end
+	if amount >= 9 then
+		drawLine(y + 66, line9)
+	end
+	if amount >= 10 then
+		drawLine(y + 74, line10)
 	end
 end
 
@@ -209,6 +253,7 @@ function buttons()
 			end
 		end
 	end
+
 	if amount == 2 then
 		while true do
 			-- button handler
@@ -245,6 +290,7 @@ function buttons()
 			end
 		end
 	end
+
 	if amount == 3 then
 		while true do
 			-- button handler
@@ -296,6 +342,7 @@ function buttons()
 			end
 		end
 	end
+
 	if amount == 4 then
 		while true do
 			-- button handler
@@ -356,6 +403,723 @@ function buttons()
 					line4 = line4 + 1
 					if line4 > reactorCount + 3 then
 						line4 = 1
+					end
+				end
+				drawLines()
+			end
+		end
+	end
+
+	if amount == 5 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount + 3 then
+						line1 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount + 3 then
+						line2 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount + 3 then
+						line3 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 26 and yPos <= y + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					line4 = line4 - 1
+					if line4 < 1 then
+						line4 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line4 = line4 + 1
+					if line4 > reactorCount + 3 then
+						line4 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 34 and yPos <= y + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					line5 = line5 - 1
+					if line5 < 1 then
+						line5 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line5 = line5 + 1
+					if line5 > reactorCount + 3 then
+						line5 = 1
+					end
+				end
+				drawLines()
+			end
+		end
+	end
+
+	if amount == 6 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount + 3 then
+						line1 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount + 3 then
+						line2 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount + 3 then
+						line3 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 26 and yPos <= y + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					line4 = line4 - 1
+					if line4 < 1 then
+						line4 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line4 = line4 + 1
+					if line4 > reactorCount + 3 then
+						line4 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 34 and yPos <= y + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					line5 = line5 - 1
+					if line5 < 1 then
+						line5 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line5 = line5 + 1
+					if line5 > reactorCount + 3 then
+						line5 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 42 and yPos <= y + 46 then
+				if xPos >= 1 and xPos <= 5 then
+					line6 = line6 - 1
+					if line6 < 1 then
+						line6 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line6 = line6 + 1
+					if line6 > reactorCount + 3 then
+						line6 = 1
+					end
+				end
+				drawLines()
+			end
+		end
+	end
+
+	if amount == 7 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount + 3 then
+						line1 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount + 3 then
+						line2 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount + 3 then
+						line3 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 26 and yPos <= y + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					line4 = line4 - 1
+					if line4 < 1 then
+						line4 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line4 = line4 + 1
+					if line4 > reactorCount + 3 then
+						line4 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 34 and yPos <= y + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					line5 = line5 - 1
+					if line5 < 1 then
+						line5 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line5 = line5 + 1
+					if line5 > reactorCount + 3 then
+						line5 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 42 and yPos <= y + 46 then
+				if xPos >= 1 and xPos <= 5 then
+					line6 = line6 - 1
+					if line6 < 1 then
+						line6 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line6 = line6 + 1
+					if line6 > reactorCount + 3 then
+						line6 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 50 and yPos <= y + 54 then
+				if xPos >= 1 and xPos <= 5 then
+					line7 = line7 - 1
+					if line7 < 1 then
+						line7 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line7 = line7 + 1
+					if line7 > reactorCount + 3 then
+						line7 = 1
+					end
+				end
+				drawLines()
+			end
+		end
+	end
+
+	if amount == 8 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount + 3 then
+						line1 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount + 3 then
+						line2 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount + 3 then
+						line3 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 26 and yPos <= y + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					line4 = line4 - 1
+					if line4 < 1 then
+						line4 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line4 = line4 + 1
+					if line4 > reactorCount + 3 then
+						line4 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 34 and yPos <= y + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					line5 = line5 - 1
+					if line5 < 1 then
+						line5 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line5 = line5 + 1
+					if line5 > reactorCount + 3 then
+						line5 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 42 and yPos <= y + 46 then
+				if xPos >= 1 and xPos <= 5 then
+					line6 = line6 - 1
+					if line6 < 1 then
+						line6 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line6 = line6 + 1
+					if line6 > reactorCount + 3 then
+						line6 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 50 and yPos <= y + 54 then
+				if xPos >= 1 and xPos <= 5 then
+					line7 = line7 - 1
+					if line7 < 1 then
+						line7 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line7 = line7 + 1
+					if line7 > reactorCount + 3 then
+						line7 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 58 and yPos <= y + 62 then
+				if xPos >= 1 and xPos <= 5 then
+					line8 = line8 - 1
+					if line8 < 1 then
+						line8 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line8 = line8 + 1
+					if line8 > reactorCount + 3 then
+						line8 = 1
+					end
+				end
+				drawLines()
+			end
+		end
+	end
+
+	if amount == 9 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount + 3 then
+						line1 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount + 3 then
+						line2 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount + 3 then
+						line3 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 26 and yPos <= y + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					line4 = line4 - 1
+					if line4 < 1 then
+						line4 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line4 = line4 + 1
+					if line4 > reactorCount + 3 then
+						line4 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 34 and yPos <= y + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					line5 = line5 - 1
+					if line5 < 1 then
+						line5 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line5 = line5 + 1
+					if line5 > reactorCount + 3 then
+						line5 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 42 and yPos <= y + 46 then
+				if xPos >= 1 and xPos <= 5 then
+					line6 = line6 - 1
+					if line6 < 1 then
+						line6 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line6 = line6 + 1
+					if line6 > reactorCount + 3 then
+						line6 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 50 and yPos <= y + 54 then
+				if xPos >= 1 and xPos <= 5 then
+					line7 = line7 - 1
+					if line7 < 1 then
+						line7 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line7 = line7 + 1
+					if line7 > reactorCount + 3 then
+						line7 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 58 and yPos <= y + 62 then
+				if xPos >= 1 and xPos <= 5 then
+					line8 = line8 - 1
+					if line8 < 1 then
+						line8 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line8 = line8 + 1
+					if line8 > reactorCount + 3 then
+						line8 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 66 and yPos <= y + 70 then
+				if xPos >= 1 and xPos <= 5 then
+					line9 = line9 - 1
+					if line9 < 1 then
+						line9 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line9 = line9 + 1
+					if line9 > reactorCount + 3 then
+						line9 = 1
+					end
+				end
+				drawLines()
+			end
+		end
+	end
+
+	if amount == 9 then
+		while true do
+			-- button handler
+			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+			if  yPos >= y and yPos <= y + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					line1 = line1 - 1
+					if line1 < 1 then
+						line1 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line1 = line1 + 1
+					if line1 > reactorCount + 3 then
+						line1 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 10 and yPos <= y + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					line2 = line2 - 1
+					if line2 < 1 then
+						line2 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line2 = line2 + 1
+					if line2 > reactorCount + 3 then
+						line2 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 18 and yPos <= y + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					line3 = line3 - 1
+					if line3 < 1 then
+						line3 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line3 = line3 + 1
+					if line3 > reactorCount + 3 then
+						line3 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if  yPos >= y + 26 and yPos <= y + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					line4 = line4 - 1
+					if line4 < 1 then
+						line4 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line4 = line4 + 1
+					if line4 > reactorCount + 3 then
+						line4 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 34 and yPos <= y + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					line5 = line5 - 1
+					if line5 < 1 then
+						line5 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line5 = line5 + 1
+					if line5 > reactorCount + 3 then
+						line5 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 42 and yPos <= y + 46 then
+				if xPos >= 1 and xPos <= 5 then
+					line6 = line6 - 1
+					if line6 < 1 then
+						line6 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line6 = line6 + 1
+					if line6 > reactorCount + 3 then
+						line6 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 50 and yPos <= y + 54 then
+				if xPos >= 1 and xPos <= 5 then
+					line7 = line7 - 1
+					if line7 < 1 then
+						line7 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line7 = line7 + 1
+					if line7 > reactorCount + 3 then
+						line7 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 58 and yPos <= y + 62 then
+				if xPos >= 1 and xPos <= 5 then
+					line8 = line8 - 1
+					if line8 < 1 then
+						line8 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line8 = line8 + 1
+					if line8 > reactorCount + 3 then
+						line8 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 66 and yPos <= y + 70 then
+				if xPos >= 1 and xPos <= 5 then
+					line9 = line9 - 1
+					if line9 < 1 then
+						line9 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line9 = line9 + 1
+					if line9 > reactorCount + 3 then
+						line9 = 1
+					end
+				end
+				drawLines()
+			end
+
+			if yPos >= y + 74 and yPos <= y + 78 then
+				if xPos >= 1 and xPos <= 5 then
+					line10 = line10 - 1
+					if line10 < 1 then
+						line10 = reactorCount + 3
+					end
+				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+					line10 = line10 + 1
+					if line10 > reactorCount + 3 then
+						line10 = 1
 					end
 				end
 				drawLines()
