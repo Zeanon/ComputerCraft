@@ -69,6 +69,7 @@ function save_config()
 	sw.writeLine("line1: " .. line1)
 	sw.writeLine("line2: " .. line2)
 	sw.writeLine("line3: " .. line3)
+	sw.writeLine("line4: " .. line4)
 	sw.close()
 end
 
@@ -94,6 +95,8 @@ function load_config()
 			line2 = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line3" then
 			line3 = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "line4" then
+			line4 = tonumber(split(line, ": ")[2])
 		end
 		line = sr.readLine()
 	end
@@ -193,7 +196,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1)
+				drawLines()
 			end
 		end
 	end
@@ -214,7 +217,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1)
+				drawLines()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -229,7 +232,7 @@ function buttons()
 						line2 = 1
 					end
 				end
-				drawLine(y + 10, line2)
+				drawLines()
 			end
 		end
 	end
@@ -250,7 +253,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1)
+				drawLines()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -265,7 +268,7 @@ function buttons()
 						line2 = 1
 					end
 				end
-				drawLine(y + 10, line2)
+				drawLines()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -280,7 +283,7 @@ function buttons()
 						line3 = 1
 					end
 				end
-				drawLine(y + 18, line3)
+				drawLines()
 			end
 		end
 	end
@@ -301,7 +304,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1)
+				drawLines()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -316,7 +319,7 @@ function buttons()
 						line2 = 1
 					end
 				end
-				drawLine(y + 10, line2)
+				drawLines()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -331,7 +334,7 @@ function buttons()
 						line3 = 1
 					end
 				end
-				drawLine(y + 18, line3)
+				drawLines()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -346,7 +349,7 @@ function buttons()
 						line4 = 1
 					end
 				end
-				drawLine(y + 26, line4)
+				drawLines()
 			end
 		end
 	end
