@@ -155,30 +155,34 @@ if monitor == null then
 end
 
 
-function drawLines()
+function update()
 	x = gui.getInteger((mon.X - 46) / 2) + 1
 	while true do
-		gui.clear(mon)
-		print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
-		print("Total generation: " .. gui.format_int(getGeneration()))
-		for i = 1, reactorCount do
-			print("Reactor " .. i .. " Generation: " .. gui.format_int(getReactorGeneration(i)))
-		end
-		print("Total drainback: " .. gui.format_int(getDrainback()))
-		if amount >= 1 then
-			drawLine(y, line1, drawButtons)
-		end
-		if amount >= 2 then
-			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-			drawLine(y + 10, line2, drawButtons)
-		end
-		if amount >= 3 then
-			drawLine(y + 18, line3, drawButtons)
-		end
-		if amount >= 4 then
-			drawLine(y + 26, line4, drawButtons)
-		end
+		drawLines()
 		sleep(refresh)
+	end
+end
+
+function drawLines()
+	gui.clear(mon)
+	print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
+	print("Total generation: " .. gui.format_int(getGeneration()))
+	for i = 1, reactorCount do
+		print("Reactor " .. i .. " Generation: " .. gui.format_int(getReactorGeneration(i)))
+	end
+	print("Total drainback: " .. gui.format_int(getDrainback()))
+	if amount >= 1 then
+		drawLine(y, line1, drawButtons)
+	end
+	if amount >= 2 then
+		gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+		drawLine(y + 10, line2, drawButtons)
+	end
+	if amount >= 3 then
+		drawLine(y + 18, line3, drawButtons)
+	end
+	if amount >= 4 then
+		drawLine(y + 26, line4, drawButtons)
 	end
 end
 
@@ -437,43 +441,43 @@ if mon.X >= 57 then
 		amount = 1
 		drawButtons= true
 		y = gui.getInteger((mon.Y - 6) / 2)
-		parallel.waitForAny(buttons, drawLines)
+		parallel.waitForAny(buttons, update)
 	elseif mon.Y >= 16 and mon.Y < 24 then
 		amount = 2
 		drawButtons= true
 		y = gui.getInteger((mon.Y - 14) / 2)
-		parallel.waitForAny(buttons, drawLines)
+		parallel.waitForAny(buttons, update)
 	elseif mon.Y >= 24 and mon.Y < 32 then
 		amount = 3
 		drawButtons= true
 		y = gui.getInteger((mon.Y - 22) / 2)
-		parallel.waitForAny(buttons, drawLines)
+		parallel.waitForAny(buttons, update)
 	else
 		amount = 4
 		drawButtons= true
 		y = gui.getInteger((mon.Y - 30) / 2)
-		parallel.waitForAny(buttons, drawLines)
+		parallel.waitForAny(buttons, update)
 	end
 else
 	if mon.Y < 16 then
 		amount = 1
 		drawButtons= false
 		y = gui.getInteger((mon.Y - 6) / 2)
-		drawLines()
+		update()
 	elseif mon.Y >= 16 and mon.Y < 24 then
 		amount = 2
 		drawButtons= false
 		y = gui.getInteger((mon.Y - 14) / 2)
-		drawLines()
+		update()
 	elseif mon.Y >= 24 and mon.Y < 32 then
 		amount = 3
 		drawButtons= false
 		y = gui.getInteger((mon.Y - 22) / 2)
-		drawLines()
+		update()
 	else
 		amount = 4
 		drawButtons= false
 		y = gui.getInteger((mon.Y - 30) / 2)
-		drawLines()
+		update()
 	end
 end
