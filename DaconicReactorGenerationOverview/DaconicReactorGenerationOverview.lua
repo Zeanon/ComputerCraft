@@ -146,6 +146,7 @@ end
 
 
 function drawLines(amount, drawbuttons)
+	x = gui.getInteger((mon.X - 46) / 2) + 1
 	while true do
 		gui.clear(mon)
 		print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
@@ -310,22 +311,30 @@ end
 
 if mon.X >= 57 then
 	if mon.Y < 16 then
+		y = gui.getInteger((mon.Y - 6) / 2)
 		parallel.waitForAny(drawLines(1, true), buttons(1))
 	elseif mon.Y >= 16 and mon.Y < 24 then
+		y = gui.getInteger((mon.Y - 14) / 2)
 		parallel.waitForAny(drawLines(2, true), buttons(2))
 	elseif mon.Y >= 24 and mon.Y < 32 then
+		y = gui.getInteger((mon.Y - 22) / 2)
 		parallel.waitForAny(drawLines(3, true), buttons(3))
 	else
+		y = gui.getInteger((mon.Y - 30) / 2)
 		parallel.waitForAny(drawLines(4, true), buttons(4))
 	end
 else
 	if mon.Y < 16 then
+		y = gui.getInteger((mon.Y - 6) / 2)
 		drawLines(1, false)
 	elseif mon.Y >= 16 and mon.Y < 24 then
+		y = gui.getInteger((mon.Y - 14) / 2)
 		drawLines(2, false)
 	elseif mon.Y >= 24 and mon.Y < 32 then
+		y = gui.getInteger((mon.Y - 22) / 2)
 		drawLines(2, false)
 	else
+		y = gui.getInteger((mon.Y - 30) / 2)
 		drawLines(2, false)
 	end
 end
