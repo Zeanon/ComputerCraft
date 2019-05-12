@@ -185,11 +185,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line1 = line1 - 1
 					if line1 < 1 then
-						line1 = reactorCount
+						line1 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line1 = line1 + 1
-					if line1 > reactorCount then
+					if line1 > reactorCount + 3 then
 						line1 = 1
 					end
 				end
