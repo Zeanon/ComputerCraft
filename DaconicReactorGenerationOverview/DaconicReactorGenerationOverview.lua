@@ -5,7 +5,7 @@ local buttonColor = colors.lightGray
 local textColor = colors.white
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
--- font size
+-- small font means a font size of 0.5 instead of 1
 local smallFont = false
 
 -- program
