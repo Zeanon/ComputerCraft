@@ -248,45 +248,41 @@ function draw_digit(number, divider, mon, x, y, color)
 end
 
 --draw number under 9,999,999 on computer terminal
-function draw_number(mon, output, x, y, color, rftcolor)
-    local a,b,c,d,e,f
-    a = getInteger(output / 1000000)
-    if a ~= 0 then
-        draw_digit(output, 1000000, mon, x, y, color)
-        mon.monitor.setCursorPos(x+4,y+4)
-        mon.monitor.write(" ")
+function draw_number(mon, output, length, x, y, color, rftcolor)
+    local printDot = length
+    while printDot > 3 do
+        printDot = printDot - 3
     end
-    output = output - (1000000 * getInteger(output / 1000000))
-    b = getInteger(output / 100000)
-    if a ~= 0 or b ~= 0 then
-        draw_digit(output, 100000, mon, x+6, y, color)
+    local delimeter = 1
+    local i = 1
+    for i = 1, length do
+        delimeter = delimeter * 10
     end
-    output = output - (100000 * getInteger(output / 100000))
-    c = getInteger(output / 10000)
-    if a ~= 0 or b ~= 0 or c ~= 0 then
-        draw_digit(output, 10000, mon, x+10, y, color)
-    end
-    output = output - (10000 * getInteger(output / 10000))
-    d = getInteger(output / 1000)
-    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 then
-        draw_digit(output, 1000, mon, x+14, y, color)
-        mon.monitor.setCursorPos(x+18,y+4)
-        mon.monitor.write(" ")
-    end
-    output = output - (1000 * getInteger(output / 1000))
-    e = getInteger(output / 100)
-    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 then
-        draw_digit(output, 100, mon, x+20, y, color)
-    end
-    output = output - (100 * getInteger(output / 100))
-    f = getInteger(output / 10)
-    if a ~= 0 or b ~= 0 or c ~= 0 or d ~= 0 or e ~= 0 or f ~= 0 then
-        draw_digit(output, 10, mon, x+24, y, color)
-    end
-    output = output - (10 * getInteger(output / 10))
-    draw_digit(output, 1, mon, x+28, y, color)
 
-    drawRFT(mon, x+33, y, rftcolor)
+    local drawZero = false
+
+    for i = 1, length do
+        local digit = getInteger(output / delimeter)
+        if digit ~= 0 and drawZero == false then
+            drawZero = true
+        end
+        if digit ~= 0 or drawZero then
+            draw_digit(output, delimeter, mon, x, y, color)
+            printDot = printDot - 1
+            if printDot == 0 then
+                mon.monitor.setCursorPos(x+4,y+4)
+                mon.monitor.write(" ")
+                printDot = 3
+                x = x + 6
+            else
+                x = x + 4
+            end
+        end
+        output = output - (delimeter * getInteger(output / delimeter))
+        delimeter = delimeter / 10
+    end
+
+    drawRFT(mon, x + 5, y, rftcolor)
 end
 
 --draw RF/T on computer terminal(mon)

@@ -254,15 +254,15 @@ function drawLine(localY, line)
         end
     else
         for i = 1, coreCount do
-            if line == i + 5 then
+            if line == i + 6 then
                 gui.draw_number(mon, getReactorGeneration(i), x, localY, numberColor, rftColor)
                 if drawButtons then
                     gui.drawSideButtons(mon, x, localY, buttonColor)
-                    if line == 6 and line == coreCount + 3 then
+                    if line == 7 and line == coreCount + 3 then
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
-                    elseif line == 6 then
+                    elseif line == 7 then
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "EC" .. i + 1 .. " ", textColor, textColor, buttonColor)
-                    elseif line == coreCount + 5 then
+                    elseif line == coreCount + 6 then
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. i - 1 .. " ", " Out", textColor, textColor, buttonColor)
                     else
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. i - 1 .. " ", "EC" .. i + 1 .. " ", textColor, textColor, buttonColor)
