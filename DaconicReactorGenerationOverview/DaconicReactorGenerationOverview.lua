@@ -156,7 +156,7 @@ end
 
 
 function update()
-	x = gui.getInteger((mon.X - 46) / 2) + 1
+	x = gui.getInteger((mon.X - 46) / 2) + 2
 	while true do
 		drawLines()
 		sleep(refresh)
