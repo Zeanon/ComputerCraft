@@ -1310,6 +1310,7 @@ function checkLines()
 	if line10 > reactorCount + 3 then
 		line10 = reactorCount + 3
 	end
+	save_config()
 end
 
 --run
