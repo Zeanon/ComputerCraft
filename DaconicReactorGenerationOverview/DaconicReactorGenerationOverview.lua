@@ -176,7 +176,7 @@ function drawLines()
 end
 
 function buttons()
-	if amount >= 1 then
+	if amount == 1 then
 		while true do
 			-- button handler
 			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
@@ -193,11 +193,11 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1, true)
+				drawLine(y, line1)
 			end
 		end
 	end
-	if amount >= 2 then
+	if amount == 2 then
 		while true do
 			-- button handler
 			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
@@ -214,7 +214,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1, true)
+				drawLine(y, line1)
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -229,11 +229,11 @@ function buttons()
 						line2 = 1
 					end
 				end
-				drawLine(y + 10, line2, true)
+				drawLine(y + 10, line2)
 			end
 		end
 	end
-	if amount >= 3 then
+	if amount == 3 then
 		while true do
 			-- button handler
 			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
@@ -250,7 +250,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1, true)
+				drawLine(y, line1)
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -265,7 +265,7 @@ function buttons()
 						line2 = 1
 					end
 				end
-				drawLine(y + 10, line2, true)
+				drawLine(y + 10, line2)
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -280,11 +280,11 @@ function buttons()
 						line3 = 1
 					end
 				end
-				drawLine(y + 18, line3, true)
+				drawLine(y + 18, line3)
 			end
 		end
 	end
-	if amount >= 4 then
+	if amount == 4 then
 		while true do
 			-- button handler
 			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
@@ -301,7 +301,7 @@ function buttons()
 						line1 = 1
 					end
 				end
-				drawLine(y, line1, true)
+				drawLine(y, line1)
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -316,7 +316,7 @@ function buttons()
 						line2 = 1
 					end
 				end
-				drawLine(y + 10, line2, true)
+				drawLine(y + 10, line2)
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -331,7 +331,7 @@ function buttons()
 						line3 = 1
 					end
 				end
-				drawLine(y + 18, line3, true)
+				drawLine(y + 18, line3)
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -346,13 +346,13 @@ function buttons()
 						line4 = 1
 					end
 				end
-				drawLine(y + 26, line4, true)
+				drawLine(y + 26, line4)
 			end
 		end
 	end
 end
 
-function drawLine(localY, line, drawButtons)
+function drawLine(localY, line)
 	if line == 1 then
 		gui.draw_number(mon, getGeneration() - getDrainback(), x, localY, numberColor, rftColor)
 		if drawButtons then
@@ -379,7 +379,7 @@ function drawLine(localY, line, drawButtons)
 					gui.drawSideButtons(mon, x, localY, buttonColor)
 					if line == 4 then
 						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "DR" .. i + 1 .. " ", colors.white, colors.white, buttonColor)
-					elseif line == reactorCount then
+					elseif line == reactorCount + 3 then
 						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", " Out", colors.white, colors.white, buttonColor)
 					else
 						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", "DR" .. i + 1 .. " ", colors.white, colors.white, buttonColor)
