@@ -2,11 +2,12 @@
 -- get it with pastebin get VT6ezUgB install
 -- pastebin link: https://pastebin.com/VT6ezUgB
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
+local lib2URL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/run.lua"
 local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/DaconicReactorGenerationOverview.lua"
-local lib, startup, run, generationOverview
-local libFile, startupFile, runFile, generationOverviewFile
+local lib, lib2, startup, run, generationOverview
+local libFile, lib2File, startupFile, runFile, generationOverviewFile
 
 fs.makeDir("lib")
 
@@ -18,28 +19,36 @@ file1.write(libFile)
 file1.close()
 
 
+lib2 = http.get(lib2URL)
+lib2File = lib2.readAll()
+
+local file2 = fs.open("lib/color", "w")
+file2.write(lib2File)
+file2.close()
+
+
 startup = http.get(startupURL)
 startupFile = startup.readAll()
 
-local file2 = fs.open("startup", "w")
-file2.write(startupFile)
-file2.close()
+local file3 = fs.open("startup", "w")
+file3.write(startupFile)
+file3.close()
 
 
 run = http.get(runURL)
 runFile = run.readAll()
 
-local file3 = fs.open("run", "w")
-file3.write(runFile)
-file3.close()
+local file4 = fs.open("run", "w")
+file4.write(runFile)
+file4.close()
 
 
 generationOverview = http.get(generationOverviewURL)
 generationOverviewFile = generationOverview.readAll()
 
-local file4 = fs.open("DraconicReactorGenerationOverview", "w")
-file4.write(generationOverviewFile)
-file4.close()
+local file5 = fs.open("DraconicReactorGenerationOverview", "w")
+file5.write(generationOverviewFile)
+file5.close()
 
 if fs.exists("update") then
 	shell.run("delete update")
