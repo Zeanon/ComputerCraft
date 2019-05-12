@@ -195,7 +195,11 @@ end
 
 --update the monitor
 function update()
-	x = gui.getInteger((mon.X - 46) / 2) - 1
+	if smallFont then
+		x = gui.getInteger((mon.X - 92) / 2) - 1
+	else
+		x = gui.getInteger((mon.X - 46) / 2) - 1
+	end
 	while true do
 		drawLines()
 		sleep(refresh)
