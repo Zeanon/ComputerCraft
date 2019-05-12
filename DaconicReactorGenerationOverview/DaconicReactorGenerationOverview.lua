@@ -56,8 +56,8 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine("-- configure the display numberColors")
 	sw.writeLine("numberColor: " .. color.toString(numberColor))
-	sw.writeLine("rftnumberColor: " .. color.toString(rftnumberColor))
-	sw.writeLine("buttonnumberColor: " ..  color.toString(buttonnumberColor))
+	sw.writeLine("rftnumberColor: " .. color.toString(rftColor))
+	sw.writeLine("buttonnumberColor: " ..  color.toString(buttonColor))
 	sw.writeLine(" ")
 	sw.writeLine("-- lower number means higher refresh rate but also increases server load")
 	sw.writeLine("refresh: " ..  refresh)
@@ -78,11 +78,11 @@ function load_config()
 		if split(line, ": ")[1] == "version" then
 			curVersion = split(line, ": ")[2]
 		elseif split(line, ": ")[1] == "numberColor" then
-			numberColor = gui.getColor(split(line, ": ")[2])
+			numberColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "rftnumberColor" then
-			rftColor = gui.getColor(split(line, ": ")[2])
+			rftColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "buttonnumberColor" then
-			buttonColor = gui.getColor(split(line, ": ")[2])
+			buttonColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line1" then
@@ -150,7 +150,7 @@ function drawLines(amount, drawbuttons)
 		gui.clear(mon)
 		print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
 		print("Total generation: " .. gui.format_int(getGeneration()))
-		for i = 1, #reactorCount do
+		for i = 1, reactorCount do
 			print("Reactor " .. i .. " Generation: " .. gui.format_int(getReactorGeneration(i)))
 		end
 		print("Total drainback: " .. gui.format_int(getDrainback()))
@@ -257,7 +257,7 @@ function drawLine(localY, line, drawButtons)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", colors.white, buttonColor)
 		end
 	else
-		for i = 1, #reactorCount do
+		for i = 1, reactorCount do
 			if line == i + 3 then
 				gui.draw_number(mon, getReactorGeneration(i), x, localY, numberColor, rftColor)
 				if drawButtons then
@@ -278,7 +278,7 @@ end
 
 function getGeneration()
 	local totalGeneration = 0
-	for i = 1, #reactorCount do
+	for i = 1, reactorCount do
 		totalGeneration = totalGeneration + getReactorGeneration(i)
 	end
 	return totalGeneration
@@ -286,7 +286,7 @@ end
 
 function getDrainback()
 	local totalDrainback = 0
-	for i = 1, #reactorCount do
+	for i = 1, reactorCount do
 		totalDrainback = totalDrainback + getGateFlow(i)
 	end
 	return totalDrainback
