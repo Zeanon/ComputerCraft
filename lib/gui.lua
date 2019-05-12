@@ -248,7 +248,8 @@ function draw_digit(number, divider, mon, x, y, color)
 end
 
 --draw number under 9,999,999 on computer terminal
-function draw_number(mon, output, length, x, y, color, rftcolor)
+function draw_number(mon, output, length, offset, y, color, rftcolor)
+    local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
     local printDot = length
     while printDot > 3 do
         printDot = printDot - 3

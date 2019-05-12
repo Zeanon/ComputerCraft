@@ -155,7 +155,7 @@ end
 
 --update the monitor
 function update()
-	x = gui.getInteger((mon.X - 46) / 2) + 1
+	x = gui.getInteger((mon.X - 46) / 2) - 1
 	while true do
 		drawLines()
 		sleep(refresh)
