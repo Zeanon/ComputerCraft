@@ -251,6 +251,9 @@ end
 function draw_number(mon, output, offset, y, color, rftcolor)
     local length = string.len(tostring(output))
     local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
+    if length == 1 then
+        x = x + 1
+    end
     local printDot = length
     while printDot > 3 do
         printDot = printDot - 3
