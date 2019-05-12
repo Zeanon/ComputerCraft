@@ -63,8 +63,8 @@ end
 
 --display text text1 on the left side and text2 on the right side of monitor, "mon" peripheral
 function draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color, bg_color)
-	draw_text(mon, x, y, text1, text1_color, bg_color)
-	draw_text_right(mon, offset, y, text2, text2_color, bg_color)
+    draw_text(mon, x, y, text1, text1_color, bg_color)
+    draw_text_right(mon, offset, y, text2, text2_color, bg_color)
 end
 
 --draw horizontal line on computer terminal(mon)
@@ -105,26 +105,26 @@ end
 
 -- Draw two big arrows on the left and right side of the screen
 function drawSideButtons(mon, x, y, color)
-	mon.monitor.setBackgroundColor(color)
-	mon.monitor.setCursorPos(2, y+2)
+    mon.monitor.setBackgroundColor(color)
+    mon.monitor.setCursorPos(2, y+2)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(3, y+1)
+    mon.monitor.setCursorPos(3, y+1)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(3, y+3)
+    mon.monitor.setCursorPos(3, y+3)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(4, y)
+    mon.monitor.setCursorPos(4, y)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(4, y+4)
+    mon.monitor.setCursorPos(4, y+4)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 1, y+2)
+    mon.monitor.setCursorPos(mon.X - 1, y+2)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 2, y+1)
+    mon.monitor.setCursorPos(mon.X - 2, y+1)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 2, y+3)
+    mon.monitor.setCursorPos(mon.X - 2, y+3)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 3, y)
+    mon.monitor.setCursorPos(mon.X - 3, y)
     mon.monitor.write(" ")
-	mon.monitor.setCursorPos(mon.X - 3, y+4)
+    mon.monitor.setCursorPos(mon.X - 3, y+4)
     mon.monitor.write(" ")
 end
 
@@ -247,10 +247,10 @@ function draw_digit(number, divider, mon, x, y, color)
     end
 end
 
---draw number under 9,999,999 on computer terminal
+--draw number on computer terminal
 function draw_number(mon, output, offset, y, color, rftcolor)
-    local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
     local length = string.len(tostring(output))
+    local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
     local printDot = length
     while printDot > 3 do
         printDot = printDot - 3
@@ -268,7 +268,7 @@ function draw_number(mon, output, offset, y, color, rftcolor)
         if digit ~= 0 and drawZero == false then
             drawZero = true
         end
-        if digit ~= 0 or drawZero then
+        if digit ~= 0 or drawZero or delimeter == 1 then
             draw_digit(output, delimeter, mon, x, y, color)
             printDot = printDot - 1
             if printDot == 0 and i ~= length then
