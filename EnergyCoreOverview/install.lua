@@ -1,6 +1,6 @@
 -- Installer for EnergyCoreOverview by Zeanon
--- get it with pastebin get UKxFmqXx install
--- pastebin link: https://pastebin.com/UKxFmqXx
+-- get it with pastebin get uAG74E88 install
+-- pastebin link: https://pastebin.com/uAG74E88
 
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/startup.lua"
