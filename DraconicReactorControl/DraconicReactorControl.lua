@@ -92,6 +92,7 @@ local fieldPercent
 local fuelPercent
 local energyPercent
 
+-- split a string by a delimiter
 function split(string, delimiter)
     local result = { }
     local from = 1
@@ -245,6 +246,7 @@ function load_config()
     end
 end
 
+--open a new tab with the config file
 function editConfig()
     local new = true
     local i = 1
@@ -262,6 +264,7 @@ function editConfig()
     end
 end
 
+--initialize the tables for stability checking
 function initTables()
     local i = 1
     while i <= stableTurns do
@@ -281,24 +284,24 @@ else
     initTables()
 end
 
+--initialize the peripherals
+reactor = peripheral.find("draconic_reactor")
+core = peripheral.find("draconic_rf_storage")
 monitor = peripheral.find("monitor")
 inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)
-reactor = peripheral.find("draconic_reactor")
-core = peripheral.find("draconic_rf_storage")
-
-if monitor == null then
-    error("No valid monitor was found")
-end
-
-if externalfluxgate == null then
-    editConfig()
-    error("No valid external output fluxgate was found")
-end
 
 if reactor == null then
     error("No valid reactor was found")
+end
+
+if core == null then
+    error("No valid energy core was found")
+end
+
+if monitor == null then
+    error("No valid monitor was found")
 end
 
 if inputfluxgate == null then
@@ -311,8 +314,9 @@ if outputfluxgate == null then
     error("No valid internal output flux gate was found")
 end
 
-if core == null then
-    error("No valid energy core was found")
+if externalfluxgate == null then
+    editConfig()
+    error("No valid external output fluxgate was found")
 end
 
 monX, monY = monitor.getSize()
