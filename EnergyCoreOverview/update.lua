@@ -1,4 +1,4 @@
--- Updater for DraconicReactorControl by drmon and Zeanon
+-- Updater for EnergyCoreOverview by Zeanon
 -- get it with pastebin get RQb0M8cZ update
 -- pastebin link: https://pastebin.com/RQb0M8cZ
 
