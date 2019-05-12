@@ -206,11 +206,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line1 = line1 - 1
 					if line1 < 1 then
-						line1 = reactorCount
+						line1 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line1 = line1 + 1
-					if line1 > reactorCount then
+					if line1 > reactorCount + 3 then
 						line1 = 1
 					end
 				end
@@ -221,11 +221,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line2 = line2 - 1
 					if line2 < 1 then
-						line2 = reactorCount
+						line2 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line2 = line2 + 1
-					if line2 > reactorCount then
+					if line2 > reactorCount + 3 then
 						line2 = 1
 					end
 				end
@@ -242,11 +242,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line1 = line1 - 1
 					if line1 < 1 then
-						line1 = reactorCount
+						line1 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line1 = line1 + 1
-					if line1 > reactorCount then
+					if line1 > reactorCount + 3 then
 						line1 = 1
 					end
 				end
@@ -257,11 +257,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line2 = line2 - 1
 					if line2 < 1 then
-						line2 = reactorCount
+						line2 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line2 = line2 + 1
-					if line2 > reactorCount then
+					if line2 > reactorCount + 3 then
 						line2 = 1
 					end
 				end
@@ -272,11 +272,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line3 = line3 - 1
 					if line3 < 1 then
-						line3 = reactorCount
+						line3 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line3 = line3 + 1
-					if line3 > reactorCount then
+					if line3 > reactorCount + 3 then
 						line3 = 1
 					end
 				end
@@ -293,11 +293,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line1 = line1 - 1
 					if line1 < 1 then
-						line1 = reactorCount
+						line1 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line1 = line1 + 1
-					if line1 > reactorCount then
+					if line1 > reactorCount + 3 then
 						line1 = 1
 					end
 				end
@@ -308,11 +308,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line2 = line2 - 1
 					if line2 < 1 then
-						line2 = reactorCount
+						line2 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line2 = line2 + 1
-					if line2 > reactorCount then
+					if line2 > reactorCount + 3 then
 						line2 = 1
 					end
 				end
@@ -323,11 +323,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line3 = line3 - 1
 					if line3 < 1 then
-						line3 = reactorCount
+						line3 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line3 = line3 + 1
-					if line3 > reactorCount then
+					if line3 > reactorCount + 3 then
 						line3 = 1
 					end
 				end
@@ -338,11 +338,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					line4 = line4 - 1
 					if line4 < 1 then
-						line4 = reactorCount
+						line4 = reactorCount + 3
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					line4 = line4 + 1
-					if line4 > reactorCount then
+					if line4 > reactorCount + 3 then
 						line4 = 1
 					end
 				end
