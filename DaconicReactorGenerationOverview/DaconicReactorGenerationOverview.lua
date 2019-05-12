@@ -268,6 +268,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -290,6 +291,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -305,6 +307,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -327,6 +330,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -342,6 +346,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -357,6 +362,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -379,6 +385,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -394,6 +401,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -409,6 +417,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -424,6 +433,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -446,6 +456,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -461,6 +472,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -476,6 +488,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -491,6 +504,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 34 and yPos <= y + 38 then
@@ -506,6 +520,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -528,6 +543,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -543,6 +559,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -558,6 +575,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -573,6 +591,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 34 and yPos <= y + 38 then
@@ -588,6 +607,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 42 and yPos <= y + 46 then
@@ -603,6 +623,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -625,6 +646,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -640,6 +662,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -655,6 +678,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -670,6 +694,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 34 and yPos <= y + 38 then
@@ -685,6 +710,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 42 and yPos <= y + 46 then
@@ -700,6 +726,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 50 and yPos <= y + 54 then
@@ -715,6 +742,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -737,6 +765,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -752,6 +781,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -767,6 +797,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -782,6 +813,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 34 and yPos <= y + 38 then
@@ -797,6 +829,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 42 and yPos <= y + 46 then
@@ -812,6 +845,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 50 and yPos <= y + 54 then
@@ -827,6 +861,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 58 and yPos <= y + 62 then
@@ -842,6 +877,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
@@ -864,6 +900,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -879,6 +916,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -894,6 +932,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -909,6 +948,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 34 and yPos <= y + 38 then
@@ -924,6 +964,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 42 and yPos <= y + 46 then
@@ -939,6 +980,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 50 and yPos <= y + 54 then
@@ -954,6 +996,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 58 and yPos <= y + 62 then
@@ -969,6 +1012,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 66 and yPos <= y + 70 then
@@ -984,11 +1028,12 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
 
-	if amount == 9 then
+	if amount == 10 then
 		while true do
 			-- button handler
 			local event, side, xPos, yPos = os.pullEvent("monitor_touch")
@@ -1006,6 +1051,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 10 and yPos <= y + 14 then
@@ -1021,6 +1067,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 18 and yPos <= y + 22 then
@@ -1036,6 +1083,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if  yPos >= y + 26 and yPos <= y + 30 then
@@ -1051,6 +1099,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 34 and yPos <= y + 38 then
@@ -1066,6 +1115,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 42 and yPos <= y + 46 then
@@ -1081,6 +1131,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 50 and yPos <= y + 54 then
@@ -1096,6 +1147,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 58 and yPos <= y + 62 then
@@ -1111,6 +1163,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 66 and yPos <= y + 70 then
@@ -1126,6 +1179,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 
 			if yPos >= y + 74 and yPos <= y + 78 then
@@ -1141,6 +1195,7 @@ function buttons()
 					end
 				end
 				drawLines()
+				save_config()
 			end
 		end
 	end
