@@ -88,7 +88,6 @@ local emergencyTemp = false
 
 -- some percentages
 local satPercent
-local tempPercent
 local fieldPercent
 local fuelPercent
 local energyPercent
@@ -457,10 +456,6 @@ function update()
         end
 
         local tempColor
-        tempPercent = math.ceil(ri.temperature / maxTemperature * 10000)*.01
-        if isnan(tempPercent) then
-            tempPercent = 0
-        end
         local tempColor = colors.red
         if ri.temperature <= (maxTemperature / 8) * 5 then
             tempColor = colors.green
@@ -687,7 +682,7 @@ function update()
         gui.progress_bar(mon, 2, 13, mon.X-28, satPercent, 100, colors.blue,  colors.lightGray)
 
         gui.draw_text_lr(mon, 2, 15, 26, "Temperature  M:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
-        gui.progress_bar(mon, 2, 16, mon.X-28, tempPercent, 100, tempColor,  colors.lightGray)
+        gui.progress_bar(mon, 2, 16, mon.X-28, ri.temperature, maxTemperature, tempColor,  colors.lightGray)
 
         if autoInputGate then
             gui.draw_text_lr(mon, 2, 18, 26, "Field Strength  T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
