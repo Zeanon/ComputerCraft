@@ -38,7 +38,7 @@ file3.close()
 EnergyOverview = http.get(EnergyOverviewURL)
 EnergyOverviewFile = EnergyOverview.readAll()
 
-local file4 = fs.open("EnergyCore", "w")
+local file4 = fs.open("EnergyCoreOverview", "w")
 file4.write(EnergyOverviewFile)
 file4.close()
 
