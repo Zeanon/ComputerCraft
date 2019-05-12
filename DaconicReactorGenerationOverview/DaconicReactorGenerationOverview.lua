@@ -219,7 +219,6 @@ function drawLines()
 		print("Reactor " .. i .. " Generation: " .. gui.format_int(getReactorGeneration(i)))
 	end
 	print("Total drainback: " .. gui.format_int(getDrainback()))
-	print(amount)
 	if amount >= 1 then
 		drawLine(y, line1)
 	end
