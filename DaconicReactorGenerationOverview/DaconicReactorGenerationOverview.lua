@@ -18,16 +18,14 @@ monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
-local x
-local y
+local x, y
 
 local line1 = 1
 local line2 = 2
 local line3 = 3
 local line4 = 4
 
-local amount
-local drawButtons
+local amount, drawButtons
 
 local reactorCount = 0
 local gateCount = 0

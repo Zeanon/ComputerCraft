@@ -72,11 +72,7 @@ local loadConfigReboot = false
 local mon, monitor, monX, monY
 
 -- peripherals
-local reactor
-local core 
-local externalfluxgate
-local inputfluxgate
-local outputfluxgate
+local reactor, core, externalfluxgate, inputfluxgate, outputfluxgate
 
 -- reactor information
 local ri
@@ -87,10 +83,7 @@ local emergencyCharge = false
 local emergencyTemp = false
 
 -- some percentages
-local satPercent
-local fieldPercent
-local fuelPercent
-local energyPercent
+local satPercent, fieldPercent, fuelPercent, energyPercent
 
 -- split a string by a delimiter
 function split(string, delimiter)
