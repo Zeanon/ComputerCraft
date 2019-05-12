@@ -73,6 +73,13 @@ function save_config()
 	sw.writeLine("-- lower number means higher refresh rate but also increases server load")
 	sw.writeLine("refresh: " ..  refresh)
 	sw.writeLine(" ")
+	sw.writeLine("-- small font means a font size of 0.5 instead of 1")
+	sw.writeLine(" ")
+	if smallFont then
+		sw.writeLine("smallFont: true")
+	else
+		sw.writeLine("smallFont: false")
+	end
 	sw.writeLine("-- just some saved data")
 	sw.writeLine("line1: " .. line1)
 	sw.writeLine("line2: " .. line2)
@@ -105,6 +112,8 @@ function load_config()
 			textColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "smallFont" then
+			smallFont = split(line, ": ")[2]
 		elseif split(line, ": ")[1] == "line1" then
 			line1 = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line2" then
