@@ -1254,6 +1254,8 @@ function checkLines()
 end
 
 --run
+checkLines()
+
 if mon.Y >= 16 then
 	local localY = mon.Y - 2
 	local count = 0
@@ -1265,6 +1267,7 @@ if mon.Y >= 16 then
 	amount = count
 	y = gui.getInteger((mon.Y + 1 - (8 * count)) / 2)
 end
+
 if mon.X >= 57 then
 	drawButtons= true
 	if mon.Y < 16 then
