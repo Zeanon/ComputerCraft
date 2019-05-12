@@ -248,8 +248,9 @@ function draw_digit(number, divider, mon, x, y, color)
 end
 
 --draw number under 9,999,999 on computer terminal
-function draw_number(mon, output, length, offset, y, color, rftcolor)
+function draw_number(mon, output, offset, y, color, rftcolor)
     local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
+    local length = string.len(tostring(output))
     local printDot = length
     while printDot > 3 do
         printDot = printDot - 3
@@ -270,7 +271,7 @@ function draw_number(mon, output, length, offset, y, color, rftcolor)
         if digit ~= 0 or drawZero then
             draw_digit(output, delimeter, mon, x, y, color)
             printDot = printDot - 1
-            if printDot == 0 then
+            if printDot == 0 and i ~= length then
                 mon.monitor.setCursorPos(x+4,y+4)
                 mon.monitor.write(" ")
                 printDot = 3
@@ -283,7 +284,7 @@ function draw_number(mon, output, length, offset, y, color, rftcolor)
         delimeter = delimeter / 10
     end
 
-    drawRFT(mon, x + 5, y, rftcolor)
+    drawRFT(mon, x + 1, y, rftcolor)
 end
 
 --draw RF/T on computer terminal(mon)
