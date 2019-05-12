@@ -9,7 +9,7 @@ local refresh = 1
 local smallFont = false
 
 -- program
-local version = "1.3.0"
+local version = "1.4.0"
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
@@ -74,12 +74,12 @@ function save_config()
 	sw.writeLine("refresh: " ..  refresh)
 	sw.writeLine(" ")
 	sw.writeLine("-- small font means a font size of 0.5 instead of 1")
-	sw.writeLine(" ")
 	if smallFont then
 		sw.writeLine("smallFont: true")
 	else
 		sw.writeLine("smallFont: false")
 	end
+	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
 	sw.writeLine("line1: " .. line1)
 	sw.writeLine("line2: " .. line2)
@@ -185,6 +185,12 @@ end
 
 if monitor == null then
 	error("No valid monitor was found")
+end
+
+if smallFont then
+	monitor.setTextScale(0.5)
+else
+	monitor.setTextScale(1)
 end
 
 
@@ -1216,48 +1222,33 @@ end
 
 
 --run
+if mon.Y >= 16 then
+	local localY = mon.Y - 2
+	local count = 0
+	local i = 8
+	while i <= localY do
+		i = i + 8
+		count = count + 1
+	end
+	amount = count
+	y = gui.getInteger((mon.Y + 1 - (8 * count)) / 2)
+end
 if mon.X >= 57 then
+	drawButtons= true
 	if mon.Y < 16 then
 		amount = 1
-		drawButtons= true
-		y = gui.getInteger((mon.Y - 6) / 2)
-		parallel.waitForAny(buttons, update)
-	elseif mon.Y >= 16 and mon.Y < 24 then
-		amount = 2
-		drawButtons= true
-		y = gui.getInteger((mon.Y - 14) / 2)
-		parallel.waitForAny(buttons, update)
-	elseif mon.Y >= 24 and mon.Y < 32 then
-		amount = 3
-		drawButtons= true
-		y = gui.getInteger((mon.Y - 22) / 2)
+		y = gui.getInteger((mon.Y - 5) / 2)
 		parallel.waitForAny(buttons, update)
 	else
-		amount = 4
-		drawButtons= true
-		y = gui.getInteger((mon.Y - 30) / 2)
 		parallel.waitForAny(buttons, update)
 	end
 else
+	drawButtons= false
 	if mon.Y < 16 then
 		amount = 1
-		drawButtons= false
-		y = gui.getInteger((mon.Y - 6) / 2)
-		update()
-	elseif mon.Y >= 16 and mon.Y < 24 then
-		amount = 2
-		drawButtons= false
-		y = gui.getInteger((mon.Y - 14) / 2)
-		update()
-	elseif mon.Y >= 24 and mon.Y < 32 then
-		amount = 3
-		drawButtons= false
-		y = gui.getInteger((mon.Y - 22) / 2)
+		y = gui.getInteger((mon.Y - 5) / 2)
 		update()
 	else
-		amount = 4
-		drawButtons= false
-		y = gui.getInteger((mon.Y - 30) / 2)
 		update()
 	end
 end
