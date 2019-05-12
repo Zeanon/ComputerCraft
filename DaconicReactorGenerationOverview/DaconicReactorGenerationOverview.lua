@@ -377,7 +377,9 @@ function drawLine(localY, line)
 				gui.draw_number(mon, getReactorGeneration(i), x, localY, numberColor, rftColor)
 				if drawButtons then
 					gui.drawSideButtons(mon, x, localY, buttonColor)
-					if line == 4 then
+					if line == 4 and line == reactorCount + 3 then
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", colors.white, colors.white, buttonColor)
+					elseif line == 4 then
 						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "DR" .. i + 1 .. " ", colors.white, colors.white, buttonColor)
 					elseif line == reactorCount + 3 then
 						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", " Out", colors.white, colors.white, buttonColor)
