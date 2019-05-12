@@ -171,9 +171,17 @@ function load_config()
         if split(line, ": ")[1] == "version" then
             curVersion = split(line, ": ")[2]
         elseif split(line, ": ")[1] == "autoInputGate" then
-            autoInputGate = split(line, ": ")[2]
+            if split(line, ": ")[2] == "true" then
+                autoInputGate = true
+            else
+                autoInputGate = false
+            end
         elseif split(line, ": ")[1] == "activateOnCharged" then
-            activateOnCharged = split(line, ": ")[2]
+            if split(line, ": ")[2] == "true" then
+                activateOnCharged = true
+            else
+                activateOnCharged = false
+            end
         elseif split(line, ": ")[1] == "curInputGate" then
             curInputGate = tonumber(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "targetGeneration" then

@@ -107,7 +107,11 @@ function load_config()
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "smallFont" then
-			smallFont = split(line, ": ")[2]
+			if split(line, ": ")[2] == "true" then
+				smallFont = true
+			else
+				smallFont = false
+			end
 		elseif split(line, ": ")[1] == "line1" then
 			line1 = tonumber(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "line2" then
