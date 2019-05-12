@@ -335,7 +335,7 @@ function buttons()
             end
         end
 
-        -- edit Config
+        -- edit or load Config
         if yPos >= 6 and yPos <= 8 then
             if xPos >= mon.X-25 and xPos <= mon.X-14 then
                 editConfig()
