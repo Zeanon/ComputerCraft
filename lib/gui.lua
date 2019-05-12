@@ -261,7 +261,7 @@ function draw_number(mon, output, length, x, y, color, rftcolor)
 
     local drawZero = false
 
-    for i = 1, length do
+    for i = 0, length do
         local digit = getInteger(output / delimeter)
         if digit ~= 0 and drawZero == false then
             drawZero = true
