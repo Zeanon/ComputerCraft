@@ -1328,14 +1328,14 @@ if mon.Y >= 16 then
 		count = count + 1
 	end
 	amount = count
-	y = gui.getInteger((mon.Y + 2 - (8 * count)) / 2)
+	y = gui.getInteger((mon.Y + 3 - (8 * count)) / 2)
 end
 
 if mon.X >= 57 then
 	drawButtons= true
 	if mon.Y < 16 then
 		amount = 1
-		y = gui.getInteger((mon.Y - 5) / 2)
+		y = gui.getInteger((mon.Y - 4) / 2)
 		parallel.waitForAny(buttons, update)
 	else
 		parallel.waitForAny(buttons, update)
@@ -1344,7 +1344,7 @@ else
 	drawButtons= false
 	if mon.Y < 16 then
 		amount = 1
-		y = gui.getInteger((mon.Y - 5) / 2)
+		y = gui.getInteger((mon.Y - 4) / 2)
 		update()
 	else
 		update()
