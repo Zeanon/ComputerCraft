@@ -19,7 +19,6 @@ function getInteger(number)
     if number < 0 then
         return 0
     end
-    print("number: " .. number)
 
     local delimeter = 1
     while delimeter * 10 <= number do
@@ -35,7 +34,6 @@ function getInteger(number)
             delimeter = delimeter / 10
         end
     end
-    print("integer: " .. integer)
     return integer
 end
 
@@ -244,8 +242,11 @@ function draw_digit(number, divider, mon, x, y, color)
 end
 
 --draw number on computer terminal
-function draw_number(mon, output, offset, y, color, rftcolor)
+function draw_integer(mon, output, offset, y, color, rftcolor)
+    output = getInteger(output)
     local length = string.len(tostring(output))
+    print(output)
+    print(length)
     local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
     if length == 1 then
         x = x + 2
@@ -277,30 +278,46 @@ end
 --draw RF/T on computer terminal(mon)
 function drawRFT(mon, x, y, color)
     mon.monitor.setBackgroundColor(color)
-    gui.draw_column(mon, x, y, 5, color)
+    draw_column(mon, x, y, 5, color)
     mon.monitor.setCursorPos(x+1,y)
     mon.monitor.write(" ")
     mon.monitor.setCursorPos(x+1,y+2)
     mon.monitor.write(" ")
-    gui.draw_column(mon, x+2, y, 2, color)
-    gui.draw_column(mon, x+2, y+3, 2, color)
+    draw_column(mon, x+2, y, 2, color)
+    draw_column(mon, x+2, y+3, 2, color)
 
-    gui.draw_column(mon, x+4, y, 5, color)
+    draw_column(mon, x+4, y, 5, color)
     mon.monitor.setCursorPos(x+5,y)
     mon.monitor.write("  ")
     mon.monitor.setCursorPos(x+5,y+2)
     mon.monitor.write(" ")
 
-    gui.draw_column(mon, x+8, y+3, 2, color)
-    gui.draw_column(mon, x+9, y+1, 2, color)
+    draw_column(mon, x+8, y+3, 2, color)
+    draw_column(mon, x+9, y+1, 2, color)
     mon.monitor.setCursorPos(x+10,y)
     mon.monitor.write(" ")
 
     mon.monitor.setCursorPos(x+12,y)
     mon.monitor.write(" ")
-    gui.draw_column(mon, x+13, y, 5, color)
+    draw_column(mon, x+13, y, 5, color)
     mon.monitor.setCursorPos(x+14,y)
     mon.monitor.write(" ")
+end
+
+function drawSI(mon, x, y, color, siUnits)
+    siUnits = string.lower(siUnits)
+    if siUnits == "b" then
+        mon.monitor.setBackgroundColor(color)
+        draw_column(mon, x, y, 5, color)
+        mon.monitor.setCursorPos(x+1,y)
+        mon.monitor.write(" ")
+        mon.monitor.setCursorPos(x+1,y+2)
+        mon.monitor.write(" ")
+        mon.monitor.setCursorPos(x+1,y+4)
+        mon.monitor.write(" ")
+        draw_column(mon, x+2, y, 2, color)
+        draw_column(mon, x+2, y+3, 2, color)
+    end
 end
 
 --clear computer terminal(mon)
