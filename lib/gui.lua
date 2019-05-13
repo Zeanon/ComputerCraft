@@ -88,7 +88,7 @@ function drawButtons(mon, x, y, color, bgcolor1, bgcolor2)
 end
 
 -- Draw two big arrows on the left and right side of the screen
-function drawSideButtons(mon, x, y, color)
+function drawSideButtons(mon, y, color)
     mon.monitor.setBackgroundColor(color)
     mon.monitor.setCursorPos(2, y+2)
     mon.monitor.write(" ")
@@ -242,30 +242,18 @@ function draw_number(mon, output, offset, y, color, rftcolor)
     while printDot > 3 do
         printDot = printDot - 3
     end
-    local delimeter = 1
-    local i = 1
-    for i = 1, length do
-        delimeter = delimeter * 10
-    end
-
-    local drawZero = false
+    local delimeter = 10 ^ (length - 1)
 
     for i = 0, length do
-        local digit = getInteger(output / delimeter)
-        if digit ~= 0 and drawZero == false then
-            drawZero = true
-        end
-        if digit ~= 0 or drawZero or delimeter == 1 then
-            draw_digit(output, delimeter, mon, x, y, color)
-            printDot = printDot - 1
-            if printDot == 0 and i ~= length then
-                mon.monitor.setCursorPos(x+4,y+4)
-                mon.monitor.write(" ")
-                printDot = 3
-                x = x + 6
-            else
-                x = x + 4
-            end
+        draw_digit(output, delimeter, mon, x, y, color)
+        printDot = printDot - 1
+        if printDot == 0 and i ~= length then
+            mon.monitor.setCursorPos(x+4,y+4)
+            mon.monitor.write(" ")
+            printDot = 3
+            x = x + 6
+        else
+            x = x + 4
         end
         output = output - (delimeter * getInteger(output / delimeter))
         delimeter = delimeter / 10

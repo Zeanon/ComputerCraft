@@ -1209,19 +1209,19 @@ function drawLine(localY, line)
 	if line == 1 then
 		gui.draw_number(mon, getGeneration() - getDrainback(), x, localY, numberColor, rftColor)
 		if drawButtons then
-			gui.drawSideButtons(mon, x, localY, buttonColor)
+			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
 		gui.draw_number(mon, getGeneration(), x, localY, numberColor, rftColor)
 		if drawButtons then
-			gui.drawSideButtons(mon, x, localY, buttonColor)
+			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
 		gui.draw_number(mon, getDrainback(), x, localY, numberColor, rftColor)
 		if drawButtons then
-			gui.drawSideButtons(mon, x, localY, buttonColor)
+			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
 		end
 	else
@@ -1229,7 +1229,7 @@ function drawLine(localY, line)
 			if line == i + 3 then
 				gui.draw_number(mon, getReactorGeneration(i), x, localY, numberColor, rftColor)
 				if drawButtons then
-					gui.drawSideButtons(mon, x, localY, buttonColor)
+					gui.drawSideButtons(mon, localY, buttonColor)
 					if line == 4 and line == reactorCount + 3 then
 						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
 					elseif line == 4 then
