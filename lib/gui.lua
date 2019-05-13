@@ -32,6 +32,7 @@ function getInteger(number)
             delimeter = delimeter / 10
         end
     end
+    print(integer)
     return integer
 end
 
