@@ -71,8 +71,8 @@ function toString(color)
     elseif color == colors.red then
         return "red"
     elseif color == colors.black then
-        retutn "black"
+        return "black"
     else
-        return null
+        error("Could not read color, invalid object")
     end
 end
