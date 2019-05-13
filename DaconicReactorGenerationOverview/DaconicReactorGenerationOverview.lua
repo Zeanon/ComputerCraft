@@ -16,6 +16,8 @@ os.loadAPI("lib/color")
 
 local x, y
 
+local test
+
 local line1 = 1
 local line2 = 2
 local line3 = 3
@@ -256,6 +258,8 @@ function buttons()
 	while true do
 		-- button handler
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+
+		test = side
 
 		if amount >= 1 and yPos >= y and yPos <= y + 4 then
 			if xPos >= 1 and xPos <= 5 then
