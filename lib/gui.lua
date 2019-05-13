@@ -25,7 +25,7 @@ function getInteger(number)
 
     local integer = 0
     while number > integer + 1 and delimeter >= 1 do
-        if number >= i then
+        if number >= integer then
             integer = integer + delimeter
         else
             integer = integer - delimeter
