@@ -34,7 +34,7 @@ function getColor(color)
     elseif color == "black" then
         return colors.black
     else
-        return null
+        error("Could not read String, invalid color")
     end
 end
 
