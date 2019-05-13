@@ -435,19 +435,19 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localX, localY, line, drawButtons)
 	if line == 1 then
-		gui.draw_integer(mon, generation - drainback, localX, localY, numberColor, rftColor)
+		gui.draw_integer(mon, generation - drainback, localX, localY, numberColor, rftColor, "rft", "")
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
-		gui.draw_integer(mon, generation, localX, localY, numberColor, rftColor)
+		gui.draw_integer(mon, generation, localX, localY, numberColor, rftColor, "rft", "")
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
-		gui.draw_integer(mon, drainback, localX, localY, numberColor, rftColor)
+		gui.draw_integer(mon, drainback, localX, localY, numberColor, rftColor, "rft", "")
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
@@ -455,7 +455,7 @@ function drawLine(mon, localX, localY, line, drawButtons)
 	else
 		for i = 1, reactorCount do
 			if line == i + 3 then
-				gui.draw_integer(mon, reactorGeneration[i], localX, localY, numberColor, rftColor)
+				gui.draw_integer(mon, reactorGeneration[i], localX, localY, numberColor, rftColor, "rft", "")
 				if drawButtons then
 					gui.drawSideButtons(mon, localY, buttonColor)
 					if line == 4 and line == reactorCount + 3 then

@@ -243,7 +243,7 @@ function draw_digit(number, divider, mon, x, y, color)
 end
 
 --draw number on computer terminal
-function draw_integer(mon, number, offset, y, color, rftcolor)
+function draw_integer(mon, number, offset, y, color, rftcolor, unit, si)
     number = getInteger(number)
     local length = string.len(tostring(number))
     local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
@@ -271,7 +271,16 @@ function draw_integer(mon, number, offset, y, color, rftcolor)
         delimeter = delimeter / 10
     end
 
-    drawRFT(mon, x + 1, y, rftcolor)
+    if si ~= "" then
+
+    end
+    if string.lower(unit) == "rft" then
+        drawRFT(mon, x + 1, y, rftcolor)
+    elseif string.lower(unit) == "%" then
+
+    elseif string.lower(unit) == "rf" then
+        drawRF(mon, x + 1, y, rftcolor)
+    end
 end
 
 --draw RF/T on computer terminal(mon)
@@ -300,6 +309,23 @@ function drawRFT(mon, x, y, color)
     mon.monitor.write(" ")
     draw_column(mon, x+13, y, 5, color)
     mon.monitor.setCursorPos(x+14,y)
+    mon.monitor.write(" ")
+end
+
+function drawRF(mon, x, y, color)
+    mon.monitor.setBackgroundColor(color)
+    draw_column(mon, x, y, 5, color)
+    mon.monitor.setCursorPos(x+1,y)
+    mon.monitor.write(" ")
+    mon.monitor.setCursorPos(x+1,y+2)
+    mon.monitor.write(" ")
+    draw_column(mon, x+2, y, 2, color)
+    draw_column(mon, x+2, y+3, 2, color)
+
+    draw_column(mon, x+4, y, 5, color)
+    mon.monitor.setCursorPos(x+5,y)
+    mon.monitor.write("  ")
+    mon.monitor.setCursorPos(x+5,y+2)
     mon.monitor.write(" ")
 end
 

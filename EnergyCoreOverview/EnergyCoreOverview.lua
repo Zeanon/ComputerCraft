@@ -12,7 +12,7 @@ os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
 
-local totalEnergy, totalMaxEnergy, energyPercent
+local totalEnergy, totalMaxEnergy
 local coreEnergy = {}
 local coreMaxEnergy = {}
 
@@ -198,7 +198,10 @@ function drawLines()
         local y = monitors[connectedMonitors[i] .. ":y"]
         totalEnergy = getTotalEnergyStored()
         totalMaxEnergy = getTotalMaxEnergyStored()
-        energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
+        local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
+        if energyPercent == math.huge or isnan(energyPercent) then
+            energyPercent = 0
+        end
         gui.clear(mon)
         print("Energy Core amount: " .. gui.format_int(coreCount) .. "RF")
         print("Total total energy: " .. gui.format_int(totalEnergy) .. "RF")
@@ -416,27 +419,58 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localX, localY, line, drawButtons)
     if line == 1 then
-        gui.draw_integer(mon, totalEnergy, localX, localY, numberColor, rftColor)
+        gui.draw_integer(mon, totalEnergy, localX, localY, numberColor, rftColor, "rf", "")
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. coreCount .. " ", " Gen", textColor, textColor, buttonColor)
         end
     elseif line == 2 then
-        gui.draw_integer(mon, totalMaxEnergy, localX, localY, numberColor, rftColor)
+        gui.draw_integer(mon, totalMaxEnergy, localX, localY, numberColor, rftColor, "rf", "")
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
         end
     elseif line == 3 then
-        gui.draw_integer(mon, , localX, localY, numberColor, rftColor)
+        gui.draw_integer(mon, energyPercent , localX, localY, numberColor, rftColor, "rf", "")
+        if drawButtons then
+            gui.drawSideButtons(mon, localY, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+        end
+    elseif line == 4 then
+        local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
+        if energyPercent == math.huge or isnan(energyPercent) then
+            energyPercent = 0
+        end
+        local energyColor = colors.red
+        if energyPercent >= 70 then
+            energyColor = colors.green
+        elseif energyPercent < 70 and energyPercent > 30 then
+            energyColor = colors.orange
+        end
+        gui.progress_bar(mon, localX, localY, 48, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX, localY, 48, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX, localY, 48, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX, localY, 48, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX, localY, 48, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        if drawButtons then
+            gui.drawSideButtons(mon, localY, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+        end
+    elseif line == 5 then
+        local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
+        if energyPercent == math.huge or isnan(energyPercent) then
+            energyPercent = 0
+        end
+        gui.draw_integer(mon, energyPercent , localX, localY, numberColor, rftColor, "%", "")
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
         end
     else
-        for i = 1, coreCount do
+        for i = 1, coreCount * 4 do
             if line == i + 6 then
-                gui.draw_integer(mon, reactorGeneration[i], localX, localY, numberColor, rftColor)
+
+                gui.draw_integer(mon, coreEnergy[i], localX, localY, numberColor, rftColor, "rf", "")
                 if drawButtons then
                     gui.drawSideButtons(mon, localY, buttonColor)
                     if line == 7 and line == coreCount + 7 then
