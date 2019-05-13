@@ -549,6 +549,7 @@ function init()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
 		mon = getMonitor(connectedMonitors[i])
+		monitor = mon.monitor
 		if mon.Y <=	5 then
 			monitor.setTextScale(0.5)
 			monX, monY = monitor.getSize()
