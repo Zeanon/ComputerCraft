@@ -1,4 +1,5 @@
 -- configure colors
+local numberColor = colors.red
 local rftColor = colors.gray
 local buttonColor = colors.lightGray
 local textColor = colors.white
@@ -6,38 +7,46 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.0.0"
-local mon, monitor, monX, monY
+local version = "1.4.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
--- max size: 70x40(8 blocks x 6 blocks)
-monitor = peripheral.find("monitor")
-monX, monY = monitor.getSize()
-mon = {}
-mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
-local x, y
+local totalEnergy, totalMaxEnergy, energyPercent
+local coreEnergy = {}
+local coreMaxEnergy = {}
 
-local line1 = 1
-local line2 = 2
-local line3 = 3
-local line4 = 4
-local line5 = 5
-local line6 = 6
-local line7 = 7
-local line8 = 8
-local line9 = 9
-local line10 = 10
+local monitors = {}
 
-local amount, drawButtons, energyColor, energyPercent
-
+local monitorCount = 0
+local connectedMonitors = {}
 local coreCount = 0
 local connectedCores = {}
 local periList = peripheral.getNames()
 local validPeripherals = {
-    "draconic_rf_storage"
+    "draconic_rf_storage",
+    "monitor"
 }
+
+-- get all connected peripherals
+function checkValidity(periName)
+    for n,b in pairs(validPeripherals) do
+        if periName:find(b) then return b end
+    end
+    return false
+end
+
+for i,v in ipairs(periList) do
+    local periFunctions = {
+        ["draconic_rf_storage"] = function()
+            coreCount = coreCount + 1
+            connectedCores[coreCount] = periList[i]
+        end,
+    }
+
+    local isValid = checkValidity(peripheral.getType(v))
+    if isValid then periFunctions[isValid]() end
+end
 
 function split(string, delimiter)
     local result = { }
@@ -59,6 +68,7 @@ function save_config()
     sw.writeLine("version: " .. version	)
     sw.writeLine(" ")
     sw.writeLine("-- configure the display numberColors")
+    sw.writeLine("numberColor: " .. color.toString(numberColor))
     sw.writeLine("rftColor: " .. color.toString(rftColor))
     sw.writeLine("buttonColor: " ..  color.toString(buttonColor))
     sw.writeLine("textColor: " ..  color.toString(textColor))
@@ -66,11 +76,24 @@ function save_config()
     sw.writeLine("-- lower number means higher refresh rate but also increases server load")
     sw.writeLine("refresh: " ..  refresh)
     sw.writeLine(" ")
+    sw.writeLine("-- small font means a font size of 0.5 instead of 1")
+    for i = 1, monitorCount do
+        if monitors[connectedMonitors[i] .. ": smallFont"] then
+            sw.writeLine(connectedMonitors[i] .. ": smallFont: true")
+        else
+            sw.writeLine(connectedMonitors[i] .. ": smallFont: false")
+        end
+    end
+    sw.writeLine(" ")
     sw.writeLine("-- just some saved data")
-    sw.writeLine("line1: " .. line1)
-    sw.writeLine("line2: " .. line2)
-    sw.writeLine("line3: " .. line3)
-    sw.writeLine("line4: " .. line4)
+    sw.writeLine("monitorCount: " .. monitorCount)
+    for i = 1, monitorCount do
+        sw.writeLine(" ")
+        sw.writeLine("-- monitor: " .. connectedMonitors[i])
+        for count = 1, 10 do
+            sw.writeLine(connectedMonitors[i] .. ": line" .. count .. ": " .. monitors[connectedMonitors[i] .. ":line" .. count])
+        end
+    end
     sw.close()
 end
 
@@ -78,10 +101,13 @@ end
 function load_config()
     local sr = fs.open("config.txt", "r")
     local curVersion
+    local curMonitorCount
     local line = sr.readLine()
     while line do
         if split(line, ": ")[1] == "version" then
             curVersion = split(line, ": ")[2]
+        elseif split(line, ": ")[1] == "numberColor" then
+            numberColor = color.getColor(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "rftColor" then
             rftColor = color.getColor(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "buttonColor" then
@@ -90,19 +116,39 @@ function load_config()
             textColor = color.getColor(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "refresh" then
             refresh = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "line1" then
-            line1 = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "line2" then
-            line2 = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "line3" then
-            line3 = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "line4" then
-            line4 = tonumber(split(line, ": ")[2])
+        elseif split(line, ": ")[1] == "monitorCount" then
+            curMonitorCount = tonumber(split(line, ": ")[2])
+        else
+            if string.find(split(line, ": ")[1], "monitor_")
+                    or string.find(split(line, ": ")[1], "top")
+                    or string.find(split(line, ": ")[1], "bottom")
+                    or string.find(split(line, ": ")[1], "right")
+                    or string.find(split(line, ": ")[1], "left")
+                    or string.find(split(line, ": ")[1], "front")
+                    or string.find(split(line, ": ")[1], "back") then
+                for i = 1, monitorCount do
+                    if connectedMonitors[i] == split(line, ": ")[1] then
+                        if split(line, ": ")[2] == "smallFont" then
+                            if split(line, ": ")[3] == "true" then
+                                monitors[connectedMonitors[i] .. ":smallFont"] = true
+                            else
+                                monitors[connectedMonitors[i] .. ":smallFont"] = false
+                            end
+                        else
+                            for count = 1, 10 do
+                                if split(line, ": ")[2] == "line" .. count then
+                                    monitors[connectedMonitors[i] .. ":line" .. count] = tonumber(split(line, ": ")[3])
+                                end
+                            end
+                        end
+                    end
+                end
+            end
         end
         line = sr.readLine()
     end
     sr.close()
-    if curVersion ~= version then
+    if curVersion ~= version or curMonitorCount ~= monitorCount then
         save_config()
     end
 end
@@ -115,979 +161,249 @@ else
 end
 
 
--- get all connected reactors
-function checkValidity(periName)
-    for n,b in pairs(validPeripherals) do
-        if periName:find(b) then return b end
-    end
-    return false
-end
-
-for i,v in ipairs(periList) do
-    local periFunctions = {
-        ["draconic_rf_storage"] = function()
-            coreCount = coreCount + 1
-            connectedCores[coreCount] = periList[i]
-        end,
-    }
-
-    local isValid = checkValidity(peripheral.getType(v))
-    if isValid then periFunctions[isValid]() end
-end
-
---Check for reactor, fluxgates and monitors before continuing
+--Check for energycore and monitors before continuing
 if coreCount == 0 then
     error("No valid energy core was found")
 end
 
-if monitor == null then
+if monitorCount == 0 then
     error("No valid monitor was found")
+end
+
+function getMonitor(side)
+    local mon, monitor, monX, monY
+    monitor = peripheral.wrap(side)
+    monX, monY = monitor.getSize()
+    mon = {}
+    mon.monitor,mon.X, mon.Y = monitor, monX, monY
+    return mon
+end
+
+
+--update the monitor
+function update()
+    while true do
+        drawLines()
+        sleep(refresh)
+    end
+end
+
+--draw the different lines on the screen
+function drawLines()
+    for i = 1, monitorCount do
+        local mon = getMonitor(connectedMonitors[i])
+        local amount = monitors[connectedMonitors[i] .. ":amount"]
+        local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
+        local x = monitors[connectedMonitors[i] .. ":x"]
+        local y = monitors[connectedMonitors[i] .. ":y"]
+        totalEnergy = getTotalEnergyStored()
+        totalMaxEnergy = getTotalMaxEnergyStored()
+        energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
+        gui.clear(mon)
+        print("Energy Core amount: " .. gui.format_int(coreCount) .. "RF")
+        print("Total total energy: " .. gui.format_int(totalEnergy) .. "RF")
+        print("Total total max energy: " .. gui.format_int(totalMaxEnergy) .. "RF")
+        print("Total total max energy: " .. energyPercent .. "RF")
+        for i = 1, coreCount do
+            coreEnergy[i] = getEnergyStored(i)
+            coreMaxEnergy[i] = getMaxEnergyStored(i)
+            print("Energy Core " .. i .. " Energy: " .. gui.format_int(coreEnergy[i]))
+            print("Energy Core " .. i .. " max Energy: " .. gui.format_int(coreMaxEnergy[i]))
+        end
+        if amount >= 1 then
+            drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
+        end
+        if amount >= 2 then
+            gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+            drawLine(mon, x, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
+        end
+        if amount >= 3 then
+            drawLine(mon, x, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
+        end
+        if amount >= 4 then
+            drawLine(mon, x, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
+        end
+        if amount >= 5 then
+            drawLine(mon, x, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
+        end
+        if amount >= 6 then
+            drawLine(mon, x, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
+        end
+        if amount >= 7 then
+            drawLine(mon, x, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
+        end
+        if amount >= 8 then
+            drawLine(mon, x, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
+        end
+        if amount >= 9 then
+            drawLine(mon, x, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
+        end
+        if amount >= 10 then
+            drawLine(mon, x, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
+        end
+    end
 end
 
 --handle the monitor touch inputs
 function buttons()
-    if amount == 1 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
+    while true do
+        -- button handler
+        local event, side, xPos, yPos = os.pullEvent("monitor_touch")
+        if monitors[side .. ":drawButtons"] then
+            if monitors[side .. ":amount"] >= 1 and yPos >= monitors[side .. ":y"] and yPos <= monitors[side .. ":y"] + 4 then
                 if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
+                    monitors[side .. ":line1"] = monitors[side .. ":line1"] - 1
+                    if monitors[side .. ":line1"] < 1 then
+                        monitors[side .. ":line1"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 2 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line1"] = monitors[side .. ":line1"] + 1
+                    if monitors[side .. ":line1"] > coreCount + 3 then
+                        monitors[side .. ":line1"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 10 and yPos <= y + 14 then
+            if monitors[side .. ":amount"] >= 2 and yPos >= monitors[side .. ":y"] + 10 and yPos <= monitors[side .. ":y"] + 14 then
                 if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
+                    monitors[side .. ":line2"] = monitors[side .. ":line2"] - 1
+                    if monitors[side .. ":line2"] < 1 then
+                        monitors[side .. ":line2"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 3 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line2"] = monitors[side .. ":line2"] + 1
+                    if monitors[side .. ":line2"] > coreCount + 3 then
+                        monitors[side .. ":line2"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 10 and yPos <= y + 14 then
+            if monitors[side .. ":amount"] >= 3 and yPos >= monitors[side .. ":y"] + 18 and yPos <= monitors[side .. ":y"] + 22 then
                 if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
+                    monitors[side .. ":line3"] = monitors[side .. ":line3"] - 1
+                    if monitors[side .. ":line3"] < 1 then
+                        monitors[side .. ":line3"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line3"] = monitors[side .. ":line3"] + 1
+                    if monitors[side .. ":line3"] > coreCount + 3 then
+                        monitors[side .. ":line3"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 18 and yPos <= y + 22 then
+            if monitors[side .. ":amount"] >= 4 and yPos >= monitors[side .. ":y"] + 26 and yPos <= monitors[side .. ":y"] + 30 then
                 if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
+                    monitors[side .. ":line4"] = monitors[side .. ":line4"] - 1
+                    if monitors[side .. ":line4"] < 1 then
+                        monitors[side .. ":line4"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 4 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line4"] = monitors[side .. ":line4"] + 1
+                    if monitors[side .. ":line4"] > coreCount + 3 then
+                        monitors[side .. ":line4"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 10 and yPos <= y + 14 then
+            if monitors[side .. ":amount"] >= 5 and yPos >= monitors[side .. ":y"] + 34 and yPos <= monitors[side .. ":y"] + 38 then
                 if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
+                    monitors[side .. ":line5"] = monitors[side .. ":line5"] - 1
+                    if monitors[side .. ":line5"] < 1 then
+                        monitors[side .. ":line5"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line5"] = monitors[side .. ":line5"] + 1
+                    if monitors[side .. ":line5"] > coreCount + 3 then
+                        monitors[side .. ":line5"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 18 and yPos <= y + 22 then
+            if monitors[side .. ":amount"] >= 6 and yPos >= monitors[side .. ":y"] + 42 and yPos <= monitors[side .. ":y"] + 46 then
                 if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
+                    monitors[side .. ":line6"] = monitors[side .. ":line6"] - 1
+                    if monitors[side .. ":line6"] < 1 then
+                        monitors[side .. ":line6"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line6"] = monitors[side .. ":line6"] + 1
+                    if monitors[side .. ":line6"] > coreCount + 3 then
+                        monitors[side .. ":line6"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 26 and yPos <= y + 30 then
+            if monitors[side .. ":amount"] >= 7 and yPos >= monitors[side .. ":y"] + 50 and yPos <= monitors[side .. ":y"] + 54 then
                 if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
+                    monitors[side .. ":line7"] = monitors[side .. ":line7"] - 1
+                    if monitors[side .. ":line7"] < 1 then
+                        monitors[side .. ":line7"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 5 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line7"] = monitors[side .. ":line7"] + 1
+                    if monitors[side .. ":line7"] > coreCount + 3 then
+                        monitors[side .. ":line7"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 10 and yPos <= y + 14 then
+            if monitors[side .. ":amount"] >= 8 and yPos >= monitors[side .. ":y"] + 58 and yPos <= monitors[side .. ":y"] + 62 then
                 if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
+                    monitors[side .. ":line8"] = monitors[side .. ":line8"] - 1
+                    if monitors[side .. ":line8"] < 1 then
+                        monitors[side .. ":line8"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line8"] = monitors[side .. ":line8"] + 1
+                    if monitors[side .. ":line8"] > coreCount + 3 then
+                        monitors[side .. ":line8"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 18 and yPos <= y + 22 then
+            if monitors[side .. ":amount"] >= 9 and yPos >= monitors[side .. ":y"] + 66 and yPos <= monitors[side .. ":y"] + 70 then
                 if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
+                    monitors[side .. ":line9"] = monitors[side .. ":line9"] - 1
+                    if monitors[side .. ":line9"] < 1 then
+                        monitors[side .. ":line9"] = coreCount + 3
                     end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line9"] = monitors[side .. ":line9"] + 1
+                    if monitors[side .. ":line9"] > coreCount + 3 then
+                        monitors[side .. ":line9"] = 1
                     end
                 end
                 drawLines()
                 save_config()
             end
 
-            if  yPos >= y + 26 and yPos <= y + 30 then
+            if monitors[side .. ":amount"] >= 10 and yPos >= monitors[side .. ":y"] + 74 and yPos <= monitors[side .. ":y"] + 78 then
                 if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 34 and yPos <= y + 38 then
-                if xPos >= 1 and xPos <= 5 then
-                    line5 = line5 - 1
-                    if line5 < 1 then
-                        line5 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line5 = line5 + 1
-                    if line5 > reactorCount + 3 then
-                        line5 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 6 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 10 and yPos <= y + 14 then
-                if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 18 and yPos <= y + 22 then
-                if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 26 and yPos <= y + 30 then
-                if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 34 and yPos <= y + 38 then
-                if xPos >= 1 and xPos <= 5 then
-                    line5 = line5 - 1
-                    if line5 < 1 then
-                        line5 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line5 = line5 + 1
-                    if line5 > reactorCount + 3 then
-                        line5 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 42 and yPos <= y + 46 then
-                if xPos >= 1 and xPos <= 5 then
-                    line6 = line6 - 1
-                    if line6 < 1 then
-                        line6 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line6 = line6 + 1
-                    if line6 > reactorCount + 3 then
-                        line6 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 7 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 10 and yPos <= y + 14 then
-                if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 18 and yPos <= y + 22 then
-                if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 26 and yPos <= y + 30 then
-                if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 34 and yPos <= y + 38 then
-                if xPos >= 1 and xPos <= 5 then
-                    line5 = line5 - 1
-                    if line5 < 1 then
-                        line5 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line5 = line5 + 1
-                    if line5 > reactorCount + 3 then
-                        line5 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 42 and yPos <= y + 46 then
-                if xPos >= 1 and xPos <= 5 then
-                    line6 = line6 - 1
-                    if line6 < 1 then
-                        line6 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line6 = line6 + 1
-                    if line6 > reactorCount + 3 then
-                        line6 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 50 and yPos <= y + 54 then
-                if xPos >= 1 and xPos <= 5 then
-                    line7 = line7 - 1
-                    if line7 < 1 then
-                        line7 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line7 = line7 + 1
-                    if line7 > reactorCount + 3 then
-                        line7 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 8 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 10 and yPos <= y + 14 then
-                if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 18 and yPos <= y + 22 then
-                if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 26 and yPos <= y + 30 then
-                if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 34 and yPos <= y + 38 then
-                if xPos >= 1 and xPos <= 5 then
-                    line5 = line5 - 1
-                    if line5 < 1 then
-                        line5 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line5 = line5 + 1
-                    if line5 > reactorCount + 3 then
-                        line5 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 42 and yPos <= y + 46 then
-                if xPos >= 1 and xPos <= 5 then
-                    line6 = line6 - 1
-                    if line6 < 1 then
-                        line6 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line6 = line6 + 1
-                    if line6 > reactorCount + 3 then
-                        line6 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 50 and yPos <= y + 54 then
-                if xPos >= 1 and xPos <= 5 then
-                    line7 = line7 - 1
-                    if line7 < 1 then
-                        line7 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line7 = line7 + 1
-                    if line7 > reactorCount + 3 then
-                        line7 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 58 and yPos <= y + 62 then
-                if xPos >= 1 and xPos <= 5 then
-                    line8 = line8 - 1
-                    if line8 < 1 then
-                        line8 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line8 = line8 + 1
-                    if line8 > reactorCount + 3 then
-                        line8 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 9 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 10 and yPos <= y + 14 then
-                if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 18 and yPos <= y + 22 then
-                if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 26 and yPos <= y + 30 then
-                if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 34 and yPos <= y + 38 then
-                if xPos >= 1 and xPos <= 5 then
-                    line5 = line5 - 1
-                    if line5 < 1 then
-                        line5 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line5 = line5 + 1
-                    if line5 > reactorCount + 3 then
-                        line5 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 42 and yPos <= y + 46 then
-                if xPos >= 1 and xPos <= 5 then
-                    line6 = line6 - 1
-                    if line6 < 1 then
-                        line6 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line6 = line6 + 1
-                    if line6 > reactorCount + 3 then
-                        line6 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 50 and yPos <= y + 54 then
-                if xPos >= 1 and xPos <= 5 then
-                    line7 = line7 - 1
-                    if line7 < 1 then
-                        line7 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line7 = line7 + 1
-                    if line7 > reactorCount + 3 then
-                        line7 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 58 and yPos <= y + 62 then
-                if xPos >= 1 and xPos <= 5 then
-                    line8 = line8 - 1
-                    if line8 < 1 then
-                        line8 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line8 = line8 + 1
-                    if line8 > reactorCount + 3 then
-                        line8 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 66 and yPos <= y + 70 then
-                if xPos >= 1 and xPos <= 5 then
-                    line9 = line9 - 1
-                    if line9 < 1 then
-                        line9 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line9 = line9 + 1
-                    if line9 > reactorCount + 3 then
-                        line9 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-        end
-    end
-
-    if amount == 10 then
-        while true do
-            -- button handler
-            local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-            if  yPos >= y and yPos <= y + 4 then
-                if xPos >= 1 and xPos <= 5 then
-                    line1 = line1 - 1
-                    if line1 < 1 then
-                        line1 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line1 = line1 + 1
-                    if line1 > reactorCount + 3 then
-                        line1 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 10 and yPos <= y + 14 then
-                if xPos >= 1 and xPos <= 5 then
-                    line2 = line2 - 1
-                    if line2 < 1 then
-                        line2 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line2 = line2 + 1
-                    if line2 > reactorCount + 3 then
-                        line2 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 18 and yPos <= y + 22 then
-                if xPos >= 1 and xPos <= 5 then
-                    line3 = line3 - 1
-                    if line3 < 1 then
-                        line3 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line3 = line3 + 1
-                    if line3 > reactorCount + 3 then
-                        line3 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if  yPos >= y + 26 and yPos <= y + 30 then
-                if xPos >= 1 and xPos <= 5 then
-                    line4 = line4 - 1
-                    if line4 < 1 then
-                        line4 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line4 = line4 + 1
-                    if line4 > reactorCount + 3 then
-                        line4 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 34 and yPos <= y + 38 then
-                if xPos >= 1 and xPos <= 5 then
-                    line5 = line5 - 1
-                    if line5 < 1 then
-                        line5 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line5 = line5 + 1
-                    if line5 > reactorCount + 3 then
-                        line5 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 42 and yPos <= y + 46 then
-                if xPos >= 1 and xPos <= 5 then
-                    line6 = line6 - 1
-                    if line6 < 1 then
-                        line6 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line6 = line6 + 1
-                    if line6 > reactorCount + 3 then
-                        line6 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 50 and yPos <= y + 54 then
-                if xPos >= 1 and xPos <= 5 then
-                    line7 = line7 - 1
-                    if line7 < 1 then
-                        line7 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line7 = line7 + 1
-                    if line7 > reactorCount + 3 then
-                        line7 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 58 and yPos <= y + 62 then
-                if xPos >= 1 and xPos <= 5 then
-                    line8 = line8 - 1
-                    if line8 < 1 then
-                        line8 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line8 = line8 + 1
-                    if line8 > reactorCount + 3 then
-                        line8 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 66 and yPos <= y + 70 then
-                if xPos >= 1 and xPos <= 5 then
-                    line9 = line9 - 1
-                    if line9 < 1 then
-                        line9 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line9 = line9 + 1
-                    if line9 > reactorCount + 3 then
-                        line9 = 1
-                    end
-                end
-                drawLines()
-                save_config()
-            end
-
-            if yPos >= y + 74 and yPos <= y + 78 then
-                if xPos >= 1 and xPos <= 5 then
-                    line10 = line10 - 1
-                    if line10 < 1 then
-                        line10 = reactorCount + 3
-                    end
-                elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-                    line10 = line10 + 1
-                    if line10 > reactorCount + 3 then
-                        line10 = 1
+                    monitors[side .. ":line10"] = monitors[side .. ":line10"] - 1
+                    if monitors[side .. ":line10"] < 1 then
+                        monitors[side .. ":line10"] = coreCount + 3
+                    end
+                elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+                    monitors[side .. ":line10"] = monitors[side .. ":line10"] + 1
+                    if monitors[side .. ":line10"] > coreCount + 3 then
+                        monitors[side .. ":line10"] = 1
                     end
                 end
                 drawLines()
@@ -1098,103 +414,36 @@ function buttons()
 end
 
 --draw line with information on the monitor
-function drawLine(localY, line)
+function drawLine(mon, localX, localY, line, drawButtons)
     if line == 1 then
-        energyPercent = math.ceil(getTotalEnergyStored() / getTotalMaxEnergyStored() * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
-        end
-        energyColor = colors.red
-        if energyPercent >= 70 then
-            energyColor = colors.green
-        elseif energyPercent < 70 and energyPercent > 30 then
-            energyColor = colors.orange
-        end
-        gui.draw_number(mon, getTotalEnergyStored(), x, localY, energyColor, rftColor)
+        gui.draw_integer(mon, totalEnergy, localX, localY, numberColor, rftColor)
         if drawButtons then
-            gui.drawSideButtons(mon, x, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. coreCount .. " ", " Gen", textColor, textColor, buttonColor)
+            gui.drawSideButtons(mon, localY, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. coreCount .. " ", " Gen", textColor, textColor, buttonColor)
         end
     elseif line == 2 then
-        energyPercent = math.ceil(getTotalEnergyStored() / getTotalMaxEnergyStored() * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
-        end
-        energyColor = colors.red
-        if energyPercent >= 70 then
-            energyColor = colors.green
-        elseif energyPercent < 70 and energyPercent > 30 then
-            energyColor = colors.orange
-        end
-        gui.draw_number(mon, getTotalMaxEnergyStored(), x, localY, energyColor, rftColor)
+        gui.draw_integer(mon, totalMaxEnergy, localX, localY, numberColor, rftColor)
         if drawButtons then
-            gui.drawSideButtons(mon, x, localY, buttonColor)
+            gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
         end
     elseif line == 3 then
-        energyPercent = math.ceil(getTotalEnergyStored() / getTotalMaxEnergyStored() * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
-        end
-        energyColor = colors.red
-        if energyPercent >= 70 then
-            energyColor = colors.green
-        elseif energyPercent < 70 and energyPercent > 30 then
-            energyColor = colors.orange
-        end
-        gui.draw_number(mon, getTotalMaxEnergyStored(), x, localY, energyColor, rftColor)
+        gui.draw_integer(mon, , localX, localY, numberColor, rftColor)
         if drawButtons then
-            gui.drawSideButtons(mon, x, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
-        end
-    elseif line == 4 then
-        energyPercent = math.ceil(getTotalEnergyStored() / getTotalMaxEnergyStored() * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
-        end
-        energyColor = colors.red
-        if energyPercent >= 70 then
-            energyColor = colors.green
-        elseif energyPercent < 70 and energyPercent > 30 then
-            energyColor = colors.orange
-        end
-        gui.draw_number(mon, getTotalMaxEnergyStored(), x, localY, energyColor, rftColor)
-        if drawButtons then
-            gui.drawSideButtons(mon, x, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
-        end
-    elseif line == 5 then
-        local energyColor, energyPercent
-        energyPercent = math.ceil(getTotalEnergyStored() / getTotalMaxEnergyStored() * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
-        end
-        energyColor = colors.red
-        if energyPercent >= 70 then
-            energyColor = colors.green
-        elseif energyPercent < 70 and energyPercent > 30 then
-            energyColor = colors.orange
-        end
-        gui.progress_bar(mon, x, localY, 48, getTotalEnergyStored(), getTotalMaxEnergyStored(), energyColor, colors.light_gray)
-        gui.progress_bar(mon, x, localY + 1, 48, getTotalEnergyStored(), getTotalMaxEnergyStored(), energyColor, colors.light_gray)
-        gui.progress_bar(mon, x, localY + 2, 48, getTotalEnergyStored(), getTotalMaxEnergyStored(), energyColor, colors.light_gray)
-        gui.progress_bar(mon, x, localY + 3, 48, getTotalEnergyStored(), getTotalMaxEnergyStored(), energyColor, colors.light_gray)
-        gui.progress_bar(mon, x, localY + 4, 48, getTotalEnergyStored(), getTotalMaxEnergyStored(), energyColor, colors.light_gray)
-        if drawButtons then
-            gui.drawSideButtons(mon, x, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " EC1", textColor, textColor, buttonColor)
+            gui.drawSideButtons(mon, localY, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
         end
     else
         for i = 1, coreCount do
             if line == i + 6 then
-                gui.draw_number(mon, getReactorGeneration(i), x, localY, numberColor, rftColor)
+                gui.draw_integer(mon, reactorGeneration[i], localX, localY, numberColor, rftColor)
                 if drawButtons then
-                    gui.drawSideButtons(mon, x, localY, buttonColor)
-                    if line == 7 and line == coreCount + 3 then
+                    gui.drawSideButtons(mon, localY, buttonColor)
+                    if line == 7 and line == coreCount + 7 then
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
                     elseif line == 7 then
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "EC" .. i + 1 .. " ", textColor, textColor, buttonColor)
-                    elseif line == coreCount + 6 then
+                    elseif line == coreCount + 7 then
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. i - 1 .. " ", " Out", textColor, textColor, buttonColor)
                     else
                         gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. i - 1 .. " ", "EC" .. i + 1 .. " ", textColor, textColor, buttonColor)
@@ -1234,35 +483,35 @@ end
 
 -- check that every line displays something
 function checkLines()
-    if line1 > reactorCount + 3 then
-        line1 = reactorCount + 3
+    if line1 > coreCount + 3 then
+        line1 = coreCount + 3
     end
-    if line2 > reactorCount + 3 then
-        line2 = reactorCount + 3
+    if line2 > coreCount + 3 then
+        line2 = coreCount + 3
     end
-    if line3 > reactorCount + 3 then
-        line3 = reactorCount + 3
+    if line3 > coreCount + 3 then
+        line3 = coreCount + 3
     end
-    if line4 > reactorCount + 3 then
-        line4 = reactorCount + 3
+    if line4 > coreCount + 3 then
+        line4 = coreCount + 3
     end
-    if line5 > reactorCount + 3 then
-        line5 = reactorCount + 3
+    if line5 > coreCount + 3 then
+        line5 = coreCount + 3
     end
-    if line6 > reactorCount + 3 then
-        line6 = reactorCount + 3
+    if line6 > coreCount + 3 then
+        line6 = coreCount + 3
     end
-    if line7 > reactorCount + 3 then
-        line7 = reactorCount + 3
+    if line7 > coreCount + 3 then
+        line7 = coreCount + 3
     end
-    if line8 > reactorCount + 3 then
-        line8 = reactorCount + 3
+    if line8 > coreCount + 3 then
+        line8 = coreCount + 3
     end
-    if line9 > reactorCount + 3 then
-        line9 = reactorCount + 3
+    if line9 > coreCount + 3 then
+        line9 = coreCount + 3
     end
-    if line10 > reactorCount + 3 then
-        line10 = reactorCount + 3
+    if line10 > coreCount + 3 then
+        line10 = coreCount + 3
     end
     save_config()
 end
