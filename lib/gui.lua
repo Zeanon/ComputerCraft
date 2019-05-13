@@ -20,11 +20,19 @@ function getInteger(number)
         return 0
     end
 
-    local i = 0
-    while (i > number or number > i + 1) do
-        i = i + 1
+    local length = string.len(tostring(output))
+    local delimeter = 10 ^ (length - 1)
+
+    local integer = 0
+    while number > integer + 1 and delimeter >= 1 do
+        if number >= i then
+            integer = integer + delimeter
+        else
+            integer = integer - delimeter
+            delimeter = delimeter / 10
+        end
     end
-    return i
+    return integer
 end
 
 -- monitor related
