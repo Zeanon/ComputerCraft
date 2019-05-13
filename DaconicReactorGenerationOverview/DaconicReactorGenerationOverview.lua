@@ -1326,14 +1326,13 @@ if mon.Y <=	5 then
 end
 if mon.Y >= 16 then
 	local localY = mon.Y - 2
-	local count = 0
+	amount = 0
 	local i = 8
 	while i <= localY do
 		i = i + 8
-		count = count + 1
+		amount = amount + 1
 	end
-	amount = count
-	y = gui.getInteger((mon.Y + 3 - (8 * count)) / 2)
+	y = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
 end
 
 if mon.X >= 57 then
