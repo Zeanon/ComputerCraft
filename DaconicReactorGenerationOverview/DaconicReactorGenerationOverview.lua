@@ -493,37 +493,39 @@ end
 
 -- check that every line displays something
 function checkLines()
-	if monitors[side .. ":line1"] > reactorCount + 3 then
-		monitors[side .. ":line1"] = reactorCount + 3
+	for i = 1, monitorCount do
+		if monitors[connectedMonitors[i] .. ":line1"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line1"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line2"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line2"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line3"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line3"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line4"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line4"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line5"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line5"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line6"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line6"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line7"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line7"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line8"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line8"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line9"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line9"] = reactorCount + 3
+		end
+		if monitors[connectedMonitors[i] .. ":line10"] > reactorCount + 3 then
+			monitors[connectedMonitors[i] .. ":line10"] = reactorCount + 3
+		end
+		save_config()
 	end
-	if monitors[side .. ":line2"] > reactorCount + 3 then
-		monitors[side .. ":line2"] = reactorCount + 3
-	end
-	if monitors[side .. ":line3"] > reactorCount + 3 then
-		monitors[side .. ":line3"] = reactorCount + 3
-	end
-	if monitors[side .. ":line4"] > reactorCount + 3 then
-		monitors[side .. ":line4"] = reactorCount + 3
-	end
-	if monitors[side .. ":line5"] > reactorCount + 3 then
-		monitors[side .. ":line5"] = reactorCount + 3
-	end
-	if monitors[side .. ":line6"] > reactorCount + 3 then
-		monitors[side .. ":line6"] = reactorCount + 3
-	end
-	if monitors[side .. ":line7"] > reactorCount + 3 then
-		monitors[side .. ":line7"] = reactorCount + 3
-	end
-	if monitors[side .. ":line8"] > reactorCount + 3 then
-		monitors[side .. ":line8"] = reactorCount + 3
-	end
-	if monitors[side .. ":line9"] > reactorCount + 3 then
-		monitors[side .. ":line9"] = reactorCount + 3
-	end
-	if monitors[side .. ":line10"] > reactorCount + 3 then
-		monitors[side .. ":line10"] = reactorCount + 3
-	end
-	save_config()
 end
 
 --run
