@@ -108,6 +108,7 @@ function save_config()
 	sw.writeLine("-- just some saved data")
 	sw.writeLine("monitorCount: " .. monitorCount)
 	for i = 1, monitorCount do
+		sw.writeLine(" ")
 		sw.writeLine("-- monitor: " .. connectedMonitors[i])
 		for count = 1, 10 do
 			sw.writeLine(connectedMonitors[i] .. ": line" .. count .. ": " .. monitors[connectedMonitors[i] .. ":line" .. count])
@@ -186,14 +187,9 @@ if monitorCount == 0 then
 	error("No valid monitor was found")
 end
 
-function getMonitor(side, smallFont)
+function getMonitor(side)
 	local mon, monitor, monX, monY
 	monitor = peripheral.wrap(side)
-	if smallFont then
-		monitor.setTextScale(0.5)
-	else
-		monitor.setTextScale(1)
-	end
 	monX, monY = monitor.getSize()
 	mon = {}
 	mon.monitor,mon.X, mon.Y = monitor, monX, monY
@@ -550,7 +546,7 @@ function init()
 		local mon, monitor, monX, monY
 		mon = getMonitor(connectedMonitors[i])
 		monitor = mon.monitor
-		if mon.Y <=	5 then
+		if mon.Y <=	5 or monitors[connectedMonitors[i] .. ":smallFont"] then
 			monitor.setTextScale(0.5)
 			monX, monY = monitor.getSize()
 			mon = {}
