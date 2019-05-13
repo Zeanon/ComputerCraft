@@ -148,14 +148,13 @@ else
 	load_config()
 end
 
+
+monitor = peripheral.find("monitor")
 if smallFont then
 	monitor.setTextScale(0.5)
 else
 	monitor.setTextScale(1)
 end
-
--- max size: 70x40(8 blocks x 6 blocks)
-monitor = peripheral.find("monitor")
 monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
