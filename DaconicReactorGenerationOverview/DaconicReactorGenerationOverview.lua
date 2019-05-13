@@ -5,41 +5,65 @@ local buttonColor = colors.lightGray
 local textColor = colors.white
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
--- small font means a font size of 0.5 instead of 1
-local smallFont = false
 
 -- program
 local version = "1.4.0"
-local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
-local x, y
 
-local test
-
-local line1 = 1
-local line2 = 2
-local line3 = 3
-local line4 = 4
-local line5 = 5
-local line6 = 6
-local line7 = 7
-local line8 = 8
-local line9 = 9
-local line10 = 10
-
-local amount, drawButtons
+local monitors = {}
 
 local reactorCount = 0
 local gateCount = 0
+local monitorCount = 0
 local connectedReactors = {}
 local connectedGates = {}
+local connectedMonitors = {}
 local periList = peripheral.getNames()
 local validPeripherals = {
 	"draconic_reactor",
-	"flux_gate"
+	"flux_gate",
+	"monitor"
 }
+
+
+-- get all connected peripherals
+function checkValidity(periName)
+	for n,b in pairs(validPeripherals) do
+		if periName:find(b) then return b end
+	end
+	return false
+end
+
+for i,v in ipairs(periList) do
+	local periFunctions = {
+		["draconic_reactor"] = function()
+			reactorCount = reactorCount + 1
+			connectedReactors[reactorCount] = periList[i]
+		end,
+		["flux_gate"] = function()
+			gateCount = gateCount + 1
+			connectedGates[gateCount] = periList[i]
+		end,
+		["monitor"] = function()
+			monitorCount = monitorCount + 1
+			connectedMonitors[monitorCount] = periList[i]
+			monitors[periList[i] .. ":smallFont"] = false
+			monitors[periList[i] .. ":drawButtons"] = false
+			monitors[periList[i] .. ":amount"] = 0
+			monitors[periList[i] .. ":x"] = 0
+			monitors[periList[i] .. ":y"] = 0
+			for count = 1, 10 do
+				monitors[periList[i] .. ":line" .. count] = count
+			end
+		end
+	}
+
+	local isValid = checkValidity(peripheral.getType(v))
+	if isValid then periFunctions[isValid]()
+	end
+end
 
 function split(string, delimiter)
 	local result = { }
@@ -70,23 +94,20 @@ function save_config()
 	sw.writeLine("refresh: " ..  refresh)
 	sw.writeLine(" ")
 	sw.writeLine("-- small font means a font size of 0.5 instead of 1")
-	if smallFont then
-		sw.writeLine("smallFont: true")
-	else
-		sw.writeLine("smallFont: false")
+	for i = 1, monitorCount do
+		if monitors[connectedMonitors[i] .. ": smallFont"] then
+			sw.writeLine(connectedMonitors[i] .. ": smallFont: true")
+		else
+			sw.writeLine(connectedMonitors[i] .. ": smallFont: false")
+		end
 	end
 	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
-	sw.writeLine("line1: " .. line1)
-	sw.writeLine("line2: " .. line2)
-	sw.writeLine("line3: " .. line3)
-	sw.writeLine("line4: " .. line4)
-	sw.writeLine("line5: " .. line5)
-	sw.writeLine("line6: " .. line6)
-	sw.writeLine("line7: " .. line7)
-	sw.writeLine("line8: " .. line8)
-	sw.writeLine("line9: " .. line9)
-	sw.writeLine("line10: " .. line10)
+	for i = 1, monitorCount do
+		for count = 1, 10 do
+			sw.writeLine(connectedMonitors[i] .. ": line" .. count .. ": " .. monitors[connectedMonitors[i] .. ":line" .. count])
+		end
+	end
 	sw.close()
 end
 
@@ -96,9 +117,7 @@ function load_config()
 	local curVersion
 	local line = sr.readLine()
 	while line do
-		if split(line, ": ")[1] == "version" then
-			curVersion = split(line, ": ")[2]
-		elseif split(line, ": ")[1] == "numberColor" then
+		if split(line, ": ")[1] == "numberColor" then
 			numberColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "rftColor" then
 			rftColor = color.getColor(split(line, ": ")[2])
@@ -108,39 +127,31 @@ function load_config()
 			textColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "smallFont" then
-			if split(line, ": ")[2] == "true" then
-				smallFont = true
-			else
-				smallFont = false
+		else
+			if string.find(split(line, ": ")[1], "monitor_") then
+				for i = 1, monitorCount do
+					if connectedMonitors[i] == split(line, ": ")[1] then
+						if split(line, ": ")[2] == "smallFont" then
+							if split(line, ": ")[3] == "true" then
+								monitors[connectedMonitors[i] .. ":smallFont"] = true
+							else
+								monitors[connectedMonitors[i] .. ":smallFont"] = false
+							end
+						else
+							for count = 1, 10 do
+								if split(line, ": ")[2] == "line" .. count then
+									monitors[connectedMonitors[i] .. ":line" .. count] = tonumber(split(line, ": ")[3])
+								end
+							end
+						end
+					end
+				end
 			end
-		elseif split(line, ": ")[1] == "line1" then
-			line1 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line2" then
-			line2 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line3" then
-			line3 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line4" then
-			line4 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line5" then
-			line5 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line6" then
-			line6 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line7" then
-			line7 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line8" then
-			line8 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line9" then
-			line9 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "line10" then
-			line10 = tonumber(split(line, ": ")[2])
 		end
 		line = sr.readLine()
 	end
 	sr.close()
-	if curVersion ~= version then
-		save_config()
-	end
+	save_config()
 end
 
 -- 1st time? save our settings, if not, load our settings
@@ -151,40 +162,6 @@ else
 end
 
 
-monitor = peripheral.find("monitor")
-if smallFont then
-	monitor.setTextScale(0.5)
-else
-	monitor.setTextScale(1)
-end
-monX, monY = monitor.getSize()
-mon = {}
-mon.monitor,mon.X, mon.Y = monitor, monX, monY
-
--- get all connected reactors
-function checkValidity(periName)
-	for n,b in pairs(validPeripherals) do
-		if periName:find(b) then return b end
-	end
-	return false
-end
-
-for i,v in ipairs(periList) do
-	local periFunctions = {
-		["draconic_reactor"] = function()
-			reactorCount = reactorCount + 1
-			connectedReactors[reactorCount] = periList[i]
-		end,
-		["flux_gate"] = function()
-			gateCount = gateCount + 1
-			connectedGates[gateCount] = periList[i]
-		end
-	}
-
-	local isValid = checkValidity(peripheral.getType(v))
-	if isValid then periFunctions[isValid]() end
-end
-
 --Check for reactor, fluxgates and monitors before continuing
 if reactorCount == 0 then
 	error("No valid reactor was found")
@@ -193,18 +170,27 @@ if reactorCount ~= gateCount then
 	error("Not same amount of flux gates as reactors")
 end
 
-if monitor == null then
+if monitorCount == 0 then
 	error("No valid monitor was found")
+end
+
+function getMonitor(side, smallFont)
+	local mon, monitor, monX, monY
+	monitor = peripheral.wrap(side)
+	if smallFont then
+		monitor.setTextScale(0.5)
+	else
+		monitor.setTextScale(1)
+	end
+	monX, monY = monitor.getSize()
+	mon = {}
+	mon.monitor,mon.X, mon.Y = monitor, monX, monY
+	return mon
 end
 
 
 --update the monitor
 function update()
-	if smallFont then
-		x = gui.getInteger((mon.X - 46) / 2) - 1
-	else
-		x = gui.getInteger((mon.X - 46) / 2) - 1
-	end
 	while true do
 		drawLines()
 		sleep(refresh)
@@ -213,43 +199,49 @@ end
 
 --draw the different lines on the screen
 function drawLines()
-	gui.clear(mon)
-	print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
-	print("Total generation: " .. gui.format_int(getGeneration()))
-	for i = 1, reactorCount do
-		print("Reactor " .. i .. " Generation: " .. gui.format_int(getReactorGeneration(i)))
-	end
-	print("Total drainback: " .. gui.format_int(getDrainback()))
-	if amount >= 1 then
-		drawLine(y, line1)
-	end
-	if amount >= 2 then
-		gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-		drawLine(y + 10, line2)
-	end
-	if amount >= 3 then
-		drawLine(y + 18, line3)
-	end
-	if amount >= 4 then
-		drawLine(y + 26, line4)
-	end
-	if amount >= 5 then
-		drawLine(y + 34, line5)
-	end
-	if amount >= 6 then
-		drawLine(y + 42, line6)
-	end
-	if amount >= 7 then
-		drawLine(y + 50, line7)
-	end
-	if amount >= 8 then
-		drawLine(y + 58, line8)
-	end
-	if amount >= 9 then
-		drawLine(y + 66, line9)
-	end
-	if amount >= 10 then
-		drawLine(y + 74, line10)
+	for i = 1, monitorCount do
+		local mon = getMonitor(connectedMonitors[i])
+		local amount = monitors[connectedMonitors[i] .. ":amount"]
+		local x = monitors[connectedMonitors[i] .. ":x"]
+		local y = monitors[connectedMonitors[i] .. ":y"]
+		gui.clear(mon)
+		print("Total reactor output: " .. gui.format_int(getGeneration() - getDrainback()))
+		print("Total generation: " .. gui.format_int(getGeneration()))
+		for i = 1, reactorCount do
+			print("Reactor " .. i .. " Generation: " .. gui.format_int(getReactorGeneration(i)))
+		end
+		print("Total drainback: " .. gui.format_int(getDrainback()))
+		if amount >= 1 then
+			drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"])
+		end
+		if amount >= 2 then
+			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+			drawLine(mon, x, y + 10, monitors[connectedMonitors[i] .. ":line2"])
+		end
+		if amount >= 3 then
+			drawLine(mon, x, y + 18, monitors[connectedMonitors[i] .. ":line3"])
+		end
+		if amount >= 4 then
+			drawLine(mon, x, y + 26, monitors[connectedMonitors[i] .. ":line4"])
+		end
+		if amount >= 5 then
+			drawLine(mon, x, y + 34, monitors[connectedMonitors[i] .. ":line5"])
+		end
+		if amount >= 6 then
+			drawLine(mon, x, y + 42, monitors[connectedMonitors[i] .. ":line6"])
+		end
+		if amount >= 7 then
+			drawLine(mon, x, y + 50, monitors[connectedMonitors[i] .. ":line7"])
+		end
+		if amount >= 8 then
+			drawLine(mon, x, y + 58, monitors[connectedMonitors[i] .. ":line8"])
+		end
+		if amount >= 9 then
+			drawLine(mon, x, y + 66, monitors[connectedMonitors[i] .. ":line9"])
+		end
+		if amount >= 10 then
+			drawLine(mon, x, y + 74, monitors[connectedMonitors[i] .. ":line10"])
+		end
 	end
 end
 
@@ -258,187 +250,186 @@ function buttons()
 	while true do
 		-- button handler
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-
-		test = side
-
-		if amount >= 1 and yPos >= y and yPos <= y + 4 then
-			if xPos >= 1 and xPos <= 5 then
-				line1 = line1 - 1
-				if line1 < 1 then
-					line1 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line1 = line1 + 1
-				if line1 > reactorCount + 3 then
-					line1 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 2 and yPos >= y + 10 and yPos <= y + 14 then
-			if xPos >= 1 and xPos <= 5 then
-				line2 = line2 - 1
-				if line2 < 1 then
-					line2 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line2 = line2 + 1
-				if line2 > reactorCount + 3 then
-					line2 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 3 and yPos >= y + 18 and yPos <= y + 22 then
-			if xPos >= 1 and xPos <= 5 then
-				line3 = line3 - 1
-				if line3 < 1 then
-					line3 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line3 = line3 + 1
-				if line3 > reactorCount + 3 then
-					line3 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 4 and yPos >= y + 26 and yPos <= y + 30 then
-			if xPos >= 1 and xPos <= 5 then
-				line4 = line4 - 1
-				if line4 < 1 then
-					line4 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line4 = line4 + 1
-				if line4 > reactorCount + 3 then
-					line4 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 5 and yPos >= y + 34 and yPos <= y + 38 then
-			if xPos >= 1 and xPos <= 5 then
-				line5 = line5 - 1
-				if line5 < 1 then
-					line5 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line5 = line5 + 1
-				if line5 > reactorCount + 3 then
-					line5 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 6 and yPos >= y + 42 and yPos <= y + 46 then
-			if xPos >= 1 and xPos <= 5 then
-				line6 = line6 - 1
-				if line6 < 1 then
-					line6 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line6 = line6 + 1
-				if line6 > reactorCount + 3 then
-					line6 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 7 and yPos >= y + 50 and yPos <= y + 54 then
-			if xPos >= 1 and xPos <= 5 then
-				line7 = line7 - 1
-				if line7 < 1 then
-					line7 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line7 = line7 + 1
-				if line7 > reactorCount + 3 then
-					line7 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 8 and yPos >= y + 58 and yPos <= y + 62 then
-			if xPos >= 1 and xPos <= 5 then
-				line8 = line8 - 1
-				if line8 < 1 then
-					line8 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line8 = line8 + 1
-				if line8 > reactorCount + 3 then
-					line8 = 1
-				end
-			end
-			drawLines()
-			save_config()
-		end
-
-		if amount >= 9 and yPos >= y + 66 and yPos <= y + 70 then
-			if xPos >= 1 and xPos <= 5 then
-				line9 = line9 - 1
-				if line9 < 1 then
-					line9 = reactorCount + 3
-				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line9 = line9 + 1
-				if line9 > reactorCount + 3 then
-					line9 = 1
+		if monitors[side .. ":drawButtons"] then
+			if monitors[side .. ":amount"] >= 1 and yPos >= monitors[side .. ":y"] and yPos <= monitors[side .. ":y"] + 4 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line1"] = monitors[side .. ":line1"] - 1
+					if monitors[side .. ":line1"] < 1 then
+						monitors[side .. ":line1"] = reactorCount + 3
 					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line1"] = monitors[side .. ":line1"] + 1
+					if monitors[side .. ":line1"] > reactorCount + 3 then
+						monitors[side .. ":line1"] = 1
+					end
+				end
+				drawLines()
+				save_config()
 			end
-			drawLines()
-			save_config()
-		end
 
-		if amount >= 10 and yPos >= y + 74 and yPos <= y + 78 then
-			if xPos >= 1 and xPos <= 5 then
-				line10 = line10 - 1
-				if line10 < 1 then
-					line10 = reactorCount + 3
+			if monitors[side .. ":amount"] >= 2 and yPos >= monitors[side .. ":y"] + 10 and yPos <= monitors[side .. ":y"] + 14 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line2"] = monitors[side .. ":line2"] - 1
+					if monitors[side .. ":line2"] < 1 then
+						monitors[side .. ":line2"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line2"] = monitors[side .. ":line2"] + 1
+					if monitors[side .. ":line2"] > reactorCount + 3 then
+						monitors[side .. ":line2"] = 1
+					end
 				end
-			elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
-				line10 = line10 + 1
-				if line10 > reactorCount + 3 then
-					line10 = 1
-				end
+				drawLines()
+				save_config()
 			end
-			drawLines()
-			save_config()
+
+			if monitors[side .. ":amount"] >= 3 and yPos >= monitors[side .. ":y"] + 18 and yPos <= monitors[side .. ":y"] + 22 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line3"] = monitors[side .. ":line3"] - 1
+					if monitors[side .. ":line3"] < 1 then
+						monitors[side .. ":line3"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line3"] = monitors[side .. ":line3"] + 1
+					if monitors[side .. ":line3"] > reactorCount + 3 then
+						monitors[side .. ":line3"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 4 and yPos >= monitors[side .. ":y"] + 26 and yPos <= monitors[side .. ":y"] + 30 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line4"] = monitors[side .. ":line4"] - 1
+					if monitors[side .. ":line4"] < 1 then
+						monitors[side .. ":line4"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line4"] = monitors[side .. ":line4"] + 1
+					if monitors[side .. ":line4"] > reactorCount + 3 then
+						monitors[side .. ":line4"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 5 and yPos >= monitors[side .. ":y"] + 34 and yPos <= monitors[side .. ":y"] + 38 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line5"] = monitors[side .. ":line5"] - 1
+					if monitors[side .. ":line5"] < 1 then
+						monitors[side .. ":line5"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line5"] = monitors[side .. ":line5"] + 1
+					if monitors[side .. ":line5"] > reactorCount + 3 then
+						monitors[side .. ":line5"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 6 and yPos >= monitors[side .. ":y"] + 42 and yPos <= monitors[side .. ":y"] + 46 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line6"] = monitors[side .. ":line6"] - 1
+					if monitors[side .. ":line6"] < 1 then
+						monitors[side .. ":line6"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line6"] = monitors[side .. ":line6"] + 1
+					if monitors[side .. ":line6"] > reactorCount + 3 then
+						monitors[side .. ":line6"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 7 and yPos >= monitors[side .. ":y"] + 50 and yPos <= monitors[side .. ":y"] + 54 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line7"] = monitors[side .. ":line7"] - 1
+					if monitors[side .. ":line7"] < 1 then
+						monitors[side .. ":line7"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line7"] = monitors[side .. ":line7"] + 1
+					if monitors[side .. ":line7"] > reactorCount + 3 then
+						monitors[side .. ":line7"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 8 and yPos >= monitors[side .. ":y"] + 58 and yPos <= monitors[side .. ":y"] + 62 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line8"] = monitors[side .. ":line8"] - 1
+					if monitors[side .. ":line8"] < 1 then
+						monitors[side .. ":line8"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line8"] = monitors[side .. ":line8"] + 1
+					if monitors[side .. ":line8"] > reactorCount + 3 then
+						monitors[side .. ":line8"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 9 and yPos >= monitors[side .. ":y"] + 66 and yPos <= monitors[side .. ":y"] + 70 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line9"] = monitors[side .. ":line9"] - 1
+					if monitors[side .. ":line9"] < 1 then
+						monitors[side .. ":line9"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line9"] = monitors[side .. ":line9"] + 1
+					if monitors[side .. ":line9"] > reactorCount + 3 then
+						monitors[side .. ":line9"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
+
+			if monitors[side .. ":amount"] >= 10 and yPos >= monitors[side .. ":y"] + 74 and yPos <= monitors[side .. ":y"] + 78 then
+				if xPos >= 1 and xPos <= 5 then
+					monitors[side .. ":line10"] = monitors[side .. ":line10"] - 1
+					if monitors[side .. ":line10"] < 1 then
+						monitors[side .. ":line10"] = reactorCount + 3
+					end
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
+					monitors[side .. ":line10"] = monitors[side .. ":line10"] + 1
+					if monitors[side .. ":line10"] > reactorCount + 3 then
+						monitors[side .. ":line10"] = 1
+					end
+				end
+				drawLines()
+				save_config()
+			end
 		end
 	end
 end
 
 --draw line with information on the monitor
-function drawLine(localY, line)
+function drawLine(mon, localX, localY, line)
 	if line == 1 then
-		gui.draw_integer(mon, getGeneration() - getDrainback(), x, localY, numberColor, rftColor)
+		gui.draw_integer(mon, getGeneration() - getDrainback(), localX, localY, numberColor, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
-		gui.draw_integer(mon, getGeneration(), x, localY, numberColor, rftColor)
+		gui.draw_integer(mon, getGeneration(), localX, localY, numberColor, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
-		gui.draw_integer(mon, getDrainback(), x, localY, numberColor, rftColor)
+		gui.draw_integer(mon, getDrainback(), localX, localY, numberColor, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
@@ -446,7 +437,7 @@ function drawLine(localY, line)
 	else
 		for i = 1, reactorCount do
 			if line == i + 3 then
-				gui.draw_integer(mon, getReactorGeneration(i), x, localY, numberColor, rftColor)
+				gui.draw_integer(mon, getReactorGeneration(i), localX, localY, numberColor, rftColor)
 				if drawButtons then
 					gui.drawSideButtons(mon, localY, buttonColor)
 					if line == 4 and line == reactorCount + 3 then
@@ -502,74 +493,70 @@ end
 
 -- check that every line displays something
 function checkLines()
-	if line1 > reactorCount + 3 then
-		line1 = reactorCount + 3
+	if monitors[side .. ":line1"] > reactorCount + 3 then
+		monitors[side .. ":line1"] = reactorCount + 3
 	end
-	if line2 > reactorCount + 3 then
-		line2 = reactorCount + 3
+	if monitors[side .. ":line2"] > reactorCount + 3 then
+		monitors[side .. ":line2"] = reactorCount + 3
 	end
-	if line3 > reactorCount + 3 then
-		line3 = reactorCount + 3
+	if monitors[side .. ":line3"] > reactorCount + 3 then
+		monitors[side .. ":line3"] = reactorCount + 3
 	end
-	if line4 > reactorCount + 3 then
-		line4 = reactorCount + 3
+	if monitors[side .. ":line4"] > reactorCount + 3 then
+		monitors[side .. ":line4"] = reactorCount + 3
 	end
-	if line5 > reactorCount + 3 then
-		line5 = reactorCount + 3
+	if monitors[side .. ":line5"] > reactorCount + 3 then
+		monitors[side .. ":line5"] = reactorCount + 3
 	end
-	if line6 > reactorCount + 3 then
-		line6 = reactorCount + 3
+	if monitors[side .. ":line6"] > reactorCount + 3 then
+		monitors[side .. ":line6"] = reactorCount + 3
 	end
-	if line7 > reactorCount + 3 then
-		line7 = reactorCount + 3
+	if monitors[side .. ":line7"] > reactorCount + 3 then
+		monitors[side .. ":line7"] = reactorCount + 3
 	end
-	if line8 > reactorCount + 3 then
-		line8 = reactorCount + 3
+	if monitors[side .. ":line8"] > reactorCount + 3 then
+		monitors[side .. ":line8"] = reactorCount + 3
 	end
-	if line9 > reactorCount + 3 then
-		line9 = reactorCount + 3
+	if monitors[side .. ":line9"] > reactorCount + 3 then
+		monitors[side .. ":line9"] = reactorCount + 3
 	end
-	if line10 > reactorCount + 3 then
-		line10 = reactorCount + 3
+	if monitors[side .. ":line10"] > reactorCount + 3 then
+		monitors[side .. ":line10"] = reactorCount + 3
 	end
 	save_config()
 end
 
 --run
 checkLines()
-if mon.Y <=	5 then
-	monitor.setTextScale(0.5)
-	monX, monY = monitor.getSize()
-	mon = {}
-	mon.monitor,mon.X, mon.Y = monitor, monX, monY
-end
-if mon.Y >= 16 then
-	local localY = mon.Y - 2
-	amount = 0
-	local i = 8
-	while i <= localY do
-		i = i + 8
-		amount = amount + 1
+for i = 1, monitorCount do
+	local mon, monitor, monX, monY
+	mon = getMonitor(connectedMonitors[i])
+	if mon.Y <=	5 then
+		monitor.setTextScale(0.5)
+		monX, monY = monitor.getSize()
+		mon = {}
+		mon.monitor,mon.X, mon.Y = monitor, monX, monY
 	end
-	y = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
+	local amount = 0
+	if mon.Y < 16 then
+		amount = 1
+		monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y - 3) / 2)
+	else
+		local localY = mon.Y - 2
+		local i = 8
+		while i <= localY do
+			i = i + 8
+			amount = amount + 1
+		end
+		monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
+	end
+	monitors[connectedMonitors[i] .. ":amount"] = amount
+	if mon.X >= 57 then
+		monitors[connectedMonitors[i] .. ":drawButtons"] = true
+	else
+		monitors[connectedMonitors[i] .. ":drawButtons"] = false
+	end
+	monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 46) / 2) - 1
 end
 
-if mon.X >= 57 then
-	drawButtons= true
-	if mon.Y < 16 then
-		amount = 1
-		y = gui.getInteger((mon.Y - 3) / 2)
-		parallel.waitForAny(buttons, update)
-	else
-		parallel.waitForAny(buttons, update)
-	end
-else
-	drawButtons= false
-	if mon.Y < 16 then
-		amount = 1
-		y = gui.getInteger((mon.Y - 3) / 2)
-		update()
-	else
-		update()
-	end
-end
+parallel.waitForAny(buttons, update)
