@@ -18,29 +18,13 @@ end
 function getInteger(number)
     if number < 0 then
         return 0
-    elseif 0 <= number and number < 1 then
-        return 0
-    elseif 1 <= number and number < 2 then
-        return 1
-    elseif 2 <= number and number < 3 then
-        return 2
-    elseif 3 <= number and number < 4 then
-        return 3
-    elseif 4 <= number and number < 5 then
-        return 4
-    elseif 5 <= number and number < 6 then
-        return 5
-    elseif 6 <= number and number < 7 then
-        return 6
-    elseif 7 <= number and number < 8 then
-        return 7
-    elseif 8 <= number and number < 9 then
-        return 8
-    elseif 9 <= number and number < 10 then
-        return 9
-    else
-        return 10
     end
+
+    local i = 0
+    while (i > number or number > i + 1) do
+        i = i + 1
+    end
+    return i
 end
 
 -- monitor related

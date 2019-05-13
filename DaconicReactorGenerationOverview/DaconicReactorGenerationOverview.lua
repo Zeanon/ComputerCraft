@@ -199,13 +199,7 @@ end
 --update the monitor
 function update()
 	if smallFont then
-		local count = 0
-		local localX = mon.X - 23
-		while localX >= 20 do
-			localX = localX - 10
-			count = count + 1
-		end
-		x = gui.getInteger((localX - 23) / 2) + (count * 5) - 1
+		x = gui.getInteger((mon.X - 23) / 2) + (count * 5) - 1
 	else
 		x = gui.getInteger((mon.X - 46) / 2) - 1
 	end
