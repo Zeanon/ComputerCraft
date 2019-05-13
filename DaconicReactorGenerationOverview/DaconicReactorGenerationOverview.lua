@@ -1318,7 +1318,12 @@ end
 
 --run
 checkLines()
-
+if mon.Y <=	5 then
+	monitor.setTextScale(0.5)
+	monX, monY = monitor.getSize()
+	mon = {}
+	mon.monitor,mon.X, mon.Y = monitor, monX, monY
+end
 if mon.Y >= 16 then
 	local localY = mon.Y - 2
 	local count = 0
