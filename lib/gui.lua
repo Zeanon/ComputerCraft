@@ -19,9 +19,12 @@ function getInteger(number)
     if number < 0 then
         return 0
     end
+    print("number: " .. number)
 
-    local length = string.len(tostring(output))
-    local delimeter = 10 ^ (length - 1)
+    local delimeter = 1
+    while delimeter * 10 <= number do
+        delimeter = delimeter * 10
+    end
 
     local integer = 0
     while number > integer + 1 and delimeter >= 1 do
@@ -32,7 +35,7 @@ function getInteger(number)
             delimeter = delimeter / 10
         end
     end
-    print(integer)
+    print("integer: " .. integer)
     return integer
 end
 
