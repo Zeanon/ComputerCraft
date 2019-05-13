@@ -26,7 +26,7 @@ function getInteger(number)
     end
 
     local integer = 0
-    while number > integer + 1 and delimeter >= 1 do
+    while number > integer and delimeter >= 1 do
         if number >= integer then
             integer = integer + delimeter
         end
@@ -243,12 +243,9 @@ function draw_digit(number, divider, mon, x, y, color)
 end
 
 --draw number on computer terminal
-function draw_integer(mon, output, offset, y, color, rftcolor)
-    print(output)
-    output = getInteger(output)
-    local length = string.len(tostring(output))
-    print(output)
-    print(length)
+function draw_integer(mon, number, offset, y, color, rftcolor)
+    number = getInteger(number)
+    local length = string.len(tostring(number))
     local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
     if length == 1 then
         x = x + 2
@@ -260,7 +257,7 @@ function draw_integer(mon, output, offset, y, color, rftcolor)
     local delimeter = 10 ^ (length - 1)
 
     for i = 1, length do
-        draw_digit(output, delimeter, mon, x, y, color)
+        draw_digit(number, delimeter, mon, x, y, color)
         printDot = printDot - 1
         if printDot == 0 and i ~= length then
             mon.monitor.setCursorPos(x+4,y+4)
@@ -270,7 +267,7 @@ function draw_integer(mon, output, offset, y, color, rftcolor)
         else
             x = x + 4
         end
-        output = output - (delimeter * getInteger(output / delimeter))
+        number = number - (delimeter * getInteger(number / delimeter))
         delimeter = delimeter / 10
     end
 
