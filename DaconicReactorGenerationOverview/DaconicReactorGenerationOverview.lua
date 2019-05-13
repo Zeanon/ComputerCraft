@@ -103,7 +103,9 @@ function save_config()
 	end
 	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
+	sw.writeLine("monitorCount: " .. monitorCount)
 	for i = 1, monitorCount do
+		sw.writeLine("-- monitor: " .. connectedMonitors[i])
 		for count = 1, 10 do
 			sw.writeLine(connectedMonitors[i] .. ": line" .. count .. ": " .. monitors[connectedMonitors[i] .. ":line" .. count])
 		end
@@ -115,9 +117,12 @@ end
 function load_config()
 	local sr = fs.open("config.txt", "r")
 	local curVersion
+	local curMonitorCount
 	local line = sr.readLine()
 	while line do
-		if split(line, ": ")[1] == "numberColor" then
+		if split(line, ": ")[1] == "version" then
+			curVersion = split(line, ": ")[2]
+		elseif split(line, ": ")[1] == "numberColor" then
 			numberColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "rftColor" then
 			rftColor = color.getColor(split(line, ": ")[2])
@@ -127,6 +132,8 @@ function load_config()
 			textColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "monitorCount" then
+			curMonitorCount = tonumber(split(line, ": ")[2])
 		else
 			if string.find(split(line, ": ")[1], "monitor_") then
 				for i = 1, monitorCount do
@@ -151,7 +158,9 @@ function load_config()
 		line = sr.readLine()
 	end
 	sr.close()
-	save_config()
+	if curVersion ~= version or curMonitorCount ~= monitorCount then
+		save_config()
+	end
 end
 
 -- 1st time? save our settings, if not, load our settings
@@ -202,6 +211,7 @@ function drawLines()
 	for i = 1, monitorCount do
 		local mon = getMonitor(connectedMonitors[i])
 		local amount = monitors[connectedMonitors[i] .. ":amount"]
+		local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
 		local x = monitors[connectedMonitors[i] .. ":x"]
 		local y = monitors[connectedMonitors[i] .. ":y"]
 		gui.clear(mon)
@@ -212,35 +222,35 @@ function drawLines()
 		end
 		print("Total drainback: " .. gui.format_int(getDrainback()))
 		if amount >= 1 then
-			drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"])
+			drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
 		end
 		if amount >= 2 then
 			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-			drawLine(mon, x, y + 10, monitors[connectedMonitors[i] .. ":line2"])
+			drawLine(mon, x, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
 		end
 		if amount >= 3 then
-			drawLine(mon, x, y + 18, monitors[connectedMonitors[i] .. ":line3"])
+			drawLine(mon, x, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
 		end
 		if amount >= 4 then
-			drawLine(mon, x, y + 26, monitors[connectedMonitors[i] .. ":line4"])
+			drawLine(mon, x, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
 		end
 		if amount >= 5 then
-			drawLine(mon, x, y + 34, monitors[connectedMonitors[i] .. ":line5"])
+			drawLine(mon, x, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
 		end
 		if amount >= 6 then
-			drawLine(mon, x, y + 42, monitors[connectedMonitors[i] .. ":line6"])
+			drawLine(mon, x, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
 		end
 		if amount >= 7 then
-			drawLine(mon, x, y + 50, monitors[connectedMonitors[i] .. ":line7"])
+			drawLine(mon, x, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
 		end
 		if amount >= 8 then
-			drawLine(mon, x, y + 58, monitors[connectedMonitors[i] .. ":line8"])
+			drawLine(mon, x, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
 		end
 		if amount >= 9 then
-			drawLine(mon, x, y + 66, monitors[connectedMonitors[i] .. ":line9"])
+			drawLine(mon, x, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
 		end
 		if amount >= 10 then
-			drawLine(mon, x, y + 74, monitors[connectedMonitors[i] .. ":line10"])
+			drawLine(mon, x, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
 		end
 	end
 end
@@ -415,7 +425,7 @@ function buttons()
 end
 
 --draw line with information on the monitor
-function drawLine(mon, localX, localY, line)
+function drawLine(mon, localX, localY, line, drawButtons)
 	if line == 1 then
 		gui.draw_integer(mon, getGeneration() - getDrainback(), localX, localY, numberColor, rftColor)
 		if drawButtons then
@@ -528,37 +538,43 @@ function checkLines()
 	end
 end
 
+--initialize all the values
+function init()
+	for i = 1, monitorCount do
+		local mon, monitor, monX, monY
+		mon = getMonitor(connectedMonitors[i])
+		if mon.Y <=	5 then
+			monitor.setTextScale(0.5)
+			monX, monY = monitor.getSize()
+			mon = {}
+			mon.monitor,mon.X, mon.Y = monitor, monX, monY
+		end
+		local amount = 0
+		if mon.Y < 16 then
+			amount = 1
+			monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y - 3) / 2)
+		else
+			local localY = mon.Y - 2
+			local int = 8
+			while int <= localY do
+				int = int + 8
+				amount = amount + 1
+			end
+			monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
+		end
+		monitors[connectedMonitors[i] .. ":amount"] = amount
+		if mon.X >= 57 then
+			monitors[connectedMonitors[i] .. ":drawButtons"] = true
+		else
+			monitors[connectedMonitors[i] .. ":drawButtons"] = false
+		end
+		monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 46) / 2) - 1
+	end
+end
+
 --run
 checkLines()
-for i = 1, monitorCount do
-	local mon, monitor, monX, monY
-	mon = getMonitor(connectedMonitors[i])
-	if mon.Y <=	5 then
-		monitor.setTextScale(0.5)
-		monX, monY = monitor.getSize()
-		mon = {}
-		mon.monitor,mon.X, mon.Y = monitor, monX, monY
-	end
-	local amount = 0
-	if mon.Y < 16 then
-		amount = 1
-		monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y - 3) / 2)
-	else
-		local localY = mon.Y - 2
-		local i = 8
-		while i <= localY do
-			i = i + 8
-			amount = amount + 1
-		end
-		monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
-	end
-	monitors[connectedMonitors[i] .. ":amount"] = amount
-	if mon.X >= 57 then
-		monitors[connectedMonitors[i] .. ":drawButtons"] = true
-	else
-		monitors[connectedMonitors[i] .. ":drawButtons"] = false
-	end
-	monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 46) / 2) - 1
-end
+
+init()
 
 parallel.waitForAny(buttons, update)
