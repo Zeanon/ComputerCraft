@@ -29,7 +29,8 @@ function getInteger(number)
     while number > integer + 1 and delimeter >= 1 do
         if number >= integer then
             integer = integer + delimeter
-        else
+        end
+        if number < integer then
             integer = integer - delimeter
             delimeter = delimeter / 10
         end
@@ -243,6 +244,7 @@ end
 
 --draw number on computer terminal
 function draw_integer(mon, output, offset, y, color, rftcolor)
+    print(output)
     output = getInteger(output)
     local length = string.len(tostring(output))
     print(output)
@@ -257,7 +259,7 @@ function draw_integer(mon, output, offset, y, color, rftcolor)
     end
     local delimeter = 10 ^ (length - 1)
 
-    for i = 0, length do
+    for i = 1, length do
         draw_digit(output, delimeter, mon, x, y, color)
         printDot = printDot - 1
         if printDot == 0 and i ~= length then
