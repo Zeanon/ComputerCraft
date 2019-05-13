@@ -248,7 +248,7 @@ function draw_integer(mon, number, offset, y, color, rftcolor)
     local length = string.len(tostring(number))
     local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
     if length == 1 then
-        x = x + 2
+        x = x + 1
     end
     local printDot = length
     while printDot > 3 do
