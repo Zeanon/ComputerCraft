@@ -139,7 +139,13 @@ function load_config()
 		elseif split(line, ": ")[1] == "monitorCount" then
 			curMonitorCount = tonumber(split(line, ": ")[2])
 		else
-			if string.find(split(line, ": ")[1], "monitor_") then
+			if string.find(split(line, ": ")[1], "monitor_")
+					or string.find(split(line, ": ")[1], "top")
+					or string.find(split(line, ": ")[1], "bottom")
+					or string.find(split(line, ": ")[1], "right")
+					or string.find(split(line, ": ")[1], "left")
+					or string.find(split(line, ": ")[1], "front")
+					or string.find(split(line, ": ")[1], "back") then
 				for i = 1, monitorCount do
 					if connectedMonitors[i] == split(line, ": ")[1] then
 						if split(line, ": ")[2] == "smallFont" then
