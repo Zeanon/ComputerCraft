@@ -218,35 +218,35 @@ function draw_9(mon, x, y, color)
 end
 
 --convert number to integer digit and draw it on monitor
-function draw_digit(number, divider, mon, x, y, color)
-    if getInteger(number / divider) == 0 then
+function draw_digit(number, mon, x, y, color)
+    if number == 0 then
         draw_0(mon, x, y, color)
-    elseif getInteger(number / divider) == 1 then
+    elseif number == 1 then
         draw_1(mon, x, y, color)
-    elseif getInteger(number / divider) == 2 then
+    elseif number == 2 then
         draw_2(mon, x, y, color)
-    elseif getInteger(number / divider) == 3 then
+    elseif number == 3 then
         draw_3(mon, x, y, color)
-    elseif getInteger(number / divider) == 4 then
+    elseif number == 4 then
         draw_4(mon, x, y, color)
-    elseif getInteger(number / divider) == 5 then
+    elseif number == 5 then
         draw_5(mon, x, y, color)
-    elseif getInteger(number / divider) == 6 then
+    elseif number == 6 then
         draw_6(mon, x, y, color)
-    elseif getInteger(number / divider) == 7 then
+    elseif number == 7 then
         draw_7(mon, x, y, color)
-    elseif getInteger(number / divider) == 8 then
+    elseif number == 8 then
         draw_8(mon, x, y, color)
-    elseif getInteger(number / divider) == 9 then
+    elseif number == 9 then
         draw_9(mon, x, y, color)
     end
 end
 
 --draw number on computer terminal
-function draw_integer(mon, number, offset, y, color, rftcolor, unit, si)
+function draw_integer(mon, number, offset, y, color)
     number = getInteger(number)
     local length = string.len(tostring(number))
-    local x = mon.X - (offset + (length * 4) + getInteger((length - 1) / 3) + 16)
+    local x = mon.X - (offset + (length * 4) + (2 * getInteger((length - 1) / 3)) - 1)
     if length == 1 then
         x = x + 1
     end
@@ -257,7 +257,7 @@ function draw_integer(mon, number, offset, y, color, rftcolor, unit, si)
     local delimeter = 10 ^ (length - 1)
 
     for i = 1, length do
-        draw_digit(number, delimeter, mon, x, y, color)
+        draw_digit(getInteger(number / delimeter), mon, x, y, color)
         printDot = printDot - 1
         if printDot == 0 and i ~= length then
             mon.monitor.setCursorPos(x+4,y+4)
@@ -270,21 +270,12 @@ function draw_integer(mon, number, offset, y, color, rftcolor, unit, si)
         number = number - (delimeter * getInteger(number / delimeter))
         delimeter = delimeter / 10
     end
-
-    if si ~= "" then
-
-    end
-    if string.lower(unit) == "rft" then
-        drawRFT(mon, x + 1, y, rftcolor)
-    elseif string.lower(unit) == "%" then
-
-    elseif string.lower(unit) == "rf" then
-        drawRF(mon, x + 1, y, rftcolor)
-    end
 end
 
 --draw RF/T on computer terminal(mon)
-function drawRFT(mon, x, y, color)
+function drawRFT(mon, offset, y, color)
+    local x = mon.X - (offset + 15)
+
     mon.monitor.setBackgroundColor(color)
     draw_column(mon, x, y, 5, color)
     mon.monitor.setCursorPos(x+1,y)

@@ -100,13 +100,9 @@ end
 --read settings from file
 function load_config()
     local sr = fs.open("config.txt", "r")
-    local curVersion
-    local curMonitorCount
     local line = sr.readLine()
     while line do
-        if split(line, ": ")[1] == "version" then
-            curVersion = split(line, ": ")[2]
-        elseif split(line, ": ")[1] == "numberColor" then
+        if split(line, ": ")[1] == "numberColor" then
             numberColor = color.getColor(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "rftColor" then
             rftColor = color.getColor(split(line, ": ")[2])
@@ -116,16 +112,14 @@ function load_config()
             textColor = color.getColor(split(line, ": ")[2])
         elseif split(line, ": ")[1] == "refresh" then
             refresh = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "monitorCount" then
-            curMonitorCount = tonumber(split(line, ": ")[2])
         else
             if string.find(split(line, ": ")[1], "monitor_")
-                    or string.find(split(line, ": ")[1], "top")
-                    or string.find(split(line, ": ")[1], "bottom")
-                    or string.find(split(line, ": ")[1], "right")
-                    or string.find(split(line, ": ")[1], "left")
-                    or string.find(split(line, ": ")[1], "front")
-                    or string.find(split(line, ": ")[1], "back") then
+                    or split(line, ": ")[1] == "top"
+                    or split(line, ": ")[1] == "bottom"
+                    or split(line, ": ")[1] == "right"
+                    or split(line, ": ")[1] == "left"
+                    or split(line, ": ")[1] == "front"
+                    or split(line, ": ")[1] == "back" then
                 for i = 1, monitorCount do
                     if connectedMonitors[i] == split(line, ": ")[1] then
                         if split(line, ": ")[2] == "smallFont" then
@@ -148,9 +142,7 @@ function load_config()
         line = sr.readLine()
     end
     sr.close()
-    if curVersion ~= version or curMonitorCount ~= monitorCount then
-        save_config()
-    end
+    save_config()
 end
 
 -- 1st time? save our settings, if not, load our settings
@@ -419,19 +411,19 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localX, localY, line, drawButtons)
     if line == 1 then
-        gui.draw_integer(mon, totalEnergy, localX, localY, numberColor, rftColor, "rf", "")
+        gui.draw_integer(mon, totalEnergy, localX, localY, numberColor, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. coreCount .. " ", " Gen", textColor, textColor, buttonColor)
         end
     elseif line == 2 then
-        gui.draw_integer(mon, totalMaxEnergy, localX, localY, numberColor, rftColor, "rf", "")
+        gui.draw_integer(mon, totalMaxEnergy, localX, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
         end
     elseif line == 3 then
-        gui.draw_integer(mon, energyPercent , localX, localY, numberColor, rftColor, "rf", "")
+        gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
@@ -461,7 +453,7 @@ function drawLine(mon, localX, localY, line, drawButtons)
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
         end
-        gui.draw_integer(mon, energyPercent , localX, localY, numberColor, rftColor, "%", "")
+        gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
@@ -470,7 +462,7 @@ function drawLine(mon, localX, localY, line, drawButtons)
         for i = 1, coreCount * 4 do
             if line == i + 6 then
 
-                gui.draw_integer(mon, coreEnergy[i], localX, localY, numberColor, rftColor, "rf", "")
+                gui.draw_integer(mon, coreEnergy[i], localX, localY, numberColor)
                 if drawButtons then
                     gui.drawSideButtons(mon, localY, buttonColor)
                     if line == 7 and line == coreCount + 7 then
