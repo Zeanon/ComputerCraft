@@ -3,11 +3,12 @@
 -- pastebin link: https://pastebin.com/uAG74E88
 
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
+local lib2URL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/run.lua"
 local EnergyOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/EnergyCoreOverview.lua"
-local lib, startup, run, EnergyOverview
-local libFile, startupFile, runFile, EnergyOverviewFile
+local lib, lib2, startup, run, EnergyOverview
+local libFile, lib2File, startupFile, runFile, EnergyOverviewFile
 
 fs.makeDir("lib")
 
