@@ -120,9 +120,13 @@ end
 --read settings from file
 function load_config()
 	local sr = fs.open("config.txt", "r")
+	local curVersion
+	local curMonitorCount
 	local line = sr.readLine()
 	while line do
-		if split(line, ": ")[1] == "numberColor" then
+		if split(line, ": ")[1] == "version" then
+			curVersion = split(line, ": ")[2]
+		elseif split(line, ": ")[1] == "numberColor" then
 			numberColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "rftColor" then
 			rftColor = color.getColor(split(line, ": ")[2])
@@ -132,14 +136,16 @@ function load_config()
 			textColor = color.getColor(split(line, ": ")[2])
 		elseif split(line, ": ")[1] == "refresh" then
 			refresh = tonumber(split(line, ": ")[2])
+		elseif split(line, ": ")[1] == "monitorCount" then
+			curMonitorCount = tonumber(split(line, ": ")[2])
 		else
 			if string.find(split(line, ": ")[1], "monitor_")
-					or split(line, ": ")[1] == "top"
-					or split(line, ": ")[1] == "bottom"
-					or split(line, ": ")[1] == "right"
-					or split(line, ": ")[1] == "left"
-					or split(line, ": ")[1] == "front"
-					or split(line, ": ")[1] == "back" then
+					or string.find(split(line, ": ")[1], "top")
+					or string.find(split(line, ": ")[1], "bottom")
+					or string.find(split(line, ": ")[1], "right")
+					or string.find(split(line, ": ")[1], "left")
+					or string.find(split(line, ": ")[1], "front")
+					or string.find(split(line, ": ")[1], "back") then
 				for i = 1, monitorCount do
 					if connectedMonitors[i] == split(line, ": ")[1] then
 						if split(line, ": ")[2] == "smallFont" then
@@ -162,7 +168,9 @@ function load_config()
 		line = sr.readLine()
 	end
 	sr.close()
-	save_config()
+	if curVersion ~= version or curMonitorCount ~= monitorCount then
+		save_config()
+	end
 end
 
 -- 1st time? save our settings, if not, load our settings
@@ -185,6 +193,15 @@ if monitorCount == 0 then
 	error("No valid monitor was found")
 end
 
+function getMonitor(side)
+	local mon, monitor, monX, monY
+	monitor = peripheral.wrap(side)
+	monX, monY = monitor.getSize()
+	mon = {}
+	mon.monitor,mon.X, mon.Y = monitor, monX, monY
+	return mon
+end
+
 
 --update the monitor
 function update()
@@ -197,11 +214,7 @@ end
 --draw the different lines on the screen
 function drawLines()
 	for i = 1, monitorCount do
-		local mon, monitor, monX, monY
-		monitor = peripheral.wrap(connectedMonitors[i])
-		monX, monY = monitor.getSize()
-		mon = {}
-		mon.monitor,mon.X, mon.Y = monitor, monX, monY
+		local mon = getMonitor(connectedMonitors[i])
 		local amount = monitors[connectedMonitors[i] .. ":amount"]
 		local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
 		local x = monitors[connectedMonitors[i] .. ":x"]
@@ -256,18 +269,13 @@ function buttons()
 		-- button handler
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 		if monitors[side .. ":drawButtons"] then
-			local mon, monitor, monX, monY
-			monitor = peripheral.wrap(connectedMonitors[i])
-			monX, monY = monitor.getSize()
-			mon = {}
-			mon.monitor,mon.X, mon.Y = monitor, monX, monY
 			if monitors[side .. ":amount"] >= 1 and yPos >= monitors[side .. ":y"] and yPos <= monitors[side .. ":y"] + 4 then
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line1"] = monitors[side .. ":line1"] - 1
 					if monitors[side .. ":line1"] < 1 then
 						monitors[side .. ":line1"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line1"] = monitors[side .. ":line1"] + 1
 					if monitors[side .. ":line1"] > reactorCount + 3 then
 						monitors[side .. ":line1"] = 1
@@ -283,7 +291,7 @@ function buttons()
 					if monitors[side .. ":line2"] < 1 then
 						monitors[side .. ":line2"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line2"] = monitors[side .. ":line2"] + 1
 					if monitors[side .. ":line2"] > reactorCount + 3 then
 						monitors[side .. ":line2"] = 1
@@ -299,7 +307,7 @@ function buttons()
 					if monitors[side .. ":line3"] < 1 then
 						monitors[side .. ":line3"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line3"] = monitors[side .. ":line3"] + 1
 					if monitors[side .. ":line3"] > reactorCount + 3 then
 						monitors[side .. ":line3"] = 1
@@ -315,7 +323,7 @@ function buttons()
 					if monitors[side .. ":line4"] < 1 then
 						monitors[side .. ":line4"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line4"] = monitors[side .. ":line4"] + 1
 					if monitors[side .. ":line4"] > reactorCount + 3 then
 						monitors[side .. ":line4"] = 1
@@ -331,7 +339,7 @@ function buttons()
 					if monitors[side .. ":line5"] < 1 then
 						monitors[side .. ":line5"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line5"] = monitors[side .. ":line5"] + 1
 					if monitors[side .. ":line5"] > reactorCount + 3 then
 						monitors[side .. ":line5"] = 1
@@ -347,7 +355,7 @@ function buttons()
 					if monitors[side .. ":line6"] < 1 then
 						monitors[side .. ":line6"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line6"] = monitors[side .. ":line6"] + 1
 					if monitors[side .. ":line6"] > reactorCount + 3 then
 						monitors[side .. ":line6"] = 1
@@ -363,7 +371,7 @@ function buttons()
 					if monitors[side .. ":line7"] < 1 then
 						monitors[side .. ":line7"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line7"] = monitors[side .. ":line7"] + 1
 					if monitors[side .. ":line7"] > reactorCount + 3 then
 						monitors[side .. ":line7"] = 1
@@ -379,7 +387,7 @@ function buttons()
 					if monitors[side .. ":line8"] < 1 then
 						monitors[side .. ":line8"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line8"] = monitors[side .. ":line8"] + 1
 					if monitors[side .. ":line8"] > reactorCount + 3 then
 						monitors[side .. ":line8"] = 1
@@ -395,7 +403,7 @@ function buttons()
 					if monitors[side .. ":line9"] < 1 then
 						monitors[side .. ":line9"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line9"] = monitors[side .. ":line9"] + 1
 					if monitors[side .. ":line9"] > reactorCount + 3 then
 						monitors[side .. ":line9"] = 1
@@ -411,7 +419,7 @@ function buttons()
 					if monitors[side .. ":line10"] < 1 then
 						monitors[side .. ":line10"] = reactorCount + 3
 					end
-				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
+				elseif xPos >= getMonitor(side, monitors[side .. ":smallFont"]).X - 5 and xPos <= getMonitor(side, monitors[side .. ":smallFont"]).X - 1 then
 					monitors[side .. ":line10"] = monitors[side .. ":line10"] + 1
 					if monitors[side .. ":line10"] > reactorCount + 3 then
 						monitors[side .. ":line10"] = 1
@@ -427,39 +435,39 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localX, localY, line, drawButtons)
 	if line == 1 then
-		gui.draw_integer(mon, generation - drainback, localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		gui.draw_integer(mon, generation - drainback, localX, localY, numberColor, rftColor, "rft", "")
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
-		gui.draw_integer(mon, generation, localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		gui.draw_integer(mon, generation, localX, localY, numberColor, rftColor, "rft", "")
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
-		gui.draw_integer(mon, drainback, localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		gui.draw_integer(mon, drainback, localX, localY, numberColor, rftColor, "rft", "")
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
 		end
 	else
-		gui.draw_integer(mon, reactorGeneration[line - 3], localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
-		if drawButtons then
-			gui.drawSideButtons(mon, localY, buttonColor)
-			if line == 4 and line == reactorCount + 3 then
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
-			elseif line == 4 then
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "DR" .. line - 2 .. " ", textColor, textColor, buttonColor)
-			elseif line == reactorCount + 3 then
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. line - 4 .. " ", " Out", textColor, textColor, buttonColor)
-			else
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. line - 4 .. " ", "DR" .. line - 2 .. " ", textColor, textColor, buttonColor)
+		for i = 1, reactorCount do
+			if line == i + 3 then
+				gui.draw_integer(mon, reactorGeneration[i], localX, localY, numberColor, rftColor, "rft", "")
+				if drawButtons then
+					gui.drawSideButtons(mon, localY, buttonColor)
+					if line == 4 and line == reactorCount + 3 then
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
+					elseif line == 4 then
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "DR" .. i + 1 .. " ", textColor, textColor, buttonColor)
+					elseif line == reactorCount + 3 then
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", " Out", textColor, textColor, buttonColor)
+					else
+						gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. i - 1 .. " ", "DR" .. i + 1 .. " ", textColor, textColor, buttonColor)
+					end
+				end
 			end
 		end
 	end
@@ -542,12 +550,9 @@ end
 function init()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
-		local mon, monitor, monX, monY
-		monitor = peripheral.wrap(connectedMonitors[i])
-		monX, monY = monitor.getSize()
-		mon = {}
-		mon.monitor,mon.X, mon.Y = monitor, monX, monY
-		if mon.Y <=	5 or monitors[connectedMonitors[i] .. ":smallFont"] then
+		mon = getMonitor(connectedMonitors[i])
+		monitor = mon.monitor
+		if mon.X <= 29 or mon.Y <= 5 or monitors[connectedMonitors[i] .. ":smallFont"] then
 			monitor.setTextScale(0.5)
 			monX, monY = monitor.getSize()
 			mon = {}
@@ -572,7 +577,7 @@ function init()
 		else
 			monitors[connectedMonitors[i] .. ":drawButtons"] = false
 		end
-		monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 48) / 2)
+		monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 46) / 2) - 1
 	end
 end
 
