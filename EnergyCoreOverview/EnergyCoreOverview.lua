@@ -183,16 +183,18 @@ function drawLines()
         local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
         local x = monitors[connectedMonitors[i] .. ":x"]
         local y = monitors[connectedMonitors[i] .. ":y"]
-        generation = getGeneration()
-        drainback = getDrainback()
+        totalEnergy = getTotalEnergyStored()
+        totalMaxEnergy = getTotalMaxEnergyStored()
         gui.clear(mon)
-        print("Total reactor output: " .. gui.format_int(generation - drainback) .. "RF/t")
-        print("Total generation: " .. gui.format_int(generation) .. "RF/t")
+        print("Total energy stored: " .. gui.format_int(totalEnergy) .. "RF")
+        print("Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. "RF")
+        print("Total open storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. "RF")
         for i = 1, monitorCount do
-            reactorGeneration[i] = getReactorGeneration(i)
-            print("Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. "RF/t")
+            coreEnergy[i] = getEnergyStored(i)
+            coreMaxEnergy[i] = getMaxEnergyStored(i)
+            print("Energy core " .. i .. " energy stored: " .. gui.format_int(coreEnergy[i]) .. "RF")
+            print("Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. "RF")
         end
-        print("Total drainback: " .. gui.format_int(drainback) .. "RF/t")
         if amount >= 1 then
             drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
         end
@@ -416,6 +418,10 @@ function drawLine(mon, localX, localY, line, drawButtons)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
         end
     elseif line == 3 then
+        local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
+        if energyPercent == math.huge or isnan(energyPercent) then
+            energyPercent = 0
+        end
         gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
@@ -447,6 +453,12 @@ function drawLine(mon, localX, localY, line, drawButtons)
             energyPercent = 0
         end
         gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
+        if drawButtons then
+            gui.drawSideButtons(mon, localY, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+        end
+    elseif line == 6 then
+        gui.draw_integer(mon, coreCount, localX, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
