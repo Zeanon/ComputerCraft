@@ -560,7 +560,7 @@ function drawLine(mon, localY, line, drawButtons)
                 monX, monY = mon.monitor.getSize()
                 mon.X, mon.Y = monX, monY
             end
-            local x = ((mon.X - offset) / 2) - 1
+            local x = ((mon.X - offset) / 2) - 3
 
             gui.draw_number(mon, energy, x + 39, localY, numberColor)
 
