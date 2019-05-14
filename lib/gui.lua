@@ -310,7 +310,9 @@ function drawRFT(mon, offset, y, color)
     mon.monitor.write(" ")
 end
 
-function drawRF(mon, x, y, color)
+function drawRF(mon, offset, y, color)
+    local x = mon.X - (offset + 7)
+
     mon.monitor.setBackgroundColor(color)
     draw_column(mon, x, y, 5, color)
     mon.monitor.setCursorPos(x+1,y)
