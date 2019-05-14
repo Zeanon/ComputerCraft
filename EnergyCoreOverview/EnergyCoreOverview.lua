@@ -12,7 +12,7 @@ os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
 
-local totalEnergy, totalMaxEnergy
+local totalEnergy, totalMaxEnergy, oldEnergy
 local coreEnergy = {}
 local coreMaxEnergy = {}
 
@@ -168,6 +168,7 @@ function update()
     while true do
         drawLines()
         sleep(refresh)
+        oldEnergy = totalEnergy
     end
 end
 
@@ -188,7 +189,7 @@ function drawLines()
         gui.clear(mon)
         print("Total energy stored: " .. gui.format_int(totalEnergy) .. "RF")
         print("Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. "RF")
-        print("Total open storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. "RF")
+        print("Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. "RF")
         for i = 1, monitorCount do
             coreEnergy[i] = getEnergyStored(i)
             coreMaxEnergy[i] = getMaxEnergyStored(i)
@@ -244,11 +245,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line1"] = monitors[side .. ":line1"] - 1
                     if monitors[side .. ":line1"] < 1 then
-                        monitors[side .. ":line1"] = monitorCount + 3
+                        monitors[side .. ":line1"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line1"] = monitors[side .. ":line1"] + 1
-                    if monitors[side .. ":line1"] > monitorCount + 3 then
+                    if monitors[side .. ":line1"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line1"] = 1
                     end
                 end
@@ -260,11 +261,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line2"] = monitors[side .. ":line2"] - 1
                     if monitors[side .. ":line2"] < 1 then
-                        monitors[side .. ":line2"] = monitorCount + 3
+                        monitors[side .. ":line2"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line2"] = monitors[side .. ":line2"] + 1
-                    if monitors[side .. ":line2"] > monitorCount + 3 then
+                    if monitors[side .. ":line2"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line2"] = 1
                     end
                 end
@@ -276,11 +277,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line3"] = monitors[side .. ":line3"] - 1
                     if monitors[side .. ":line3"] < 1 then
-                        monitors[side .. ":line3"] = monitorCount + 3
+                        monitors[side .. ":line3"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line3"] = monitors[side .. ":line3"] + 1
-                    if monitors[side .. ":line3"] > monitorCount + 3 then
+                    if monitors[side .. ":line3"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line3"] = 1
                     end
                 end
@@ -292,11 +293,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line4"] = monitors[side .. ":line4"] - 1
                     if monitors[side .. ":line4"] < 1 then
-                        monitors[side .. ":line4"] = monitorCount + 3
+                        monitors[side .. ":line4"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line4"] = monitors[side .. ":line4"] + 1
-                    if monitors[side .. ":line4"] > monitorCount + 3 then
+                    if monitors[side .. ":line4"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line4"] = 1
                     end
                 end
@@ -308,11 +309,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line5"] = monitors[side .. ":line5"] - 1
                     if monitors[side .. ":line5"] < 1 then
-                        monitors[side .. ":line5"] = monitorCount + 3
+                        monitors[side .. ":line5"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line5"] = monitors[side .. ":line5"] + 1
-                    if monitors[side .. ":line5"] > monitorCount + 3 then
+                    if monitors[side .. ":line5"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line5"] = 1
                     end
                 end
@@ -324,11 +325,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line6"] = monitors[side .. ":line6"] - 1
                     if monitors[side .. ":line6"] < 1 then
-                        monitors[side .. ":line6"] = monitorCount + 3
+                        monitors[side .. ":line6"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line6"] = monitors[side .. ":line6"] + 1
-                    if monitors[side .. ":line6"] > monitorCount + 3 then
+                    if monitors[side .. ":line6"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line6"] = 1
                     end
                 end
@@ -340,11 +341,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line7"] = monitors[side .. ":line7"] - 1
                     if monitors[side .. ":line7"] < 1 then
-                        monitors[side .. ":line7"] = monitorCount + 3
+                        monitors[side .. ":line7"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line7"] = monitors[side .. ":line7"] + 1
-                    if monitors[side .. ":line7"] > monitorCount + 3 then
+                    if monitors[side .. ":line7"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line7"] = 1
                     end
                 end
@@ -356,11 +357,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line8"] = monitors[side .. ":line8"] - 1
                     if monitors[side .. ":line8"] < 1 then
-                        monitors[side .. ":line8"] = monitorCount + 3
+                        monitors[side .. ":line8"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line8"] = monitors[side .. ":line8"] + 1
-                    if monitors[side .. ":line8"] > monitorCount + 3 then
+                    if monitors[side .. ":line8"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line8"] = 1
                     end
                 end
@@ -372,11 +373,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line9"] = monitors[side .. ":line9"] - 1
                     if monitors[side .. ":line9"] < 1 then
-                        monitors[side .. ":line9"] = monitorCount + 3
+                        monitors[side .. ":line9"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line9"] = monitors[side .. ":line9"] + 1
-                    if monitors[side .. ":line9"] > monitorCount + 3 then
+                    if monitors[side .. ":line9"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line9"] = 1
                     end
                 end
@@ -388,11 +389,11 @@ function buttons()
                 if xPos >= 1 and xPos <= 5 then
                     monitors[side .. ":line10"] = monitors[side .. ":line10"] - 1
                     if monitors[side .. ":line10"] < 1 then
-                        monitors[side .. ":line10"] = monitorCount + 3
+                        monitors[side .. ":line10"] = (monitorCount * 4) + 6
                     end
                 elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
                     monitors[side .. ":line10"] = monitors[side .. ":line10"] + 1
-                    if monitors[side .. ":line10"] > monitorCount + 3 then
+                    if monitors[side .. ":line10"] > (monitorCount * 4) + 6 then
                         monitors[side .. ":line10"] = 1
                     end
                 end
@@ -406,16 +407,18 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localX, localY, line, drawButtons)
     if line == 1 then
-        gui.draw_integer(mon, totalEnergy, localX, localY, numberColor, rftColor)
+        gui.draw_integer(mon, totalEnergy, localX + 9, localY, numberColor, rftColor)
+        gui.drawRF(mon, localX, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. coreCount .. " ", " Gen", textColor, textColor, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. coreCount .. " ", " Max", textColor, textColor, buttonColor)
         end
     elseif line == 2 then
-        gui.draw_integer(mon, totalMaxEnergy, localX, localY, numberColor)
+        gui.draw_integer(mon, totalMaxEnergy, localX + 9, localY, numberColor)
+        gui.drawRF(mon, localX, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Ener", "Cent", textColor, textColor, buttonColor)
         end
     elseif line == 3 then
         local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
@@ -425,7 +428,7 @@ function drawLine(mon, localX, localY, line, drawButtons)
         gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
         end
     elseif line == 4 then
         local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
@@ -445,42 +448,66 @@ function drawLine(mon, localX, localY, line, drawButtons)
         gui.progress_bar(mon, localX, localY, 48, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Cent", "Flow", textColor, textColor, buttonColor)
         end
     elseif line == 5 then
-        local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
-        if energyPercent == math.huge or isnan(energyPercent) then
-            energyPercent = 0
+        local flow = totalEnergy - oldEnergy
+        if flow < 0 then
+            flow = flow * (-1)
         end
-        gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
+        gui.draw_integer(mon, flow, localX + 9, localY, numberColor)
+        gui.drawRF(mon, localX, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
         end
     elseif line == 6 then
         gui.draw_integer(mon, coreCount, localX, localY, numberColor)
+        gui.drawRF(mon, localX, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
         end
     else
-        for i = 1, coreCount * 4 do
-            if line == i + 6 then
+        if gui.getModulo(line - 6, 5) == 0 then
+            gui.draw_integer(mon, coreEnergy[(line - 6) / 4], localX + 9, localY, numberColor)
+            gui.drawRF(mon, localX, localY, rftColor)
+        elseif gui.getModulo(line - 6, 5) == 1 then
+            gui.draw_integer(mon, coreMaxEnergy[1 + ((line - 7) / 5)], localX + 9, localY, numberColor)
+            gui.drawRF(mon, localX, localY, rftColor)
+        elseif gui.getModulo(line - 6, 5) == 2 then
+            local delimeter = 10 ^ (string.len(tostring(coreEnergy[1 + ((line - 8) / 5)])) - 3)
+            local energy = gui.getInteger(coreEnergy[1 + ((line - 8) / 5)] / delimeter) / 100
+            local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)])) - 3)
+            local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 8) / 5)] / maxDelimeter) / 100
+            local length = string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)]))
 
-                gui.draw_integer(mon, coreEnergy[i], localX, localY, numberColor)
-                if drawButtons then
-                    gui.drawSideButtons(mon, localY, buttonColor)
-                    if line == 7 and line == coreCount + 7 then
-                        gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", " Out", textColor, textColor, buttonColor)
-                    elseif line == 7 then
-                        gui.draw_text_lr(mon, 2, localY + 2, 0, "Back", "EC" .. i + 1 .. " ", textColor, textColor, buttonColor)
-                    elseif line == coreCount + 7 then
-                        gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. i - 1 .. " ", " Out", textColor, textColor, buttonColor)
-                    else
-                        gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. i - 1 .. " ", "EC" .. i + 1 .. " ", textColor, textColor, buttonColor)
-                    end
-                end
+            gui.draw_integer(mon, energy, localX + 14 + (length * 4) + (2 * gui.getInteger((length - 1) / 3)) - 1, localY, numberColor)
+            gui.draw_slash(mon, localX + 10 + (length * 4) + (2 * gui.getInteger((length - 1) / 3)) - 1, localY, rftColor)
+            gui.draw_integer(mon, maxEnergy, localX + 9, localY, numberColor)
+            gui.drawRF(mon, localX, localY, rftColor)
+        elseif gui.getModulo(line - 6, 5) == 3 then
+            local energyPercent = math.ceil(coreEnergy[1 + ((line - 10) / 5)] / coreMaxEnergy[1 + ((line - 10) / 5)] * 10000)*.01
+            if energyPercent == math.huge or isnan(energyPercent) then
+                energyPercent = 0
             end
+            gui.draw_integer(mon, energyPercent, localX, localY, numberColor)
+        elseif gui.getModulo(line - 6, 5) == 4 then
+            local energyPercent = math.ceil(coreEnergy[1 + ((line - 10) / 5)] / coreMaxEnergy[1 + ((line - 10) / 5)] * 10000)*.01
+            if energyPercent == math.huge or isnan(energyPercent) then
+                energyPercent = 0
+            end
+            local energyColor = colors.red
+            if energyPercent >= 70 then
+                energyColor = colors.green
+            elseif energyPercent < 70 and energyPercent > 30 then
+                energyColor = colors.orange
+            end
+            gui.progress_bar(mon, localX, localY, 48, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX, localY, 48, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX, localY, 48, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX, localY, 48, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX, localY, 48, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
         end
     end
 end
@@ -515,35 +542,35 @@ end
 -- check that every line displays something
 function checkLines()
     for i = 1, monitorCount do
-        if monitors[connectedMonitors[i] .. ":line1"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line1"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line1"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line1"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line2"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line2"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line2"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line2"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line3"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line3"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line3"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line3"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line4"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line4"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line4"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line4"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line5"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line5"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line5"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line5"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line6"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line6"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line6"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line6"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line7"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line7"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line7"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line7"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line8"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line8"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line8"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line8"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line9"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line9"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line9"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line9"] = (monitorCount * 4) + 6
         end
-        if monitors[connectedMonitors[i] .. ":line10"] > monitorCount + 3 then
-            monitors[connectedMonitors[i] .. ":line10"] = monitorCount + 3
+        if monitors[connectedMonitors[i] .. ":line10"] > (monitorCount * 4) + 6 then
+            monitors[connectedMonitors[i] .. ":line10"] = (monitorCount * 4) + 6
         end
     end
     save_config()

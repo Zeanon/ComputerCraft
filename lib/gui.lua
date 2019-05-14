@@ -38,8 +38,15 @@ function getInteger(number)
     return integer
 end
 
--- monitor related
+-- returns the modulo value of 2 integers
+function getModulo(number, modulo)
+    while number >= modulo do
+        number = number - modulo
+    end
+    return number
+end
 
+-- monitor related
 -- display text text on monitor, "mon" peripheral
 function draw_text(mon, x, y, text, text_color, bg_color)
     mon.monitor.setBackgroundColor(bg_color)
@@ -320,9 +327,14 @@ function drawRF(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
-function drawSI(mon, x, y, color, siUnits)
-    siUnits = string.lower(siUnits)
-    if siUnits == "b" then
+function draw_slash(mon, x, y, color)
+    draw_column(mon, x, y+3, 2, color)
+    draw_column(mon, x+1, y+1, 2, color)
+    mon.monitor.setCursorPos(x+2,y)
+    mon.monitor.write(" ")
+end
+
+function drawSI(mon, x, y, length, color)
         mon.monitor.setBackgroundColor(color)
         draw_column(mon, x, y, 5, color)
         mon.monitor.setCursorPos(x+1,y)
@@ -333,7 +345,6 @@ function drawSI(mon, x, y, color, siUnits)
         mon.monitor.write(" ")
         draw_column(mon, x+2, y, 2, color)
         draw_column(mon, x+2, y+3, 2, color)
-    end
 end
 
 --clear computer terminal(mon)
