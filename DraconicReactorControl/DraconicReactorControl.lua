@@ -85,20 +85,6 @@ local emergencyTemp = false
 -- some percentages
 local satPercent, fieldPercent, fuelPercent, energyPercent
 
--- split a string by a delimiter
-function split(string, delimiter)
-    local result = { }
-    local from = 1
-    local delim_from, delim_to = string.find( string, delimiter, from )
-    while delim_from do
-        table.insert( result, string.sub( string, from , delim_from-1 ) )
-        from = delim_to + 1
-        delim_from, delim_to = string.find( string, delimiter, from )
-    end
-    table.insert( result, string.sub( string, from ) )
-    return result
-end
-
 --write settings to config file
 function save_config()
     local sw = fs.open("config.txt", "w")
@@ -168,76 +154,76 @@ function load_config()
     local curVersion
     local line = sr.readLine()
     while line do
-        if split(line, ": ")[1] == "version" then
-            curVersion = split(line, ": ")[2]
-        elseif split(line, ": ")[1] == "autoInputGate" then
-            if split(line, ": ")[2] == "true" then
+        if gui.split(line, ": ")[1] == "version" then
+            curVersion = gui.split(line, ": ")[2]
+        elseif gui.split(line, ": ")[1] == "autoInputGate" then
+            if gui.split(line, ": ")[2] == "true" then
                 autoInputGate = true
             else
                 autoInputGate = false
             end
-        elseif split(line, ": ")[1] == "activateOnCharged" then
-            if split(line, ": ")[2] == "true" then
+        elseif gui.split(line, ": ")[1] == "activateOnCharged" then
+            if gui.split(line, ": ")[2] == "true" then
                 activateOnCharged = true
             else
                 activateOnCharged = false
             end
-        elseif split(line, ": ")[1] == "curInputGate" then
-            curInputGate = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "targetGeneration" then
-            curOutput = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "targetStrength" then
-            targetStrength = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "safeTemperature" then
-            safeTemperature = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "maxTemperature" then
-			maxTemperature = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "tempBoost1Output" then
-			tempBoost1Output = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "tempBoost2Output" then
-			tempBoost2Output = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "tempBoost3Output" then
-			tempBoost3Output = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "lowestFieldPercent" then
-			lowestFieldPercent = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "fieldBoost" then
-			fieldBoost = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "fieldBoostOutput" then
-			fieldBoostOutput = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satBoostThreshold" then
-			satBoostThreshold = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satBoost1" then
-			satBoost1 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satBoost1Output" then
-			satBoost1Output = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satBoost2" then
-			satBoost2 = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satBoost2Output" then
-			satBoost2Output = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "genTolerance" then
-			genTolerance = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "satTolerance" then
-			satTolerance = tonumber(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "tempTolerance" then
-			tempTolerance = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "maxIncrease" then
-            maxIncrease = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "safeTarget" then
-            safeTarget = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "minChangeWait" then
-            minChangeWait = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "stableTurns" then
-            stableTurns = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "maxTargetGeneration" then
-            maxTargetGeneration = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "targetSat" then
-            targetSat = tonumber(split(line, ": ")[2])
-        elseif split(line, ": ")[1] == "internalInput" then
-            internalInput = split(line, ": ")[2]
-        elseif split(line, ": ")[1] == "internalOutput" then
-            internalOutput = split(line, ": ")[2]
-        elseif split(line, ": ")[1] == "externalOutput" then
-            externalOutput = split(line, ": ")[2]
+        elseif gui.split(line, ": ")[1] == "curInputGate" then
+            curInputGate = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "targetGeneration" then
+            curOutput = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "targetStrength" then
+            targetStrength = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "safeTemperature" then
+            safeTemperature = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "maxTemperature" then
+			maxTemperature = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "tempBoost1Output" then
+			tempBoost1Output = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "tempBoost2Output" then
+			tempBoost2Output = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "tempBoost3Output" then
+			tempBoost3Output = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "lowestFieldPercent" then
+			lowestFieldPercent = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "fieldBoost" then
+			fieldBoost = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "fieldBoostOutput" then
+			fieldBoostOutput = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "satBoostThreshold" then
+			satBoostThreshold = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "satBoost1" then
+			satBoost1 = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "satBoost1Output" then
+			satBoost1Output = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "satBoost2" then
+			satBoost2 = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "satBoost2Output" then
+			satBoost2Output = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "genTolerance" then
+			genTolerance = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "satTolerance" then
+			satTolerance = tonumber(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "tempTolerance" then
+			tempTolerance = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "maxIncrease" then
+            maxIncrease = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "safeTarget" then
+            safeTarget = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "minChangeWait" then
+            minChangeWait = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "stableTurns" then
+            stableTurns = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "maxTargetGeneration" then
+            maxTargetGeneration = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "targetSat" then
+            targetSat = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "internalInput" then
+            internalInput = gui.split(line, ": ")[2]
+        elseif gui.split(line, ": ")[1] == "internalOutput" then
+            internalOutput = gui.split(line, ": ")[2]
+        elseif gui.split(line, ": ")[1] == "externalOutput" then
+            externalOutput = gui.split(line, ": ")[2]
         end
         line = sr.readLine()
     end

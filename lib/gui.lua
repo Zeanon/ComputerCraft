@@ -14,6 +14,20 @@ function format_int(number)
     return minus .. int:reverse():gsub("^,", "") .. fraction
 end
 
+-- split a string by a delimiter
+function split(string, delimiter)
+    local result = { }
+    local from = 1
+    local delim_from, delim_to = string.find( string, delimiter, from )
+    while delim_from do
+        table.insert( result, string.sub( string, from , delim_from-1 ) )
+        from = delim_to + 1
+        delim_from, delim_to = string.find( string, delimiter, from )
+    end
+    table.insert( result, string.sub( string, from ) )
+    return result
+end
+
 --get the integer value of a number under 10
 function getInteger(number)
     if number < 0 then
@@ -276,6 +290,63 @@ function draw_integer(mon, number, offset, y, color)
         end
         number = number - (delimeter * getInteger(number / delimeter))
         delimeter = delimeter / 10
+    end
+end
+
+function draw_number(mon, number, offset, y, color)
+    local number1 = tonumber(split(tostring(number), ".")[1])
+    local number2 = tonumber(split(tostring(number), ".")[2])
+
+    local length1 = string.len(tostring(number1))
+    local length2 = 0
+    if number2 ~= null then
+        length2 = string.len(tostring(number2))
+    end
+
+    local x
+    if number2 ~= null then
+        x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) + (length2 * 4) + 1)
+    else
+        x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) - 1)
+    end
+
+    if length1 == 1 then
+        x = x + 1
+    end
+    local printDot = length1
+    while printDot > 3 do
+        printDot = printDot - 3
+    end
+    local delimeter = 10 ^ (length1 - 1)
+    for i = 1, length1 do
+        draw_digit(getInteger(number1 / delimeter), mon, x, y, color)
+        printDot = printDot - 1
+        if printDot == 0 and i ~= length1 then
+            mon.monitor.setCursorPos(x+4,y+4)
+            mon.monitor.write(" ")
+            printDot = 3
+            x = x + 6
+        else
+            x = x + 4
+        end
+        number1 = number1 - (delimeter * getInteger(number1 / delimeter))
+        delimeter = delimeter / 10
+    end
+    if number2 ~= null then
+        mon.monitor.setCursorPos(x+1,y+4)
+        mon.monitor.write(" ")
+        mon.monitor.setCursorPos(x+1,y+5)
+        mon.monitor.write(" ")
+
+        x = x + 3
+
+        local delimeter = 10 ^ (length2 - 1)
+        for i = 1, length2 do
+            draw_digit(getInteger(number2 / delimeter), mon, x, y, color)
+            x = x + 4
+            number2 = number2 - (delimeter * getInteger(number2 / delimeter))
+            delimeter = delimeter / 10
+        end
     end
 end
 

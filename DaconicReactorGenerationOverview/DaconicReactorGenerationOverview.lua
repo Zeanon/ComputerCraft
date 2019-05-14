@@ -68,19 +68,6 @@ for i,v in ipairs(periList) do
 	end
 end
 
-function split(string, delimiter)
-	local result = { }
-	local from = 1
-	local delim_from, delim_to = string.find( string, delimiter, from )
-	while delim_from do
-		table.insert( result, string.sub( string, from , delim_from-1 ) )
-		from = delim_to + 1
-		delim_from, delim_to = string.find( string, delimiter, from )
-	end
-	table.insert( result, string.sub( string, from ) )
-	return result
-end
-
 --write settings to config file
 function save_config()
 	local sw = fs.open("config.txt", "w")
@@ -122,36 +109,36 @@ function load_config()
 	local sr = fs.open("config.txt", "r")
 	local line = sr.readLine()
 	while line do
-		if split(line, ": ")[1] == "numberColor" then
-			numberColor = color.getColor(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "rftColor" then
-			rftColor = color.getColor(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "buttonColor" then
-			buttonColor = color.getColor(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "textColor" then
-			textColor = color.getColor(split(line, ": ")[2])
-		elseif split(line, ": ")[1] == "refresh" then
-			refresh = tonumber(split(line, ": ")[2])
+		if gui.split(line, ": ")[1] == "numberColor" then
+			numberColor = color.getColor(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "rftColor" then
+			rftColor = color.getColor(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "buttonColor" then
+			buttonColor = color.getColor(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "textColor" then
+			textColor = color.getColor(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "refresh" then
+			refresh = tonumber(gui.split(line, ": ")[2])
 		else
-			if string.find(split(line, ": ")[1], "monitor_")
-					or split(line, ": ")[1] == "top"
-					or split(line, ": ")[1] == "bottom"
-					or split(line, ": ")[1] == "right"
-					or split(line, ": ")[1] == "left"
-					or split(line, ": ")[1] == "front"
-					or split(line, ": ")[1] == "back" then
+			if string.find(gui.split(line, ": ")[1], "monitor_")
+					or gui.split(line, ": ")[1] == "top"
+					or gui.split(line, ": ")[1] == "bottom"
+					or gui.split(line, ": ")[1] == "right"
+					or gui.split(line, ": ")[1] == "left"
+					or gui.split(line, ": ")[1] == "front"
+					or gui.split(line, ": ")[1] == "back" then
 				for i = 1, monitorCount do
-					if connectedMonitors[i] == split(line, ": ")[1] then
-						if split(line, ": ")[2] == "smallFont" then
-							if split(line, ": ")[3] == "true" then
+					if connectedMonitors[i] == gui.split(line, ": ")[1] then
+						if gui.split(line, ": ")[2] == "smallFont" then
+							if gui.split(line, ": ")[3] == "true" then
 								monitors[connectedMonitors[i] .. ":smallFont"] = true
 							else
 								monitors[connectedMonitors[i] .. ":smallFont"] = false
 							end
 						else
 							for count = 1, 10 do
-								if split(line, ": ")[2] == "line" .. count then
-									monitors[connectedMonitors[i] .. ":line" .. count] = tonumber(split(line, ": ")[3])
+								if gui.split(line, ": ")[2] == "line" .. count then
+									monitors[connectedMonitors[i] .. ":line" .. count] = tonumber(gui.split(line, ": ")[3])
 								end
 							end
 						end
