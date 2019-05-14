@@ -427,7 +427,15 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localY, line, drawButtons)
 	if line == 1 then
-		local x = (mon.X - tring.len(tostring(generation - drainback))) / 2
+		local length = string.len(tostring(generation - drainback))
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		if offset >= mon.X - 12 then
+			local monX, monY
+			mon.monitor.setTextScale(0.5)
+			monX, monY = mon.monitor.getSize()
+			mon.X, mon.Y = monX, monY
+		end
+		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_integer(mon, generation - drainback, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
@@ -435,7 +443,15 @@ function drawLine(mon, localY, line, drawButtons)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
-		local x = (mon.X - tring.len(tostring(generation))) / 2
+		local length = string.len(tostring(generation))
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		if offset >= mon.X - 12 then
+			local monX, monY
+			mon.monitor.setTextScale(0.5)
+			monX, monY = mon.monitor.getSize()
+			mon.X, mon.Y = monX, monY
+		end
+		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_integer(mon, generation, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
@@ -443,7 +459,15 @@ function drawLine(mon, localY, line, drawButtons)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
-		local x = (mon.X - tring.len(tostring(drainback))) / 2
+		local length = string.len(tostring(drainback))
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		if offset >= mon.X - 12 then
+			local monX, monY
+			mon.monitor.setTextScale(0.5)
+			monX, monY = mon.monitor.getSize()
+			mon.X, mon.Y = monX, monY
+		end
+		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_integer(mon, drainback, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
@@ -451,7 +475,15 @@ function drawLine(mon, localY, line, drawButtons)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
 		end
 	else
-		local x = (mon.X - tring.len(tostring(reactorGeneration[line - 3]))) / 2
+		local length = string.len(tostring(reactorGeneration[line - 3]))
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		if offset >= mon.X - 12 then
+			local monX, monY
+			mon.monitor.setTextScale(0.5)
+			monX, monY = mon.monitor.getSize()
+			mon.X, mon.Y = monX, monY
+		end
+		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_integer(mon, reactorGeneration[line - 3], x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
