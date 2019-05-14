@@ -31,6 +31,7 @@ local validPeripherals = {
 }
 
 
+
 -- get all connected peripherals
 function checkValidity(periName)
 	for n,b in pairs(validPeripherals) do
