@@ -502,6 +502,7 @@ function getGateFlow(number)
 	return gate.getSignalLowFlow()
 end
 
+
 -- check that every line displays something
 function checkLines()
 	for i = 1, monitorCount do
@@ -575,6 +576,7 @@ function init()
 		monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 48) / 2)
 	end
 end
+
 
 --run
 checkLines()
