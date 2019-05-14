@@ -48,7 +48,7 @@ end
 shell.run("pastebin get RQb0M8cZ update")
 
 if os.getComputerLabel() == null then
-    os.setComputerLabel("Draconic-Reactor")
+    os.setComputerLabel("Energy-Core")
 end
 
 shell.run("reboot")
