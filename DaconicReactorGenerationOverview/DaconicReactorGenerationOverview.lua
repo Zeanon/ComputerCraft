@@ -552,7 +552,7 @@ function init()
 		local mon, monitor, monX, monY
 		mon = getMonitor(connectedMonitors[i])
 		monitor = mon.monitor
-		if mon.Y <=	5 or monitors[connectedMonitors[i] .. ":smallFont"] then
+		if mon.X <= 29 or mon.Y <= 5 or monitors[connectedMonitors[i] .. ":smallFont"] then
 			monitor.setTextScale(0.5)
 			monX, monY = monitor.getSize()
 			mon = {}
