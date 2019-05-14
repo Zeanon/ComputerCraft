@@ -441,7 +441,7 @@ function drawLine(mon, localX, localY, line, drawButtons)
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
         end
-        gui.draw_integer(mon, energyPercent , localX, localY, numberColor)
+        gui.draw_integer(mon, energyPercent , localX + 35, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
@@ -457,11 +457,11 @@ function drawLine(mon, localX, localY, line, drawButtons)
         elseif energyPercent < 70 and energyPercent > 30 then
             energyColor = colors.orange
         end
-        gui.progress_bar(mon, localX, localY, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX, localY + 1, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX, localY + 2, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX, localY + 3, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX, localY + 4, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX + 1, localY, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX + 1, localY + 1, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX + 1, localY + 2, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX + 1, localY + 3, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, localX + 1, localY + 4, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Cent", "Flow", textColor, textColor, buttonColor)
@@ -475,11 +475,10 @@ function drawLine(mon, localX, localY, line, drawButtons)
         gui.drawRF(mon, localX, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
-            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
+            gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", "Count", textColor, textColor, buttonColor)
         end
     elseif line == 6 then
-        gui.draw_integer(mon, coreCount, localX, localY, numberColor)
-        gui.drawRF(mon, localX, localY, rftColor)
+        gui.draw_integer(mon, coreCount, localX + 20, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
@@ -519,11 +518,11 @@ function drawLine(mon, localX, localY, line, drawButtons)
             elseif energyPercent < 70 and energyPercent > 30 then
                 energyColor = colors.orange
             end
-            gui.progress_bar(mon, localX, localY, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX, localY + 1, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX, localY + 2, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX, localY + 3, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX, localY + 4, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 1, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 2, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 3, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 4, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
         end
     end
 end
