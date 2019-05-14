@@ -35,8 +35,6 @@ function splitNumber(number)
     local result = {}
     table.insert( result, number1 )
     table.insert( result, number2 )
-    print("1: " .. number1)
-    print("2: " .. number2)
     return result
 end
 

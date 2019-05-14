@@ -410,7 +410,7 @@ end
 function drawLine(mon, localY, line, drawButtons)
     if line == 1 then
         local length = string.len(tostring(totalEnergy))
-        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
         if offset >= mon.X - 12 then
             local monX, monY
             mon.monitor.setTextScale(0.5)
@@ -426,7 +426,7 @@ function drawLine(mon, localY, line, drawButtons)
         end
     elseif line == 2 then
         local length = string.len(tostring(totalMaxEnergy))
-        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
         if offset >= mon.X - 12 then
             local monX, monY
             mon.monitor.setTextScale(0.5)
@@ -446,7 +446,7 @@ function drawLine(mon, localY, line, drawButtons)
             energyPercent = 0
         end
         local length = string.len(tostring(energyPercent))
-        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
         if offset >= mon.X - 12 then
             local monX, monY
             mon.monitor.setTextScale(0.5)
@@ -493,7 +493,7 @@ function drawLine(mon, localY, line, drawButtons)
             flow = flow * (-1)
         end
         local length = string.len(tostring(flow))
-        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
         if offset >= mon.X - 12 then
             local monX, monY
             mon.monitor.setTextScale(0.5)
@@ -509,7 +509,7 @@ function drawLine(mon, localY, line, drawButtons)
         end
     elseif line == 6 then
         local length = string.len(tostring(coreCount))
-        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
         if offset >= mon.X - 12 then
             local monX, monY
             mon.monitor.setTextScale(0.5)
@@ -525,7 +525,7 @@ function drawLine(mon, localY, line, drawButtons)
     else
         if gui.getModulo(line - 6, 5) == 1 then
             local length = string.len(tostring(coreEnergy[1 + (line - 7) / 5]))
-            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
             if offset >= mon.X - 12 then
                 local monX, monY
                 mon.monitor.setTextScale(0.5)
@@ -537,7 +537,7 @@ function drawLine(mon, localY, line, drawButtons)
             gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 2 then
             local length = string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)]))
-            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
             if offset >= mon.X - 12 then
                 local monX, monY
                 mon.monitor.setTextScale(0.5)
@@ -553,7 +553,7 @@ function drawLine(mon, localY, line, drawButtons)
             local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 5)])) - 3)
             local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 5)] / maxDelimeter) / 100
             local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) -1
-            local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 18
+            local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3))
             if offset >= mon.X - 12 then
                 local monX, monY
                 mon.monitor.setTextScale(0.5)
@@ -562,7 +562,8 @@ function drawLine(mon, localY, line, drawButtons)
             end
             local x = ((mon.X - offset) / 2) - 1
 
-            gui.draw_number(mon, energy, x + 35, localY, numberColor)
+            gui.draw_number(mon, energy, x + 39, localY, numberColor)
+
             gui.draw_slash(mon, x + 29, localY, rftColor)
             gui.draw_number(mon, maxEnergy, x + 16, localY, numberColor)
 
@@ -573,7 +574,7 @@ function drawLine(mon, localY, line, drawButtons)
                 energyPercent = 0
             end
             local length = string.len(tostring(energyPercent))
-            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
             if offset >= mon.X - 12 then
                 local monX, monY
                 mon.monitor.setTextScale(0.5)
