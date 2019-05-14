@@ -409,14 +409,32 @@ end
 --draw line with information on the monitor
 function drawLine(mon, localY, line, drawButtons)
     if line == 1 then
-        gui.draw_integer(mon, totalEnergy, x + 9, localY, numberColor, rftColor)
+        local length = string.len(tostring(totalEnergy))
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        if offset >= mon.X - 12 then
+            local monX, monY
+            mon.monitor.setTextScale(0.5)
+            monX, monY = mon.monitor.getSize()
+            mon.X, mon.Y = monX, monY
+        end
+        local x = ((mon.X - offset) / 2) - 1
+        gui.draw_number(mon, totalEnergy, x + 9, localY, numberColor, rftColor)
         gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. coreCount .. " ", " Max", textColor, textColor, buttonColor)
         end
     elseif line == 2 then
-        gui.draw_integer(mon, totalMaxEnergy, x + 9, localY, numberColor)
+        local length = string.len(tostring(totalMaxEnergy))
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        if offset >= mon.X - 12 then
+            local monX, monY
+            mon.monitor.setTextScale(0.5)
+            monX, monY = mon.monitor.getSize()
+            mon.X, mon.Y = monX, monY
+        end
+        local x = ((mon.X - offset) / 2) - 1
+        gui.draw_number(mon, totalMaxEnergy, x + 9, localY, numberColor)
         gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
@@ -427,12 +445,29 @@ function drawLine(mon, localY, line, drawButtons)
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
         end
-        gui.draw_integer(mon, energyPercent , x + 35, localY, numberColor)
+        local length = string.len(tostring(energyPercent))
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        if offset >= mon.X - 12 then
+            local monX, monY
+            mon.monitor.setTextScale(0.5)
+            monX, monY = mon.monitor.getSize()
+            mon.X, mon.Y = monX, monY
+        end
+        local x = ((mon.X - offset) / 2) - 1
+        gui.draw_number(mon, energyPercent , x + 35, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
         end
     elseif line == 4 then
+        local offset = 70
+        if offset >= mon.X - 12 then
+            local monX, monY
+            mon.monitor.setTextScale(0.5)
+            monX, monY = mon.monitor.getSize()
+            mon.X, mon.Y = monX, monY
+        end
+        local x = ((mon.X - offset) / 2) - 1
         local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
@@ -457,34 +492,79 @@ function drawLine(mon, localY, line, drawButtons)
         if flow < 0 then
             flow = flow * (-1)
         end
-        gui.draw_integer(mon, flow, x + 9, localY, numberColor)
+        local length = string.len(tostring(flow))
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        if offset >= mon.X - 12 then
+            local monX, monY
+            mon.monitor.setTextScale(0.5)
+            monX, monY = mon.monitor.getSize()
+            mon.X, mon.Y = monX, monY
+        end
+        local x = ((mon.X - offset) / 2) - 1
+        gui.draw_number(mon, flow, x + 9, localY, numberColor)
         gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", "Count", textColor, textColor, buttonColor)
         end
     elseif line == 6 then
-        gui.draw_integer(mon, coreCount, x + 20, localY, numberColor)
+        local length = string.len(tostring(coreCount))
+        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+        if offset >= mon.X - 12 then
+            local monX, monY
+            mon.monitor.setTextScale(0.5)
+            monX, monY = mon.monitor.getSize()
+            mon.X, mon.Y = monX, monY
+        end
+        local x = ((mon.X - offset) / 2) - 1
+        gui.draw_number(mon, coreCount, x + 20, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
         end
     else
         if gui.getModulo(line - 6, 5) == 1 then
-            gui.draw_integer(mon, coreEnergy[1 + (line - 7) / 5], x + 9, localY, numberColor)
+            local length = string.len(tostring(coreEnergy[1 + (line - 7) / 5]))
+            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+            if offset >= mon.X - 12 then
+                local monX, monY
+                mon.monitor.setTextScale(0.5)
+                monX, monY = mon.monitor.getSize()
+                mon.X, mon.Y = monX, monY
+            end
+            local x = ((mon.X - offset) / 2) - 1
+            gui.draw_number(mon, coreEnergy[1 + (line - 7) / 5], x + 9, localY, numberColor)
             gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 2 then
-            gui.draw_integer(mon, coreMaxEnergy[1 + ((line - 8) / 5)], x + 9, localY, numberColor)
+            local length = string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)]))
+            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+            if offset >= mon.X - 12 then
+                local monX, monY
+                mon.monitor.setTextScale(0.5)
+                monX, monY = mon.monitor.getSize()
+                mon.X, mon.Y = monX, monY
+            end
+            local x = ((mon.X - offset) / 2) - 1
+            gui.draw_number(mon, coreMaxEnergy[1 + ((line - 8) / 5)], x + 9, localY, numberColor)
             gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 3 then
             local delimeter = 10 ^ (string.len(tostring(coreEnergy[1 + ((line - 9) / 5)])) - 3)
             local energy = gui.getInteger(coreEnergy[1 + ((line - 9) / 5)] / delimeter) / 100
             local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 5)])) - 3)
             local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 5)] / maxDelimeter) / 100
+            local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) -1
+            local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 18
+            if offset >= mon.X - 12 then
+                local monX, monY
+                mon.monitor.setTextScale(0.5)
+                monX, monY = mon.monitor.getSize()
+                mon.X, mon.Y = monX, monY
+            end
+            local x = ((mon.X - offset) / 2) - 1
 
-            gui.draw_integer(mon, energy, x + 34, localY, numberColor)
+            gui.draw_number(mon, energy, x + 35, localY, numberColor)
             gui.draw_slash(mon, x + 29, localY, rftColor)
-            gui.draw_integer(mon, maxEnergy, x + 14, localY, numberColor)
+            gui.draw_number(mon, maxEnergy, x + 16, localY, numberColor)
 
             gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 4 then
@@ -492,8 +572,25 @@ function drawLine(mon, localY, line, drawButtons)
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0
             end
-            gui.draw_integer(mon, energyPercent, x + 35, localY, numberColor)
+            local length = string.len(tostring(energyPercent))
+            local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+            if offset >= mon.X - 12 then
+                local monX, monY
+                mon.monitor.setTextScale(0.5)
+                monX, monY = mon.monitor.getSize()
+                mon.X, mon.Y = monX, monY
+            end
+            local x = ((mon.X - offset) / 2) - 1
+            gui.draw_number(mon, energyPercent, x + 35, localY, numberColor)
         elseif gui.getModulo(line - 6, 5) == 0 then
+            local offset = 70
+            if offset >= mon.X - 12 then
+                local monX, monY
+                mon.monitor.setTextScale(0.5)
+                monX, monY = mon.monitor.getSize()
+                mon.X, mon.Y = monX, monY
+            end
+            local x = ((mon.X - offset) / 2) - 1
             local energyPercent = math.ceil(coreEnergy[(line - 6) / 5] / coreMaxEnergy[(line - 6) / 5] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0

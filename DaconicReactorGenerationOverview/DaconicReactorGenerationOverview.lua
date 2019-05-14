@@ -423,7 +423,7 @@ function drawLine(mon, localY, line, drawButtons)
 			mon.X, mon.Y = monX, monY
 		end
 		local x = ((mon.X - offset) / 2) - 1
-		gui.draw_integer(mon, generation - drainback, x + 17, localY, numberColor)
+		gui.draw_number(mon, generation - drainback, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
@@ -439,7 +439,7 @@ function drawLine(mon, localY, line, drawButtons)
 			mon.X, mon.Y = monX, monY
 		end
 		local x = ((mon.X - offset) / 2) - 1
-		gui.draw_integer(mon, generation, x + 17, localY, numberColor)
+		gui.draw_number(mon, generation, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
@@ -455,7 +455,7 @@ function drawLine(mon, localY, line, drawButtons)
 			mon.X, mon.Y = monX, monY
 		end
 		local x = ((mon.X - offset) / 2) - 1
-		gui.draw_integer(mon, drainback, x + 17, localY, numberColor)
+		gui.draw_number(mon, drainback, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
@@ -471,7 +471,7 @@ function drawLine(mon, localY, line, drawButtons)
 			mon.X, mon.Y = monX, monY
 		end
 		local x = ((mon.X - offset) / 2) - 1
-		gui.draw_integer(mon, reactorGeneration[line - 3], x + 17, localY, numberColor)
+		gui.draw_number(mon, reactorGeneration[line - 3], x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)

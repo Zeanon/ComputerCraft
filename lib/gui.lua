@@ -28,6 +28,18 @@ function split(string, delimiter)
     return result
 end
 
+function splitNumber(number)
+    local number1 = getInteger(number)
+    local number2 = number - number1
+    number2 = getInteger(number2 * (10 ^ (string.len(tostring(number2)) - 2)))
+    local result = {}
+    table.insert( result, number1 )
+    table.insert( result, number2 )
+    print("1: " .. number1)
+    print("2: " .. number2)
+    return result
+end
+
 --get the integer value of a number under 10
 function getInteger(number)
     if number < 0 then
@@ -264,47 +276,15 @@ function draw_digit(number, mon, x, y, color)
 end
 
 --draw number on computer terminal
-function draw_integer(mon, number, offset, y, color)
-    number = getInteger(number)
-    local length = string.len(tostring(number))
-    local x = mon.X - (offset + (length * 4) + (2 * getInteger((length - 1) / 3)) - 1)
-    if length == 1 then
-        x = x + 1
-    end
-    local printDot = length
-    while printDot > 3 do
-        printDot = printDot - 3
-    end
-    local delimeter = 10 ^ (length - 1)
-
-    for i = 1, length do
-        draw_digit(getInteger(number / delimeter), mon, x, y, color)
-        printDot = printDot - 1
-        if printDot == 0 and i ~= length then
-            mon.monitor.setCursorPos(x+4,y+4)
-            mon.monitor.write(" ")
-            printDot = 3
-            x = x + 6
-        else
-            x = x + 4
-        end
-        number = number - (delimeter * getInteger(number / delimeter))
-        delimeter = delimeter / 10
-    end
-end
-
 function draw_number(mon, number, offset, y, color)
-    local number1 = tonumber(split(tostring(number), ".")[1])
-    local number2 = tonumber(split(tostring(number), ".")[2])
+    local number1 = splitNumber(number)[1]
+    local number2 = splitNumber(number)[2]
 
     local length1 = string.len(tostring(number1))
-    local length2 = 0
-    if number2 ~= null then
-        length2 = string.len(tostring(number2))
-    end
+    local length2 = string.len(tostring(number2))
 
     local x
-    if number2 ~= null then
+    if number2 ~= 0 then
         x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) + (length2 * 4) + 1)
     else
         x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) - 1)
@@ -332,10 +312,10 @@ function draw_number(mon, number, offset, y, color)
         number1 = number1 - (delimeter * getInteger(number1 / delimeter))
         delimeter = delimeter / 10
     end
-    if number2 ~= null then
-        mon.monitor.setCursorPos(x+1,y+4)
+    if number2 ~= 0 then
+        mon.monitor.setCursorPos(x,y+4)
         mon.monitor.write(" ")
-        mon.monitor.setCursorPos(x+1,y+5)
+        mon.monitor.setCursorPos(x,y+5)
         mon.monitor.write(" ")
 
         x = x + 3
