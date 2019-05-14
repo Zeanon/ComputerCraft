@@ -517,70 +517,79 @@ end
 
 -- check that every line displays something
 function checkLines()
-    if line1 > coreCount + 3 then
-        line1 = coreCount + 3
-    end
-    if line2 > coreCount + 3 then
-        line2 = coreCount + 3
-    end
-    if line3 > coreCount + 3 then
-        line3 = coreCount + 3
-    end
-    if line4 > coreCount + 3 then
-        line4 = coreCount + 3
-    end
-    if line5 > coreCount + 3 then
-        line5 = coreCount + 3
-    end
-    if line6 > coreCount + 3 then
-        line6 = coreCount + 3
-    end
-    if line7 > coreCount + 3 then
-        line7 = coreCount + 3
-    end
-    if line8 > coreCount + 3 then
-        line8 = coreCount + 3
-    end
-    if line9 > coreCount + 3 then
-        line9 = coreCount + 3
-    end
-    if line10 > coreCount + 3 then
-        line10 = coreCount + 3
+    for i = 1, monitorCount do
+        if monitors[connectedMonitors[i] .. ":line1"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line1"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line2"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line2"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line3"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line3"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line4"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line4"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line5"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line5"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line6"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line6"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line7"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line7"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line8"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line8"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line9"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line9"] = reactorCount + 3
+        end
+        if monitors[connectedMonitors[i] .. ":line10"] > reactorCount + 3 then
+            monitors[connectedMonitors[i] .. ":line10"] = reactorCount + 3
+        end
     end
     save_config()
+end
+
+--initialize all the values
+function init()
+    for i = 1, monitorCount do
+        local mon, monitor, monX, monY
+        mon = getMonitor(connectedMonitors[i])
+        monitor = mon.monitor
+        if mon.Y <=	5 or monitors[connectedMonitors[i] .. ":smallFont"] then
+            monitor.setTextScale(0.5)
+            monX, monY = monitor.getSize()
+            mon = {}
+            mon.monitor,mon.X, mon.Y = monitor, monX, monY
+        end
+        local amount = 0
+        if mon.Y < 16 then
+            amount = 1
+            monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y - 3) / 2)
+        else
+            local localY = mon.Y - 2
+            local int = 8
+            while int <= localY do
+                int = int + 8
+                amount = amount + 1
+            end
+            monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
+        end
+        monitors[connectedMonitors[i] .. ":amount"] = amount
+        if mon.X >= 57 then
+            monitors[connectedMonitors[i] .. ":drawButtons"] = true
+        else
+            monitors[connectedMonitors[i] .. ":drawButtons"] = false
+        end
+        monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 46) / 2) - 1
+    end
 end
 
 --run
 checkLines()
 
-if mon.Y >= 16 then
-    local localY = mon.Y - 2
-    local count = 0
-    local i = 8
-    while i <= localY do
-        i = i + 8
-        count = count + 1
-    end
-    amount = count
-    y = gui.getInteger((mon.Y + 3 - (8 * count)) / 2)
-end
+init()
 
-if mon.X >= 57 then
-    drawButtons= true
-    if mon.Y < 16 then
-        amount = 1
-        y = gui.getInteger((mon.Y - 3) / 2)
-        parallel.waitForAny(buttons, update)
-    else
-        parallel.waitForAny(buttons, update)
-    end
-else
-    drawButtons= false
-    if mon.Y < 16 then
-        amount = 1
-        y = gui.getInteger((mon.Y - 3) / 2)
-        update()
-    else
-        update()
-    end
-end
+parallel.waitForAny(buttons, update)

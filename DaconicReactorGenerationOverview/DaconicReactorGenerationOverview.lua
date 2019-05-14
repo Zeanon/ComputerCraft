@@ -542,8 +542,8 @@ function checkLines()
 		if monitors[connectedMonitors[i] .. ":line10"] > reactorCount + 3 then
 			monitors[connectedMonitors[i] .. ":line10"] = reactorCount + 3
 		end
-		save_config()
 	end
+	save_config()
 end
 
 --initialize all the values
