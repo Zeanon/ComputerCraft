@@ -198,7 +198,6 @@ function drawLines()
         mon.monitor,mon.X, mon.Y = monitor, monX, monY
         local amount = monitors[connectedMonitors[i] .. ":amount"]
         local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
-        local x = monitors[connectedMonitors[i] .. ":x"]
         local y = monitors[connectedMonitors[i] .. ":y"]
         totalEnergy = getTotalEnergyStored()
         totalMaxEnergy = getTotalMaxEnergyStored()
@@ -213,35 +212,35 @@ function drawLines()
             print("Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. "RF")
         end
         if amount >= 1 then
-            drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
+            drawLine(mon, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
         end
         if amount >= 2 then
             gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-            drawLine(mon, x, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
+            drawLine(mon, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
         end
         if amount >= 3 then
-            drawLine(mon, x, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
+            drawLine(mon, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
         end
         if amount >= 4 then
-            drawLine(mon, x, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
+            drawLine(mon, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
         end
         if amount >= 5 then
-            drawLine(mon, x, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
+            drawLine(mon, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
         end
         if amount >= 6 then
-            drawLine(mon, x, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
+            drawLine(mon, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
         end
         if amount >= 7 then
-            drawLine(mon, x, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
+            drawLine(mon, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
         end
         if amount >= 8 then
-            drawLine(mon, x, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
+            drawLine(mon, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
         end
         if amount >= 9 then
-            drawLine(mon, x, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
+            drawLine(mon, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
         end
         if amount >= 10 then
-            drawLine(mon, x, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
+            drawLine(mon, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
         end
     end
 end
@@ -421,17 +420,17 @@ function buttons()
 end
 
 --draw line with information on the monitor
-function drawLine(mon, localX, localY, line, drawButtons)
+function drawLine(mon, localY, line, drawButtons)
     if line == 1 then
-        gui.draw_integer(mon, totalEnergy, localX + 9, localY, numberColor, rftColor)
-        gui.drawRF(mon, localX, localY, rftColor)
+        gui.draw_integer(mon, totalEnergy, x + 9, localY, numberColor, rftColor)
+        gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. coreCount .. " ", " Max", textColor, textColor, buttonColor)
         end
     elseif line == 2 then
-        gui.draw_integer(mon, totalMaxEnergy, localX + 9, localY, numberColor)
-        gui.drawRF(mon, localX, localY, rftColor)
+        gui.draw_integer(mon, totalMaxEnergy, x + 9, localY, numberColor)
+        gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Ener", "Cent", textColor, textColor, buttonColor)
@@ -441,7 +440,7 @@ function drawLine(mon, localX, localY, line, drawButtons)
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
         end
-        gui.draw_integer(mon, energyPercent , localX + 35, localY, numberColor)
+        gui.draw_integer(mon, energyPercent , x + 35, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
@@ -457,11 +456,11 @@ function drawLine(mon, localX, localY, line, drawButtons)
         elseif energyPercent < 70 and energyPercent > 30 then
             energyColor = colors.orange
         end
-        gui.progress_bar(mon, localX + 1, localY, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX + 1, localY + 1, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX + 1, localY + 2, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX + 1, localY + 3, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, localX + 1, localY + 4, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 1, localY, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 1, localY + 1, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 1, localY + 2, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 1, localY + 3, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 1, localY + 4, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Cent", "Flow", textColor, textColor, buttonColor)
@@ -471,43 +470,44 @@ function drawLine(mon, localX, localY, line, drawButtons)
         if flow < 0 then
             flow = flow * (-1)
         end
-        gui.draw_integer(mon, flow, localX + 9, localY, numberColor)
-        gui.drawRF(mon, localX, localY, rftColor)
+        gui.draw_integer(mon, flow, x + 9, localY, numberColor)
+        gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", "Count", textColor, textColor, buttonColor)
         end
     elseif line == 6 then
-        gui.draw_integer(mon, coreCount, localX + 20, localY, numberColor)
+        gui.draw_integer(mon, coreCount, x + 20, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
         end
     else
         if gui.getModulo(line - 6, 5) == 1 then
-            gui.draw_integer(mon, coreEnergy[1 + (line - 6) / 5], localX + 9, localY, numberColor)
-            gui.drawRF(mon, localX, localY, rftColor)
+            gui.draw_integer(mon, coreEnergy[1 + (line - 7) / 5], x + 9, localY, numberColor)
+            gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 2 then
-            gui.draw_integer(mon, coreMaxEnergy[1 + ((line - 7) / 5)], localX + 9, localY, numberColor)
-            gui.drawRF(mon, localX, localY, rftColor)
+            gui.draw_integer(mon, coreMaxEnergy[1 + ((line - 8) / 5)], x + 9, localY, numberColor)
+            gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 3 then
-            local delimeter = 10 ^ (string.len(tostring(coreEnergy[1 + ((line - 8) / 5)])) - 3)
-            local energy = gui.getInteger(coreEnergy[1 + ((line - 8) / 5)] / delimeter) / 100
-            local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)])) - 3)
-            local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 8) / 5)] / maxDelimeter) / 100
+            local delimeter = 10 ^ (string.len(tostring(coreEnergy[1 + ((line - 9) / 5)])) - 3)
+            local energy = gui.getInteger(coreEnergy[1 + ((line - 9) / 5)] / delimeter) / 100
+            local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 5)])) - 3)
+            local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 5)] / maxDelimeter) / 100
 
-            gui.draw_integer(mon, energy, localX + 29, localY, numberColor)
-            gui.draw_slash(mon, localX + 24, localY, rftColor)
-            gui.draw_integer(mon, maxEnergy, localX + 9, localY, numberColor)
-            gui.drawRF(mon, localX, localY, rftColor)
+            gui.draw_integer(mon, energy, x + 34, localY, numberColor)
+            gui.draw_slash(mon, x + 29, localY, rftColor)
+            gui.draw_integer(mon, maxEnergy, x + 14, localY, numberColor)
+
+            gui.drawRF(mon, x, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 4 then
-            local energyPercent = math.ceil(coreEnergy[1 + ((line - 9) / 5)] / coreMaxEnergy[1 + ((line - 9) / 5)] * 10000)*.01
+            local energyPercent = math.ceil(coreEnergy[1 + ((line - 10) / 5)] / coreMaxEnergy[1 + ((line - 10) / 5)] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0
             end
-            gui.draw_integer(mon, energyPercent, localX + 35, localY, numberColor)
+            gui.draw_integer(mon, energyPercent, x + 35, localY, numberColor)
         elseif gui.getModulo(line - 6, 5) == 0 then
-            local energyPercent = math.ceil(coreEnergy[(line - 10) / 5] / coreMaxEnergy[(line - 10) / 5] * 10000)*.01
+            local energyPercent = math.ceil(coreEnergy[(line - 6) / 5] / coreMaxEnergy[(line - 6) / 5] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0
             end
@@ -517,11 +517,11 @@ function drawLine(mon, localX, localY, line, drawButtons)
             elseif energyPercent < 70 and energyPercent > 30 then
                 energyColor = colors.orange
             end
-            gui.progress_bar(mon, localX + 1, localY, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 1, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 2, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 3, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 4, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 1, localY, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 1, localY + 1, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 1, localY + 2, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 1, localY + 3, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 1, localY + 4, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
         end
     end
 end
@@ -623,7 +623,6 @@ function init()
         else
             monitors[connectedMonitors[i] .. ":drawButtons"] = false
         end
-        monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 70) / 2)
     end
 end
 

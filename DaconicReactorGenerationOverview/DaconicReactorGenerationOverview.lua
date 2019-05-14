@@ -205,7 +205,6 @@ function drawLines()
 		mon.monitor,mon.X, mon.Y = monitor, monX, monY
 		local amount = monitors[connectedMonitors[i] .. ":amount"]
 		local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
-		local x = monitors[connectedMonitors[i] .. ":x"]
 		local y = monitors[connectedMonitors[i] .. ":y"]
 		generation = getGeneration()
 		drainback = getDrainback()
@@ -218,35 +217,35 @@ function drawLines()
 		end
 		print("Total drainback: " .. gui.format_int(drainback) .. "RF/t")
 		if amount >= 1 then
-			drawLine(mon, x, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
+			drawLine(mon, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
 		end
 		if amount >= 2 then
 			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-			drawLine(mon, x, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
+			drawLine(mon, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
 		end
 		if amount >= 3 then
-			drawLine(mon, x, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
+			drawLine(mon, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
 		end
 		if amount >= 4 then
-			drawLine(mon, x, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
+			drawLine(mon, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
 		end
 		if amount >= 5 then
-			drawLine(mon, x, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
+			drawLine(mon, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
 		end
 		if amount >= 6 then
-			drawLine(mon, x, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
+			drawLine(mon, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
 		end
 		if amount >= 7 then
-			drawLine(mon, x, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
+			drawLine(mon, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
 		end
 		if amount >= 8 then
-			drawLine(mon, x, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
+			drawLine(mon, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
 		end
 		if amount >= 9 then
-			drawLine(mon, x, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
+			drawLine(mon, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
 		end
 		if amount >= 10 then
-			drawLine(mon, x, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
+			drawLine(mon, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
 		end
 	end
 end
@@ -426,31 +425,35 @@ function buttons()
 end
 
 --draw line with information on the monitor
-function drawLine(mon, localX, localY, line, drawButtons)
+function drawLine(mon, localY, line, drawButtons)
 	if line == 1 then
-		gui.draw_integer(mon, generation - drainback, localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		local x = (mon.X - tring.len(tostring(generation - drainback))) / 2
+		gui.draw_integer(mon, generation - drainback, x + 17, localY, numberColor)
+		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "DR" .. reactorCount .. " ", " Gen", textColor, textColor, buttonColor)
 		end
 	elseif line == 2 then
-		gui.draw_integer(mon, generation, localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		local x = (mon.X - tring.len(tostring(generation))) / 2
+		gui.draw_integer(mon, generation, x + 17, localY, numberColor)
+		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Out ", "Back", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
-		gui.draw_integer(mon, drainback, localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		local x = (mon.X - tring.len(tostring(drainback))) / 2
+		gui.draw_integer(mon, drainback, x + 17, localY, numberColor)
+		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", " DR1", textColor, textColor, buttonColor)
 		end
 	else
-		gui.draw_integer(mon, reactorGeneration[line - 3], localX + 17, localY, numberColor)
-		gui.drawRFT(mon, localX, localY, rftColor)
+		local x = (mon.X - tring.len(tostring(reactorGeneration[line - 3]))) / 2
+		gui.draw_integer(mon, reactorGeneration[line - 3], x + 17, localY, numberColor)
+		gui.drawRFT(mon, x, localY, rftColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			if line == 4 and line == reactorCount + 3 then
@@ -573,7 +576,6 @@ function init()
 		else
 			monitors[connectedMonitors[i] .. ":drawButtons"] = false
 		end
-		monitors[connectedMonitors[i] .. ":x"] = gui.getInteger((mon.X - 48) / 2)
 	end
 end
 
