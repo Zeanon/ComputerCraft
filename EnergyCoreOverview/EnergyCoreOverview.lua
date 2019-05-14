@@ -484,31 +484,30 @@ function drawLine(mon, localX, localY, line, drawButtons)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
         end
     else
-        if gui.getModulo(line - 6, 5) == 0 then
-            gui.draw_integer(mon, coreEnergy[(line - 6) / 5], localX + 9, localY, numberColor)
-            gui.drawRF(mon, localX, localY, rftColor)
-        elseif gui.getModulo(line - 6, 5) == 1 then
-            gui.draw_integer(mon, coreMaxEnergy[1 + ((line - 7) / 5)], localX + 9, localY, numberColor)
+        if gui.getModulo(line - 6, 5) == 1 then
+            gui.draw_integer(mon, coreEnergy[1 + (line - 6) / 5], localX + 9, localY, numberColor)
             gui.drawRF(mon, localX, localY, rftColor)
         elseif gui.getModulo(line - 6, 5) == 2 then
+            gui.draw_integer(mon, coreMaxEnergy[1 + ((line - 7) / 5)], localX + 9, localY, numberColor)
+            gui.drawRF(mon, localX, localY, rftColor)
+        elseif gui.getModulo(line - 6, 5) == 3 then
             local delimeter = 10 ^ (string.len(tostring(coreEnergy[1 + ((line - 8) / 5)])) - 3)
             local energy = gui.getInteger(coreEnergy[1 + ((line - 8) / 5)] / delimeter) / 100
             local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)])) - 3)
             local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 8) / 5)] / maxDelimeter) / 100
-            local length = string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)]))
 
-            gui.draw_integer(mon, energy, localX + 14 + (length * 4) + (2 * gui.getInteger((length - 1) / 3)) - 1, localY, numberColor)
-            gui.draw_slash(mon, localX + 10 + (length * 4) + (2 * gui.getInteger((length - 1) / 3)) - 1, localY, rftColor)
+            gui.draw_integer(mon, energy, localX + 29, localY, numberColor)
+            gui.draw_slash(mon, localX + 24, localY, rftColor)
             gui.draw_integer(mon, maxEnergy, localX + 9, localY, numberColor)
             gui.drawRF(mon, localX, localY, rftColor)
-        elseif gui.getModulo(line - 6, 5) == 3 then
-            local energyPercent = math.ceil(coreEnergy[1 + ((line - 10) / 5)] / coreMaxEnergy[1 + ((line - 10) / 5)] * 10000)*.01
+        elseif gui.getModulo(line - 6, 5) == 4 then
+            local energyPercent = math.ceil(coreEnergy[1 + ((line - 9) / 5)] / coreMaxEnergy[1 + ((line - 9) / 5)] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0
             end
-            gui.draw_integer(mon, energyPercent, localX, localY, numberColor)
-        elseif gui.getModulo(line - 6, 5) == 4 then
-            local energyPercent = math.ceil(coreEnergy[1 + ((line - 10) / 5)] / coreMaxEnergy[1 + ((line - 10) / 5)] * 10000)*.01
+            gui.draw_integer(mon, energyPercent, localX + 35, localY, numberColor)
+        elseif gui.getModulo(line - 6, 5) == 0 then
+            local energyPercent = math.ceil(coreEnergy[(line - 10) / 5] / coreMaxEnergy[(line - 10) / 5] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0
             end
@@ -518,11 +517,11 @@ function drawLine(mon, localX, localY, line, drawButtons)
             elseif energyPercent < 70 and energyPercent > 30 then
                 energyColor = colors.orange
             end
-            gui.progress_bar(mon, localX + 1, localY, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 1, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 2, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 3, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
-            gui.progress_bar(mon, localX + 1, localY + 4, 70, coreEnergy[1 + ((line - 10) / 5)], coreMaxEnergy[1 + ((line - 10) / 5)], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 1, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 2, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 3, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, localX + 1, localY + 4, 70, coreEnergy[(line - 10) / 5], coreMaxEnergy[(line - 10) / 5], energyColor, colors.lightGray)
         end
     end
 end

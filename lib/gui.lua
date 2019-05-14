@@ -329,7 +329,9 @@ function drawRF(mon, offset, y, color)
     mon.monitor.write(" ")
 end
 
-function draw_slash(mon, x, y, color)
+function draw_slash(mon, offset, y, color)
+    local x = mon.X - (offset + 3)
+
     draw_column(mon, x, y+3, 2, color)
     draw_column(mon, x+1, y+1, 2, color)
     mon.monitor.setCursorPos(x+2,y)
