@@ -234,7 +234,7 @@ function buttons()
         local event, side, xPos, yPos = os.pullEvent("monitor_touch")
         if monitors[side .. ":drawButtons"] then
             local mon, monitor, monX, monY
-            monitor = peripheral.wrap(connectedMonitors[i])
+            monitor = peripheral.wrap(side)
             monX, monY = monitor.getSize()
             mon = {}
             mon.monitor,mon.X, mon.Y = monitor, monX, monY
