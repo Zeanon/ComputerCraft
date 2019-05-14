@@ -19,28 +19,36 @@ file1.write(libFile)
 file1.close()
 
 
+lib2 = http.get(lib2URL)
+lib2File = lib2.readAll()
+
+local file2 = fs.open("lib/color", "w")
+file2.write(lib2File)
+file2.close()
+
+
 startup = http.get(startupURL)
 startupFile = startup.readAll()
 
-local file2 = fs.open("startup", "w")
-file2.write(startupFile)
-file2.close()
+local file3 = fs.open("startup", "w")
+file3.write(startupFile)
+file3.close()
 
 
 run = http.get(runURL)
 runFile = run.readAll()
 
-local file3 = fs.open("run", "w")
-file3.write(runFile)
-file3.close()
+local file4 = fs.open("run", "w")
+file4.write(runFile)
+file4.close()
 
 
 EnergyOverview = http.get(EnergyOverviewURL)
 EnergyOverviewFile = EnergyOverview.readAll()
 
-local file4 = fs.open("EnergyCoreOverview", "w")
-file4.write(EnergyOverviewFile)
-file4.close()
+local file5 = fs.open("EnergyCoreOverview", "w")
+file5.write(EnergyOverviewFile)
+file5.close()
 
 if fs.exists("update") then
     shell.run("delete update")
