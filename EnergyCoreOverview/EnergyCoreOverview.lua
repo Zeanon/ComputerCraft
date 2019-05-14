@@ -42,6 +42,18 @@ for i,v in ipairs(periList) do
             coreCount = coreCount + 1
             connectedCores[coreCount] = periList[i]
         end,
+        ["monitor"] = function()
+            monitorCount = monitorCount + 1
+            connectedMonitors[monitorCount] = periList[i]
+            monitors[periList[i] .. ":smallFont"] = false
+            monitors[periList[i] .. ":drawButtons"] = false
+            monitors[periList[i] .. ":amount"] = 0
+            monitors[periList[i] .. ":x"] = 0
+            monitors[periList[i] .. ":y"] = 0
+            for count = 1, 10 do
+                monitors[periList[i] .. ":line" .. count] = count
+            end
+        end
     }
 
     local isValid = checkValidity(peripheral.getType(v))
