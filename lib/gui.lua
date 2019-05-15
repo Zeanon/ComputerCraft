@@ -50,9 +50,7 @@ function getInteger(number)
 
 	local result = 0
 	while number > result and divider >= 1 do
-		if number >= result then
-			result = result + divider
-		end
+		result = result + divider
 		if number < result then
 			result = result - divider
 			divider = divider / 10
