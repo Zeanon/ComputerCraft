@@ -551,7 +551,8 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local length = string.len(tostring(energyPercent))
 			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
-			gui.draw_number(mon, energyPercent, x, localY, numberColor)
+			gui.draw_number(mon, energyPercent, x + 7, localY, numberColor)
+			gui.draw_percent(mon, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
