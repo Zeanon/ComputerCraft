@@ -52,12 +52,12 @@ file5.write(EnergyOverviewFile)
 file5.close()
 
 if fs.exists("update") then
-    shell.run("delete update")
+	shell.run("delete update")
 end
 shell.run("pastebin get RQb0M8cZ update")
 
 if os.getComputerLabel() == null then
-    os.setComputerLabel("Energy-Core")
+	os.setComputerLabel("Energy-Core")
 end
 
 shell.run("reboot")
