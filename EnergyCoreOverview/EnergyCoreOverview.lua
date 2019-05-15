@@ -47,7 +47,7 @@ for i,v in ipairs(periList) do
 			monitorCount = monitorCount + 1
 			connectedMonitors[monitorCount] = periList[i]
 			monitors[periList[i] .. ":smallFont"] = false
-			monitors[periList[i] .. ":drawButtons"] = false
+			monitors[periList[i] .. ":drawButtons"] = true
 			monitors[periList[i] .. ":amount"] = 0
 			monitors[periList[i] .. ":x"] = 0
 			monitors[periList[i] .. ":y"] = 0
@@ -579,7 +579,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local x = ((mon.X - offset) / 2)
 		
 			gui.draw_tier(mon, x, localY, unitColor)
-			gui.draw_number(mon, tier, x - 2, localY, numberColor)
+			gui.draw_number(mon, tier, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
