@@ -1,6 +1,6 @@
 -- configure colors
 local numberColor = colors.red
-local textColor = colors.gray
+local unitColor = colors.gray
 local buttonColor = colors.lightGray
 local textColor = colors.white
 -- lower number means higher refresh rate but also increases server load
@@ -72,7 +72,7 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine("-- configure the display numberColors")
 	sw.writeLine("numberColor: " .. color.toString(numberColor))
-	sw.writeLine("textColor: " .. color.toString(textColor))
+	sw.writeLine("unitColor: " .. color.toString(unitColor))
 	sw.writeLine("buttonColor: " ..  color.toString(buttonColor))
 	sw.writeLine("textColor: " ..  color.toString(textColor))
 	sw.writeLine(" ")
@@ -107,8 +107,8 @@ function load_config()
 	while line do
 		if gui.split(line, ": ")[1] == "numberColor" then
 			numberColor = color.getColor(gui.split(line, ": ")[2])
-		elseif gui.split(line, ": ")[1] == "textColor" then
-			textColor = color.getColor(gui.split(line, ": ")[2])
+		elseif gui.split(line, ": ")[1] == "unitColor" then
+			unitColor = color.getColor(gui.split(line, ": ")[2])
 		elseif gui.split(line, ": ")[1] == "buttonColor" then
 			buttonColor = color.getColor(gui.split(line, ": ")[2])
 		elseif gui.split(line, ": ")[1] == "textColor" then
@@ -415,8 +415,8 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local length = string.len(tostring(totalEnergy))
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 		local x = ((mon.X - offset) / 2) - 1
-		gui.draw_number(mon, totalEnergy, x + 9, localY, numberColor, textColor)
-		gui.draw_rf(mon, x, localY, textColor)
+		gui.draw_number(mon, totalEnergy, x + 9, localY, numberColor, unitColor)
+		gui.draw_rf(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. coreCount .. " ", " Max", textColor, textColor, buttonColor)
@@ -426,7 +426,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, totalMaxEnergy, x + 9, localY, numberColor)
-		gui.draw_rf(mon, x, localY, textColor)
+		gui.draw_rf(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Ener", "Cent", textColor, textColor, buttonColor)
@@ -480,7 +480,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_line(mon, x, localY + 2, 3, numberColor)
 		end
 		gui.draw_number(mon, flow, x + 9, localY, numberColor)
-		gui.draw_rf(mon, x, localY, textColor)
+		gui.draw_rf(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", "Count", textColor, textColor, buttonColor)
@@ -500,7 +500,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
 			gui.draw_number(mon, coreEnergy[1 + (line - 7) / 5], x + 9, localY, numberColor)
-			gui.draw_rf(mon, x, localY, textColor)
+			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
@@ -509,7 +509,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
 			gui.draw_number(mon, coreMaxEnergy[1 + ((line - 8) / 5)], x + 9, localY, numberColor)
-			gui.draw_rf(mon, x, localY, textColor)
+			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
@@ -524,10 +524,10 @@ function drawLine(mon, localY, line, drawButtons, side)
 
 			gui.draw_number(mon, energy, x + 39, localY, numberColor)
 
-			gui.draw_slash(mon, x + 29, localY, textColor)
+			gui.draw_slash(mon, x + 29, localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 16, localY, numberColor)
 
-			gui.draw_rf(mon, x, localY, textColor)
+			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
@@ -561,11 +561,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 				tier = 7
 			end
 			local length = string.len(tostring(tier))
-			local offset = (length * 4) + 13
+			local offset = (length * 4) + 14
 			local x = ((mon.X - offset) / 2) - 1
 		
-			gui.draw_tier(mon, x, localY, textColor)
-			gui.draw_number(mon, tier, mon.X - x, localY, numberColor)
+			gui.draw_tier(mon, x, localY, unitColor)
+			gui.draw_number(mon, tier, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
