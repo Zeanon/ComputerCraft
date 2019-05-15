@@ -27,6 +27,7 @@ function split(string, delimiter)
 	return result
 end
 
+-- split a number into it's integer and it's decimal part
 function splitNumber(number)
 	local number1 = getInteger(number)
 	local number2 = number - number1
@@ -37,10 +38,12 @@ function splitNumber(number)
 	return result
 end
 
---get the result value of a number under 10
+--get the integer value of a number
 function getInteger(number)
+	local negative = false
 	if number < 0 then
-		return 0
+		local negative = true
+		number = number * (-1)
 	end
 
 	local divider = 1
@@ -56,15 +59,25 @@ function getInteger(number)
 			divider = divider / 10
 		end
 	end
+	if negative then
+		return result * (-1)
+	end
 	return result
 end
 
 -- returns the modulo value of 2 integers
 function getModulo(number, modulo)
+	local negative = false
 	if number < 0 then
+		negative = true
 		number = number * (-1)
 	end
 	if modulo < 0 then
+		if negative then
+			negative = false
+		else
+			negative = true
+		end
 		modulo = modulo * (-1)
 	end
 	if number < modulo then
@@ -82,6 +95,9 @@ function getModulo(number, modulo)
 			result = result - divider
 			divider = divider / modulo
 		end
+	end
+	if negative then
+		return modulo - (number -result)
 	end
 	return number - result
 end
@@ -291,6 +307,12 @@ end
 
 --draw number on computer terminal
 function draw_number(mon, number, offset, y, color)
+	local negative = false
+	if number < 0 then
+		local negative = true
+		number = number * (-1)
+	end
+	
 	local number1 = splitNumber(number)[1]
 	local number2 = splitNumber(number)[2]
 
@@ -302,6 +324,10 @@ function draw_number(mon, number, offset, y, color)
 		x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) + (length2 * 4) + 1)
 	else
 		x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) - 1)
+	end
+	
+	if negative then
+		gui.draw_line(mon, x - 4, y + 2, 3, color)
 	end
 
 	if length1 == 1 then
