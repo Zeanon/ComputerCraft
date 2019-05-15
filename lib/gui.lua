@@ -67,7 +67,10 @@ function getModulo(number, modulo)
 	if modulo < 0 then
 		modulo = modulo * (-1)
 	end
-	local divider = 1
+	if number < modulo then
+		return number
+	end
+	local divider = modulo
 	while divider * modulo <= number do
 		divider = divider * modulo
 	end
