@@ -38,7 +38,7 @@ function splitNumber(number)
 	return result
 end
 
---get the integer value of a number
+-- get the integer value of a number
 function getInteger(number)
 	local negative = false
 	if number < 0 then
@@ -119,13 +119,13 @@ function draw_text_right(mon, offset, y, text, text_color, bg_color)
 	mon.monitor.write(text)
 end
 
---display text text1 on the left side and text2 on the right side of monitor, "mon" peripheral
+-- display text text1 on the left side and text2 on the right side of monitor, "mon" peripheral
 function draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color, bg_color)
 	draw_text(mon, x, y, text1, text1_color, bg_color)
 	draw_text_right(mon, offset, y, text2, text2_color, bg_color)
 end
 
---draw horizontal line on computer terminal(mon)
+-- draw horizontal line on computer terminal(mon)
 function draw_line(mon, x, y, length, color)
 	if length < 0 then
 		length = 0
@@ -135,7 +135,7 @@ function draw_line(mon, x, y, length, color)
 	mon.monitor.write(string.rep(" ", length))
 end
 
---draw vertical line on computer terminal(mon)
+-- draw vertical line on computer terminal(mon)
 function draw_column(mon, x, y, height, color)
 	if height < 0 then
 		height = 0
@@ -186,17 +186,17 @@ function drawSideButtons(mon, y, color)
 	mon.monitor.write(" ")
 end
 
---create progress bar
---draws two overlapping lines
---background line of bg_color
---main line of bar_color as a percentage of minVal/maxVal
+-- create progress bar
+-- draws two overlapping lines
+-- background line of bg_color
+-- main line of bar_color as a percentage of minVal/maxVal
 function progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
-	draw_line(mon, x, y, length, bg_color) --backgoround bar
+	draw_line(mon, x, y, length, bg_color) -- backgoround bar
 	local barSize = math.floor((minVal/maxVal) * length)
-	draw_line(mon, x, y, barSize, bar_color) --progress so far
+	draw_line(mon, x, y, barSize, bar_color) -- progress so far
 end
 
---draw numbers from 0 to 9
+-- draw numbers from 0 to 9
 function draw_0(mon, x, y, color)
 	mon.monitor.setBackgroundColor(color)
 	draw_column(mon, x, y, 5, color)
@@ -280,7 +280,7 @@ function draw_9(mon, x, y, color)
 	mon.monitor.write(" ")
 end
 
---convert number to result digit and draw it on monitor
+-- convert number to result digit and draw it on monitor
 function draw_digit(number, mon, x, y, color)
 	if number == 0 then
 		draw_0(mon, x, y, color)
@@ -305,7 +305,7 @@ function draw_digit(number, mon, x, y, color)
 	end
 end
 
---draw number on computer terminal
+-- draw number on computer terminal
 function draw_number(mon, number, offset, y, color)
 	local negative = false
 	if number < 0 then
@@ -370,7 +370,7 @@ function draw_number(mon, number, offset, y, color)
 	end
 end
 
---draw RF/T on computer terminal(mon)
+-- draw RF/T on computer terminal(mon)
 function draw_rft(mon, offset, y, color)
 	local x = mon.X - (offset + 15)
 
@@ -401,6 +401,7 @@ function draw_rft(mon, offset, y, color)
 	mon.monitor.write(" ")
 end
 
+-- draw RF on computer terminal (mon)
 function draw_rf(mon, offset, y, color)
 	local x = mon.X - (offset + 7)
 
@@ -420,6 +421,7 @@ function draw_rf(mon, offset, y, color)
 	mon.monitor.write(" ")
 end
 
+-- draw / on computer terminal (mon)
 function draw_slash(mon, offset, y, color)
 	local x = mon.X - (offset + 3)
 
@@ -429,8 +431,23 @@ function draw_slash(mon, offset, y, color)
 	mon.monitor.write(" ")
 end
 
-function draw_SI(mon, x, y, length, color)
-		mon.monitor.setBackgroundColor(color)
+-- draw the SI prefix for the given number length on computer terminal (mon)
+function draw_si(mon, offset, y, length, color)
+	local x = mon.X - (offset + 3)
+	mon.monitor.setBackgroundColor(color)
+	
+	if length >= 4 and length < 7 then
+		draw_column(mon, x, y, 5, color)
+		mon.monitor.setCursorPos(x+1,y+2)
+		mon.monitor.write(" ")
+		draw_column(mon, x+2, y, 2, color)
+		draw_column(mon, x+2, y+3, 2, color)
+	elseif length >= 7 and length < 10 then
+		draw_column(mon, x, y, 5, color)
+		mon.monitor.setCursorPos(x+1,y+1)
+		mon.monitor.write(" ")
+		draw_column(mon, x+2, y, 5, color)
+	elseif length >= 10 and length < 13 then
 		draw_column(mon, x, y, 5, color)
 		mon.monitor.setCursorPos(x+1,y)
 		mon.monitor.write(" ")
@@ -440,8 +457,30 @@ function draw_SI(mon, x, y, length, color)
 		mon.monitor.write(" ")
 		draw_column(mon, x+2, y, 2, color)
 		draw_column(mon, x+2, y+3, 2, color)
+	else
+		mon.monitor.setCursorPos(x,y)
+		mon.monitor.write(" ")
+		draw_column(mon, x+1, y, 5, color)
+		mon.monitor.setCursorPos(x+2,y)
+		mon.monitor.write(" ")
+	end
 end
 
+-- draw % on computer terminal (mon)
+function draw_percent(mon, offset, y, color)
+	local x = mon.X - (offset + 5)
+
+	mon.monitor.setCursorPos(x,y)
+	mon.monitor.write(" ")
+	draw_column(mon, x+1, y+3, 2, color)
+	draw_column(mon, x+2, y+1, 2, color)
+	mon.monitor.setCursorPos(x+3,y)
+	mon.monitor.write(" ")
+	mon.monitor.setCursorPos(x+4,y + 4)
+	mon.monitor.write(" ")
+end
+
+-- draw Tier on computer terminal (mon)
 function draw_tier(mon, x, y, color)
 	mon.monitor.setBackgroundColor(color)
 	mon.monitor.setCursorPos(x,y)
@@ -466,7 +505,7 @@ function draw_tier(mon, x, y, color)
 	draw_column(mon, x+14, y+3, 2, color)
 end
 
---clear computer terminal(mon)
+-- clear computer terminal(mon)
 function clear(mon)
 	term.clear()
 	term.setCursorPos(1,1)
