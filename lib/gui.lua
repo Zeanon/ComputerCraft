@@ -305,10 +305,8 @@ end
 
 -- draw number on computer terminal
 function draw_number(mon, number, offset, y, color)
-	print(number)
 	local negative = false
 	if number < 0 then
-		print(negative)
 		negative = true
 		number = number * (-1)
 	end
@@ -327,7 +325,6 @@ function draw_number(mon, number, offset, y, color)
 	end
 
 	if negative then
-		print("hi")
 		x = x
 		draw_line(mon, x - 4, y + 2, 3, color)
 	end

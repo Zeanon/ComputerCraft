@@ -206,7 +206,7 @@ function drawLines()
 		print("Total energy stored: " .. gui.format_int(totalEnergy) .. " RF")
 		print("Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. " RF")
 		print("Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. " RF")
-		print("Throughput: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
+		print("Transfer: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
 		for i = 1, coreCount do
 			coreEnergy[i] = getEnergyStored(i)
 			coreMaxEnergy[i] = getMaxEnergyStored(i)
