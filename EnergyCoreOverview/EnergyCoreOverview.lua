@@ -526,9 +526,9 @@ function drawLine(mon, localY, line, drawButtons, side)
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
 		elseif gui.getModulo(line - 6, 6) == 3 then
-			local delimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 9) / 6)])) - 1) / 3) - 1)
+			local delimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 9) / 6)]))) - 1) / 3)) / 100
 			local energy = gui.getInteger(coreEnergy[1 + ((line - 9) / 6)] / delimeter) / 100
-			local maxDelimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)])) - 1) / 3) - 1)
+			local maxDelimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)]))) - 1) / 3)) / 100
 			local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 6)] / maxDelimeter) / 100
 			local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
 			local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
