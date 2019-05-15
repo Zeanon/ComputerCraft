@@ -480,7 +480,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local x = ((mon.X - offset) / 2) - 1
 		if totalEnergy - oldEnergy < 0 then
 			x = ((mon.X - offset - 4) / 2) - 1
-			gui.draw_line(mon, x, localY, 3, numberColor)
+			gui.draw_line(mon, x, localY + 2, 3, numberColor)
 		end
 		gui.draw_number(mon, flow, x + 9, localY, numberColor)
 		gui.drawRF(mon, x, localY, rftColor)
