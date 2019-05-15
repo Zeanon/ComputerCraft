@@ -50,9 +50,7 @@ function getInteger(number)
 
 	local result = 0
 	while number > result and divider >= 1 do
-		if number >= result then
-			result = result + divider
-		end
+		result = result + divider
 		if number < result then
 			result = result - divider
 			divider = divider / 10
@@ -67,24 +65,24 @@ function getModulo(number, modulo)
 		number = number * (-1)
 	end
 	if modulo < 0 then
-		number = number * (-1)
+		modulo = modulo * (-1)
 	end
-	local divider = 1
+	if number < modulo then
+		return number
+	end
+	local divider = modulo
 	while divider * modulo <= number do
 		divider = divider * modulo
 	end
 
 	local result = 0
-	while number > result and divider >= 1 do
-		if number >= result then
-			result = result + divider
-		end
-		if number < result then
-			result = result - divider
-			divider = divider / modulo
-		end
+	while number > result and divider >= modulo do
+	result = result + divider
+	if number < result then
+		result = result - divider
+		divider = divider / modulo
 	end
-	return result
+	return number - result
 end
 
 -- monitor related
