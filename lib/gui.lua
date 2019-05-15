@@ -78,9 +78,10 @@ function getModulo(number, modulo)
 	local result = 0
 	while number > result and divider >= modulo do
 	result = result + divider
-	if number < result then
-		result = result - divider
-		divider = divider / modulo
+		if number < result then
+			result = result - divider
+			divider = divider / modulo
+		end
 	end
 	return number - result
 end
@@ -344,7 +345,7 @@ function draw_number(mon, number, offset, y, color)
 end
 
 --draw RF/T on computer terminal(mon)
-function drawRFT(mon, offset, y, color)
+function draw_rft(mon, offset, y, color)
 	local x = mon.X - (offset + 15)
 
 	mon.monitor.setBackgroundColor(color)
@@ -374,7 +375,7 @@ function drawRFT(mon, offset, y, color)
 	mon.monitor.write(" ")
 end
 
-function drawRF(mon, offset, y, color)
+function draw_rf(mon, offset, y, color)
 	local x = mon.X - (offset + 7)
 
 	mon.monitor.setBackgroundColor(color)
@@ -402,7 +403,7 @@ function draw_slash(mon, offset, y, color)
 	mon.monitor.write(" ")
 end
 
-function drawSI(mon, x, y, length, color)
+function draw_SI(mon, x, y, length, color)
 		mon.monitor.setBackgroundColor(color)
 		draw_column(mon, x, y, 5, color)
 		mon.monitor.setCursorPos(x+1,y)
@@ -413,6 +414,30 @@ function drawSI(mon, x, y, length, color)
 		mon.monitor.write(" ")
 		draw_column(mon, x+2, y, 2, color)
 		draw_column(mon, x+2, y+3, 2, color)
+end
+
+function draw_tier(mon, x, y, color)
+	mon.monitor.setBackgroundColor(color)
+	mon.monitor.setCursorPos(x,y)
+	mon.monitor.write(" ")
+	draw_column(mon, x+1, y, 5, color)
+	mon.monitor.setCursorPos(x+2,y)
+	mon.monitor.write(" ")
+
+	draw_column(mon, x+4, y, 5, color)
+
+	draw_column(mon, x+6, y, 5, color)
+	draw_line(mon, x+7, y, 2, color)
+	draw_line(mon, x+7, y+2, 2, color)
+	draw_line(mon, x+7, y+4, 2, color)
+
+	draw_column(mon, x+9, y, 5, color)
+	mon.monitor.setCursorPos(x+10,y)
+	mon.monitor.write(" ")
+	mon.monitor.setCursorPos(x+10,y+2)
+	mon.monitor.write(" ")
+	draw_column(mon, x+11, y, 2, color)
+	draw_column(mon, x+11, y+3, 2, color)
 end
 
 --clear computer terminal(mon)
