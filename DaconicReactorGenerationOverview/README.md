@@ -1,7 +1,7 @@
 # DraconicReactorGenerationOverview
 ## Setup
-just connect the 2 reactors via peripheral proxys and the 2 internalOutput fluxgates to the computer and add a screen(at least 5 wide)
-<br>make sure, that there are no other monitors, fluxgates or reactors connected to the same network or the autodetection of the different items will not work properly
+just connect the reactors via peripheral proxys and the internalOutput fluxgates to the computer and add a screen(at least 5 wide)
+<br>make sure, that there are no other monitors belonging to another computer connected to the same network or the autodetection of the different items will not work properly
 <br>the items displayed on the screen will adjust depending on the height of the screen
 ## Installation
 pastebin URL of install script: https://pastebin.com/VT6ezUgB
