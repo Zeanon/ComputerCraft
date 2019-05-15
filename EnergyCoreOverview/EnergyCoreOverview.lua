@@ -271,7 +271,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line1"] = monitors[side .. ":line1"] + 1
-					if monitors[side .. ":line1"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line1"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line1"] = 1
 					end
 				end
@@ -287,7 +287,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line2"] = monitors[side .. ":line2"] + 1
-					if monitors[side .. ":line2"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line2"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line2"] = 1
 					end
 				end
@@ -303,7 +303,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line3"] = monitors[side .. ":line3"] + 1
-					if monitors[side .. ":line3"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line3"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line3"] = 1
 					end
 				end
@@ -319,7 +319,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line4"] = monitors[side .. ":line4"] + 1
-					if monitors[side .. ":line4"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line4"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line4"] = 1
 					end
 				end
@@ -335,7 +335,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line5"] = monitors[side .. ":line5"] + 1
-					if monitors[side .. ":line5"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line5"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line5"] = 1
 					end
 				end
@@ -351,7 +351,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line6"] = monitors[side .. ":line6"] + 1
-					if monitors[side .. ":line6"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line6"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line6"] = 1
 					end
 				end
@@ -367,7 +367,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line7"] = monitors[side .. ":line7"] + 1
-					if monitors[side .. ":line7"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line7"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line7"] = 1
 					end
 				end
@@ -383,7 +383,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line8"] = monitors[side .. ":line8"] + 1
-					if monitors[side .. ":line8"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line8"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line8"] = 1
 					end
 				end
@@ -399,7 +399,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line9"] = monitors[side .. ":line9"] + 1
-					if monitors[side .. ":line9"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line9"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line9"] = 1
 					end
 				end
@@ -415,7 +415,7 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line10"] = monitors[side .. ":line10"] + 1
-					if monitors[side .. ":line10"] > (monitorCount * 6) + 7then
+					if monitors[side .. ":line10"] > (monitorCount * 6) + 7 then
 						monitors[side .. ":line10"] = 1
 					end
 				end
