@@ -454,9 +454,10 @@ function drawLine(mon, localY, line, drawButtons, side)
 			energyPercent = 0
 		end
 		local length = string.len(tostring(energyPercent))
-		local offset = (length * 4)
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 		local x = ((mon.X - offset) / 2) - 1
-		gui.draw_number(mon, energyPercent , x, localY, numberColor)
+		gui.draw_number(mon, energyPercent , x + 7, localY, numberColor)
+		gui.draw_percent(mon, x, localY, numberColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
@@ -487,10 +488,10 @@ function drawLine(mon, localY, line, drawButtons, side)
 	elseif line == 5 then
 		local flow = (totalEnergy - oldEnergy) / (20 * refresh)
 		local length = string.len(tostring(flow))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 17
 		local x = ((mon.X - offset) / 2) - 1
 		
-		gui.draw_number(mon, flow, x + 9, localY, numberColor)
+		gui.draw_number(mon, flow, x + 17, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
@@ -525,7 +526,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
 		elseif gui.getModulo(line - 6, 6) == 3 then
-			local delimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 9) / 6)])) - 1) / 3))
+			local delimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 9) / 6)])) - 1) / 3) - 2)
 			local energy = gui.getInteger(coreEnergy[1 + ((line - 9) / 6)] / delimeter) / 100
 			local maxDelimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)])) - 1) / 3))
 			local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 6)] / maxDelimeter) / 100
