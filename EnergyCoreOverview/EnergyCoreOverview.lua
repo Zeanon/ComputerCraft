@@ -203,15 +203,15 @@ function drawLines()
 		totalEnergy = getTotalEnergyStored()
 		totalMaxEnergy = getTotalMaxEnergyStored()
 		gui.clear(mon)
-		print("Total energy stored: " .. gui.format_int(totalEnergy) .. "RF")
-		print("Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. "RF")
-		print("Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. "RF")
-		print("Throughput: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. "RF/t")
+		print("Total energy stored: " .. gui.format_int(totalEnergy) .. " RF")
+		print("Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. " RF")
+		print("Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. " RF")
+		print("Throughput: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
 		for i = 1, coreCount do
 			coreEnergy[i] = getEnergyStored(i)
 			coreMaxEnergy[i] = getMaxEnergyStored(i)
-			print("Energy core " .. i .. " energy stored: " .. gui.format_int(coreEnergy[i]) .. "RF")
-			print("Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. "RF")
+			print("Energy core " .. i .. " energy stored: " .. gui.format_int(coreEnergy[i]) .. " RF")
+			print("Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. " RF")
 		end
 
 		local amount = monitors[connectedMonitors[i] .. ":amount"]
