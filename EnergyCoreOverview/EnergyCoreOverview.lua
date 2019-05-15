@@ -491,7 +491,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 17
 		local x = ((mon.X - offset) / 2) - 1
 		
-		gui.draw_number(mon, flow, x + 17, localY, numberColor)
+		gui.draw_number(mon, flow, x + 18, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
@@ -526,9 +526,9 @@ function drawLine(mon, localY, line, drawButtons, side)
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
 		elseif gui.getModulo(line - 6, 6) == 3 then
-			local delimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 9) / 6)])) - 1) / 3) - 2)
+			local delimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 9) / 6)])) - 1) / 3) - 1)
 			local energy = gui.getInteger(coreEnergy[1 + ((line - 9) / 6)] / delimeter) / 100
-			local maxDelimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)])) - 1) / 3))
+			local maxDelimeter = 1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)])) - 1) / 3) - 1)
 			local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 6)] / maxDelimeter) / 100
 			local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
 			local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
