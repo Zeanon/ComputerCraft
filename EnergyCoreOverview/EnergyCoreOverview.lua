@@ -12,7 +12,8 @@ os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
 
-local totalEnergy, totalMaxEnergy, oldEnergy
+local totalEnergy, totalMaxEnergy
+local oldEnergy = 0
 local coreEnergy = {}
 local coreMaxEnergy = {}
 
