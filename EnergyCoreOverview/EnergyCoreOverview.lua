@@ -519,8 +519,10 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	elseif line == 7 then
 		local length = string.len(tostring(coreCount))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-		local x = ((mon.X - offset) / 2) - 1
+		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 22
+		local x = ((mon.X - offset) / 2)
+
+		gui.draw_cores(mon, x, localY, unitColor)
 		gui.draw_number(mon, coreCount, x, localY, numberColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
@@ -617,10 +619,14 @@ function drawLine(mon, localY, line, drawButtons, side)
 				tier = 7
 			end
 			local length = string.len(tostring(tier))
-			local offset = (length * 4) + 16
+			local offset = (length * 4) + 19
 			local x = ((mon.X - offset) / 2)
 
+
 			gui.draw_tier(mon, x, localY, unitColor)
+			if length == 1 then
+				x = x + 1
+			end
 			gui.draw_number(mon, tier, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
