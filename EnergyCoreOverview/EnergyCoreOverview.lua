@@ -510,7 +510,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local length = string.len(tostring(coreEnergy[1 + (line - 7) / 6]))
 			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
-			gui.draw_number(mon, coreEnergy[1 + (line - 7) / 5], x + 9, localY, numberColor)
+			gui.draw_number(mon, coreEnergy[1 + (line - 7) / 6], x + 9, localY, numberColor)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
@@ -519,7 +519,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local length = string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 6)]))
 			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
-			gui.draw_number(mon, coreMaxEnergy[1 + ((line - 8) / 5)], x + 9, localY, numberColor)
+			gui.draw_number(mon, coreMaxEnergy[1 + ((line - 8) / 6)], x + 9, localY, numberColor)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
@@ -586,7 +586,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		elseif gui.getModulo(line - 6, 6) == 0 then
 			local length = mon.X - 12
 			local x = ((mon.X - length) / 2) - 1
-			local energyPercent = math.ceil(coreEnergy[(line - 6) / 5] / coreMaxEnergy[(line - 6) / 6] * 10000)*.01
+			local energyPercent = math.ceil(coreEnergy[(line - 6) / 6] / coreMaxEnergy[(line - 6) / 6] * 10000)*.01
 			if energyPercent == math.huge or isnan(energyPercent) then
 				energyPercent = 0
 			end
@@ -596,11 +596,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 			elseif energyPercent < 70 and energyPercent > 30 then
 				energyColor = colors.orange
 			end
-			gui.progress_bar(mon, x + 2, localY, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-			gui.progress_bar(mon, x + 2, localY + 1, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-			gui.progress_bar(mon, x + 2, localY + 2, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-			gui.progress_bar(mon, x + 2, localY + 3, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-			gui.progress_bar(mon, x + 2, localY + 4, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+			gui.progress_bar(mon, x + 2, localY, length, coreEnergy[(line - 6) / 6], coreMaxEnergy[(line - 6) / 6], energyColor, colors.lightGray)
+			gui.progress_bar(mon, x + 2, localY + 1, length, coreEnergy[(line - 6) / 6], coreMaxEnergy[(line - 6) / 6], energyColor, colors.lightGray)
+			gui.progress_bar(mon, x + 2, localY + 2, length, coreEnergy[(line - 6) / 6], coreMaxEnergy[(line - 6) / 6], energyColor, colors.lightGray)
+			gui.progress_bar(mon, x + 2, localY + 3, length, coreEnergy[(line - 6) / 6], coreMaxEnergy[(line - 6) / 6], energyColor, colors.lightGray)
+			gui.progress_bar(mon, x + 2, localY + 4, length, coreEnergy[(line - 6) / 6], coreMaxEnergy[(line - 6) / 6], energyColor, colors.lightGray)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
