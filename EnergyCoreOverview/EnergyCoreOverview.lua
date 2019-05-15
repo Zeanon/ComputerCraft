@@ -81,7 +81,7 @@ function save_config()
     sw.writeLine(" ")
     sw.writeLine("-- small font means a font size of 0.5 instead of 1")
     for i = 1, monitorCount do
-        if monitors[connectedMonitors[i] .. ": smallFont"] then
+        if monitors[connectedMonitors[i] .. ":smallFont"] then
             sw.writeLine(connectedMonitors[i] .. ": smallFont: true")
         else
             sw.writeLine(connectedMonitors[i] .. ": smallFont: false")
@@ -183,51 +183,54 @@ function drawLines()
         monX, monY = monitor.getSize()
         mon = {}
         mon.monitor,mon.X, mon.Y = monitor, monX, monY
-        local amount = monitors[connectedMonitors[i] .. ":amount"]
-        local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
-        local y = monitors[connectedMonitors[i] .. ":y"]
+
         totalEnergy = getTotalEnergyStored()
         totalMaxEnergy = getTotalMaxEnergyStored()
         gui.clear(mon)
         print("Total energy stored: " .. gui.format_int(totalEnergy) .. "RF")
         print("Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. "RF")
         print("Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. "RF")
-        for i = 1, monitorCount do
+        for i = 1, coreCount do
             coreEnergy[i] = getEnergyStored(i)
             coreMaxEnergy[i] = getMaxEnergyStored(i)
             print("Energy core " .. i .. " energy stored: " .. gui.format_int(coreEnergy[i]) .. "RF")
             print("Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. "RF")
         end
+
+        local amount = monitors[connectedMonitors[i] .. ":amount"]
+        local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
+        local y = monitors[connectedMonitors[i] .. ":y"]
+
         if amount >= 1 then
-            drawLine(mon, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
+            drawLine(mon, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons, connectedMonitors[i])
         end
         if amount >= 2 then
             gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-            drawLine(mon, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
+            drawLine(mon, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons, connectedMonitors[i])
         end
         if amount >= 3 then
-            drawLine(mon, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
+            drawLine(mon, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons, connectedMonitors[i])
         end
         if amount >= 4 then
-            drawLine(mon, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
+            drawLine(mon, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons, connectedMonitors[i])
         end
         if amount >= 5 then
-            drawLine(mon, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
+            drawLine(mon, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons, connectedMonitors[i])
         end
         if amount >= 6 then
-            drawLine(mon, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
+            drawLine(mon, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons, connectedMonitors[i])
         end
         if amount >= 7 then
-            drawLine(mon, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
+            drawLine(mon, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons, connectedMonitors[i])
         end
         if amount >= 8 then
-            drawLine(mon, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
+            drawLine(mon, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons, connectedMonitors[i])
         end
         if amount >= 9 then
-            drawLine(mon, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
+            drawLine(mon, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons, connectedMonitors[i])
         end
         if amount >= 10 then
-            drawLine(mon, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
+            drawLine(mon, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons, connectedMonitors[i])
         end
     end
 end
@@ -407,16 +410,10 @@ function buttons()
 end
 
 --draw line with information on the monitor
-function drawLine(mon, localY, line, drawButtons)
+function drawLine(mon, localY, line, drawButtons, side)
     if line == 1 then
         local length = string.len(tostring(totalEnergy))
         local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-        if offset >= mon.X - 12 then
-            local monX, monY
-            mon.monitor.setTextScale(0.5)
-            monX, monY = mon.monitor.getSize()
-            mon.X, mon.Y = monX, monY
-        end
         local x = ((mon.X - offset) / 2) - 1
         gui.draw_number(mon, totalEnergy, x + 9, localY, numberColor, rftColor)
         gui.drawRF(mon, x, localY, rftColor)
@@ -427,12 +424,6 @@ function drawLine(mon, localY, line, drawButtons)
     elseif line == 2 then
         local length = string.len(tostring(totalMaxEnergy))
         local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-        if offset >= mon.X - 12 then
-            local monX, monY
-            mon.monitor.setTextScale(0.5)
-            monX, monY = mon.monitor.getSize()
-            mon.X, mon.Y = monX, monY
-        end
         local x = ((mon.X - offset) / 2) - 1
         gui.draw_number(mon, totalMaxEnergy, x + 9, localY, numberColor)
         gui.drawRF(mon, x, localY, rftColor)
@@ -446,28 +437,19 @@ function drawLine(mon, localY, line, drawButtons)
             energyPercent = 0
         end
         local length = string.len(tostring(energyPercent))
-        local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-        if offset >= mon.X - 12 then
-            local monX, monY
-            mon.monitor.setTextScale(0.5)
-            monX, monY = mon.monitor.getSize()
-            mon.X, mon.Y = monX, monY
-        end
+        local offset = (length * 4)
         local x = ((mon.X - offset) / 2) - 1
-        gui.draw_number(mon, energyPercent , x + 35, localY, numberColor)
+        gui.draw_number(mon, energyPercent , x, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
         end
     elseif line == 4 then
-        local offset = 70
-        if offset >= mon.X - 12 then
-            local monX, monY
-            mon.monitor.setTextScale(0.5)
-            monX, monY = mon.monitor.getSize()
-            mon.X, mon.Y = monX, monY
+        local length = 70
+        if monitors[side .. ":smallFont"] then
+            length = 140
         end
-        local x = ((mon.X - offset) / 2) - 1
+        local x = ((mon.X - length) / 2) - 1
         local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
@@ -478,11 +460,12 @@ function drawLine(mon, localY, line, drawButtons)
         elseif energyPercent < 70 and energyPercent > 30 then
             energyColor = colors.orange
         end
-        gui.progress_bar(mon, x + 1, localY, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, x + 1, localY + 1, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, x + 1, localY + 2, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, x + 1, localY + 3, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
-        gui.progress_bar(mon, x + 1, localY + 4, 70, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+
+        gui.progress_bar(mon, x + 2, localY, length, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 2, localY + 1, length, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 2, localY + 2, length, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 2, localY + 3, length, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
+        gui.progress_bar(mon, x + 2, localY + 4, length, totalEnergy, totalMaxEnergy, energyColor, colors.lightGray)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Cent", "Flow", textColor, textColor, buttonColor)
@@ -494,12 +477,6 @@ function drawLine(mon, localY, line, drawButtons)
         end
         local length = string.len(tostring(flow))
         local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-        if offset >= mon.X - 12 then
-            local monX, monY
-            mon.monitor.setTextScale(0.5)
-            monX, monY = mon.monitor.getSize()
-            mon.X, mon.Y = monX, monY
-        end
         local x = ((mon.X - offset) / 2) - 1
         gui.draw_number(mon, flow, x + 9, localY, numberColor)
         gui.drawRF(mon, x, localY, rftColor)
@@ -510,14 +487,8 @@ function drawLine(mon, localY, line, drawButtons)
     elseif line == 6 then
         local length = string.len(tostring(coreCount))
         local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-        if offset >= mon.X - 12 then
-            local monX, monY
-            mon.monitor.setTextScale(0.5)
-            monX, monY = mon.monitor.getSize()
-            mon.X, mon.Y = monX, monY
-        end
         local x = ((mon.X - offset) / 2) - 1
-        gui.draw_number(mon, coreCount, x + 20, localY, numberColor)
+        gui.draw_number(mon, coreCount, x, localY, numberColor)
         if drawButtons then
             gui.drawSideButtons(mon, localY, buttonColor)
             gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
@@ -526,41 +497,29 @@ function drawLine(mon, localY, line, drawButtons)
         if gui.getModulo(line - 6, 5) == 1 then
             local length = string.len(tostring(coreEnergy[1 + (line - 7) / 5]))
             local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-            if offset >= mon.X - 12 then
-                local monX, monY
-                mon.monitor.setTextScale(0.5)
-                monX, monY = mon.monitor.getSize()
-                mon.X, mon.Y = monX, monY
-            end
             local x = ((mon.X - offset) / 2) - 1
             gui.draw_number(mon, coreEnergy[1 + (line - 7) / 5], x + 9, localY, numberColor)
             gui.drawRF(mon, x, localY, rftColor)
+            if drawButtons then
+                gui.drawSideButtons(mon, localY, buttonColor)
+            end
         elseif gui.getModulo(line - 6, 5) == 2 then
             local length = string.len(tostring(coreMaxEnergy[1 + ((line - 8) / 5)]))
             local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-            if offset >= mon.X - 12 then
-                local monX, monY
-                mon.monitor.setTextScale(0.5)
-                monX, monY = mon.monitor.getSize()
-                mon.X, mon.Y = monX, monY
-            end
             local x = ((mon.X - offset) / 2) - 1
             gui.draw_number(mon, coreMaxEnergy[1 + ((line - 8) / 5)], x + 9, localY, numberColor)
             gui.drawRF(mon, x, localY, rftColor)
+            if drawButtons then
+                gui.drawSideButtons(mon, localY, buttonColor)
+            end
         elseif gui.getModulo(line - 6, 5) == 3 then
             local delimeter = 10 ^ (string.len(tostring(coreEnergy[1 + ((line - 9) / 5)])) - 3)
             local energy = gui.getInteger(coreEnergy[1 + ((line - 9) / 5)] / delimeter) / 100
             local maxDelimeter = 10 ^ (string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 5)])) - 3)
             local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 5)] / maxDelimeter) / 100
-            local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) -1
-            local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3))
-            if offset >= mon.X - 12 then
-                local monX, monY
-                mon.monitor.setTextScale(0.5)
-                monX, monY = mon.monitor.getSize()
-                mon.X, mon.Y = monX, monY
-            end
-            local x = ((mon.X - offset) / 2) - 3
+            local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
+            local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
+            local x = ((mon.X - offset) / 2)
 
             gui.draw_number(mon, energy, x + 39, localY, numberColor)
 
@@ -568,6 +527,9 @@ function drawLine(mon, localY, line, drawButtons)
             gui.draw_number(mon, maxEnergy, x + 16, localY, numberColor)
 
             gui.drawRF(mon, x, localY, rftColor)
+            if drawButtons then
+                gui.drawSideButtons(mon, localY, buttonColor)
+            end
         elseif gui.getModulo(line - 6, 5) == 4 then
             local energyPercent = math.ceil(coreEnergy[1 + ((line - 10) / 5)] / coreMaxEnergy[1 + ((line - 10) / 5)] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
@@ -575,23 +537,17 @@ function drawLine(mon, localY, line, drawButtons)
             end
             local length = string.len(tostring(energyPercent))
             local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
-            if offset >= mon.X - 12 then
-                local monX, monY
-                mon.monitor.setTextScale(0.5)
-                monX, monY = mon.monitor.getSize()
-                mon.X, mon.Y = monX, monY
-            end
             local x = ((mon.X - offset) / 2) - 1
-            gui.draw_number(mon, energyPercent, x + 35, localY, numberColor)
+            gui.draw_number(mon, energyPercent, x, localY, numberColor)
+            if drawButtons then
+                gui.drawSideButtons(mon, localY, buttonColor)
+            end
         elseif gui.getModulo(line - 6, 5) == 0 then
-            local offset = 70
-            if offset >= mon.X - 12 then
-                local monX, monY
-                mon.monitor.setTextScale(0.5)
-                monX, monY = mon.monitor.getSize()
-                mon.X, mon.Y = monX, monY
+            local length = 70
+            if monitors[side .. ":smallFont"] then
+                length = 140
             end
-            local x = ((mon.X - offset) / 2) - 1
+            local x = ((mon.X - length) / 2) - 1
             local energyPercent = math.ceil(coreEnergy[(line - 6) / 5] / coreMaxEnergy[(line - 6) / 5] * 10000)*.01
             if energyPercent == math.huge or isnan(energyPercent) then
                 energyPercent = 0
@@ -602,11 +558,14 @@ function drawLine(mon, localY, line, drawButtons)
             elseif energyPercent < 70 and energyPercent > 30 then
                 energyColor = colors.orange
             end
-            gui.progress_bar(mon, x + 1, localY, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, x + 1, localY + 1, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, x + 1, localY + 2, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, x + 1, localY + 3, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
-            gui.progress_bar(mon, x + 1, localY + 4, 70, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 2, localY, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 2, localY + 1, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 2, localY + 2, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 2, localY + 3, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            gui.progress_bar(mon, x + 2, localY + 4, length, coreEnergy[(line - 6) / 5], coreMaxEnergy[(line - 6) / 5], energyColor, colors.lightGray)
+            if drawButtons then
+                gui.drawSideButtons(mon, localY, buttonColor)
+            end
         end
     end
 end
@@ -680,6 +639,7 @@ function init()
     for i = 1, monitorCount do
         local mon, monitor, monX, monY
         monitor = peripheral.wrap(connectedMonitors[i])
+        monitor.setTextScale(1)
         monX, monY = monitor.getSize()
         mon = {}
         mon.monitor,mon.X, mon.Y = monitor, monX, monY

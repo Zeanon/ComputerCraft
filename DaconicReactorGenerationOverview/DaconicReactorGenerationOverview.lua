@@ -85,7 +85,7 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine("-- small font means a font size of 0.5 instead of 1")
 	for i = 1, monitorCount do
-		if monitors[connectedMonitors[i] .. ": smallFont"] then
+		if monitors[connectedMonitors[i] .. ":smallFont"] then
 			sw.writeLine(connectedMonitors[i] .. ": smallFont: true")
 		else
 			sw.writeLine(connectedMonitors[i] .. ": smallFont: false")
@@ -190,9 +190,7 @@ function drawLines()
 		monX, monY = monitor.getSize()
 		mon = {}
 		mon.monitor,mon.X, mon.Y = monitor, monX, monY
-		local amount = monitors[connectedMonitors[i] .. ":amount"]
-		local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
-		local y = monitors[connectedMonitors[i] .. ":y"]
+
 		generation = getGeneration()
 		drainback = getDrainback()
 		gui.clear(mon)
@@ -203,36 +201,41 @@ function drawLines()
 			print("Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. "RF/t")
 		end
 		print("Total drainback: " .. gui.format_int(drainback) .. "RF/t")
+
+		local amount = monitors[connectedMonitors[i] .. ":amount"]
+		local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
+		local y = monitors[connectedMonitors[i] .. ":y"]
+
 		if amount >= 1 then
-			drawLine(mon, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons)
+			drawLine(mon, y, monitors[connectedMonitors[i] .. ":line1"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 2 then
 			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-			drawLine(mon, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons)
+			drawLine(mon, y + 10, monitors[connectedMonitors[i] .. ":line2"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 3 then
-			drawLine(mon, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons)
+			drawLine(mon, y + 18, monitors[connectedMonitors[i] .. ":line3"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 4 then
-			drawLine(mon, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons)
+			drawLine(mon, y + 26, monitors[connectedMonitors[i] .. ":line4"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 5 then
-			drawLine(mon, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons)
+			drawLine(mon, y + 34, monitors[connectedMonitors[i] .. ":line5"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 6 then
-			drawLine(mon, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons)
+			drawLine(mon, y + 42, monitors[connectedMonitors[i] .. ":line6"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 7 then
-			drawLine(mon, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons)
+			drawLine(mon, y + 50, monitors[connectedMonitors[i] .. ":line7"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 8 then
-			drawLine(mon, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons)
+			drawLine(mon, y + 58, monitors[connectedMonitors[i] .. ":line8"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 9 then
-			drawLine(mon, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons)
+			drawLine(mon, y + 66, monitors[connectedMonitors[i] .. ":line9"], drawButtons, connectedMonitors[i])
 		end
 		if amount >= 10 then
-			drawLine(mon, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons)
+			drawLine(mon, y + 74, monitors[connectedMonitors[i] .. ":line10"], drawButtons, connectedMonitors[i])
 		end
 	end
 end
@@ -412,16 +415,10 @@ function buttons()
 end
 
 --draw line with information on the monitor
-function drawLine(mon, localY, line, drawButtons)
+function drawLine(mon, localY, line, drawButtons, side)
 	if line == 1 then
 		local length = string.len(tostring(generation - drainback))
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
-		if offset >= mon.X - 12 then
-			local monX, monY
-			mon.monitor.setTextScale(0.5)
-			monX, monY = mon.monitor.getSize()
-			mon.X, mon.Y = monX, monY
-		end
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, generation - drainback, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
@@ -432,12 +429,6 @@ function drawLine(mon, localY, line, drawButtons)
 	elseif line == 2 then
 		local length = string.len(tostring(generation))
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
-		if offset >= mon.X - 12 then
-			local monX, monY
-			mon.monitor.setTextScale(0.5)
-			monX, monY = mon.monitor.getSize()
-			mon.X, mon.Y = monX, monY
-		end
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, generation, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
@@ -448,12 +439,6 @@ function drawLine(mon, localY, line, drawButtons)
 	elseif line == 3 then
 		local length = string.len(tostring(drainback))
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
-		if offset >= mon.X - 12 then
-			local monX, monY
-			mon.monitor.setTextScale(0.5)
-			monX, monY = mon.monitor.getSize()
-			mon.X, mon.Y = monX, monY
-		end
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, drainback, x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
@@ -464,12 +449,6 @@ function drawLine(mon, localY, line, drawButtons)
 	else
 		local length = string.len(tostring(reactorGeneration[line - 3]))
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
-		if offset >= mon.X - 12 then
-			local monX, monY
-			mon.monitor.setTextScale(0.5)
-			monX, monY = mon.monitor.getSize()
-			mon.X, mon.Y = monX, monY
-		end
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, reactorGeneration[line - 3], x + 17, localY, numberColor)
 		gui.drawRFT(mon, x, localY, rftColor)
@@ -567,6 +546,7 @@ function init()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
 		monitor = peripheral.wrap(connectedMonitors[i])
+		monitor.setTextScale(1)
 		monX, monY = monitor.getSize()
 		mon = {}
 		mon.monitor,mon.X, mon.Y = monitor, monX, monY
