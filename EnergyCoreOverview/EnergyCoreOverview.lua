@@ -267,11 +267,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line1"] = monitors[side .. ":line1"] - 1
 					if monitors[side .. ":line1"] < 1 then
-						monitors[side .. ":line1"] = (monitorCount * 6) + 6
+						monitors[side .. ":line1"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line1"] = monitors[side .. ":line1"] + 1
-					if monitors[side .. ":line1"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line1"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line1"] = 1
 					end
 				end
@@ -283,11 +283,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line2"] = monitors[side .. ":line2"] - 1
 					if monitors[side .. ":line2"] < 1 then
-						monitors[side .. ":line2"] = (monitorCount * 6) + 6
+						monitors[side .. ":line2"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line2"] = monitors[side .. ":line2"] + 1
-					if monitors[side .. ":line2"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line2"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line2"] = 1
 					end
 				end
@@ -299,11 +299,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line3"] = monitors[side .. ":line3"] - 1
 					if monitors[side .. ":line3"] < 1 then
-						monitors[side .. ":line3"] = (monitorCount * 6) + 6
+						monitors[side .. ":line3"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line3"] = monitors[side .. ":line3"] + 1
-					if monitors[side .. ":line3"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line3"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line3"] = 1
 					end
 				end
@@ -315,11 +315,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line4"] = monitors[side .. ":line4"] - 1
 					if monitors[side .. ":line4"] < 1 then
-						monitors[side .. ":line4"] = (monitorCount * 6) + 6
+						monitors[side .. ":line4"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line4"] = monitors[side .. ":line4"] + 1
-					if monitors[side .. ":line4"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line4"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line4"] = 1
 					end
 				end
@@ -331,11 +331,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line5"] = monitors[side .. ":line5"] - 1
 					if monitors[side .. ":line5"] < 1 then
-						monitors[side .. ":line5"] = (monitorCount * 6) + 6
+						monitors[side .. ":line5"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line5"] = monitors[side .. ":line5"] + 1
-					if monitors[side .. ":line5"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line5"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line5"] = 1
 					end
 				end
@@ -347,11 +347,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line6"] = monitors[side .. ":line6"] - 1
 					if monitors[side .. ":line6"] < 1 then
-						monitors[side .. ":line6"] = (monitorCount * 6) + 6
+						monitors[side .. ":line6"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line6"] = monitors[side .. ":line6"] + 1
-					if monitors[side .. ":line6"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line6"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line6"] = 1
 					end
 				end
@@ -363,11 +363,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line7"] = monitors[side .. ":line7"] - 1
 					if monitors[side .. ":line7"] < 1 then
-						monitors[side .. ":line7"] = (monitorCount * 6) + 6
+						monitors[side .. ":line7"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line7"] = monitors[side .. ":line7"] + 1
-					if monitors[side .. ":line7"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line7"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line7"] = 1
 					end
 				end
@@ -379,11 +379,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line8"] = monitors[side .. ":line8"] - 1
 					if monitors[side .. ":line8"] < 1 then
-						monitors[side .. ":line8"] = (monitorCount * 6) + 6
+						monitors[side .. ":line8"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line8"] = monitors[side .. ":line8"] + 1
-					if monitors[side .. ":line8"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line8"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line8"] = 1
 					end
 				end
@@ -395,11 +395,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line9"] = monitors[side .. ":line9"] - 1
 					if monitors[side .. ":line9"] < 1 then
-						monitors[side .. ":line9"] = (monitorCount * 6) + 6
+						monitors[side .. ":line9"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line9"] = monitors[side .. ":line9"] + 1
-					if monitors[side .. ":line9"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line9"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line9"] = 1
 					end
 				end
@@ -411,11 +411,11 @@ function buttons()
 				if xPos >= 1 and xPos <= 5 then
 					monitors[side .. ":line10"] = monitors[side .. ":line10"] - 1
 					if monitors[side .. ":line10"] < 1 then
-						monitors[side .. ":line10"] = (monitorCount * 6) + 6
+						monitors[side .. ":line10"] = (monitorCount * 6) + 7
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitors[side .. ":line10"] = monitors[side .. ":line10"] + 1
-					if monitors[side .. ":line10"] > (monitorCount * 6) + 6 then
+					if monitors[side .. ":line10"] > (monitorCount * 6) + 7then
 						monitors[side .. ":line10"] = 1
 					end
 				end
@@ -659,35 +659,35 @@ end
 -- check that every line displays something
 function checkLines()
 	for i = 1, monitorCount do
-		if monitors[connectedMonitors[i] .. ":line1"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line1"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line1"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line1"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line2"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line2"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line2"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line2"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line3"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line3"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line3"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line3"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line4"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line4"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line4"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line4"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line5"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line5"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line5"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line5"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line6"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line6"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line6"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line6"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line7"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line7"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line7"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line7"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line8"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line8"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line8"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line8"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line9"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line9"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line9"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line9"] = (monitorCount * 6) + 7
 		end
-		if monitors[connectedMonitors[i] .. ":line10"] > (monitorCount * 6) + 6 then
-			monitors[connectedMonitors[i] .. ":line10"] = (monitorCount * 6) + 6
+		if monitors[connectedMonitors[i] .. ":line10"] > (monitorCount * 6) + 7 then
+			monitors[connectedMonitors[i] .. ":line10"] = (monitorCount * 6) + 7
 		end
 	end
 	save_config()
