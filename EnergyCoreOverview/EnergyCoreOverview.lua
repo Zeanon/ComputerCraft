@@ -526,7 +526,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		gui.draw_number(mon, coreCount, x - 1, localY, numberColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " 1 EN", textColor, textColor, buttonColor)
 		end
 	else
 		if gui.getModulo(line - 7, 6) == 1 then
@@ -537,6 +537,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
+				if line == 8 then
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "Count", " EC1", textColor, textColor, buttonColor)
+				else
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. (line - 8) / 6 .. " ", " EC" .. 1 + ((line - 8) / 6), textColor, textColor, buttonColor)
+				end
 			end
 		elseif gui.getModulo(line - 7, 6) == 2 then
 			local length = string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)]))
@@ -546,6 +551,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 9) / 6) .. " ", " EC" .. 1 + ((line - 9) / 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 7, 6) == 3 then
 			local delimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
@@ -566,6 +572,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 10) / 6) .. " ", " EC" .. 1 + ((line - 10) / 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 7, 6) == 4 then
 			local energyPercent = math.ceil(coreEnergy[1 + ((line - 11) / 6)] / coreMaxEnergy[1 + ((line - 11) / 6)] * 10000)*.01
@@ -579,6 +586,8 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_percent(mon, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 11) / 6) .. " ", " EC" .. 1 + ((line - 11) / 6), textColor, textColor, buttonColor)
+
 			end
 		elseif gui.getModulo(line - 7, 6) == 5 then
 			local length = mon.X - 12
@@ -600,6 +609,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.progress_bar(mon, x + 2, localY + 4, length, coreEnergy[1 + ((line - 12) / 6)], coreMaxEnergy[1 + ((line - 12) / 6)], energyColor, colors.lightGray)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 12) / 6) .. " ", " EC" .. 1 + ((line - 12) / 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 7, 6) == 0 then
 			local tier
@@ -630,6 +640,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_number(mon, tier, x - 1, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
+				if line == (monitorCount * 6) + 7 then
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 9) / 6) .. " ", "Ener", textColor, textColor, buttonColor)
+				else
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 9) / 6) .. " ", " EC" .. 1 + ((line - 9) / 6), textColor, textColor, buttonColor)
+				end
 			end
 		end
 	end
