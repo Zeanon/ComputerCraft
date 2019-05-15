@@ -522,8 +522,8 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 22
 		local x = ((mon.X - offset) / 2)
 
-		gui.draw_cores(mon, x+1, localY, unitColor)
-		gui.draw_number(mon, coreCount, x-1, localY, numberColor)
+		gui.draw_cores(mon, x + 1, localY, unitColor)
+		gui.draw_number(mon, coreCount, x - 1, localY, numberColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
@@ -623,11 +623,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local x = ((mon.X - offset) / 2)
 
 
-			gui.draw_tier(mon, x, localY, unitColor)
+			gui.draw_tier(mon, x + 1, localY, unitColor)
 			if length == 1 then
 				x = x + 1
 			end
-			gui.draw_number(mon, tier, x, localY, numberColor)
+			gui.draw_number(mon, tier, x - 1, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
