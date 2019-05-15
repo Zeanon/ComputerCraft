@@ -275,33 +275,6 @@ end
 reactor = peripheral.find("draconic_reactor")
 core = peripheral.find("draconic_rf_storage")
 monitor = peripheral.find("monitor")
-if internalInput ~= "back"
-		or internalInput ~= "front"
-		or internalInput ~= "bottom"
-		or internalInput ~= "top"
-		or internalInput ~= "left"
-		or internalInput ~= "right"
-		or not string.find(internalInput, "flux_gate_") then
-	internalInput = "flux_gate_" .. internalInput
-end
-if internalOutput ~= "back"
-		or internalOutput ~= "front"
-		or internalOutput ~= "bottom"
-		or internalOutput ~= "top"
-		or internalOutput ~= "left"
-		or internalOutput ~= "right"
-		or not string.find(internalOutput, "flux_gate_") then
-	internalOutput = "flux_gate_" .. internalOutput
-end
-if externalOutput ~= "back"
-		or externalOutput ~= "front"
-		or externalOutput ~= "bottom"
-		or externalOutput ~= "top"
-		or externalOutput ~= "left"
-		or externalOutput ~= "right"
-		or not string.find(externalOutput, "flux_gate_") then
-	externalOutput = "flux_gate_" .. externalOutput
-end
 inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)

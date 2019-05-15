@@ -305,12 +305,14 @@ end
 
 -- draw number on computer terminal
 function draw_number(mon, number, offset, y, color)
+	print(number)
 	local negative = false
 	if number < 0 then
-		local negative = true
+		print(negative)
+		negative = true
 		number = number * (-1)
 	end
-	
+
 	local number1 = splitNumber(number)[1]
 	local number2 = splitNumber(number)[2]
 
@@ -323,9 +325,11 @@ function draw_number(mon, number, offset, y, color)
 	else
 		x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) - 1)
 	end
-	
+
 	if negative then
-		gui.draw_line(mon, x - 4, y + 2, 3, color)
+		print("hi")
+		x = x
+		draw_line(mon, x - 4, y + 2, 3, color)
 	end
 
 	if length1 == 1 then
@@ -433,7 +437,7 @@ end
 function draw_si(mon, offset, y, length, color)
 	local x = mon.X - (offset + 3)
 	mon.monitor.setBackgroundColor(color)
-	
+
 	if length >= 4 and length < 7 then
 		draw_column(mon, x, y, 5, color)
 		mon.monitor.setCursorPos(x+1,y+2)

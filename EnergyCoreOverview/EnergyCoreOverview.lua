@@ -511,7 +511,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 17
 		local x = ((mon.X - offset) / 2) - 1
 		
-		gui.draw_number(mon, flow, x + 18, localY, numberColor)
+		gui.draw_number(mon, flow, x + 17, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
