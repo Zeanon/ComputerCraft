@@ -92,6 +92,15 @@ function save_config()
 		end
 	end
 	sw.writeLine(" ")
+	sw.writeLine("-- draw buttons defines whether the monitor will use the scroll buttons")
+	for i = 1, monitorCount do
+		if monitors[connectedMonitors[i] .. ":drawButtons"] then
+			sw.writeLine(connectedMonitors[i] .. ": drawButtons: true")
+		else
+			sw.writeLine(connectedMonitors[i] .. ": drawButtons: false")
+		end
+	end
+	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
 	sw.writeLine("monitorCount: " .. monitorCount)
 	for i = 1, monitorCount do
@@ -134,6 +143,12 @@ function load_config()
 								monitors[connectedMonitors[i] .. ":smallFont"] = true
 							else
 								monitors[connectedMonitors[i] .. ":smallFont"] = false
+							end
+						elseif gui.split(line, ": ")[2] == "drawButtons" then
+							if gui.split(line, ": ")[3] == "true" then
+								monitors[connectedMonitors[i] .. ":drawButtons"] = true
+							else
+								monitors[connectedMonitors[i] .. ":drawButtons"] = false
 							end
 						else
 							for count = 1, 10 do
