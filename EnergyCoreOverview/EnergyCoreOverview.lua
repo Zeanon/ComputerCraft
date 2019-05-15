@@ -532,12 +532,12 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local x = ((mon.X - offset) / 2)
 
 			gui.draw_number(mon, energy, x + 39, localY, numberColor)
-			gui.draw_si(mon, x + 33, localY, string.len(tostring(gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 6)]))), unitColor)
+			gui.draw_si(mon, x + 33, localY, string.len(tostring(gui.getInteger(coreEnergy[1 + ((line - 9) / 6)]))), unitColor)
 			
 			gui.draw_slash(mon, x + 29, localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 16, localY, numberColor)
-
-			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(coreEnergy[1 + ((line - 9) / 6)]))), unitColor)
+			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(coreMaxEnergy[1 + ((line - 9) / 6)]))), unitColor)
+			
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
