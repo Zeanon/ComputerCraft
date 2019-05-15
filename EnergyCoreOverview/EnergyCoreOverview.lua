@@ -526,7 +526,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		gui.draw_number(mon, coreCount, x - 1, localY, numberColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " 1 EN", textColor, textColor, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Flow", " EC1", textColor, textColor, buttonColor)
 		end
 	else
 		if gui.getModulo(line - 7, 6) == 1 then
