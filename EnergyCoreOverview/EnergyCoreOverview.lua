@@ -561,11 +561,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 				tier = 7
 			end
 			local length = string.len(tostring(tier))
-			local offset = (length * 4) + 14
-			local x = ((mon.X - offset) / 2) - 1
+			local offset = (length * 4) + 16
+			local x = ((mon.X - offset) / 2)
 		
-			gui.draw_tier(mon, x + 2, localY, unitColor)
-			gui.draw_number(mon, tier, x - 1, localY, numberColor)
+			gui.draw_tier(mon, x, localY, unitColor)
+			gui.draw_number(mon, tier, x - 2, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 			end
