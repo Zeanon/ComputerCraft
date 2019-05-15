@@ -81,6 +81,9 @@ function getModulo(number, modulo)
 		modulo = modulo * (-1)
 	end
 	if number < modulo then
+		if negative then
+			return modulo - number
+		end
 		return number
 	end
 	local divider = modulo
