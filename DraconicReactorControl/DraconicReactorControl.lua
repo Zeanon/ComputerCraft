@@ -89,48 +89,48 @@ local satPercent, fieldPercent, fuelPercent, energyPercent
 function save_config()
 	local sw = fs.open("config.txt", "w")
 	sw.writeLine("-- Config for Draconig Reactor Control Program")
-	sw.writeLine("version: " + version)
+	sw.writeLine("version: " .. version)
 	sw.writeLine(" ")
 	sw.writeLine("-- reactorPeripheral modem names")
-	sw.writeLine("internalInput: " + internalInput)
-	sw.writeLine("internalOutput: " + internalOutput)
-	sw.writeLine("externalOutput: " + externalOutput)
+	sw.writeLine("internalInput: " .. internalInput)
+	sw.writeLine("internalOutput: " .. internalOutput)
+	sw.writeLine("externalOutput: " .. externalOutput)
 	sw.writeLine(" ")
 	sw.writeLine("-- the numbers for the temperatureBoost steps")
-	sw.writeLine("safeTemperature: " + safeTemperature)
-	sw.writeLine("maxTemperature: " + maxTemperature)
-	sw.writeLine("tempBoost1Output: " + tempBoost1Output)
-	sw.writeLine("tempBoost2Output: " + tempBoost2Output)
-	sw.writeLine("tempBoost3Output: " + tempBoost3Output)
+	sw.writeLine("safeTemperature: " .. safeTemperature)
+	sw.writeLine("maxTemperature: " .. maxTemperature)
+	sw.writeLine("tempBoost1Output: " .. tempBoost1Output)
+	sw.writeLine("tempBoost2Output: " .. tempBoost2Output)
+	sw.writeLine("tempBoost3Output: " .. tempBoost3Output)
 	sw.writeLine(" ")
 	sw.writeLine("-- numbers for the fieldBoost steps")
-	sw.writeLine("targetStrength: " + targetStrength)
-	sw.writeLine("lowestFieldPercent: " + lowestFieldPercent)
-	sw.writeLine("fieldBoost: " + fieldBoost)
-	sw.writeLine("fieldBoostOutput: " + fieldBoostOutput)
+	sw.writeLine("targetStrength: " .. targetStrength)
+	sw.writeLine("lowestFieldPercent: " .. lowestFieldPercent)
+	sw.writeLine("fieldBoost: " .. fieldBoost)
+	sw.writeLine("fieldBoostOutput: " .. fieldBoostOutput)
 	sw.writeLine(" ")
 	sw.writeLine("-- numbers for the saturationBoost steps")
-	sw.writeLine("targetSat: " + targetSat)
-	sw.writeLine("satBoostThreshold: " + satBoostThreshold)
-	sw.writeLine("satBoost1: " + satBoost1)
-	sw.writeLine("satBoost1Output: " + satBoost1Output)
-	sw.writeLine("satBoost2: " + satBoost2)
-	sw.writeLine("satBoost2Output: " + satBoost2Output)
+	sw.writeLine("targetSat: " .. targetSat)
+	sw.writeLine("satBoostThreshold: " .. satBoostThreshold)
+	sw.writeLine("satBoost1: " .. satBoost1)
+	sw.writeLine("satBoost1Output: " .. satBoost1Output)
+	sw.writeLine("satBoost2: " .. satBoost2)
+	sw.writeLine("satBoost2Output: " .. satBoost2Output)
 	sw.writeLine(" ")
 	sw.writeLine("-- genTolerance and tempTolerance are absolute numbers, satTolerance is in percent")
-	sw.writeLine("genTolerance: " + genTolerance)
-	sw.writeLine("satTolerance: " + satTolerance)
-	sw.writeLine("tempTolerance: " + tempTolerance)
+	sw.writeLine("genTolerance: " .. genTolerance)
+	sw.writeLine("satTolerance: " .. satTolerance)
+	sw.writeLine("tempTolerance: " .. tempTolerance)
 	sw.writeLine("-- maxIncrease is the maximum amount the externalOutput can be increased by in one step")
-	sw.writeLine("maxIncrease: " +  maxIncrease)
+	sw.writeLine("maxIncrease: " ..  maxIncrease)
 	sw.writeLine("-- under this generation limit the algorythm won't do anything and the output will just be set to this amount")
-	sw.writeLine("safeTarget: " + safeTarget)
+	sw.writeLine("safeTarget: " .. safeTarget)
 	sw.writeLine("-- the minimum turns to wait for the next output increase after one was done")
-	sw.writeLine("minChangeWait: " + minChangeWait)
+	sw.writeLine("minChangeWait: " .. minChangeWait)
 	sw.writeLine("-- the amount of turns to be checked if stable")
-	sw.writeLine("stableTurns: " + stableTurns)
+	sw.writeLine("stableTurns: " .. stableTurns)
 	sw.writeLine("-- the maximum allowed output")
-	sw.writeLine("maxTargetGeneration: " + maxTargetGeneration)
+	sw.writeLine("maxTargetGeneration: " .. maxTargetGeneration)
 	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
 	if autoInputGate then
@@ -143,8 +143,8 @@ function save_config()
 	else
 		sw.writeLine("activateOnCharged: false")
 	end
-	sw.writeLine("curInputGate: " + curInputGate)
-	sw.writeLine("targetGeneration: " + curOutput)
+	sw.writeLine("curInputGate: " .. curInputGate)
+	sw.writeLine("targetGeneration: " .. curOutput)
 	sw.close()
 end
 
@@ -282,9 +282,8 @@ if internalInput ~= "back"
 		or internalInput ~= "left"
 		or internalInput ~= "right"
 		or not string.find(internalInput, "flux_gate_") then
-	internalInput = "flux_gate_" + internalInput
+	internalInput = "flux_gate_" .. internalInput
 end
-
 if internalOutput ~= "back"
 		or internalOutput ~= "front"
 		or internalOutput ~= "bottom"
@@ -292,9 +291,8 @@ if internalOutput ~= "back"
 		or internalOutput ~= "left"
 		or internalOutput ~= "right"
 		or not string.find(internalOutput, "flux_gate_") then
-	internalOutput = "flux_gate_" + internalOutput
+	internalOutput = "flux_gate_" .. internalOutput
 end
-
 if externalOutput ~= "back"
 		or externalOutput ~= "front"
 		or externalOutput ~= "bottom"
@@ -302,7 +300,7 @@ if externalOutput ~= "back"
 		or externalOutput ~= "left"
 		or externalOutput ~= "right"
 		or not string.find(externalOutput, "flux_gate_") then
-	externalOutput = "flux_gate_" + externalOutput
+	externalOutput = "flux_gate_" .. externalOutput
 end
 inputfluxgate = peripheral.wrap(internalInput)
 outputfluxgate = peripheral.wrap(internalOutput)
@@ -397,7 +395,7 @@ function buttons()
 				curOutput = maxTargetGeneration
 			end
 			save_config()
-			gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) + " RF/t", colors.white, colors.green, colors.black)
+			gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
 		end
 
 		-- input gate controls
@@ -428,7 +426,7 @@ function buttons()
 			inputfluxgate.setSignalLowFlow(curInputGate)
 			inputfluxgate.setSignalHighFlow(curInputGate)
 			save_config()
-			gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) + " RF/t", colors.white, colors.blue, colors.black)
+			gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 		end
 
 		-- input gate toggle
@@ -583,7 +581,7 @@ function update()
 
 		-- field strength is too dangerous, kill it and try to charge it before it blows
 		if fieldPercent <= lowestFieldPercent and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
-			action = "Field Str < " +lowestFieldPercent+"%"
+			action = "Field Str < " ..lowestFieldPercent.."%"
 			reactor.stopReactor()
 			reactor.chargeReactor()
 			emergencyCharge = true
@@ -594,7 +592,7 @@ function update()
 
 		-- temperature too high, kill it and activate it when its cool
 		if ri.temperature > maxTemperature then
-			action = "Temp > " + maxTemperature
+			action = "Temp > " .. maxTemperature
 			reactor.stopReactor()
 			emergencyTemp = true
 			tempthreshold = 0
@@ -682,12 +680,12 @@ function update()
 
 
 		-- monitor output
-		gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) + " RF/t", colors.white, colors.lime, colors.black)
+		gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-		gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) + " RF/t", colors.white, colors.green, colors.black)
+		gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
 		drawButtons(5)
 
-		gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) + " RF/t", colors.white, colors.blue, colors.black)
+		gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
 		if autoInputGate then
 			gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
@@ -699,23 +697,23 @@ function update()
 		gui.draw_line(mon, 0, 10, mon.X+1, colors.gray)
 		gui.draw_column(mon, mon.X-25, 1, mon.Y, colors.gray)
 
-		gui.draw_text_lr(mon, 2, 12, 26, "Energy Saturation", satPercent + "%", colors.white, satColor, colors.black)
+		gui.draw_text_lr(mon, 2, 12, 26, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
 		gui.progress_bar(mon, 2, 13, mon.X-28, satPercent, 100, colors.blue,  colors.lightGray)
 
-		gui.draw_text_lr(mon, 2, 15, 26, "Temperature  M:" + maxTemperature + "C", gui.format_int(ri.temperature) + "C", colors.white, tempColor, colors.black)
+		gui.draw_text_lr(mon, 2, 15, 26, "Temperature  M:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
 		gui.progress_bar(mon, 2, 16, mon.X-28, ri.temperature, maxTemperature, tempColor,  colors.lightGray)
 
 		if autoInputGate then
-			gui.draw_text_lr(mon, 2, 18, 26, "Field Strength  T:" + targetStrength, fieldPercent + "%", colors.white, fieldColor, colors.black)
+			gui.draw_text_lr(mon, 2, 18, 26, "Field Strength  T:" .. targetStrength, fieldPercent .. "%", colors.white, fieldColor, colors.black)
 		else
-			gui.draw_text_lr(mon, 2, 18, 26, "Field Strength", fieldPercent + "%", colors.white, fieldColor, colors.black)
+			gui.draw_text_lr(mon, 2, 18, 26, "Field Strength", fieldPercent .. "%", colors.white, fieldColor, colors.black)
 		end
 		gui.progress_bar(mon, 2, 19, mon.X-28, fieldPercent, 100, fieldColor,  colors.lightGray)
 
-		gui.draw_text_lr(mon, 2, 21, 26, "Core Energy Level", energyPercent + "%", colors.white, energyColor, colors.black)
+		gui.draw_text_lr(mon, 2, 21, 26, "Core Energy Level", energyPercent .. "%", colors.white, energyColor, colors.black)
 		gui.progress_bar(mon, 2, 22, mon.X-28, energyPercent, 100, energyColor,  colors.lightGray)
 
-		gui.draw_text_lr(mon, 2, 24, 26, "Fuel ", fuelPercent + "%", colors.white, fuelColor, colors.black)
+		gui.draw_text_lr(mon, 2, 24, 26, "Fuel ", fuelPercent .. "%", colors.white, fuelColor, colors.black)
 		gui.progress_bar(mon, 2, 25, mon.X-28, fuelPercent, 100, fuelColor,  colors.lightGray)
 
 		gui.draw_text_lr(mon, 2, 26, 26, "Last:", action,  colors.lightGray,  colors.lightGray, colors.black)
@@ -728,7 +726,7 @@ function update()
 			gui.draw_text_lr(mon, mon.X-23, 2, 0, "Status", "REFUEL NEEDED", colors.white, colors.red, colors.black)
 		end
 
-		gui.draw_text_lr(mon, mon.X-23, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) + " RF/t", colors.white, colors.blue, colors.black)
+		gui.draw_text_lr(mon, mon.X-23, 4, 0, "Output", gui.format_int(externalfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
 
 		if editConfigButton == 0 then
 			gui.draw_line(mon, mon.X-23, 6, 11, colors.cyan)
@@ -749,39 +747,39 @@ function update()
 			gui.draw_line(mon, mon.X-11, 6, 11, colors.orange)
 		end
 
-		gui.draw_text_lr(mon, mon.X-23, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) + " RF", colors.white, colors.blue, colors.black)
+		gui.draw_text_lr(mon, mon.X-23, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
 
 		if threshold >= 0 then
-			gui.draw_text_lr(mon, mon.X-23, 14, 0, "Threshold", gui.format_int(threshold) + " RF", colors.white, colors.magenta, colors.black)
+			gui.draw_text_lr(mon, mon.X-23, 14, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.magenta, colors.black)
 
 			gui.draw_line(mon, mon.X-24, 16, 27, colors.gray)
 
 			if satthreshold >= 0 then
-				gui.draw_text_lr(mon, mon.X-23, 18, 0, "SatThreshold", gui.format_int(satthreshold) + " RF", colors.white, colors.magenta, colors.black)
+				gui.draw_text_lr(mon, mon.X-23, 18, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.magenta, colors.black)
 			else
 				gui.draw_text_lr(mon, mon.X-22, 18, 0, "SatThreshold", "false", colors.white, colors.magenta, colors.black)
 			end
 
 			if fieldthreshold >= 0 then
-				gui.draw_text_lr(mon, mon.X-23, 20, 0, "FieldThreshold", gui.format_int(fieldthreshold) + " RF", colors.white, colors.magenta, colors.black)
+				gui.draw_text_lr(mon, mon.X-23, 20, 0, "FieldThreshold", gui.format_int(fieldthreshold) .. " RF", colors.white, colors.magenta, colors.black)
 			else
 				gui.draw_text_lr(mon, mon.X-23, 20, 0, "FieldThreshold", "false", colors.white, colors.magenta, colors.black)
 			end
 
 			if fuelthreshold >= 0 then
-				gui.draw_text_lr(mon, mon.X-23, 22, 0, "FuelThreshold", gui.format_int(fuelthreshold) + " RF", colors.white, colors.magenta, colors.black)
+				gui.draw_text_lr(mon, mon.X-23, 22, 0, "FuelThreshold", gui.format_int(fuelthreshold) .. " RF", colors.white, colors.magenta, colors.black)
 			else
 				gui.draw_text_lr(mon, mon.X-23, 22, 0, "FuelThreshold", "false", colors.white, colors.magenta, colors.black)
 			end
 
 			if tempthreshold >= 0 then
-				gui.draw_text_lr(mon, mon.X-23, 24, 0, "TempThreshold", gui.format_int(tempthreshold) + " RF", colors.white, colors.magenta, colors.black)
+				gui.draw_text_lr(mon, mon.X-23, 24, 0, "TempThreshold", gui.format_int(tempthreshold) .. " RF", colors.white, colors.magenta, colors.black)
 			else
 				gui.draw_text_lr(mon, mon.X-23, 24, 0, "TempThreshold", "false", colors.white, colors.magenta, colors.black)
 			end
 
 			if energythreshold >= 0 then
-				gui.draw_text_lr(mon, mon.X-23, 26, 0, "EnergyThreshold", gui.format_int(energythreshold) + " RF", colors.white, colors.magenta, colors.black)
+				gui.draw_text_lr(mon, mon.X-23, 26, 0, "EnergyThreshold", gui.format_int(energythreshold) .. " RF", colors.white, colors.magenta, colors.black)
 			else
 				gui.draw_text_lr(mon, mon.X-23, 26, 0, "EnergyThreshold", "false", colors.white, colors.magenta, colors.black)
 			end
@@ -794,18 +792,18 @@ function update()
 
 		-- print information on the computer
 		for k, v in pairs (ri) do
-			print(k+ ": "+ v)
+			print(k.. ": ".. v)
 		end
 		print("Output Gate: ", externalfluxgate.getSignalLowFlow())
 		print("Input Gate: ", inputfluxgate.getSignalLowFlow())
 		print("Target Gate: ", fluxval)
 		if threshold >= 0 then
-			print("Threshold: "+ threshold)
+			print("Threshold: ".. threshold)
 		else
 			print("Threshold: false")
 		end
-		print("Hyteresis: "+ outputInputHyteresis)
-		print("Till next change: " + sinceOutputChange)
+		print("Hyteresis: ".. outputInputHyteresis)
+		print("Till next change: " .. sinceOutputChange)
 
 
 		-- reboot if config has been reloaded
