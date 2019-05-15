@@ -585,11 +585,6 @@ function init()
 			monitors[connectedMonitors[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
 		end
 		monitors[connectedMonitors[i] .. ":amount"] = amount
-		if mon.X >= 57 then
-			monitors[connectedMonitors[i] .. ":drawButtons"] = true
-		else
-			monitors[connectedMonitors[i] .. ":drawButtons"] = false
-		end
 	end
 end
 
