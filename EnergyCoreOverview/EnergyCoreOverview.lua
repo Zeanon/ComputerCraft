@@ -478,6 +478,10 @@ function drawLine(mon, localY, line, drawButtons, side)
         local length = string.len(tostring(flow))
         local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
         local x = ((mon.X - offset) / 2) - 1
+        if totalEnergy - oldEnergy < 0 then
+            x = ((mon.X - offset - 4) / 2) - 1
+            gui.draw_line(mon, x, localY, 3, numberColor)
+        end
         gui.draw_number(mon, flow, x + 9, localY, numberColor)
         gui.drawRF(mon, x, localY, rftColor)
         if drawButtons then

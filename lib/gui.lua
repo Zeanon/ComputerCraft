@@ -1,6 +1,5 @@
 -- formatting
 function format_int(number)
-
     if number == nil then
         number = 0
     end
@@ -38,36 +37,54 @@ function splitNumber(number)
     return result
 end
 
---get the integer value of a number under 10
+--get the result value of a number under 10
 function getInteger(number)
     if number < 0 then
         return 0
     end
 
-    local delimeter = 1
-    while delimeter * 10 <= number do
-        delimeter = delimeter * 10
+    local divider = 1
+    while divider * 10 <= number do
+        divider = divider * 10
     end
 
-    local integer = 0
-    while number > integer and delimeter >= 1 do
-        if number >= integer then
-            integer = integer + delimeter
+    local result = 0
+    while number > result and divider >= 1 do
+        if number >= result then
+            result = result + divider
         end
-        if number < integer then
-            integer = integer - delimeter
-            delimeter = delimeter / 10
+        if number < result then
+            result = result - divider
+            divider = divider / 10
         end
     end
-    return integer
+    return result
 end
 
 -- returns the modulo value of 2 integers
 function getModulo(number, modulo)
-    while number >= modulo do
-        number = number - modulo
+    if number < 0 then
+        number = number * (-1)
     end
-    return number
+    if modulo < 0 then
+        number = number * (-1)
+    end
+    local divider = 1
+    while divider * modulo <= number do
+        divider = divider * modulo
+    end
+
+    local result = 0
+    while number > result and divider >= 1 do
+        if number >= result then
+            result = result + divider
+        end
+        if number < result then
+            result = result - divider
+            divider = divider / modulo
+        end
+    end
+    return result
 end
 
 -- monitor related
@@ -248,7 +265,7 @@ function draw_9(mon, x, y, color)
     mon.monitor.write(" ")
 end
 
---convert number to integer digit and draw it on monitor
+--convert number to result digit and draw it on monitor
 function draw_digit(number, mon, x, y, color)
     if number == 0 then
         draw_0(mon, x, y, color)
@@ -295,9 +312,9 @@ function draw_number(mon, number, offset, y, color)
     while printDot > 3 do
         printDot = printDot - 3
     end
-    local delimeter = 10 ^ (length1 - 1)
+    local divider = 10 ^ (length1 - 1)
     for i = 1, length1 do
-        draw_digit(getInteger(number1 / delimeter), mon, x, y, color)
+        draw_digit(getInteger(number1 / divider), mon, x, y, color)
         printDot = printDot - 1
         if printDot == 0 and i ~= length1 then
             mon.monitor.setCursorPos(x+4,y+4)
@@ -307,8 +324,8 @@ function draw_number(mon, number, offset, y, color)
         else
             x = x + 4
         end
-        number1 = number1 - (delimeter * getInteger(number1 / delimeter))
-        delimeter = delimeter / 10
+        number1 = number1 - (divider * getInteger(number1 / divider))
+        divider = divider / 10
     end
     if number2 ~= 0 then
         mon.monitor.setCursorPos(x,y+4)
@@ -318,12 +335,12 @@ function draw_number(mon, number, offset, y, color)
 
         x = x + 3
 
-        local delimeter = 10 ^ (length2 - 1)
+        local divider = 10 ^ (length2 - 1)
         for i = 1, length2 do
-            draw_digit(getInteger(number2 / delimeter), mon, x, y, color)
+            draw_digit(getInteger(number2 / divider), mon, x, y, color)
             x = x + 4
-            number2 = number2 - (delimeter * getInteger(number2 / delimeter))
-            delimeter = delimeter / 10
+            number2 = number2 - (divider * getInteger(number2 / divider))
+            divider = divider / 10
         end
     end
 end
