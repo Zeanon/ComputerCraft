@@ -647,7 +647,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			if length == 1 then
 				x = x + 1
 			end
-			gui.draw_number(mon, tier, x - 1, localY, numberColor)
+			gui.draw_number(mon, tier, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 				if line == (monitorCount * 6) + 7 then
