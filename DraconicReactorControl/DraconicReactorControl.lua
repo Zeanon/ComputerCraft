@@ -730,7 +730,7 @@ function update()
 			if satthreshold >= 0 then
 				gui.draw_text_lr(mon, mon.X-23, 18, 0, "SatThreshold", gui.format_int(satthreshold) .. " RF", colors.white, colors.magenta, colors.black)
 			else
-				gui.draw_text_lr(mon, mon.X-22, 18, 0, "SatThreshold", "false", colors.white, colors.magenta, colors.black)
+				gui.draw_text_lr(mon, mon.X-23, 18, 0, "SatThreshold", "false", colors.white, colors.magenta, colors.black)
 			end
 
 			if fieldthreshold >= 0 then
