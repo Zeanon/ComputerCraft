@@ -368,7 +368,7 @@ function buttons()
 				curOutput = maxTargetGeneration
 			end
 			save_config()
-			gui.draw_text_lr(mon, 2, 4, 28, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
+			gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
 		end
 
 		-- input gate controls
