@@ -797,7 +797,7 @@ function update()
 		if loadConfigButton > 0 then
 			loadConfigButton = loadConfigButton - 1
 		end
-		sleep(0.2)
+		sleep(0.25)
 	end
 end
 
