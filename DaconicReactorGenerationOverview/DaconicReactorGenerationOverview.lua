@@ -209,13 +209,13 @@ function drawLines()
 		generation = getGeneration()
 		drainback = getDrainback()
 		gui.clear(mon)
-		print("Total reactor output: " .. gui.format_int(generation - drainback) .. "RF/t")
-		print("Total generation: " .. gui.format_int(generation) .. "RF/t")
+		print("Total reactor output: " .. gui.format_int(generation - drainback) .. " RF/t")
+		print("Total generation: " .. gui.format_int(generation) .. " RF/t")
 		for i = 1, reactorCount do
 			reactorGeneration[i] = getReactorGeneration(i)
-			print("Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. "RF/t")
+			print("Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. " RF/t")
 		end
-		print("Total drainback: " .. gui.format_int(drainback) .. "RF/t")
+		print("Total drainback: " .. gui.format_int(drainback) .. " RF/t")
 
 		local amount = monitors[connectedMonitors[i] .. ":amount"]
 		local drawButtons = monitors[connectedMonitors[i] .. ":drawButtons"]
