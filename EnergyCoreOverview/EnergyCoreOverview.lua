@@ -44,7 +44,7 @@ for i,v in ipairs(periList) do
 		["draconic_rf_storage"] = function()
 			coreCount = coreCount + 1
 			connectedCoreNames[coreCount] = periList[i]
-			connectedCorePeripherals[monitorCount] = peripheral.wrap(periList[i])
+			connectedCorePeripherals[coreCount] = peripheral.wrap(periList[i])
 		end,
 		["monitor"] = function()
 			monitorCount = monitorCount + 1
