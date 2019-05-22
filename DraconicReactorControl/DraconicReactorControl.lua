@@ -50,7 +50,7 @@ local version = "1.3.0"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
-local curOutput = 0
+local targetGeneration = 0
 local threshold = -1
 local tempthreshold = -1
 local satthreshold = -1
@@ -144,7 +144,7 @@ function save_config()
 		sw.writeLine("activateOnCharged: false")
 	end
 	sw.writeLine("curInputGate: " .. curInputGate)
-	sw.writeLine("targetGeneration: " .. curOutput)
+	sw.writeLine("targetGeneration: " .. targetGeneration)
 	sw.close()
 end
 
@@ -171,7 +171,7 @@ function load_config()
 		elseif gui.split(line, ": ")[1] == "curInputGate" then
 			curInputGate = tonumber(gui.split(line, ": ")[2])
 		elseif gui.split(line, ": ")[1] == "targetGeneration" then
-			curOutput = tonumber(gui.split(line, ": ")[2])
+			targetGeneration = tonumber(gui.split(line, ": ")[2])
 		elseif gui.split(line, ": ")[1] == "targetStrength" then
 			targetStrength = tonumber(gui.split(line, ": ")[2])
 		elseif gui.split(line, ": ")[1] == "safeTemperature" then
@@ -347,28 +347,28 @@ function buttons()
 		-- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
 		if yPos >= 5 and yPos <= 6 then
 			if xPos >= 2 and xPos <= 4 then
-				curOutput = curOutput-1000
+				targetGeneration = targetGeneration-1000
 			elseif xPos >= 6 and xPos <= 8 then
-				curOutput = curOutput-10000
+				targetGeneration = targetGeneration-10000
 			elseif xPos >= 10 and xPos <= 12 then
-				curOutput = curOutput-100000
+				targetGeneration = targetGeneration-100000
 			elseif xPos >= 17 and xPos <= 19 then
-				curOutput = curOutput+100000
+				targetGeneration = targetGeneration+100000
 			elseif xPos >= 21 and xPos <= 23 then
-				curOutput = curOutput+10000
+				targetGeneration = targetGeneration+10000
 			elseif xPos >= 25 and xPos <= 27 then
-				curOutput = curOutput+1000
+				targetGeneration = targetGeneration+1000
 			end
 
-			if curOutput == math.huge or isnan(curOutput) or curOutput < 0 then
-				curOutput = 0
+			if targetGeneration == math.huge or isnan(targetGeneration) or targetGeneration < 0 then
+				targetGeneration = 0
 			end
 
-			if curOutput > maxTargetGeneration then
-				curOutput = maxTargetGeneration
+			if targetGeneration > maxTargetGeneration then
+				targetGeneration = maxTargetGeneration
 			end
 			save_config()
-			gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
+			gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(targetGeneration) .. " RF/t", colors.white, colors.green, colors.black)
 		end
 
 		-- input gate controls
@@ -655,7 +655,7 @@ function update()
 		-- monitor output
 		gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
 
-		gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(curOutput) .. " RF/t", colors.white, colors.green, colors.black)
+		gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(targetGeneration) .. " RF/t", colors.white, colors.green, colors.black)
 		drawButtons(5)
 
 		gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
@@ -820,10 +820,10 @@ function getOutput()
 	end
 	updateOutput()
 	local tempCap
-	if threshold < curOutput and threshold ~= -1 then
+	if threshold < targetGeneration and threshold ~= -1 then
 		tempCap = threshold - outputfluxgate.getSignalLowFlow()
 	else
-		tempCap = curOutput - outputfluxgate.getSignalLowFlow()
+		tempCap = targetGeneration - outputfluxgate.getSignalLowFlow()
 	end
 	local tempOutput = tempCap - (externalfluxgate.getSignalLowFlow() / 2)
 	if tempOutput > maxIncrease then
@@ -831,22 +831,22 @@ function getOutput()
 	end
 	tempOutput = externalfluxgate.getSignalLowFlow() + tempOutput
 	if emergencyFlood == false and ri.status ~= "offline" then
-		if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= curOutput) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold or threshold == -1) then
+		if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= targetGeneration) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold or threshold == -1) then
 			outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
 			outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
 		end
 		if ri.generationRate < safeTarget - 2500 then
 			if threshold < safeTarget and threshold ~= -1 then
-				if threshold < curOutput then
+				if threshold < targetGeneration then
 					externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
 					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
 				else
-					externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+					externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
 					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
 				end
 			else
-				if curOutput < safeTarget then
-					externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+				if targetGeneration < safeTarget then
+					externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
 					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
 				else
 					externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
@@ -857,7 +857,7 @@ function getOutput()
 			if checkOutput() and sinceOutputChange == 0 and ri.temperature <= safeTemperature and satPercent > targetSat then
 				externalfluxgate.setSignalLowFlow(tempOutput)
 				externalfluxgate.setSignalHighFlow(tempOutput)
-				if threshold > curOutput or threshold == -1 then
+				if threshold > targetGeneration or threshold == -1 then
 					sinceOutputChange = minChangeWait
 				end
 			elseif ri.temperature > safeTemperature or satPercent < targetSat then
@@ -865,16 +865,16 @@ function getOutput()
 				externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
 			end
 		end
-		if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > curOutput then
-			if outputfluxgate.getSignalLowFlow() > curOutput then
-				outputfluxgate.setSignalLowFlow(curOutput)
-				outputfluxgate.setSignalHighFlow(curOutput)
+		if externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() > targetGeneration then
+			if outputfluxgate.getSignalLowFlow() > targetGeneration then
+				outputfluxgate.setSignalLowFlow(targetGeneration)
+				outputfluxgate.setSignalHighFlow(targetGeneration)
 				externalfluxgate.setSignalLowFlow(0)
 				externalfluxgate.setSignalHighFlow(0)
 			else
 				outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
 				outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
-				externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+				externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
 				externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
 			end
 		end
