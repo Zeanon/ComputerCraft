@@ -50,7 +50,7 @@ local version = "1.3.0"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
-local targetGeneration = 0
+local targetGeneration = 100000
 local threshold = -1
 local tempthreshold = -1
 local satthreshold = -1
