@@ -50,7 +50,7 @@ local version = "1.3.0"
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
-local targetGeneration = 0
+local targetGeneration = 100000
 local threshold = -1
 local tempthreshold = -1
 local satthreshold = -1
@@ -768,18 +768,18 @@ function update()
 
 		-- print information on the computer
 		for k, v in pairs (ri) do
-			print(k.. ": ".. v)
+			print("|# " .. k .. ": " .. v)
 		end
-		print("Output Gate: ", externalfluxgate.getSignalLowFlow())
-		print("Input Gate: ", inputfluxgate.getSignalLowFlow())
-		print("Target Gate: ", fluxval)
+		print("|# Gate: ", externalfluxgate.getSignalLowFlow())
+		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
+		print("|# Target Gate: ", fluxval)
 		if threshold >= 0 then
-			print("Threshold: ".. threshold)
+			print("|# Threshold: ".. threshold)
 		else
-			print("Threshold: false")
+			print("|# Threshold: false")
 		end
-		print("Hyteresis: ".. outputInputHyteresis)
-		print("Till next change: " .. sinceOutputChange)
+		print("|# Hyteresis: ".. outputInputHyteresis)
+		print("|# Till next change: " .. sinceOutputChange)
 
 
 		-- reboot if config has been reloaded
