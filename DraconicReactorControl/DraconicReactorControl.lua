@@ -768,18 +768,18 @@ function update()
 
 		-- print information on the computer
 		for k, v in pairs (ri) do
-			print(k.. ": ".. v)
+			print("|# " .. k .. ": " .. v)
 		end
-		print("Output Gate: ", externalfluxgate.getSignalLowFlow())
-		print("Input Gate: ", inputfluxgate.getSignalLowFlow())
-		print("Target Gate: ", fluxval)
+		print("|# Gate: ", externalfluxgate.getSignalLowFlow())
+		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
+		print("|# Target Gate: ", fluxval)
 		if threshold >= 0 then
-			print("Threshold: ".. threshold)
+			print("|# Threshold: ".. threshold)
 		else
-			print("Threshold: false")
+			print("|# Threshold: false")
 		end
-		print("Hyteresis: ".. outputInputHyteresis)
-		print("Till next change: " .. sinceOutputChange)
+		print("|# Hyteresis: ".. outputInputHyteresis)
+		print("|# Till next change: " .. sinceOutputChange)
 
 
 		-- reboot if config has been reloaded
