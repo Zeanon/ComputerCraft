@@ -228,6 +228,9 @@ function load_config()
 		line = sr.readLine()
 	end
 	sr.close()
+	if targetGeneration > maxTargetGeneration then
+		targetGeneration = maxTargetGeneration
+	end
 	if curVersion ~= version then
 		save_config()
 	end
