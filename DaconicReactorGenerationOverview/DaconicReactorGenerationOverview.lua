@@ -52,10 +52,12 @@ for i,v in ipairs(periList) do
 		["flux_gate"] = function()
 			gateCount = gateCount + 1
 			connectedGateNames[gateCount] = periList[i]
+			connectedGatePeripherals[gateCount] = peripheral.wrap(periList[i])
 		end,
 		["monitor"] = function()
 			monitorCount = monitorCount + 1
 			connectedMonitorNames[monitorCount] = periList[i]
+			connectedMonitorPeripherals[monitorCount] = peripheral.wrap(periList[i])
 			monitorData[periList[i] .. ":smallFont"] = false
 			monitorData[periList[i] .. ":drawButtons"] = true
 			monitorData[periList[i] .. ":amount"] = 0
@@ -205,7 +207,7 @@ end
 function drawLines()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
-		monitor = peripheral.wrap(connectedMonitorNames[i])
+		monitor = connectedMonitorPeripherals[i]
 		monX, monY = monitor.getSize()
 		mon = {}
 		mon.monitor,mon.X, mon.Y = monitor, monX, monY
@@ -507,7 +509,7 @@ end
 
 --get generation of one specific reactor
 function getReactorGeneration(number)
-	local reactor = peripheral.wrap(connectedReactorNames[number])
+	local reactor = connectedReactorPeripherals[number]
 	local ri = reactor.getReactorInfo()
 	if ri.status == "offline" then
 		return 0
@@ -518,7 +520,7 @@ end
 
 --get flow of one specific gate
 function getGateFlow(number)
-	local gate = peripheral.wrap(connectedGateNames[number])
+	local gate = connectedGatePeripherals[number]
 	return gate.getSignalLowFlow()
 end
 
@@ -564,7 +566,7 @@ end
 function init()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
-		monitor = peripheral.wrap(connectedMonitorNames[i])
+		monitor = connectedMonitorPeripherals[i]
 		monitor.setTextScale(1)
 		monX, monY = monitor.getSize()
 		mon = {}
