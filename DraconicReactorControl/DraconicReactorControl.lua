@@ -836,23 +836,23 @@ function getOutput()
 			outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
 		end
 		if ri.generationRate < safeTarget - 2500 then
-		   if threshold < safeTarget and threshold ~= -1 then
-			   if threshold < curOutput then
-				   externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
-				   externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
-			   else
-				   externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-				   externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
-			   end
-		   else
-			   if curOutput < safeTarget then
-				   externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
-				   externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
-			   else
-				   externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
-				   externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
-			   end
-		   end
+			if threshold < safeTarget and threshold ~= -1 then
+				if threshold < curOutput then
+					externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
+					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+				else
+					externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+				end
+			else
+				if curOutput < safeTarget then
+					externalfluxgate.setSignalLowFlow(curOutput - outputfluxgate.getSignalLowFlow())
+					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+				else
+					externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
+					externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+				end
+			end
 		else
 			if checkOutput() and sinceOutputChange == 0 and ri.temperature <= safeTemperature and satPercent > targetSat then
 				externalfluxgate.setSignalLowFlow(tempOutput)
