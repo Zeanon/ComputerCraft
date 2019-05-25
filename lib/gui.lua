@@ -329,9 +329,6 @@ function draw_number(mon, number, offset, y, color)
 		draw_line(mon, x - 4, y + 2, 3, color)
 	end
 
-	if length1 == 1 then
-		x = x + 1
-	end
 	local printDot = length1
 	while printDot > 3 do
 		printDot = printDot - 3
