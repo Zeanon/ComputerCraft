@@ -136,6 +136,21 @@ function update()
 		else
 			updateGUI(fluxgate.getSignalLowFlow())
 		end
+	else
+		if core.getEnergyStored() < (core.getMaxEnergyStored() / 2) - 20 then
+			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 10)
+			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+		elseif core.getEnergyStored() > (core.getMaxEnergyStored() / 2) + 20 then
+			if fluxgate.getSignalLowFlow() - 10 < 0 then
+				fluxgate.setSignalLowFlow(0)
+				fluxgate.setSignalHighFlow(0)
+			else
+				fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() - 10)
+				fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+			end
+		else
+			updateGUI(fluxgate.getSignalLowFlow())
+		end
 	end
 end 
 
