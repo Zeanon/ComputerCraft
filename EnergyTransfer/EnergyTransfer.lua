@@ -95,10 +95,10 @@ function updateGUI(number)
 	gui.draw_number(mon, number, x + 16, y, numberColor)
 	gui.draw_rft(mon, x, y, unitColor)
 end
-	
-fluxgate.setSignalLowFlow(0)
-fluxgate.setSignalHighFlow(0)
+
+fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
 y = (mon.Y - 5) / 2
+updateGUI(0)
 
 while true do
 	update()
