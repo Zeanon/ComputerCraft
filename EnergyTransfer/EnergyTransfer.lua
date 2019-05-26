@@ -88,13 +88,35 @@ mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function update()
 	if checkOutput() then
-		if core.getEnergyStored() < (core.getMaxEnergyStored() / 4) - 20 then
+		if core.getEnergyStored() < (core.getMaxEnergyStored() / 8) - 20 then
+			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 10000)
+			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+		elseif core.getEnergyStored() < (core.getMaxEnergyStored() / 4) - 20 then
+			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 1000)
+			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+		elseif core.getEnergyStored() < (3 * (core.getMaxEnergyStored() / 8)) - 20 then
 			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 100)
 			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
 		elseif core.getEnergyStored() < (core.getMaxEnergyStored() / 2) - 20 then
 			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 10)
 			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
-		elseif core.getEnergyStored() > (3 * (core.getMaxEnergyStored() / 2)) + 20 then
+		elseif core.getEnergyStored() > (7 * (core.getMaxEnergyStored() / 8)) + 20 then
+			if fluxgate.getSignalLowFlow() - 10000 < 0 then
+				fluxgate.setSignalLowFlow(0)
+				fluxgate.setSignalHighFlow(0)
+			else
+				fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() - 10000)
+				fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+			end
+		elseif core.getEnergyStored() > (3 * (core.getMaxEnergyStored() / 4)) + 20 then
+			if fluxgate.getSignalLowFlow() - 1000 < 0 then
+				fluxgate.setSignalLowFlow(0)
+				fluxgate.setSignalHighFlow(0)
+			else
+				fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() - 1000)
+				fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+			end
+		elseif core.getEnergyStored() > (5 * (core.getMaxEnergyStored() / 8)) + 20 then
 			if fluxgate.getSignalLowFlow() - 100 < 0 then
 				fluxgate.setSignalLowFlow(0)
 				fluxgate.setSignalHighFlow(0)
