@@ -58,6 +58,18 @@ core = peripheral.find("draconic_rf_storage")
 monitor = peripheral.find("monitor")
 fluxgate = peripheral.find("flux_gate")
 
+if core == null then
+	error("No valid energy core was found")
+end
+
+if monitor == null then
+	error("No valid monitor was found")
+end
+
+if fluxgate == null then
+	error("No valid flux gate was found")
+end
+
 monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
