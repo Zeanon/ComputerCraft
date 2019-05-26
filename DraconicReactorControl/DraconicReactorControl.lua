@@ -322,10 +322,12 @@ function buttons()
 
 		-- reactor control
 		if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
-			if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
-				reactor.stopReactor()
-			elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > 10 then
-				reactor.chargeReactor()
+			if core.getEnergyStored() > 1500000 then
+				if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
+					reactor.stopReactor()
+				elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > 10 then
+					reactor.chargeReactor()
+				end
 			end
 		end
 
@@ -616,26 +618,30 @@ function update()
 		end
 
 		-- get the hysteresis for the internal output gate
-		if energyPercent == 100 then
+		if ri.status == "offline" then
 			outputInputHyteresis = 0
-		elseif energyPercent >= 95 and energyPercent < 100  then
-			outputInputHyteresis = 10000
-		elseif energyPercent >= 90 and energyPercent < 95 then
-			outputInputHyteresis = 25000
-		elseif energyPercent >= 80 and energyPercent < 90 then
-			outputInputHyteresis = 50000
-		elseif energyPercent >= 70 and energyPercent < 80 then
-			outputInputHyteresis = 75000
-		elseif energyPercent >= 60 and energyPercent < 70 then
-			outputInputHyteresis = 100000
-		elseif energyPercent >= 50 and energyPercent < 60 then
-			outputInputHyteresis = 125000
-		elseif energyPercent >= 40 and energyPercent < 50 then
-			outputInputHyteresis = 250000
-		elseif core.getEnergyStored() < 1500000 then
-			action = "not enough buffer energy left"
-			reactor.stopReactor()
-			satthreshold = 0
+		else
+			if energyPercent == 100 then
+				outputInputHyteresis = 0
+			elseif energyPercent >= 95 and energyPercent < 100  then
+				outputInputHyteresis = 10000
+			elseif energyPercent >= 90 and energyPercent < 95 then
+				outputInputHyteresis = 25000
+			elseif energyPercent >= 80 and energyPercent < 90 then
+				outputInputHyteresis = 50000
+			elseif energyPercent >= 70 and energyPercent < 80 then
+				outputInputHyteresis = 75000
+			elseif energyPercent >= 60 and energyPercent < 70 then
+				outputInputHyteresis = 100000
+			elseif energyPercent >= 50 and energyPercent < 60 then
+				outputInputHyteresis = 125000
+			elseif energyPercent >= 40 and energyPercent < 50 then
+				outputInputHyteresis = 250000
+			elseif core.getEnergyStored() < 1500000 then
+				action = "not enough buffer energy left"
+				reactor.stopReactor()
+				satthreshold = 0
+			end
 		end
 
 		-- are we on? regulate the input fludgate to our target field strength
@@ -656,12 +662,20 @@ function update()
 
 
 		-- monitor output
-		gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
+		if ri.status == "offline" then
+			gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(0) .. " RF/t", colors.white, colors.lime, colors.black)
+		else
+			gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(ri.generationRate) .. " RF/t", colors.white, colors.lime, colors.black)
+		end
 
 		gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(targetGeneration) .. " RF/t", colors.white, colors.green, colors.black)
 		drawButtons(5)
 
-		gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+		if ri.status == "offline" and autoInputGate then
+			gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(0) .. " RF/t", colors.white, colors.blue, colors.black)
+		else
+			gui.draw_text_lr(mon, 2, 7, 26, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
+		end
 
 		if autoInputGate then
 			gui.draw_text(mon, 14, 8, "AU", colors.white,  colors.lightGray)
