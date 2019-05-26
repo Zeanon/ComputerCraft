@@ -87,7 +87,8 @@ mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function update()
-	if checkOutput() then
+	updateEnergy()
+	if checkEnergy() then
 		if core.getEnergyStored() < (core.getMaxEnergyStored() / 8) - 20 then
 			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 10000)
 			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
@@ -149,7 +150,7 @@ function updateGUI(number)
 end
 
 
-function updateOutput()
+function updateEnergy()
 	local i = 1
 	while i < 10 do
 		lastEnergy[i] = lastEnergy[i + 1]
@@ -158,7 +159,7 @@ function updateOutput()
 	lastEnergy[10] = core.getEnergyStored()
 end
 
-function checkOutput()
+function checkEnergy()
 	local leastEnergy = lastEnergy[1]
 	local i = 1
 	while i <= 10 do
