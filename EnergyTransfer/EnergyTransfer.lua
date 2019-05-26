@@ -76,7 +76,7 @@ end
 
 function updateGUI(number)
 	gui.clear(mon)
-    print("|# Transfer: " .. number .. "RF/t")
+	print("|# Transfer: " .. number .. "RF/t")
 	local length = string.len(tostring(number))
 	local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 16
 	local x = (mon.X - offset) / 2
