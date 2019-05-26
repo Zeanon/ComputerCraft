@@ -8,6 +8,7 @@ local refresh = 1
 local version = "1.0.0"
 -- peripherals
 local core, fluxgate, y
+local lastEnergy = {}
 -- monitor
 local mon, monitor, monX, monY
 os.loadAPI("lib/gui")
@@ -46,12 +47,23 @@ function load_config()
 	save_config()
 end
 
+--initialize the tables for stability checking
+function initTables()
+	local i = 1
+	while i <= 10 do
+		lastEnergy[i] = 0
+		i = i + 1
+	end
+end
+
 
 -- 1st time? save our settings, if not, load our settings
 if fs.exists("config.txt") == false then
 	save_config()
+	initTables()
 else
 	load_config()
+	initTables()
 end
 
 core = peripheral.find("draconic_rf_storage")
@@ -75,14 +87,32 @@ mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 function update()
-	if core.getEnergyStored() < (core.getMaxEnergyStored() / 2) - 20 then
-		fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 10)
-		fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
-	elseif core.getEnergyStored() > (core.getMaxEnergyStored() / 2) + 20 then
-		fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() - 10)
-		fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
-	else
-		updateGUI(fluxgate.getSignalLowFlow())
+	if checkOutput() then
+		if core.getEnergyStored() < (core.getMaxEnergyStored() / 4) - 20 then
+			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 100)
+			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+		elseif core.getEnergyStored() < (core.getMaxEnergyStored() / 2) - 20 then
+			fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() + 10)
+			fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+		elseif core.getEnergyStored() > (3 * (core.getMaxEnergyStored() / 2)) + 20 then
+			if fluxgate.getSignalLowFlow() - 100 < 0 then
+				fluxgate.setSignalLowFlow(0)
+				fluxgate.setSignalHighFlow(0)
+			else
+				fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() - 100)
+				fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+			end
+		elseif core.getEnergyStored() > (core.getMaxEnergyStored() / 2) + 20 then
+			if fluxgate.getSignalLowFlow() - 10 < 0 then
+				fluxgate.setSignalLowFlow(0)
+				fluxgate.setSignalHighFlow(0)
+			else
+				fluxgate.setSignalLowFlow(fluxgate.getSignalLowFlow() - 10)
+				fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
+			end
+		else
+			updateGUI(fluxgate.getSignalLowFlow())
+		end
 	end
 end 
 
@@ -94,6 +124,31 @@ function updateGUI(number)
 	local x = (mon.X - offset) / 2
 	gui.draw_number(mon, number, x + 16, y, numberColor)
 	gui.draw_rft(mon, x, y, unitColor)
+end
+
+
+function updateOutput()
+	local i = 1
+	while i < 10 do
+		lastEnergy[i] = lastEnergy[i + 1]
+		i = i + 1
+	end
+	lastEnergy[10] = core.getEnergyStored()
+end
+
+function checkOutput()
+	local leastEnergy = lastEnergy[1]
+	local i = 1
+	while i <= 10 do
+		if lastEnergy[i] < leastEnergy then
+			leastEnergy = lastEnergy[i]
+		end
+		if leastEnergy + 10 < lastEnergy[i] then
+			return false
+		end
+		i = i + 1
+	end
+	return true
 end
 
 fluxgate.setSignalHighFlow(fluxgate.getSignalLowFlow())
