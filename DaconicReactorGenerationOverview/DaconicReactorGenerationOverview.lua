@@ -215,6 +215,7 @@ function drawLines()
 		generation = getGeneration()
 		drainback = getDrainback()
 		gui.clear(mon)
+		print("|# Reactor Information")
 		print("|# Total reactor output: " .. gui.format_int(generation - drainback) .. " RF/t")
 		print("|# Total generation: " .. gui.format_int(generation) .. " RF/t")
 		for i = 1, reactorCount do
