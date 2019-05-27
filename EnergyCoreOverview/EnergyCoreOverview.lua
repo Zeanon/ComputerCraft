@@ -459,7 +459,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local maxDelimeter = (1000 ^ (math.floor((string.len(tostring(totalMaxEnergy))) - 1) / 3)) / 1000
 		local maxEnergy = math.floor(totalMaxEnergy / maxDelimeter) / 100
 		local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
-		local offset = (length * 4) + (2 * math.floor((length - 3) / 3)) + 22
+		local offset = (length * 4) + (2 * math.floor((length - 3) / 3)) + 23
 		local x = ((mon.X - offset) / 2)
 
 		gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
@@ -570,7 +570,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local maxDelimeter = (1000 ^ (math.floor((string.len(tostring(coreMaxEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
 			local maxEnergy = math.floor(coreMaxEnergy[1 + ((line - 10) / 6)] / maxDelimeter) / 100
 			local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
-			local offset = (length * 4) + (2 * math.floor((length - 3) / 3)) + 22
+			local offset = (length * 4) + (2 * math.floor((length - 3) / 3)) + 23
 			local x = ((mon.X - offset) / 2)
 
 			gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
