@@ -364,6 +364,7 @@ function draw_number(mon, number, offset, y, color)
 			draw_digit(getInteger(number2 / divider), mon, x, y, color)
 			x = x + 4
 			number2 = number2 - (divider * getInteger(number2 / divider))
+			mon.monitor.write(number2)
 			divider = divider / 10
 		end
 	end
