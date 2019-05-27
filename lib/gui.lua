@@ -58,9 +58,6 @@ function getInteger(number)
 			result = result - divider
 			divider = divider / 10
 		end
-		if number == result + 1 then
-			result = result + 1
-		end
 	end
 	if negative then
 		return result * (-1)
