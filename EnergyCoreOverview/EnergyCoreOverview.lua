@@ -207,16 +207,16 @@ function drawLines()
 		totalEnergy = getTotalEnergyStored()
 		totalMaxEnergy = getTotalMaxEnergyStored()
 		gui.clear(mon)
-		print("|# Energy Core Information")
-		print("|# Total energy stored: " .. gui.format_int(totalEnergy) .. " RF")
-		print("|# Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. " RF")
-		print("|# Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. " RF")
-		print("|# Transfer: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
+		--print("|# Energy Core Information")
+		--print("|# Total energy stored: " .. gui.format_int(totalEnergy) .. " RF")
+		--print("|# Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. " RF")
+		--print("|# Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. " RF")
+		--print("|# Transfer: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
 		for i = 1, coreCount do
 			coreEnergy[i] = getEnergyStored(i)
 			coreMaxEnergy[i] = getMaxEnergyStored(i)
-			print("|# Energy core " .. i .. " energy stored: " .. gui.format_int(coreEnergy[i]) .. " RF")
-			print("|# Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. " RF")
+			--print("|# Energy core " .. i .. " energy stored: " .. gui.format_int(coreEnergy[i]) .. " RF")
+			--print("|# Energy core " .. i .. " maximum energy: " .. gui.format_int(coreMaxEnergy[i]) .. " RF")
 		end
 
 		local amount = monitorData[connectedMonitorNames[i] .. ":amount"]
@@ -467,6 +467,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 
 		gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 		gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
+		print(maxEnergy)
 		gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(totalMaxEnergy))), unitColor)
 
 		gui.draw_rf(mon, x, localY, unitColor)
