@@ -31,6 +31,9 @@ end
 function splitNumber(number)
 	local number1 = getInteger(number)
 	local number2 = number - number1
+	print(number)
+	print(number1)
+	print(number2)
 	number2 = getInteger(number2 * (10 ^ (string.len(tostring(number2)) - 2)))
 	local result = {}
 	table.insert( result, number1 )
@@ -313,10 +316,6 @@ function draw_number(mon, number, offset, y, color)
 
 	local number1 = splitNumber(number)[1]
 	local number2 = splitNumber(number)[2]
-	mon.monitor.setCursorPos(1,1)
-	mon.monitor.write(number)
-	mon.monitor.write(number1)
-	mon.monitor.write(number2)
 	local length1 = string.len(tostring(number1))
 	local length2 = string.len(tostring(number2))
 
