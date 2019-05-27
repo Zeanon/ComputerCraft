@@ -30,8 +30,9 @@ end
 -- split a number into it's integer and it's decimal part
 function splitNumber(number)
 	local number1 = math.floor(number)
-	local tempNumber2 = (number - number1) * (10 ^ (string.len(tostring(number - number1)) - 1))
-	local number2 = math.floor(tempNumber2)
+	local power = string.len(tostring(number - number1))
+	local tempNumber2 = (number - number1) * (10 ^ (power - 2))
+	local number2 = math.floor(tempNumber2 +  (1 / (10 ^ power)))
 	local result = {}
 	result[1] = number1
 	result[2] = number2
