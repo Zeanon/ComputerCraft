@@ -566,20 +566,20 @@ function drawLine(mon, localY, line, drawButtons, side)
 			end
 		elseif gui.getModulo(line - 7, 6) == 3 then
 			local delimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
-			local energy = gui.getInteger(coreEnergy[1 + ((line - 10) / 6)] / delimeter) / 100
+			local energy = gui.getInteger(totalEnergy / delimeter) / 100
 			local maxDelimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
-			local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 10) / 6)] / maxDelimeter) / 100
+			local maxEnergy = gui.getInteger(totalMaxEnergy / maxDelimeter) / 100
 			local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
 			local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
 			local x = ((mon.X - offset) / 2)
 
 			gui.draw_number(mon, energy, x + 39, localY, numberColor)
-			gui.draw_si(mon, x + 33, localY, string.len(tostring(gui.getInteger(coreEnergy[1 + ((line - 10) / 6)]))), unitColor)
-			
-			gui.draw_slash(mon, x + 27, localY, unitColor)
+			gui.draw_si(mon, x + 33, localY, string.len(tostring(gui.getInteger(totalEnergy))), unitColor)
+
+			gui.draw_slash(mon, x + 28, localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 15, localY, numberColor)
-			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(coreMaxEnergy[1 + ((line - 10) / 6)]))), unitColor)
-			
+			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(totalMaxEnergy))), unitColor)
+
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
