@@ -81,6 +81,12 @@ function save_config()
 	sw.writeLine("buttonColor: " ..  color.toString(buttonColor))
 	sw.writeLine("textColor: " ..  color.toString(textColor))
 	sw.writeLine(" ")
+	sw.writeLine("-- just some monitor information")
+	sw.writeLine("monitorCount: " .. monitorCount)
+	for i = 1, coreCount do
+		sw.writeLine("Core number: " .. i .. " | Core name: " .. connectedCoreNames[i])
+	end
+	sw.writeLine(" ")
 	sw.writeLine("-- lower number means higher refresh rate but also increases server load")
 	sw.writeLine("refresh: " ..  refresh)
 	sw.writeLine(" ")
@@ -103,7 +109,6 @@ function save_config()
 	end
 	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
-	sw.writeLine("monitorCount: " .. monitorCount)
 	for i = 1, monitorCount do
 		sw.writeLine(" ")
 		sw.writeLine("-- monitor: " .. connectedMonitorNames[i])
