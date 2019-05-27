@@ -462,7 +462,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
 		local x = ((mon.X - offset) / 2)
 
-		gui.draw_number(mon, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
+		gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
 		gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(totalEnergy))), unitColor)
 
 		gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
@@ -574,11 +574,11 @@ function drawLine(mon, localY, line, drawButtons, side)
 			local x = ((mon.X - offset) / 2)
 
 			gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
-			gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(totalEnergy))), unitColor)
+			gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(coreEnergy[1 + ((line - 10) / 6)]))), unitColor)
 
 			gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
-			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(totalMaxEnergy))), unitColor)
+			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(coreMaxEnergy[1 + ((line - 10) / 6)]))), unitColor)
 
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
