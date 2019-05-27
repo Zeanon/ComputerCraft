@@ -313,8 +313,10 @@ function draw_number(mon, number, offset, y, color)
 
 	local number1 = splitNumber(number)[1]
 	local number2 = splitNumber(number)[2]
-        mon.monitor.write(number1)
-        mon.monitor.write(number2)
+	mon.monitor.setCursorPos(1,1)
+	mon.monitor.write(number)
+	mon.monitor.write(number1)
+	mon.monitor.write(number2)
 	local length1 = string.len(tostring(number1))
 	local length2 = string.len(tostring(number2))
 
