@@ -276,7 +276,6 @@ function buttons()
 					end
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line1"] = monitorData[side .. ":line1"] + 1
-					print(monitorData[side .. ":line1"])
 					if monitorData[side .. ":line1"] > (coreCount * 6) + 7 then
 						monitorData[side .. ":line1"] = 1
 					end
