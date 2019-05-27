@@ -451,7 +451,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		gui.draw_rf(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Ener", "Cent", textColor, textColor, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Ener", "Frac", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
 		local delimeter = (1000 ^ (gui.getInteger((string.len(tostring(totalEnergy))) - 1) / 3)) / 100
@@ -472,6 +472,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		gui.draw_rf(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", "Cent", textColor, textColor, buttonColor)
 		end
 	elseif line == 4 then
 		local energyPercent = math.ceil(totalEnergy / totalMaxEnergy * 10000)*.01
@@ -485,7 +486,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		gui.draw_percent(mon, x, localY, numberColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Max ", " Bar", textColor, textColor, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Frac", " Bar", textColor, textColor, buttonColor)
 		end
 	elseif line == 5 then
 		local length
