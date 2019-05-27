@@ -29,43 +29,18 @@ end
 
 -- split a number into it's integer and it's decimal part
 function splitNumber(number)
-	local number1 = getInteger(number)
+	local number1 = math.floor(number)
 	local number2 = number - number1
 	print(number)
 	print(number1)
 	print(number2)
 	number2 = number2 * (10 ^ (string.len(tostring(number2)) - 2))
 	print(number2)
+	number2 = math.floor(number2)
+	print(number2)
 	local result = {}
-	table.insert( result, number1 )
-	table.insert( result, number2 )
-	return result
-end
-
--- get the integer value of a number
-function getInteger(number)
-	local negative = false
-	if number < 0 then
-		local negative = true
-		number = number * (-1)
-	end
-
-	local divider = 1
-	while divider * 10 <= number do
-		divider = divider * 10
-	end
-
-	local result = 0
-	while number > result and divider >= 1 do
-		result = result + divider
-		if number < result then
-			result = result - divider
-			divider = divider / 10
-		end
-	end
-	if negative then
-		return result * (-1)
-	end
+	result[1] = number1
+	result[2] = number2
 	return result
 end
 
@@ -314,17 +289,16 @@ function draw_number(mon, number, offset, y, color)
 		negative = true
 		number = number * (-1)
 	end
-
-	local number1 = splitNumber(number)[1]
-	local number2 = splitNumber(number)[2]
-	local length1 = string.len(tostring(number1))
-	local length2 = string.len(tostring(number2))
+	
+	local splittedNumber = splitNumber(number)
+	local length1 = string.len(tostring(splittedNumber[1]))
+	local length2 = string.len(tostring(splittedNumber[2]))
 
 	local x
-	if number2 ~= 0 then
-		x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) + (length2 * 4) + 1)
+	if splittedNumber[2] ~= 0 then
+		x = mon.X - (offset + (length1 * 4) + (2 * math.floor((length1 - 1) / 3)) + (length2 * 4) + 1)
 	else
-		x = mon.X - (offset + (length1 * 4) + (2 * getInteger((length1 - 1) / 3)) - 1)
+		x = mon.X - (offset + (length1 * 4) + (2 * math.floor((length1 - 1) / 3)) - 1)
 	end
 
 	if negative then
@@ -338,7 +312,7 @@ function draw_number(mon, number, offset, y, color)
 	end
 	local divider = 10 ^ (length1 - 1)
 	for i = 1, length1 do
-		draw_digit(getInteger(number1 / divider), mon, x, y, color)
+		draw_digit(math.floor(splittedNumber[1] / divider), mon, x, y, color)
 		printDot = printDot - 1
 		if printDot == 0 and i ~= length1 then
 			mon.monitor.setCursorPos(x+4,y+4)
@@ -348,10 +322,10 @@ function draw_number(mon, number, offset, y, color)
 		else
 			x = x + 4
 		end
-		number1 = getInteger(number1 - (divider * getInteger(number1 / divider)))
+		splittedNumber[1] = math.floor(splittedNumber[1] - (divider * math.floor(splittedNumber[1] / divider)))
 		divider = divider / 10
 	end
-	if number2 ~= 0 then
+	if splittedNumber[2] ~= 0 then
 		mon.monitor.setCursorPos(x,y+4)
 		mon.monitor.write(" ")
 		mon.monitor.setCursorPos(x,y+5)
@@ -361,9 +335,9 @@ function draw_number(mon, number, offset, y, color)
 
 		local divider = 10 ^ (length2 - 1)
 		for i = 1, length2 do
-			draw_digit(getInteger(number2 / divider), mon, x, y, color)
+			draw_digit(math.floor(splittedNumber[2] / divider), mon, x, y, color)
 			x = x + 4
-			number2 = getInteger(number2 - (divider * getInteger(number2 / divider)))
+			splittedNumber[2] = math.floor(splittedNumber[2] - (divider * math.floor(splittedNumber[2] / divider)))
 			divider = divider / 10
 		end
 	end

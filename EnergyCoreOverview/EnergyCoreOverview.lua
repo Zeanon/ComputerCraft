@@ -435,7 +435,7 @@ end
 function drawLine(mon, localY, line, drawButtons, side)
 	if line == 1 then
 		local length = string.len(tostring(totalEnergy))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 9
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, totalEnergy, x + 9, localY, numberColor, unitColor)
 		gui.draw_rf(mon, x, localY, unitColor)
@@ -445,7 +445,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	elseif line == 2 then
 		local length = string.len(tostring(totalMaxEnergy))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 9
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, totalMaxEnergy, x + 9, localY, numberColor)
 		gui.draw_rf(mon, x, localY, unitColor)
@@ -454,21 +454,21 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Ener", "Frac", textColor, textColor, buttonColor)
 		end
 	elseif line == 3 then
-		local delimeter = (1000 ^ (gui.getInteger((string.len(tostring(totalEnergy))) - 1) / 3)) / 1000
-		local energy = gui.getInteger(totalEnergy / delimeter) / 100
-		local maxDelimeter = (1000 ^ (gui.getInteger((string.len(tostring(totalMaxEnergy))) - 1) / 3)) / 1000
-		local maxEnergy = gui.getInteger(totalMaxEnergy / maxDelimeter) / 100
+		local delimeter = (1000 ^ (gui.math.floor((string.len(tostring(totalEnergy))) - 1) / 3)) / 1000
+		local energy = gui.math.floor(totalEnergy / delimeter) / 100
+		local maxDelimeter = (1000 ^ (gui.math.floor((string.len(tostring(totalMaxEnergy))) - 1) / 3)) / 1000
+		local maxEnergy = gui.math.floor(totalMaxEnergy / maxDelimeter) / 100
 		local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
-		local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
+		local offset = (length * 4) + (2 * gui.math.floor((length - 3) / 3)) + 22
 		local x = ((mon.X - offset) / 2)
 
 		gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
-		gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(totalEnergy))), unitColor)
+		gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.math.floor(totalEnergy))), unitColor)
 
 		gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 		gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
 		mon.monitor.write(maxEnergy)
-		gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(totalMaxEnergy))), unitColor)
+		gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.math.floor(totalMaxEnergy))), unitColor)
 
 		gui.draw_rf(mon, x, localY, unitColor)
 		if drawButtons then
@@ -481,7 +481,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			energyPercent = 0
 		end
 		local length = string.len(tostring(energyPercent))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 9
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, energyPercent , x + 7, localY, numberColor)
 		gui.draw_percent(mon, x, localY, numberColor)
@@ -520,7 +520,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 	elseif line == 6 then
 		local flow = (totalEnergy - oldEnergy) / (20 * refresh)
 		local length = string.len(tostring(flow))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 17
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 17
 		local x = ((mon.X - offset) / 2) - 1
 		
 		gui.draw_number(mon, flow, x + 17, localY, numberColor)
@@ -531,7 +531,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	elseif line == 7 then
 		local length = string.len(tostring(coreCount))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 22
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 22
 		local x = ((mon.X - offset) / 2)
 
 		gui.draw_cores(mon, x + 1, localY, unitColor)
@@ -543,7 +543,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 	else
 		if gui.getModulo(line - 7, 6) == 1 then
 			local length = string.len(tostring(coreEnergy[1 + (line - 8) / 6]))
-			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+			local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
 			gui.draw_number(mon, coreEnergy[1 + (line - 8) / 6], x + 9, localY, numberColor)
 			gui.draw_rf(mon, x, localY, unitColor)
@@ -557,7 +557,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			end
 		elseif gui.getModulo(line - 7, 6) == 2 then
 			local length = string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)]))
-			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+			local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
 			gui.draw_number(mon, coreMaxEnergy[1 + ((line - 9) / 6)], x + 9, localY, numberColor)
 			gui.draw_rf(mon, x, localY, unitColor)
@@ -566,20 +566,20 @@ function drawLine(mon, localY, line, drawButtons, side)
 				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 9) / 6) .. " ", " EC" .. 1 + ((line - 9) / 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 7, 6) == 3 then
-			local delimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
-			local energy = gui.getInteger(coreEnergy[1 + ((line - 10) / 6)] / delimeter) / 100
-			local maxDelimeter = (1000 ^ (gui.getInteger((string.len(tostring(coreMaxEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
-			local maxEnergy = gui.getInteger(coreMaxEnergy[1 + ((line - 10) / 6)] / maxDelimeter) / 100
+			local delimeter = (1000 ^ (gui.math.floor((string.len(tostring(coreEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
+			local energy = gui.math.floor(coreEnergy[1 + ((line - 10) / 6)] / delimeter) / 100
+			local maxDelimeter = (1000 ^ (gui.math.floor((string.len(tostring(coreMaxEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
+			local maxEnergy = gui.math.floor(coreMaxEnergy[1 + ((line - 10) / 6)] / maxDelimeter) / 100
 			local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
-			local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
+			local offset = (length * 4) + (2 * gui.math.floor((length - 3) / 3)) + 22
 			local x = ((mon.X - offset) / 2)
 
 			gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
-			gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(coreEnergy[1 + ((line - 10) / 6)]))), unitColor)
+			gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.math.floor(coreEnergy[1 + ((line - 10) / 6)]))), unitColor)
 
 			gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
-			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(coreMaxEnergy[1 + ((line - 10) / 6)]))), unitColor)
+			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.math.floor(coreMaxEnergy[1 + ((line - 10) / 6)]))), unitColor)
 
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
@@ -592,7 +592,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 				energyPercent = 0
 			end
 			local length = string.len(tostring(energyPercent))
-			local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 9
+			local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
 			gui.draw_number(mon, energyPercent, x + 7, localY, numberColor)
 			gui.draw_percent(mon, x, localY, numberColor)
@@ -749,7 +749,7 @@ function init()
 		local amount = 0
 		if mon.Y < 16 then
 			amount = 1
-			monitorData[connectedMonitorNames[i] .. ":y"] = gui.getInteger((mon.Y - 3) / 2)
+			monitorData[connectedMonitorNames[i] .. ":y"] = gui.math.floor((mon.Y - 3) / 2)
 		else
 			local localY = mon.Y - 2
 			local int = 8
@@ -757,7 +757,7 @@ function init()
 				int = int + 8
 				amount = amount + 1
 			end
-			monitorData[connectedMonitorNames[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
+			monitorData[connectedMonitorNames[i] .. ":y"] = gui.math.floor((mon.Y + 3 - (8 * amount)) / 2)
 		end
 		monitorData[connectedMonitorNames[i] .. ":amount"] = amount
 	end

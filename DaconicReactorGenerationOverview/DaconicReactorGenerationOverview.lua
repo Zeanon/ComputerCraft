@@ -440,7 +440,7 @@ end
 function drawLine(mon, localY, line, drawButtons, side)
 	if line == 1 then
 		local length = string.len(tostring(generation - drainback))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 18
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, generation - drainback, x + 17, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
@@ -450,7 +450,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	elseif line == 2 then
 		local length = string.len(tostring(generation))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 18
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, generation, x + 17, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
@@ -460,7 +460,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	elseif line == 3 then
 		local length = string.len(tostring(drainback))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 18
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, drainback, x + 17, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
@@ -470,7 +470,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	else
 		local length = string.len(tostring(reactorGeneration[line - 3]))
-		local offset = (length * 4) + (2 * gui.getInteger((length - 1) / 3)) + 18
+		local offset = (length * 4) + (2 * gui.math.floor((length - 1) / 3)) + 18
 		local x = ((mon.X - offset) / 2) - 1
 		gui.draw_number(mon, reactorGeneration[line - 3], x + 17, localY, numberColor)
 		gui.draw_rft(mon, x, localY, unitColor)
@@ -581,7 +581,7 @@ function init()
 		local amount = 0
 		if mon.Y < 16 then
 			amount = 1
-			monitorData[connectedMonitorNames[i] .. ":y"] = gui.getInteger((mon.Y - 3) / 2)
+			monitorData[connectedMonitorNames[i] .. ":y"] = gui.math.floor((mon.Y - 3) / 2)
 		else
 			local localY = mon.Y - 2
 			local int = 8
@@ -589,7 +589,7 @@ function init()
 				int = int + 8
 				amount = amount + 1
 			end
-			monitorData[connectedMonitorNames[i] .. ":y"] = gui.getInteger((mon.Y + 3 - (8 * amount)) / 2)
+			monitorData[connectedMonitorNames[i] .. ":y"] = gui.math.floor((mon.Y + 3 - (8 * amount)) / 2)
 		end
 		monitorData[connectedMonitorNames[i] .. ":amount"] = amount
 	end
