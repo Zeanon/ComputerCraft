@@ -31,7 +31,7 @@ end
 function splitNumber(number)
 	local number1 = math.floor(number)
 	local tempNumber2 = number - number1
-	local number2 = math.floor(tempNumber2 * (10 ^ (string.len(tostring(number2)) - 2)))
+	local number2 = math.floor(tempNumber2 * (10 ^ (string.len(tostring(tempNumber2)) - 2)))
 	local result = {}
 	result[1] = number1
 	result[2] = number2
