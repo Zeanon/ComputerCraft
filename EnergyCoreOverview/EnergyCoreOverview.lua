@@ -467,7 +467,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 
 		gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 		gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
-		print(maxEnergy)
+		mon.monitor.write(maxEnergy)
 		gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(totalMaxEnergy))), unitColor)
 
 		gui.draw_rf(mon, x, localY, unitColor)
