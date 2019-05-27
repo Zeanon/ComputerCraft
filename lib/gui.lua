@@ -348,7 +348,7 @@ function draw_number(mon, number, offset, y, color)
 		else
 			x = x + 4
 		end
-		number1 = number1 - (divider * getInteger(number1 / divider))
+		number1 = getInteger(number1 - (divider * getInteger(number1 / divider)))
 		divider = divider / 10
 	end
 	if number2 ~= 0 then
@@ -362,9 +362,9 @@ function draw_number(mon, number, offset, y, color)
 		local divider = 10 ^ (length2 - 1)
 		for i = 1, length2 do
 			draw_digit(getInteger(number2 / divider), mon, x, y, color)
-			x = x + 4
-			number2 = number2 - (divider * getInteger(number2 / divider))
 			mon.monitor.write(number2)
+			x = x + 4
+			number2 = getInteger(number2 - (divider * getInteger(number2 / divider)))
 			divider = divider / 10
 		end
 	end
