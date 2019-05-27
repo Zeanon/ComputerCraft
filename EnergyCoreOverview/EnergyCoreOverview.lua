@@ -576,7 +576,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_number(mon, energy, x + 39, localY, numberColor)
 			gui.draw_si(mon, x + 33, localY, string.len(tostring(gui.getInteger(coreEnergy[1 + ((line - 10) / 6)]))), unitColor)
 			
-			gui.draw_slash(mon, x + 28, localY, unitColor)
+			gui.draw_slash(mon, x + 27, localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 15, localY, numberColor)
 			gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(coreMaxEnergy[1 + ((line - 10) / 6)]))), unitColor)
 			
