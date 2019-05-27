@@ -31,16 +31,14 @@ end
 function splitNumber(number)
 	local number1 = math.floor(number)
 	local number2 = number - number1
-	print(number)
-	print(number1)
-	print(number2)
 	number2 = number2 * (10 ^ (string.len(tostring(number2)) - 2))
-	print(number2)
-	number2 = math.floor(number2)
-	print(number2)
+	local newNumber2 = math.floor(number2)
+	if newNumber2 < number2 then
+		newNumber2 = newNumber2 + 1
+	end
 	local result = {}
 	result[1] = number1
-	result[2] = number2
+	result[2] = newNumber2
 	return result
 end
 
