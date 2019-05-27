@@ -659,7 +659,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 				if line == (monitorCount * 6) + 7 then
 					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. ((line - 7) / 6) .. " ", "Ener", textColor, textColor, buttonColor)
 				else
-					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. ((line - 7) / 6) .. " ", " EC" .. ((line - 7) / 6), textColor, textColor, buttonColor)
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. ((line - 7) / 6) .. " ", " EC" .. ((line - 7) / 6) + 1, textColor, textColor, buttonColor)
 				end
 			end
 		end
