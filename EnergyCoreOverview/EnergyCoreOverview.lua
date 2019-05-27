@@ -462,10 +462,10 @@ function drawLine(mon, localY, line, drawButtons, side)
 		local offset = (length * 4) + (2 * gui.getInteger((length - 3) / 3)) + 22
 		local x = ((mon.X - offset) / 2)
 
-		gui.draw_number(mon, energy, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
-		gui.draw_si(mon, energy, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(totalEnergy))), unitColor)
+		gui.draw_number(mon, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
+		gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(gui.getInteger(totalEnergy))), unitColor)
 
-		gui.draw_slash(mon, energy, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
+		gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 		gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
 		gui.draw_si(mon, x + 9, localY, string.len(tostring(gui.getInteger(totalMaxEnergy))), unitColor)
 
