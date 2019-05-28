@@ -83,6 +83,7 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine("-- just some monitor information")
 	sw.writeLine("Monitor count: " .. monitorCount)
+	sw.writeLine(" ")
 	for i = 1, coreCount do
 		sw.writeLine("Core number: " .. i .. " | Core name: " .. connectedCoreNames[i])
 	end
