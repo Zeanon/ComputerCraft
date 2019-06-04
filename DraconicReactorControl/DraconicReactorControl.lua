@@ -137,6 +137,13 @@ function save_config()
 	sw.writeLine("-- the maximum allowed output")
 	sw.writeLine("maxTargetGeneration: " .. maxTargetGeneration)
 	sw.writeLine(" ")
+	sw.writeLine("-- whether the reactor shall be started when it is fully charged")
+	if activateOnCharged then
+		sw.writeLine("activateOnCharged: true")
+	else
+		sw.writeLine("activateOnCharged: false")
+	end
+	sw.writeLine(" ")
 	sw.writeLine(" ")
 	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
@@ -144,11 +151,6 @@ function save_config()
 		sw.writeLine("autoInputGate: true")
 	else
 		sw.writeLine("autoInputGate: false")
-	end
-	if activateOnCharged then
-		sw.writeLine("activateOnCharged: true")
-	else
-		sw.writeLine("activateOnCharged: false")
 	end
 	sw.writeLine("curInputGate: " .. curInputGate)
 	sw.writeLine("targetGeneration: " .. targetGeneration)
