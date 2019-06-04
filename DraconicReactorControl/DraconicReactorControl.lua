@@ -441,7 +441,6 @@ end
 
 function update()
 	while true do
-		gui.clear(mon)
 		ri = reactor.getReactorInfo()
 		local fluxval = 0
 
@@ -669,6 +668,8 @@ function update()
 		-- get the different output values
 		getOutput()
 
+		-- clear monitor and computer screens
+		gui.clear(mon)
 
 		-- monitor output
 		if ri.status == "offline" then
