@@ -540,18 +540,18 @@ function update()
 		end
 
 		-- Saturation too low, regulate Output
-		if satPercent < satBoostThreshold and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+		if satPercent < satBoostThreshold and ri.status ~= "offline then
 			satthreshold = 0
-		elseif satPercent < satBoost1 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+		elseif satPercent < satBoost1 and ri.status ~= "offline" then
 			satthreshold = satBoost1Output
-		elseif satPercent < satBoost2 and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+		elseif satPercent < satBoost2 and ri.status ~= "offline" then
 			satthreshold = satBoost2Output
 		else
 			satthreshold = -1
 		end
 
 		-- field strength is close to dangerous, fire up input
-		if fieldPercent <= fieldBoost and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+		if fieldPercent <= fieldBoost and ri.status ~= "offline" then
 			action = "Field Str dangerous"
 			emergencyFlood = true
 			inputfluxgate.setSignalLowFlow(900000)
@@ -565,7 +565,7 @@ function update()
 		end
 
 		-- field strength is too dangerous, kill it and try to charge it before it blows
-		if fieldPercent <= lowestFieldPercent and (ri.status == "online" or ri.status == "charging" or ri.status == "stopping") then
+		if fieldPercent <= lowestFieldPercent and ri.status ~= "offline" then
 			action = "Field Str < " ..lowestFieldPercent.."%"
 			reactor.stopReactor()
 			reactor.chargeReactor()
