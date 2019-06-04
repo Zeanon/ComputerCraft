@@ -540,7 +540,7 @@ function update()
 		end
 
 		-- Saturation too low, regulate Output
-		if satPercent < satBoostThreshold and ri.status ~= "offline then
+		if satPercent < satBoostThreshold and ri.status ~= "offline" then
 			satthreshold = 0
 		elseif satPercent < satBoost1 and ri.status ~= "offline" then
 			satthreshold = satBoost1Output
