@@ -795,9 +795,10 @@ function update()
 		for k, v in pairs (ri) do
 			print("|# " .. k .. ": " .. v)
 		end
-		print("|# Gate: ", externalfluxgate.getSignalLowFlow())
-		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
+		print("|# Fuel: ", fuelPercent)
+		print("|# External Gate: ", externalfluxgate.getSignalLowFlow())
 		print("|# Target Gate: ", fluxval)
+		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
 		if threshold >= 0 then
 			print("|# Threshold: ".. threshold)
 		else
