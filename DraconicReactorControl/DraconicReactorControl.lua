@@ -802,7 +802,7 @@ function update()
 		print("|# Till next change: " .. sinceOutputChange)
 
 
-		-- reboot if config has been reloaded
+		-- reboot if config has to be reloaded
 		if loadConfigReboot then
 			shell.run("reboot")
 		elseif loadConfigButton == 1 then
