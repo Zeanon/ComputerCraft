@@ -799,12 +799,6 @@ function update()
 		print("|# External Gate: ", externalfluxgate.getSignalLowFlow())
 		print("|# Target Gate: ", fluxval)
 		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
-		if threshold >= 0 then
-			print("|# Threshold: ".. threshold)
-		else
-			print("|# Threshold: false")
-		end
-		print("|# Hyteresis: ".. outputInputHyteresis)
 		print("|# Till next change: " .. sinceOutputChange)
 
 
