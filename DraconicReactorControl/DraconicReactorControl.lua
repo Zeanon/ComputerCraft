@@ -673,7 +673,7 @@ function update()
 
 
 		-- print information on the computer
-		print("|# Reactor Information                           #|")
+		print("|# -------------Reactor Information------------- #|")
 		for k, v in pairs (ri) do
 			print("|# " .. k .. ": " .. v)
 		end
