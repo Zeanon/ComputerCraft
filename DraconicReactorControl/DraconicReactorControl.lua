@@ -671,6 +671,19 @@ function update()
 		-- clear monitor and computer screens
 		gui.clear(mon)
 
+
+		-- print information on the computer
+		print("|# Reactor Information #|")
+		for k, v in pairs (ri) do
+			print("|# " .. k .. ": " .. v)
+		end
+		print("|# Fuel: ", fuelPercent)
+		print("|# External Gate: ", externalfluxgate.getSignalLowFlow())
+		print("|# Target Gate: ", fluxval)
+		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
+		print("|# Till next change: " .. sinceOutputChange)
+
+
 		-- monitor output
 		if ri.status == "offline" then
 			gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(0) .. " RF/t", colors.white, colors.lime, colors.black)
@@ -788,18 +801,6 @@ function update()
 
 			gui.draw_line(mon, mon.X-24, 16, 25, colors.gray)
 		end
-
-
-		-- print information on the computer
-		print("|# Reactor Information #|")
-		for k, v in pairs (ri) do
-			print("|# " .. k .. ": " .. v)
-		end
-		print("|# Fuel: ", fuelPercent)
-		print("|# External Gate: ", externalfluxgate.getSignalLowFlow())
-		print("|# Target Gate: ", fluxval)
-		print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
-		print("|# Till next change: " .. sinceOutputChange)
 
 
 		-- reboot if config has to be reloaded
