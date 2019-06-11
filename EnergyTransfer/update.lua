@@ -1,9 +1,0 @@
--- Updater for EnergyTransfer by Zeanon
--- get it with pastebin get RQb0M8cZ update
--- pastebin link: https://pastebin.com/RQb0M8cZ
-
-if fs.exists("install") then
-	shell.run("delete install")
-end
-shell.run("pastebin get A8JSJ0t6 install")
-shell.run("install")
