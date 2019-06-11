@@ -222,6 +222,7 @@ function drawLines()
 			reactorGeneration[i] = getReactorGeneration(i)
 			print("|# Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. " RF/t")
 		end
+
 		print("|# Total drainback: " .. gui.format_int(drainback) .. " RF/t")
 
 		local amount = monitorData[connectedMonitorNames[i] .. ":amount"]
