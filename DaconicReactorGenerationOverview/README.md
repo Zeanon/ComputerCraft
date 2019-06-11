@@ -10,3 +10,4 @@ pastebin URL of install script: https://pastebin.com/VT6ezUgB
 <br>to update just run <code>update</code>
 ## Other Info
 to change the display colors, just open <code>config.txt</code> and edit the color values
+<br>you can also edit whether a screen uses smallFont or whether it shows the scroll buttons
