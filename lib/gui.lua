@@ -36,7 +36,7 @@ function splitNumber(number)
 	local result = {}
 	result[1] = number1
 	result[2] = number2
-	result[3] = power - 2
+	result["decimals"] = power - 2
 	return result
 end
 
@@ -289,7 +289,7 @@ function draw_number(mon, number, offset, y, color)
 	local splittedNumber = splitNumber(number)
 	local length1 = string.len(tostring(splittedNumber[1]))
 	local length2 = string.len(tostring(splittedNumber[2]))
-	local decimals = splittedNumber[3]
+	local decimals = splittedNumber["decimals"]
 
 	local x
 	if splittedNumber[2] ~= 0 then
