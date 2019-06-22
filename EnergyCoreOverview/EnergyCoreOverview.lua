@@ -219,6 +219,11 @@ function drawLines()
 		print("|# Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. " RF")
 		print("|# Transfer: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
 
+		for i = 1, coreCount do
+			coreEnergy[i] = getEnergyStored(i)
+			coreMaxEnergy[i] = getMaxEnergyStored(i)
+		end
+
 		local amount = monitorData[connectedMonitorNames[i] .. ":amount"]
 		local drawButtons = monitorData[connectedMonitorNames[i] .. ":drawButtons"]
 		local y = monitorData[connectedMonitorNames[i] .. ":y"]
