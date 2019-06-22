@@ -332,7 +332,7 @@ function draw_number(mon, number, offset, y, color)
 		local divider = 10 ^ (length2 - 1)
 		local decimals = splittedNumber[3]
 		while length2 < decimals do
-			draw_0(x, y, color)
+			draw_0(mon, x, y, color)
 			x = x + 4
 			decimals = decimals - 1
 		end
