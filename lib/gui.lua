@@ -330,10 +330,11 @@ function draw_number(mon, number, offset, y, color)
 		x = x + 3
 
 		local divider = 10 ^ (length2 - 1)
-		while length2 < splittedNumber["decimals"] do
+		local decimals = splittedNumber["decimals"]
+		while length2 < decimals do
 			draw_0(x, y, color)
 			x = x + 4
-			splittedNumber["decimals"] = splittedNumber["decimals"] - 1
+			decimals = decimals - 1
 		end
 		for i = 1, length2 do
 			draw_digit(math.floor(splittedNumber[2] / divider), mon, x, y, color)
