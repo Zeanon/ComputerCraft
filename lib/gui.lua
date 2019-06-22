@@ -40,6 +40,7 @@ function splitNumber(number)
 	return result
 end
 
+
 -- returns the modulo value of 2 integers
 function getModulo(number, modulo)
 	local negative = false
