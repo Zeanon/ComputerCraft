@@ -33,12 +33,10 @@ function splitNumber(number)
 	local power = string.len(tostring(number - number1))
 	local tempNumber2 = (number - number1) * (10 ^ (power - 2))
 	local number2 = math.floor(tempNumber2 +  (1 / (10 ^ (power + 2))))
-	while string.len(tostring(number2)) < string.len(power - 2) do
-		number2 = tonumber(0 .. tostring(number2))
-	end
 	local result = {}
 	result[1] = number1
 	result[2] = number2
+	result["decimals"] = power - 2
 	return result
 end
 
@@ -332,6 +330,11 @@ function draw_number(mon, number, offset, y, color)
 		x = x + 3
 
 		local divider = 10 ^ (length2 - 1)
+		while length2 < splittedNumber["decimals"] do
+			draw_0(x, y, color)
+			x = x + 4
+			splittedNumber["decimals"] = splittedNumber["decimals"] - 1
+		end
 		for i = 1, length2 do
 			draw_digit(math.floor(splittedNumber[2] / divider), mon, x, y, color)
 			x = x + 4
