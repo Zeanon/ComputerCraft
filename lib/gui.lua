@@ -23,7 +23,7 @@ function split(string, delimiter)
 		from = delim_to + 1
 		delim_from, delim_to = string.find( string, delimiter, from )
 	end
-	table.insert( result, string.sub( string, from ) )
+	table.insert(result, string.sub( string, from ) )
 	return result
 end
 
@@ -36,7 +36,7 @@ function splitNumber(number)
 	local result = {}
 	result[1] = number1
 	result[2] = number2
-	result[3] = power - 2
+	result["decimals"] = power - 2
 	return result
 end
 
@@ -289,10 +289,11 @@ function draw_number(mon, number, offset, y, color)
 	local splittedNumber = splitNumber(number)
 	local length1 = string.len(tostring(splittedNumber[1]))
 	local length2 = string.len(tostring(splittedNumber[2]))
+	local decimals = splittedNumber["decimals"]
 
 	local x
 	if splittedNumber[2] ~= 0 then
-		x = mon.X - (offset + (length1 * 4) + (2 * math.floor((length1 - 1) / 3)) + (length2 * 4) + 1)
+		x = mon.X - (offset + (length1 * 4) + (2 * math.floor((length1 - 1) / 3)) + (decimals * 4) + 1)
 	else
 		x = mon.X - (offset + (length1 * 4) + (2 * math.floor((length1 - 1) / 3)) - 1)
 	end
@@ -330,7 +331,6 @@ function draw_number(mon, number, offset, y, color)
 		x = x + 3
 
 		local divider = 10 ^ (length2 - 1)
-		local decimals = splittedNumber[3]
 		while length2 < decimals do
 			draw_0(mon, x, y, color)
 			x = x + 4
