@@ -36,7 +36,7 @@ function splitNumber(number)
 	local result = {}
 	result[1] = number1
 	result[2] = number2
-	result["decimals"] = power - 2
+	result[3] = power - 2
 	return result
 end
 
@@ -330,7 +330,7 @@ function draw_number(mon, number, offset, y, color)
 		x = x + 3
 
 		local divider = 10 ^ (length2 - 1)
-		local decimals = splittedNumber["decimals"]
+		local decimals = splittedNumber[3]
 		while length2 < decimals do
 			draw_0(x, y, color)
 			x = x + 4
