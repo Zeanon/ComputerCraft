@@ -532,8 +532,8 @@ function update()
 		-- SAFEGUARDS -- DONT EDIT
 
 		-- out of fuel, kill it
-		if fuelPercent <= 10 then
-			action = "Fuel below 10%"
+		if fuelPercent <= 20 then
+			action = "Fuel below 20%"
 			reactor.stopReactor()
 			fuelthreshold = 0
 		else
