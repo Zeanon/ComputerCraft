@@ -134,7 +134,7 @@ function save_config()
 	sw.writeLine("-- the amount of turns to be checked if stable")
 	sw.writeLine("stableTurns: " .. stableTurns)
 	sw.writeLine(" ")
-	sw.writeLine("-- the maximum allowed output")
+	sw.writeLine("-- the maximum allowed output(-1 equals infinite)")
 	sw.writeLine("maxTargetGeneration: " .. maxTargetGeneration)
 	sw.writeLine(" ")
 	sw.writeLine("-- whether the reactor shall be started when it is fully charged")
@@ -237,7 +237,7 @@ function load_config()
 		line = sr.readLine()
 	end
 	sr.close()
-	if targetGeneration > maxTargetGeneration then
+	if targetGeneration > maxTargetGeneration and maxTargetGeneration >= 0 then
 		targetGeneration = maxTargetGeneration
 	end
 	if curVersion ~= version then
@@ -330,7 +330,7 @@ function buttons()
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
 		-- reactor control
-		if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 then
+		if yPos >= 1 and yPos <= 3 and xPos >= mon.X-27 and xPos <= mon.X-2 then
 			if core.getEnergyStored() > 1500000 then
 				if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
 					reactor.stopReactor()
@@ -374,11 +374,11 @@ function buttons()
 				targetGeneration = targetGeneration+1000
 			end
 
-			if targetGeneration == math.huge or isnan(targetGeneration) or targetGeneration < 0 then
+			if targetGeneration == math.huge or isnan(targetGeneration) then
 				targetGeneration = 0
 			end
 
-			if targetGeneration > maxTargetGeneration then
+			if targetGeneration > maxTargetGeneration and maxTargetGeneration >= 0 then
 				targetGeneration = maxTargetGeneration
 			end
 			save_config()
