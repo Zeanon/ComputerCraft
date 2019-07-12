@@ -330,7 +330,7 @@ function buttons()
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
 		-- reactor control
-		if yPos >= 1 and yPos <= 3 and xPos >= mon.X-17 and xPos <= mon.X-2 then
+		if yPos >= 1 and yPos <= 3 and xPos >= mon.X-16 and xPos <= mon.X-1 then
 			if core.getEnergyStored() > 1500000 then
 				if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
 					reactor.stopReactor()
