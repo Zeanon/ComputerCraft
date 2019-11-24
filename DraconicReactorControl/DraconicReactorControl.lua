@@ -146,6 +146,8 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine(" ")
 	sw.writeLine(" ")
+	sw.writeLine(" ")
+	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
 	if autoInputGate then
 		sw.writeLine("autoInputGate: true")
