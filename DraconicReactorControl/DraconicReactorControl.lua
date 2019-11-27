@@ -442,13 +442,14 @@ end
 
 
 function update()
+	
+	inputfluxgate.setOverrideEnabled(false)
+	outputfluxgate.setOverrideEnabled(false)
+	externalfluxgate.setOverrideEnabled(false)
+	
 	while true do
 		ri = reactor.getReactorInfo()
 		local fluxval = 0
-
-		inputfluxgate.setOverrideEnabled(false)
-		outputfluxgate.setOverrideEnabled(false)
-		externalfluxgate.setOverrideEnabled(false)
 
 		local satColor
 		satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000)*.01
