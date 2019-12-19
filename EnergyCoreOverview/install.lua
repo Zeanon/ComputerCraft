@@ -6,9 +6,9 @@ local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/li
 local lib2URL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/run.lua"
-local EnergyOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/EnergyCoreOverview.lua"
-local lib, lib2, startup, run, EnergyOverview
-local libFile, lib2File, startupFile, runFile, EnergyOverviewFile
+local energyOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/EnergyCoreOverview.lua"
+local lib, lib2, startup, run, energyOverview
+local libFile, lib2File, startupFile, runFile, energyOverviewFile
 
 fs.makeDir("lib")
 
@@ -44,11 +44,11 @@ file4.write(runFile)
 file4.close()
 
 
-EnergyOverview = http.get(EnergyOverviewURL)
-EnergyOverviewFile = EnergyOverview.readAll()
+energyOverview = http.get(energyOverviewURL)
+energyOverviewFile = energyOverview.readAll()
 
 local file5 = fs.open("EnergyCoreOverview", "w")
-file5.write(EnergyOverviewFile)
+file5.write(energyOverviewFile)
 file5.close()
 
 if fs.exists("update") then
@@ -57,7 +57,7 @@ end
 shell.run("pastebin get RQb0M8cZ update")
 
 if os.getComputerLabel() == null then
-	os.setComputerLabel("Energy-Core")
+	os.setComputerLabel("Energy-Core-Overview")
 end
 
 shell.run("reboot")
