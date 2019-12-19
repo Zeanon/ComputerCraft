@@ -48,7 +48,7 @@ end
 shell.run("pastebin get UEi3KkwM update")
 
 if os.getComputerLabel() == null then
-	os.setComputerLabel("Draconic-Reactor")
+	os.setComputerLabel("Draconic-Reactor-Control")
 end
 
 shell.run("reboot")
