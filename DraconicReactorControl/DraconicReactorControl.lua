@@ -297,7 +297,7 @@ if reactor == null then
 	error("No valid reactor was found")
 end
 
-if core == null then
+if core == null or core.getMaxEnergyStored() < 1500000 then
 	error("No valid energy core was found")
 end
 
