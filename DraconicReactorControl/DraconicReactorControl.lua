@@ -648,7 +648,11 @@ function update()
 				outputInputHyteresis = 125000
 			elseif energyPercent >= 40 and energyPercent < 50 then
 				outputInputHyteresis = 250000
-			elseif core.getEnergyStored() < 1500000 then
+			elseif energyPercent < 40 then
+				outputInputHyteresis = 500000
+			end
+			
+			if core.getEnergyStored() < 1500000 then
 				action = "not enough buffer energy left"
 				reactor.stopReactor()
 				satthreshold = 0
