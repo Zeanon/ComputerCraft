@@ -1,6 +1,5 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
--- modifiable variables
 -- Peripherals
 local internalInput = "flux_gate_0"
 local internalOutput = "flux_gate_1"
