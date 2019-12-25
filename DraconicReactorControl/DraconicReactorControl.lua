@@ -320,6 +320,7 @@ if externalfluxgate == null then
 	error("No valid external output fluxgate was found")
 end
 
+
 monX, monY = monitor.getSize()
 mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
@@ -433,6 +434,7 @@ function buttons()
 		end
 	end
 end
+
 
 function drawButtons(y)
 	-- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
@@ -982,8 +984,10 @@ function checkOutput()
 	return true
 end
 
+
 function isnan(x)
 	return x ~= x
 end
+
 
 parallel.waitForAny(buttons, update)
