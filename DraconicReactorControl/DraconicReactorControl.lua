@@ -325,9 +325,6 @@ mon = {}
 mon.monitor,mon.X, mon.Y = monitor, monX, monY
 
 
-parallel.waitForAny(buttons, update)
-
-
 --handle the monitor touch inputs
 function buttons()
 	while true do
@@ -990,3 +987,5 @@ end
 function isnan(x)
 	return x ~= x
 end
+
+parallel.waitForAny(buttons, update)
