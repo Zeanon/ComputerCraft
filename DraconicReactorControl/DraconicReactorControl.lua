@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.5.0"
+local version = "1.5.5"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -91,7 +91,7 @@ function save_config()
 	sw.writeLine("-- Config for Draconig Reactor Control Program")
 	sw.writeLine("version: " .. version)
 	sw.writeLine(" ")
-	sw.writeLine("-- reactorPeripheral modem names")
+	sw.writeLine("-- FluxGate modem names")
 	sw.writeLine("internalInput: " .. internalInput)
 	sw.writeLine("internalOutput: " .. internalOutput)
 	sw.writeLine("externalOutput: " .. externalOutput)
