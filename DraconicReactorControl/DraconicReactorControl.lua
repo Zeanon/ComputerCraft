@@ -46,7 +46,6 @@ local activateOnCharged = true
 
 -- please leave things untouched from here on
 os.loadAPI("lib/gui")
-os.loadAPI("lib/surface")
 
 -- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
