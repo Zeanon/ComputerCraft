@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.5.5"
+local version = "1.6.0"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -131,7 +131,7 @@ function save_config()
 	sw.writeLine("-- the minimum turns to wait for the next output increase after one was done")
 	sw.writeLine("minChangeWait: " .. minChangeWait)
 	sw.writeLine(" ")
-	sw.writeLine("-- the amount of turns to be checked if stable")
+	sw.writeLine("-- the amount of turns to be checked for stability")
 	sw.writeLine("stableTurns: " .. stableTurns)
 	sw.writeLine(" ")
 	sw.writeLine("-- the maximum allowed output(-1 equals infinite)")
