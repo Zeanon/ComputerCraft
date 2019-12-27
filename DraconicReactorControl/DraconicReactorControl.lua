@@ -824,9 +824,13 @@ function update()
         if sinceOutputChange > 0 then
             sinceOutputChange = sinceOutputChange - 1
         end
+
+        -- count down till Edit Config button will be reset to default color
         if editConfigButton > 0 then
             editConfigButton = editConfigButton - 1
         end
+
+        -- count down till Load Config button will be reset to default color
         if loadConfigButton > 0 then
             loadConfigButton = loadConfigButton - 1
         end
@@ -877,29 +881,32 @@ function getOutput()
                 if threshold < targetGeneration then
                     externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
                     externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                    sinceOutputChange = minChangeWait
                 else
                     externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
                     externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                    sinceOutputChange = minChangeWait
                 end
             else
                 if targetGeneration < safeTarget then
                     externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
                     externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                    sinceOutputChange = minChangeWait
                 else
                     externalfluxgate.setSignalLowFlow(safeTarget - outputfluxgate.getSignalLowFlow())
                     externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                    sinceOutputChange = minChangeWait
                 end
             end
         else
             if checkOutput() and sinceOutputChange == 0 and ri.temperature <= safeTemperature and satPercent > targetSat then
                 externalfluxgate.setSignalLowFlow(tempOutput)
                 externalfluxgate.setSignalHighFlow(tempOutput)
-                if threshold > targetGeneration or threshold == -1 then
-                    sinceOutputChange = minChangeWait
-                end
+                sinceOutputChange = minChangeWait
             elseif ri.temperature > safeTemperature or satPercent < targetSat then
                 externalfluxgate.setSignalLowFlow(externalfluxgate.getSignalLowFlow() - (maxIncrease / 2))
                 externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                sinceOutputChange = minChangeWait
             end
         end
 
@@ -909,11 +916,13 @@ function getOutput()
                 outputfluxgate.setSignalHighFlow(targetGeneration)
                 externalfluxgate.setSignalLowFlow(0)
                 externalfluxgate.setSignalHighFlow(0)
+                sinceOutputChange = minChangeWait
             else
                 outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                 outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                sinceOutputChange = minChangeWait
             end
         end
 
@@ -923,11 +932,13 @@ function getOutput()
                 outputfluxgate.setSignalHighFlow(threshold)
                 externalfluxgate.setSignalLowFlow(0)
                 externalfluxgate.setSignalHighFlow(0)
+                sinceOutputChange = minChangeWait
             else
                 outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
                 outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
+                sinceOutputChange = minChangeWait
             end
         end
     end
@@ -937,11 +948,13 @@ function getOutput()
         outputfluxgate.setSignalHighFlow(0)
         externalfluxgate.setSignalLowFlow(0)
         externalfluxgate.setSignalHighFlow(0)
+        sinceOutputChange = minChangeWait
     end
 
     if externalfluxgate.getSignalLowFlow() < 0 then
         externalfluxgate.setSignalLowFlow(0)
         externalfluxgate.setSignalHighFlow(0)
+        sinceOutputChange = minChangeWait
     end
 end
 
