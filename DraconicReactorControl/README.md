@@ -4,7 +4,7 @@ the Setup needs:
 <br>-a fully working reactor 
 <br>-one flux gate on the energy infuser(internalInput)
 <br>-two fluxgates on the output(internalOutput, which should power the buffer energy core and externalOutput which is the external output)
-<br>-one energy core as a buffer(with more than 1.500.000RF storage)
+<br>-one energy core as a buffer(with more than 2.000.000RF storage)
 <br>make sure that there is no other monitor, energy core or reactor connected to the same network or the autodetection of these items will not work properly
 
 ## Installation
