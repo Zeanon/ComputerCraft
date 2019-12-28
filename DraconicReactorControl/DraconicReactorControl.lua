@@ -41,6 +41,8 @@ local stableTurns = 25
 local maxTargetGeneration = 1500000
 -- target saturation
 local targetSat = 50
+-- minimum fuelPercent needed
+local minFuelPercent = 15
 
 local activateOnCharged = true
 
@@ -127,6 +129,9 @@ function save_config()
     sw.writeLine(" ")
     sw.writeLine("-- under this generation limit the algorythm won't do anything and the output will just be set to this amount")
     sw.writeLine("safeTarget: " .. safeTarget)
+    sw.writeLine(" ")
+    sw.writeLine("-- minimum fuelPercent needed so the reactor stays online")
+    sw.writeLine("minFuelPercent: " .. minFuelPercent)
     sw.writeLine(" ")
     sw.writeLine("-- the minimum turns to wait for the next output increase after one was done")
     sw.writeLine("minChangeWait: " .. minChangeWait)
@@ -221,6 +226,8 @@ function load_config()
             maxIncrease = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "safeTarget" then
             safeTarget = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "minFuelPercent" then
+            minFuelPercent = tonumber(gui.split(line, ": ")[2]
         elseif gui.split(line, ": ")[1] == "minChangeWait" then
             minChangeWait = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "stableTurns" then
@@ -328,7 +335,7 @@ function buttons()
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X - 16 and xPos <= mon.X - 1 and core.getEnergyStored() > 1500000 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
-            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > 10 then
+            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > minFuelPercent then
                 reactor.chargeReactor()
             end
         end
@@ -539,8 +546,8 @@ function update()
         -- SAFEGUARDS -- DONT EDIT
 
         -- out of fuel, kill it
-        if fuelPercent <= 10 then
-            action = "Fuel below 20%"
+        if fuelPercent <= minFuelPercent then
+            action = "Fuel below " .. minFuelPercent .. "%"
             reactor.stopReactor()
             fuelthreshold = 0
         else
@@ -686,7 +693,7 @@ function update()
         for k, v in pairs(ri) do
             print("|# " .. k .. ": " .. v)
         end
-        print("|# Fuel: ", fuelPercent)
+        print("|# Fuel: ", #cent)
         print("|# External Gate: ", externalfluxgate.getSignalLowFlow())
         print("|# Target Gate: ", fluxval)
         print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
