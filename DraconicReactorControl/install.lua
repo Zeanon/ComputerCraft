@@ -43,12 +43,12 @@ file4.write(reactorControlFile)
 file4.close()
 
 if fs.exists("update") then
-	shell.run("delete update")
+    shell.run("delete update")
 end
 shell.run("pastebin get UEi3KkwM update")
 
 if os.getComputerLabel() == null then
-	os.setComputerLabel("Draconic-Reactor-Control")
+    os.setComputerLabel("Draconic-Reactor-Control")
 end
 
 shell.run("reboot")

@@ -18,7 +18,7 @@ local tempBoost3Output = 1000000
 -- temperature the programm should keep the reactor at
 local safeTemperature = 5000
 -- if the containment field gets below this value the reactor will be shut down
-local lowestFieldPercent = 20
+local minFieldPercent = 20
 local fieldBoost = 25
 local fieldBoostOutput = 400000
 -- different boost levels for energySaturation
@@ -98,7 +98,7 @@ function save_config()
     sw.writeLine("internalOutput: " .. internalOutput)
     sw.writeLine("externalOutput: " .. externalOutput)
     sw.writeLine(" ")
-    sw.writeLine("-- the numbers for the temperatureBoost steps")
+    sw.writeLine("-- numbers for the temperatureBoost steps")
     sw.writeLine("safeTemperature: " .. safeTemperature)
     sw.writeLine("maxTemperature: " .. maxTemperature)
     sw.writeLine("tempBoost1Output: " .. tempBoost1Output)
@@ -107,7 +107,7 @@ function save_config()
     sw.writeLine(" ")
     sw.writeLine("-- numbers for the fieldBoost steps")
     sw.writeLine("targetStrength: " .. targetStrength)
-    sw.writeLine("lowestFieldPercent: " .. lowestFieldPercent)
+    sw.writeLine("minFieldPercent: " .. minFieldPercent)
     sw.writeLine("fieldBoost: " .. fieldBoost)
     sw.writeLine("fieldBoostOutput: " .. fieldBoostOutput)
     sw.writeLine(" ")
@@ -200,8 +200,8 @@ function load_config()
             tempBoost2Output = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "tempBoost3Output" then
             tempBoost3Output = tonumber(gui.split(line, ": ")[2])
-        elseif gui.split(line, ": ")[1] == "lowestFieldPercent" then
-            lowestFieldPercent = tonumber(gui.split(line, ": ")[2])
+        elseif gui.split(line, ": ")[1] == "minFieldPercent" then
+            minFieldPercent = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "fieldBoost" then
             fieldBoost = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "fieldBoostOutput" then
@@ -227,7 +227,7 @@ function load_config()
         elseif gui.split(line, ": ")[1] == "safeTarget" then
             safeTarget = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "minFuelPercent" then
-            minFuelPercent = tonumber(gui.split(line, ": ")[2]
+            minFuelPercent = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "minChangeWait" then
             minChangeWait = tonumber(gui.split(line, ": ")[2])
         elseif gui.split(line, ": ")[1] == "stableTurns" then
@@ -580,8 +580,8 @@ function update()
         end
 
         -- field strength is too dangerous, kill it and try to charge it before it blows
-        if fieldPercent <= lowestFieldPercent and ri.status ~= "offline" then
-            action = "Field Str < " .. lowestFieldPercent .. "%"
+        if fieldPercent <= minFieldPercent and ri.status ~= "offline" then
+            action = "Field Str < " .. minFieldPercent .. "%"
             reactor.stopReactor()
             reactor.chargeReactor()
             emergencyCharge = true

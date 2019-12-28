@@ -3,7 +3,7 @@
 -- pastebin link: https://pastebin.com/UEi3KkwM
 
 if fs.exists("install") then
-	shell.run("delete install")
+    shell.run("delete install")
 end
 shell.run("pastebin get UKxFmqXx install")
 shell.run("install")
