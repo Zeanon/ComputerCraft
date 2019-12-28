@@ -9,7 +9,7 @@ local internalOutput = "flux_gate_1"
 local externalOutput = "flux_gate_2"
 
 -- target strength of the containment field
-local targetStrength = 35
+local targetStrength = 30
 -- maximum temperature the reactor may reach
 local maxTemperature = 7000
 local tempBoost1Output = 400000
@@ -38,7 +38,7 @@ local minChangeWait = 10
 -- the amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 25
 -- maximum output level
-local maxTargetGeneration = 1200000
+local maxTargetGeneration = 1500000
 -- target saturation
 local targetSat = 50
 
