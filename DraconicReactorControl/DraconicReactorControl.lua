@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.7.0"
+local version = "1.7.5"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -148,6 +148,16 @@ function save_config()
     else
         sw.writeLine("activateOnCharged: false")
     end
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
+    sw.writeLine(" ")
     sw.writeLine(" ")
     sw.writeLine(" ")
     sw.writeLine(" ")
