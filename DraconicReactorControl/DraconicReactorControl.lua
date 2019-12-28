@@ -42,7 +42,7 @@ local maxTargetGeneration = 1500000
 -- target saturation
 local targetSat = 50
 -- minimum fuelPercent needed
-local minFuelPercent = 10
+local minFuelPercent = 15
 
 local activateOnCharged = true
 
@@ -693,7 +693,7 @@ function update()
         for k, v in pairs(ri) do
             print("|# " .. k .. ": " .. v)
         end
-        print("|# Fuel: ", #cent)
+        print("|# Fuel: ", fuelPercent)
         print("|# External Gate: ", externalfluxgate.getSignalLowFlow())
         print("|# Target Gate: ", fluxval)
         print("|# Input Gate: ", inputfluxgate.getSignalLowFlow())
