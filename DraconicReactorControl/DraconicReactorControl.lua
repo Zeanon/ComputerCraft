@@ -452,7 +452,7 @@ function update()
 
 
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000) * .01
-        if isnan(satPercent) then
+        if satPercent == math.huge or isnan(satPercent) then
             satPercent = 0
         end
         local satColor
@@ -474,7 +474,7 @@ function update()
         end
 
         fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000) * .01
-        if isnan(fieldPercent) then
+        if fieldPercent == math.huge or isnan(fieldPercent) then
             fieldPercent = 0
         end
         local fieldColor
@@ -539,7 +539,7 @@ function update()
         -- SAFEGUARDS -- DONT EDIT
 
         -- out of fuel, kill it
-        if fuelPercent <= 20 then
+        if fuelPercent <= 10 then
             action = "Fuel below 20%"
             reactor.stopReactor()
             fuelthreshold = 0
