@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.6.5"
+local version = "1.7.0"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
