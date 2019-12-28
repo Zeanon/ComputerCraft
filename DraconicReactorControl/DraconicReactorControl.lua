@@ -33,7 +33,7 @@ local satTolerance = 2
 local tempTolerance = 10
 local maxIncrease = 10000
 local safeTarget = 100000
--- the amount of loops the program goes through until the output can be changed again
+-- the amount of turns the program goes through until the output can be changed again
 local minChangeWait = 10
 -- the amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 25
