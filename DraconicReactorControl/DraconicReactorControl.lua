@@ -42,7 +42,7 @@ local maxTargetGeneration = 1500000
 -- target saturation
 local targetSat = 50
 -- minimum fuelPercent needed
-local minFuelPercent = 15
+local minFuelPercent = 10
 
 local activateOnCharged = true
 
