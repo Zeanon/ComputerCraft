@@ -214,10 +214,10 @@ end
 function init()
 	initConfig()
 	
-	checkPeripherals()
-	
 	initPeripherals()
 
+	checkPeripherals()
+	
 	checkLines()
 
 	initValues()
