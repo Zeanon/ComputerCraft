@@ -110,14 +110,14 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
 	sw.writeLine(" ")
-	sw.writeLine("-- reactor peripherals")
+	sw.writeLine("-- reactors")
 	sw.writeLine("reactorCount: " .. reactorCount)
 	for i = 1, reactorCount do
-		sw.writeLine(" ")
-		sw.writeLine("-- reactor: " .. connectedReactorNames[i])
+		sw.writeLine("reactor: " .. connectedReactorNames[i])
 	end
 	sw.writeLine(" ")
 	sw.writeLine(" ")
+	sw.writeLine("--monitors")
 	sw.writeLine("monitorCount: " .. monitorCount)
 	for i = 1, monitorCount do
 		sw.writeLine(" ")
