@@ -7,7 +7,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.12.0"
+local version = "1.13.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -148,7 +148,9 @@ function load_config()
 		line = sr.readLine()
 	end
 	sr.close()
-	save_config()
+   	if curVersion ~= version then
+        	save_config()
+    	end
 end
 
 -- initialize Config
