@@ -744,7 +744,7 @@ function update()
         gui.draw_column(mon, mon.X - 25, 1, mon.Y, colors.gray)
 
         gui.draw_text_lr(mon, 2, 12, 26, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
-        gui.progress_bar(mon, 2, 13, mon.X - 28, satPercent, 100, colors.blue, colors.lightGray)
+        gui.progress_bar(mon, 2, 13, mon.X - 28, satPercent, 100, satColor, colors.lightGray)
 
         gui.draw_text_lr(mon, 2, 15, 26, "Temperature  M:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
         gui.progress_bar(mon, 2, 16, mon.X - 28, ri.temperature, maxTemperature, tempColor, colors.lightGray)
