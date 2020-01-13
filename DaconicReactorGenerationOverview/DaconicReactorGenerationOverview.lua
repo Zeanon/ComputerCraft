@@ -7,7 +7,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.7.0"
+local version = "1.8.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -112,6 +112,7 @@ function save_config()
 	sw.writeLine(" ")
 	sw.writeLine("-- reactors")
 	sw.writeLine("reactorCount: " .. reactorCount)
+	sw.writeLine(" ")
 	for i = 1, reactorCount do
 		sw.writeLine("reactor" .. i .. ": " .. connectedReactorNames[i])
 	end
