@@ -205,75 +205,6 @@ if monitorCount == 0 then
 end
 
 
-
---update the monitor
-function update()
-	while true do
-		drawLines()
-		sleep(refresh)
-	end
-end
-
---draw the different lines on the screen
-function drawLines()
-	for i = 1, monitorCount do
-		local mon, monitor, monX, monY
-		monitor = connectedMonitorPeripherals[i]
-		monX, monY = monitor.getSize()
-		mon = {}
-		mon.monitor,mon.X, mon.Y = monitor, monX, monY
-
-		generation = getGeneration()
-		drainback = getDrainback()
-		gui.clear(mon)
-		print("|# -------------Reactor Information------------- #|")
-		print("|# Total reactor output: " .. gui.format_int(generation - drainback) .. " RF/t")
-		print("|# Total generation: " .. gui.format_int(generation) .. " RF/t")
-		for i = 1, reactorCount do
-			reactorGeneration[i] = getReactorGeneration(i)
-			print("|# Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. " RF/t")
-		end
-
-		print("|# Total drainback: " .. gui.format_int(drainback) .. " RF/t")
-
-		local amount = monitorData[connectedMonitorNames[i] .. ":amount"]
-		local drawButtons = monitorData[connectedMonitorNames[i] .. ":drawButtons"]
-		local y = monitorData[connectedMonitorNames[i] .. ":y"]
-
-		if amount >= 1 then
-			drawLine(mon, y, monitorData[connectedMonitorNames[i] .. ":line1"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 2 then
-			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
-			drawLine(mon, y + 10, monitorData[connectedMonitorNames[i] .. ":line2"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 3 then
-			drawLine(mon, y + 18, monitorData[connectedMonitorNames[i] .. ":line3"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 4 then
-			drawLine(mon, y + 26, monitorData[connectedMonitorNames[i] .. ":line4"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 5 then
-			drawLine(mon, y + 34, monitorData[connectedMonitorNames[i] .. ":line5"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 6 then
-			drawLine(mon, y + 42, monitorData[connectedMonitorNames[i] .. ":line6"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 7 then
-			drawLine(mon, y + 50, monitorData[connectedMonitorNames[i] .. ":line7"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 8 then
-			drawLine(mon, y + 58, monitorData[connectedMonitorNames[i] .. ":line8"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 9 then
-			drawLine(mon, y + 66, monitorData[connectedMonitorNames[i] .. ":line9"], drawButtons, connectedMonitorNames[i])
-		end
-		if amount >= 10 then
-			drawLine(mon, y + 74, monitorData[connectedMonitorNames[i] .. ":line10"], drawButtons, connectedMonitorNames[i])
-		end
-	end
-end
-
 --handle the monitor touch inputs
 function buttons()
 	while true do
@@ -444,6 +375,75 @@ function buttons()
 				drawLines()
 				save_config()
 			end
+		end
+	end
+end
+
+
+--update the monitor
+function update()
+	while true do
+		drawLines()
+		sleep(refresh)
+	end
+end
+
+--draw the different lines on the screen
+function drawLines()
+	for i = 1, monitorCount do
+		local mon, monitor, monX, monY
+		monitor = connectedMonitorPeripherals[i]
+		monX, monY = monitor.getSize()
+		mon = {}
+		mon.monitor,mon.X, mon.Y = monitor, monX, monY
+
+		generation = getGeneration()
+		drainback = getDrainback()
+		gui.clear(mon)
+		print("|# -------------Reactor Information------------- #|")
+		print("|# Total reactor output: " .. gui.format_int(generation - drainback) .. " RF/t")
+		print("|# Total generation: " .. gui.format_int(generation) .. " RF/t")
+		for i = 1, reactorCount do
+			reactorGeneration[i] = getReactorGeneration(i)
+			print("|# Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. " RF/t")
+		end
+
+		print("|# Total drainback: " .. gui.format_int(drainback) .. " RF/t")
+
+		local amount = monitorData[connectedMonitorNames[i] .. ":amount"]
+		local drawButtons = monitorData[connectedMonitorNames[i] .. ":drawButtons"]
+		local y = monitorData[connectedMonitorNames[i] .. ":y"]
+
+		if amount >= 1 then
+			drawLine(mon, y, monitorData[connectedMonitorNames[i] .. ":line1"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 2 then
+			gui.draw_line(mon, 0, y+7, mon.X+1, colors.gray)
+			drawLine(mon, y + 10, monitorData[connectedMonitorNames[i] .. ":line2"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 3 then
+			drawLine(mon, y + 18, monitorData[connectedMonitorNames[i] .. ":line3"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 4 then
+			drawLine(mon, y + 26, monitorData[connectedMonitorNames[i] .. ":line4"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 5 then
+			drawLine(mon, y + 34, monitorData[connectedMonitorNames[i] .. ":line5"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 6 then
+			drawLine(mon, y + 42, monitorData[connectedMonitorNames[i] .. ":line6"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 7 then
+			drawLine(mon, y + 50, monitorData[connectedMonitorNames[i] .. ":line7"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 8 then
+			drawLine(mon, y + 58, monitorData[connectedMonitorNames[i] .. ":line8"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 9 then
+			drawLine(mon, y + 66, monitorData[connectedMonitorNames[i] .. ":line9"], drawButtons, connectedMonitorNames[i])
+		end
+		if amount >= 10 then
+			drawLine(mon, y + 74, monitorData[connectedMonitorNames[i] .. ":line10"], drawButtons, connectedMonitorNames[i])
 		end
 	end
 end
