@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.14.0"
+local version = "1.15.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -425,14 +425,14 @@ function drawLines()
 		drainback = getDrainback()
 		gui.clear(mon)
 		print("|# -------------Reactor Information------------- #|")
-		print("|# Total reactor output: " .. gui.format_int(generation - drainback) .. " RF/t")
-		print("|# Total generation: " .. gui.format_int(generation) .. " RF/t")
+		print("|# Total Reactor Output: " .. gui.format_int(generation - drainback) .. " RF/t")
+		print("|# Total Generation: " .. gui.format_int(generation) .. " RF/t")
 		for i = 1, reactorCount do
 			reactorGeneration[i] = getReactorGeneration(i)
 			print("|# Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. " RF/t")
 		end
 
-		print("|# Total drainback: " .. gui.format_int(drainback) .. " RF/t")
+		print("|# Total Drainback: " .. gui.format_int(drainback) .. " RF/t")
 
 		local amount = monitorData[connectedMonitorNames[i] .. ":amount"]
 		local drawButtons = monitorData[connectedMonitorNames[i] .. ":drawButtons"]
