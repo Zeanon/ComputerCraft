@@ -7,7 +7,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.11.0"
+local version = "1.12.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -212,11 +212,11 @@ end
 
 -- basic initialization
 function init()
-	initConfig()
-	
 	initPeripherals()
 
 	checkPeripherals()
+	
+	initConfig()
 	
 	checkLines()
 
