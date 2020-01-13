@@ -7,7 +7,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.9.0"
+local version = "1.10.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -42,39 +42,41 @@ function checkValidity(periName)
 	return false
 end
 
-for i,v in ipairs(periList) do
-	local periFunctions = {
-		["draconic_reactor"] = function()
-			reactorCount = reactorCount + 1
-			connectedReactorNames[reactorCount] = periList[i]
-			connectedReactorPeripherals[reactorCount] = peripheral.wrap(periList[i])
-		end,
-		["flux_gate"] = function()
-			gateCount = gateCount + 1
-			connectedGateNames[gateCount] = periList[i]
-			connectedGatePeripherals[gateCount] = peripheral.wrap(periList[i])
-		end,
-		["monitor"] = function()
-			monitorCount = monitorCount + 1
-			connectedMonitorNames[monitorCount] = periList[i]
-			connectedMonitorPeripherals[monitorCount] = peripheral.wrap(periList[i])
-			monitorData[periList[i] .. ":smallFont"] = false
-			monitorData[periList[i] .. ":drawButtons"] = true
-			monitorData[periList[i] .. ":amount"] = 0
-			monitorData[periList[i] .. ":x"] = 0
-			monitorData[periList[i] .. ":y"] = 0
-			for count = 1, 10 do
-				monitorData[periList[i] .. ":line" .. count] = count
+function initPeripherals()
+	for i,v in ipairs(periList) do
+		local periFunctions = {
+			["draconic_reactor"] = function()
+				reactorCount = reactorCount + 1
+				connectedReactorNames[reactorCount] = periList[i]
+				connectedReactorPeripherals[reactorCount] = peripheral.wrap(periList[i])
+			end,
+			["flux_gate"] = function()
+				gateCount = gateCount + 1
+				connectedGateNames[gateCount] = periList[i]
+				connectedGatePeripherals[gateCount] = peripheral.wrap(periList[i])
+			end,
+			["monitor"] = function()
+				monitorCount = monitorCount + 1
+				connectedMonitorNames[monitorCount] = periList[i]
+				connectedMonitorPeripherals[monitorCount] = peripheral.wrap(periList[i])
+				monitorData[periList[i] .. ":smallFont"] = false
+				monitorData[periList[i] .. ":drawButtons"] = true
+				monitorData[periList[i] .. ":amount"] = 0
+				monitorData[periList[i] .. ":x"] = 0
+				monitorData[periList[i] .. ":y"] = 0
+				for count = 1, 10 do
+					monitorData[periList[i] .. ":line" .. count] = count
+				end
 			end
+		}
+
+		local isValid = checkValidity(peripheral.getType(v))
+		if isValid then periFunctions[isValid]()
 		end
-	}
-
-	local isValid = checkValidity(peripheral.getType(v))
-	if isValid then periFunctions[isValid]()
 	end
-end
+end	
 
---write settings to config file
+-- write settings to config file
 function save_config()
 	local sw = fs.open("config.txt", "w")
 	sw.writeLine("-- Config for Draconig Reactor Generation Overview")
@@ -130,7 +132,7 @@ function save_config()
 	sw.close()
 end
 
---read settings from file
+-- read settings from file
 function load_config()
 	local sr = fs.open("config.txt", "r")
 	local line = sr.readLine()
@@ -184,28 +186,45 @@ function load_config()
 	save_config()
 end
 
--- 1st time? save our settings, if not, load our settings
-if fs.exists("config.txt") == false then
-	save_config()
-else
-	load_config()
+-- initialize Config
+function initConfig()
+	-- 1st time? save our settings, if not, load our settings
+	if fs.exists("config.txt") == false then
+		save_config()
+	else
+		load_config()
+	end
+end
+
+-- Check for reactor, fluxgates and monitorData before continuing
+function checkPeripherals()
+	if reactorCount == 0 then
+		error("No valid reactor was found")
+	end
+	if reactorCount ~= gateCount then
+		error("Not same amount of flux gates as reactors")
+	end
+
+	if monitorCount == 0 then
+		error("No valid monitor was found")
+	end
+end	
+
+-- basic initialization
+function init()
+	initConfig()
+	
+	checkPeripherals()
+	
+	initPeripherals()
+
+	checkLines()
+
+	initValues()
 end
 
 
---Check for reactor, fluxgates and monitorData before continuing
-if reactorCount == 0 then
-	error("No valid reactor was found")
-end
-if reactorCount ~= gateCount then
-	error("Not same amount of flux gates as reactors")
-end
-
-if monitorCount == 0 then
-	error("No valid monitor was found")
-end
-
-
---handle the monitor touch inputs
+-- handle the monitor touch inputs
 function buttons()
 	while true do
 		-- button handler
@@ -380,7 +399,7 @@ function buttons()
 end
 
 
---update the monitor
+-- update the monitor
 function update()
 	while true do
 		drawLines()
@@ -388,7 +407,7 @@ function update()
 	end
 end
 
---draw the different lines on the screen
+-- draw the different lines on the screen
 function drawLines()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
@@ -448,7 +467,7 @@ function drawLines()
 	end
 end
 
---draw line with information on the monitor
+-- draw line with information on the monitor
 function drawLine(mon, localY, line, drawButtons, side)
 	if line == 1 then
 		local length = string.len(tostring(generation - drainback))
@@ -511,7 +530,7 @@ function getGeneration()
 	return totalGeneration
 end
 
---get total drainback
+-- get total drainback
 function getDrainback()
 	local totalDrainback = 0
 	for i = 1, reactorCount do
@@ -520,7 +539,7 @@ function getDrainback()
 	return totalDrainback
 end
 
---get generation of one specific reactor
+-- get generation of one specific reactor
 function getReactorGeneration(number)
 	local reactor = connectedReactorPeripherals[number]
 	local ri = reactor.getReactorInfo()
@@ -531,7 +550,7 @@ function getReactorGeneration(number)
 	end
 end
 
---get flow of one specific gate
+-- get flow of one specific gate
 function getGateFlow(number)
 	local gate = connectedGatePeripherals[number]
 	return gate.getSignalLowFlow()
@@ -575,8 +594,8 @@ function checkLines()
 	save_config()
 end
 
---initialize all the values
-function init()
+-- initialize all the values
+function initValues()
 	for i = 1, monitorCount do
 		local mon, monitor, monX, monY
 		monitor = connectedMonitorPeripherals[i]
@@ -608,9 +627,7 @@ function init()
 end
 
 
---run
-checkLines()
-
+-- run
 init()
 
 parallel.waitForAny(buttons, update)
