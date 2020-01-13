@@ -8,48 +8,48 @@ local internalInput = "flux_gate_0"
 local internalOutput = "flux_gate_1"
 local externalOutput = "flux_gate_2"
 
--- target strength of the containment field
+-- Target strength of the containment field
 local targetStrength = 30
--- maximum temperature the reactor may reach
+-- Maximum temperature the reactor may reach
 local maxTemperature = 7000
 local tempBoost1Output = 400000
 local tempBoost2Output = 750000
 local tempBoost3Output = 1000000
--- temperature the programm should keep the reactor at
+-- Temperature the programm should keep the reactor at
 local safeTemperature = 5000
--- if the containment field gets below this value the reactor will be shut down
+-- If the containment field gets below this value the reactor will be shut down
 local minFieldPercent = 20
 local fieldBoost = 25
 local fieldBoostOutput = 400000
--- different boost levels for energySaturation
+-- Different boost levels for energySaturation
 local satBoostThreshold = 25
 local satBoost1 = 35
 local satBoost1Output = 600000
 local satBoost2 = 45
 local satBoost2Output = 1000000
--- tolerances for auto boosting
+-- Tolerances for auto boosting
 local genTolerance = 250
 local satTolerance = 2
 local tempTolerance = 10
 local maxIncrease = 10000
 local safeTarget = 100000
--- the amount of turns the program goes through until the output can be changed again
+-- The amount of turns the program goes through until the output can be changed again
 local minChangeWait = 10
--- the amount of turns the program will save to check whether the reactor is stable
+-- The amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 25
--- maximum output level
+-- Maximum output level
 local maxTargetGeneration = 1500000
--- target saturation
+-- Target saturation
 local targetSat = 50
--- minimum fuelPercent needed
+-- Minimum fuelPercent needed
 local minFuelPercent = 15
 
 local activateOnCharged = true
 
--- please leave things untouched from here on
+-- Please leave things untouched from here on
 os.loadAPI("lib/gui")
 
--- toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
+-- Toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
 local curInputGate = 222000
 local targetGeneration = 100000
@@ -70,24 +70,24 @@ local editConfigButton = 0
 local loadConfigButton = 0
 local loadConfigReboot = false
 
--- monitor
+-- Monitor
 local mon, monitor, monX, monY
 
--- peripherals
+-- Peripherals
 local reactor, core, externalfluxgate, inputfluxgate, outputfluxgate
 
--- reactor information
+-- Reactor information
 local ri
 
--- last performed action
+-- Last performed action
 local action = "None since reboot"
 local emergencyCharge = false
 local emergencyTemp = false
 
--- some percentages
+-- Some percentages
 local satPercent, fieldPercent, fuelPercent, energyPercent
 
---write settings to config file
+-- Write settings to config file
 function save_config()
     local sw = fs.open("config.txt", "w")
     sw.writeLine("-- Config for Draconig Reactor Control Program")
@@ -178,7 +178,7 @@ function save_config()
     sw.close()
 end
 
---read settings from file
+-- Read settings from file
 function load_config()
     local sr = fs.open("config.txt", "r")
     local curVersion
@@ -268,7 +268,7 @@ function load_config()
     end
 end
 
---open a new tab with the config file
+-- Open a new tab with the config file
 function editConfig()
     local new = true
     local i = 1
@@ -286,7 +286,7 @@ function editConfig()
     end
 end
 
---initialize the tables for stability checking
+-- Initialize the tables for stability checking
 function initTables()
     local i = 1
     while i <= stableTurns do
@@ -306,7 +306,7 @@ end
 
 initTables()
 
---initialize the peripherals
+-- Initialize the peripherals
 reactor = peripheral.find("draconic_reactor")
 core = peripheral.find("draconic_rf_storage")
 monitor = peripheral.find("monitor")
@@ -315,6 +315,7 @@ outputfluxgate = peripheral.wrap(internalOutput)
 externalfluxgate = peripheral.wrap(externalOutput)
 
 
+-- Check if everything is connected properly
 if reactor == null then
     error("No valid reactor was found")
 elseif core == null or core.getMaxEnergyStored() < 1500000 then
@@ -339,13 +340,13 @@ mon = {}
 mon.monitor, mon.X, mon.Y = monitor, monX, monY
 
 
---handle the monitor touch inputs
+-- Handle the monitor touch inputs
 function buttons()
     while true do
-        -- button handler
+        -- Button handler
         local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
-        -- reactor control
+        -- Reactor control
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X - 16 and xPos <= mon.X - 1 and core.getEnergyStored() > 1500000 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
@@ -354,7 +355,7 @@ function buttons()
             end
         end
 
-        -- edit or load Config
+        -- Edit or load Config
         if yPos >= 6 and yPos <= 8 then
             if xPos >= mon.X - 25 and xPos <= mon.X - 14 then
                 editConfig()
@@ -370,7 +371,7 @@ function buttons()
             end
         end
 
-        -- output gate controls
+        -- Output gate controls
         -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
         -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
         if yPos >= 5 and yPos <= 6 then
@@ -400,7 +401,7 @@ function buttons()
             gui.draw_text_lr(mon, 2, 4, 26, "Target Generation", gui.format_int(targetGeneration) .. " RF/t", colors.white, colors.green, colors.black)
         end
 
-        -- input gate controls
+        -- Input gate controls
         -- 2-4 = -1000, 6-9 = -10000, 10-12,8 = -100000
         -- 17-19 = +1000, 21-23 = +10000, 25-27 = +100000
         if yPos == 8 and autoInputGate == false and xPos ~= 14 and xPos ~= 15 then
@@ -433,7 +434,7 @@ function buttons()
             gui.draw_text_lr(mon, 2, 7, 28, "Input Gate", gui.format_int(inputfluxgate.getSignalLowFlow()) .. " RF/t", colors.white, colors.blue, colors.black)
         end
 
-        -- input gate toggle
+        -- Input gate toggle
         if yPos == 8 and (xPos == 14 or xPos == 15) then
             if autoInputGate then
                 autoInputGate = false
@@ -459,7 +460,7 @@ end
 
 function update()
     
-    -- block external access to the fluxgates
+    -- Block external access to the fluxgates
     inputfluxgate.setOverrideEnabled(false)
     outputfluxgate.setOverrideEnabled(false)
     externalfluxgate.setOverrideEnabled(false)
@@ -467,7 +468,7 @@ function update()
     while true do
         ri = reactor.getReactorInfo()
 
-        -- check, if reactor has valid setup
+        -- Check, if reactor has valid setup
         if ri == nil then
             error("reactor has an invalid setup")
         end
@@ -562,7 +563,7 @@ function update()
 
         -- SAFEGUARDS -- DONT EDIT
 
-        -- out of fuel, kill it
+        -- Out of fuel, kill it
         if fuelPercent < minFuelPercent then
             action = "Fuel below " .. minFuelPercent .. "%"
             reactor.stopReactor()
@@ -582,7 +583,7 @@ function update()
             satthreshold = -1
         end
 
-        -- field strength is close to dangerous, fire up input
+        -- Field strength is close to dangerous, fire up input
         if fieldPercent < fieldBoost and ri.status ~= "offline" then
             action = "Field Str dangerous"
             emergencyFlood = true
@@ -596,7 +597,7 @@ function update()
             fieldthreshold = -1
         end
 
-        -- field strength is too dangerous, kill it and try to charge it before it blows
+        -- Field strength is too dangerous, kill it and try to charge it before it blows
         if fieldPercent < minFieldPercent and ri.status ~= "offline" then
             action = "Field Str < " .. minFieldPercent .. "%"
             reactor.stopReactor()
@@ -607,7 +608,7 @@ function update()
             fieldthreshold = -1
         end
 
-        -- temperature too high, kill it and activate it when its cool
+        -- Temperature too high, kill it and activate it when its cool
         if ri.temperature > maxTemperature then
             action = "Temp > " .. maxTemperature
             reactor.stopReactor()
@@ -623,26 +624,26 @@ function update()
             tempthreshold = -1
         end
 
-        -- check for emergenyCharge
+        -- Check for emergenyCharge
         if emergencyCharge == true then
             reactor.chargeReactor()
         end
 
 
-        -- actual reactor interaction
+        -- Actual reactor interaction
 
-        -- are we stopping from a shutdown and our temp is better? activate
+        -- Are we stopping from a shutdown and our temp is better? activate
         if emergencyTemp == true and ri.status == "stopping" and ri.temperature < safeTemperature then
             reactor.activateReactor()
             emergencyTemp = false
         end
 
-        -- are we charged? lets activate
+        -- Are we charged? lets activate
         if ri.status == "charged" and activateOnCharged then
             reactor.activateReactor()
         end
 
-        -- are we charging? open the floodgates
+        -- Are we charging? open the floodgates
         if ri.status == "charging" then
             inputfluxgate.setSignalLowFlow(900000)
             inputfluxgate.setSignalHighFlow(900000)
@@ -651,7 +652,7 @@ function update()
             emergencyCharge = false
         end
 
-        -- get the hysteresis for the internal output gate
+        -- Get the hysteresis for the internal output gate
         if ri.status == "offline" then
             outputInputHyteresis = 0
         elseif core.getEnergyStored() >= 1000000 then
@@ -684,8 +685,8 @@ function update()
             satthreshold = 0
         end
 
-        -- are we on? regulate the input fludgate to our target field strength
-        -- or set it to our saved setting since we are on manual
+        -- Are we on? regulate the input fludgate to our target field strength
+        -- Or set it to our saved setting since we are on manual
         local fluxval = 0
         if emergencyFlood == false and (ri.status == "online" or ri.status == "stopping") then
             if autoInputGate then
@@ -698,14 +699,14 @@ function update()
             end
         end
 
-        -- get the different output values
+        -- Get the different output values
         getOutput()
 
-        -- clear monitor and computer screens
+        -- Clear monitor and computer screens
         gui.clear(mon)
 
 
-        -- print information on the computer
+        -- Print information on the computer
         print("|# -------------Reactor Information------------- #|")
         for k, v in pairs(ri) do
             print("|# " .. k .. ": " .. v)
@@ -717,7 +718,7 @@ function update()
         print("|# Till next change: " .. sinceOutputChange)
 
 
-        -- monitor output
+        -- Monitor output
         if ri.status == "offline" then
             gui.draw_text_lr(mon, 2, 2, 26, "Generation", gui.format_int(0) .. " RF/t", colors.white, colors.lime, colors.black)
         else
@@ -836,7 +837,7 @@ function update()
         end
 
 
-        -- reboot if config has to be reloaded
+        -- Reboot if config has to be reloaded
         if loadConfigReboot then
             shell.run("reboot")
         elseif loadConfigButton == 1 then
@@ -844,20 +845,22 @@ function update()
         end
 
 
-        -- count down till external output can be changed again
+        -- Count down till external output can be changed again
         if sinceOutputChange > 0 then
             sinceOutputChange = sinceOutputChange - 1
         end
 
-        -- count down till Edit Config button will be reset to default color
+        -- Count down till Edit Config button will be reset to default color
         if editConfigButton > 0 then
             editConfigButton = editConfigButton - 1
         end
 
-        -- count down till Load Config button will be reset to default color
+        -- Count down till Load Config button will be reset to default color
         if loadConfigButton > 0 then
             loadConfigButton = loadConfigButton - 1
         end
+        
+        -- Wait 0.25 seconds to re-run
         sleep(0.25)
     end
 end
