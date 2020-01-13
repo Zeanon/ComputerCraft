@@ -3,6 +3,7 @@ local numberColor = colors.red
 local unitColor = colors.gray
 local buttonColor = colors.lightGray
 local textColor = colors.white
+
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
 
