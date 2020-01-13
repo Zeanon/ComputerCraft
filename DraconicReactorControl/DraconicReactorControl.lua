@@ -458,7 +458,8 @@ end
 
 
 function update()
-
+    
+    -- block external access to the fluxgates
     inputfluxgate.setOverrideEnabled(false)
     outputfluxgate.setOverrideEnabled(false)
     externalfluxgate.setOverrideEnabled(false)
@@ -472,14 +473,16 @@ function update()
         end
 
 
+        local satColor
         satPercent = math.ceil(ri.energySaturation / ri.maxEnergySaturation * 10000) * .01
         if satPercent == math.huge or isnan(satPercent) then
             satPercent = 0
         end
-        local satColor
-        if satPercent >= 70 then
+        if satPercent > satBoost2 then
             satColor = colors.green
-        elseif satPercent < 70 and satPercent > 30 then
+        elseif satPercent <= satBoost2 and satPercent > satBoost1 then
+            satColor = colors.yellow
+        elseif satPercent <= satBoost1 and satPercent > satBoostThreshold then
             satColor = colors.orange
         else
             satColor = colors.red
@@ -488,30 +491,30 @@ function update()
         local tempColor
         if ri.temperature <= (maxTemperature / 8) * 5 then
             tempColor = colors.green
-        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 80) * 65 then
+        elseif ri.temperature > (maxTemperature / 8) * 5 and ri.temperature <= (maxTemperature / 8) * 7 then
             tempColor = colors.orange
         else
             local tempColor = colors.red
         end
 
+        local fieldColor
         fieldPercent = math.ceil(ri.fieldStrength / ri.maxFieldStrength * 10000) * .01
         if fieldPercent == math.huge or isnan(fieldPercent) then
             fieldPercent = 0
         end
-        local fieldColor
-        if fieldPercent >= 50 then
+        if fieldPercent >= fieldBoost then
             fieldColor = colors.green
-        elseif fieldPercent < 50 and fieldPercent > 30 then
+        elseif fieldPercent < fieldBoost and fieldPercent >= minFieldPercent then
             fieldColor = colors.orange
         else
             fieldColor = colors.red
         end
 
+        local fuelColor
         fuelPercent = 100 - math.ceil(ri.fuelConversion / ri.maxFuelConversion * 10000) * .01
         if fuelPercent == math.huge or isnan(fuelPercent) then
             fuelPercent = 0
         end
-        local fuelColor
         if fuelPercent >= 70 then
             fuelColor = colors.green
         elseif fuelPercent < 70 and fuelPercent > 30 then
@@ -520,11 +523,11 @@ function update()
             fuelColor = colors.red
         end
 
+        local energyColor
         energyPercent = math.ceil(core.getEnergyStored() / core.getMaxEnergyStored() * 10000) * .01
         if energyPercent == math.huge or isnan(energyPercent) then
             energyPercent = 0
         end
-        local energyColor
         if energyPercent >= 70 then
             energyColor = colors.green
         elseif energyPercent < 70 and energyPercent > 30 then
@@ -560,7 +563,7 @@ function update()
         -- SAFEGUARDS -- DONT EDIT
 
         -- out of fuel, kill it
-        if fuelPercent <= minFuelPercent then
+        if fuelPercent < minFuelPercent then
             action = "Fuel below " .. minFuelPercent .. "%"
             reactor.stopReactor()
             fuelthreshold = 0
@@ -569,18 +572,18 @@ function update()
         end
 
         -- Saturation too low, regulate Output
-        if satPercent < satBoostThreshold and ri.status ~= "offline" then
+        if satPercent <= satBoostThreshold and ri.status ~= "offline" then
             satthreshold = 0
-        elseif satPercent < satBoost1 and ri.status ~= "offline" then
+        elseif satPercent <= satBoost1 and ri.status ~= "offline" then
             satthreshold = satBoost1Output
-        elseif satPercent < satBoost2 and ri.status ~= "offline" then
+        elseif satPercent <= satBoost2 and ri.status ~= "offline" then
             satthreshold = satBoost2Output
         else
             satthreshold = -1
         end
 
         -- field strength is close to dangerous, fire up input
-        if fieldPercent <= fieldBoost and ri.status ~= "offline" then
+        if fieldPercent < fieldBoost and ri.status ~= "offline" then
             action = "Field Str dangerous"
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(900000)
@@ -594,7 +597,7 @@ function update()
         end
 
         -- field strength is too dangerous, kill it and try to charge it before it blows
-        if fieldPercent <= minFieldPercent and ri.status ~= "offline" then
+        if fieldPercent < minFieldPercent and ri.status ~= "offline" then
             action = "Field Str < " .. minFieldPercent .. "%"
             reactor.stopReactor()
             reactor.chargeReactor()
