@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.13.0"
+local version = "1.14.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -77,7 +77,7 @@ function save_config()
 	end
 	sw.writeLine(" ")
 	sw.writeLine(" ")
-	sw.writeLine("-- just some saved data")
+	sw.writeLine("---------- Saved Data ----------")
 	sw.writeLine("-- reactors")
 	sw.writeLine("reactorCount: " .. reactorCount)
 	sw.writeLine(" ")
@@ -86,7 +86,7 @@ function save_config()
 	end
 	sw.writeLine(" ")
 	sw.writeLine(" ")
-	sw.writeLine("--monitors")
+	sw.writeLine("-- monitors")
 	sw.writeLine("monitorCount: " .. monitorCount)
 	for i = 1, monitorCount do
 		sw.writeLine(" ")
