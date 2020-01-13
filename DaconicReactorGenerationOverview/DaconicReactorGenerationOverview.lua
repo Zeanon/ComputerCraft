@@ -101,9 +101,12 @@ end
 -- read settings from file
 function load_config()
 	local sr = fs.open("config.txt", "r")
+	local curVersion
 	local line = sr.readLine()
 	while line do
-		if gui.split(line, ": ")[1] == "numberColor" then
+		if gui.split(line, ": ")[1] == "version" then
+            		curVersion = gui.split(line, ": ")[2]
+		elseif gui.split(line, ": ")[1] == "numberColor" then
 			numberColor = color.getColor(gui.split(line, ": ")[2])
 		elseif gui.split(line, ": ")[1] == "unitColor" then
 			unitColor = color.getColor(gui.split(line, ": ")[2])
