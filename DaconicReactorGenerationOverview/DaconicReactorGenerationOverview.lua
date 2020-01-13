@@ -113,7 +113,7 @@ function save_config()
 	sw.writeLine("-- reactors")
 	sw.writeLine("reactorCount: " .. reactorCount)
 	for i = 1, reactorCount do
-		sw.writeLine("reactor: " .. connectedReactorNames[i])
+		sw.writeLine("reactor" .. i .. ": " .. connectedReactorNames[i])
 	end
 	sw.writeLine(" ")
 	sw.writeLine(" ")
