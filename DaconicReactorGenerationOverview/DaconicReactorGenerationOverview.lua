@@ -7,7 +7,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.10.0"
+local version = "1.11.0"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -40,40 +40,6 @@ function checkValidity(periName)
 		if periName:find(b) then return b end
 	end
 	return false
-end
-
-function initPeripherals()
-	for i,v in ipairs(periList) do
-		local periFunctions = {
-			["draconic_reactor"] = function()
-				reactorCount = reactorCount + 1
-				connectedReactorNames[reactorCount] = periList[i]
-				connectedReactorPeripherals[reactorCount] = peripheral.wrap(periList[i])
-			end,
-			["flux_gate"] = function()
-				gateCount = gateCount + 1
-				connectedGateNames[gateCount] = periList[i]
-				connectedGatePeripherals[gateCount] = peripheral.wrap(periList[i])
-			end,
-			["monitor"] = function()
-				monitorCount = monitorCount + 1
-				connectedMonitorNames[monitorCount] = periList[i]
-				connectedMonitorPeripherals[monitorCount] = peripheral.wrap(periList[i])
-				monitorData[periList[i] .. ":smallFont"] = false
-				monitorData[periList[i] .. ":drawButtons"] = true
-				monitorData[periList[i] .. ":amount"] = 0
-				monitorData[periList[i] .. ":x"] = 0
-				monitorData[periList[i] .. ":y"] = 0
-				for count = 1, 10 do
-					monitorData[periList[i] .. ":line" .. count] = count
-				end
-			end
-		}
-
-		local isValid = checkValidity(peripheral.getType(v))
-		if isValid then periFunctions[isValid]()
-		end
-	end
 end	
 
 -- write settings to config file
@@ -193,6 +159,40 @@ function initConfig()
 		save_config()
 	else
 		load_config()
+	end
+end
+
+function initPeripherals()
+	for i,v in ipairs(periList) do
+		local periFunctions = {
+			["draconic_reactor"] = function()
+				reactorCount = reactorCount + 1
+				connectedReactorNames[reactorCount] = periList[i]
+				connectedReactorPeripherals[reactorCount] = peripheral.wrap(periList[i])
+			end,
+			["flux_gate"] = function()
+				gateCount = gateCount + 1
+				connectedGateNames[gateCount] = periList[i]
+				connectedGatePeripherals[gateCount] = peripheral.wrap(periList[i])
+			end,
+			["monitor"] = function()
+				monitorCount = monitorCount + 1
+				connectedMonitorNames[monitorCount] = periList[i]
+				connectedMonitorPeripherals[monitorCount] = peripheral.wrap(periList[i])
+				monitorData[periList[i] .. ":smallFont"] = false
+				monitorData[periList[i] .. ":drawButtons"] = true
+				monitorData[periList[i] .. ":amount"] = 0
+				monitorData[periList[i] .. ":x"] = 0
+				monitorData[periList[i] .. ":y"] = 0
+				for count = 1, 10 do
+					monitorData[periList[i] .. ":line" .. count] = count
+				end
+			end
+		}
+
+		local isValid = checkValidity(peripheral.getType(v))
+		if isValid then periFunctions[isValid]()
+		end
 	end
 end
 
