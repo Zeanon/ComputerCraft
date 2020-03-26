@@ -3,9 +3,9 @@
 -- pastebin link: https://pastebin.com/VT6ezUgB
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
 local lib2URL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/startup.lua"
-local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/run.lua"
-local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DaconicReactorGenerationOverview/DaconicReactorGenerationOverview.lua"
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/startup.lua"
+local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/run.lua"
+local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/DaconicReactorGenerationOverview.lua"
 local lib, lib2, startup, run, generationOverview
 local libFile, lib2File, startupFile, runFile, generationOverviewFile
 
