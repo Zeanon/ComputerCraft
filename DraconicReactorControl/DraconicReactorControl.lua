@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.10.3"
+local version = "1.10.4"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -461,9 +461,9 @@ end
 function update()
     
     -- Block external access to the fluxgates
-    inputfluxgate.setOverrideEnabled(true)
-    outputfluxgate.setOverrideEnabled(true)
-    externalfluxgate.setOverrideEnabled(true)
+    inputfluxgate.setOverrideEnabled(false)
+    outputfluxgate.setOverrideEnabled(false)
+    externalfluxgate.setOverrideEnabled(false)
 
     while true do
         ri = reactor.getReactorInfo()
