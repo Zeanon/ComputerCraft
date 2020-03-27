@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.10.0"
+local version = "1.10.1"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -350,7 +350,7 @@ function buttons()
         if yPos >= 1 and yPos <= 3 and xPos >= mon.X - 16 and xPos <= mon.X - 1 and core.getEnergyStored() > 1500000 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
-            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > minFuelPercent then
+            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > minFuelPercent and core.getEnergyStored() >= 1000000 then
                 reactor.chargeReactor()
             end
         end
