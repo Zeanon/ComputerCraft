@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.10.5"
+local version = "1.10.6"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -666,18 +666,8 @@ function update()
                 outputInputHyteresis = 50000
             elseif energyPercent >= 70 and energyPercent < 80 then
                 outputInputHyteresis = 75000
-            elseif energyPercent >= 60 and energyPercent < 70 then
+            elseif energyPercent >= 0 and energyPercent < 70 then
                 outputInputHyteresis = 100000
-            elseif energyPercent >= 50 and energyPercent < 60 then
-                outputInputHyteresis = 125000
-            elseif energyPercent >= 40 and energyPercent < 50 then
-                outputInputHyteresis = 250000
-            elseif energyPercent >= 30 and energyPercent < 40 then
-                outputInputHyteresis = 500000
-            elseif energyPercent >= 20 and energyPercent < 30 then
-                outputInputHyteresis = 750000
-            elseif energyPercent >= 0 and energyPercent < 20 then
-                outputInputHyteresis = 1000000
             else
                 action = "Not enough buffer energy"
                 reactor.stopReactor()
