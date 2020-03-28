@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.10.8"
+local version = "1.10.9"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -22,10 +22,10 @@ local minFieldPercent = 20
 local fieldBoost = 25
 local fieldBoostOutput = 400000
 -- Different boost levels for energySaturation
-local satBoostThreshold = 25
-local satBoost1 = 35
+local satBoostThreshold = 20
+local satBoost1 = 25
 local satBoost1Output = 600000
-local satBoost2 = 45
+local satBoost2 = 30
 local satBoost2Output = 1000000
 -- Tolerances for auto boosting
 local genTolerance = 250
