@@ -40,7 +40,7 @@ local stableTurns = 25
 -- Maximum output level
 local maxTargetGeneration = 1500000
 -- Target saturation
-local targetSat = 50
+local targetSat = 30
 -- Minimum fuelPercent needed
 local minFuelPercent = 15
 
