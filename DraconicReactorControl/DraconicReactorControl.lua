@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.10.7"
+local version = "1.10.8"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -40,7 +40,7 @@ local stableTurns = 25
 -- Maximum output level
 local maxTargetGeneration = 1500000
 -- Target saturation
-local targetSat = 30
+local targetSat = 35
 -- Minimum fuelPercent needed
 local minFuelPercent = 15
 
