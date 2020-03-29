@@ -1,4 +1,4 @@
 while true do
     shell.run("DraconicReactor")
-    os.sleep(2.5);
+    os.sleep(1);
 end
