@@ -1,4 +1,4 @@
 while true do
 	shell.run("EnergyCoreOverview")
-	os.sleep(2.5);
+	os.sleep(10);
 end
