@@ -1,7 +1,7 @@
 -- Draconic Reactor Control program by drmon(forked by Zeanon)
 
 -- Version
-local version = "1.10.10"
+local version = "1.10.11"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -43,6 +43,8 @@ local maxTargetGeneration = 1500000
 local targetSat = 35
 -- Minimum fuelPercent needed
 local minFuelPercent = 15
+-- Minimum bufferEnergy needed
+local minEnergy = 10000000
 
 local activateOnCharged = true
 
@@ -347,10 +349,10 @@ function buttons()
         local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 
         -- Reactor control
-        if yPos >= 1 and yPos <= 3 and xPos >= mon.X - 16 and xPos <= mon.X - 1 and core.getEnergyStored() > 1500000 then
+        if yPos >= 1 and yPos <= 3 and xPos >= mon.X - 16 and xPos <= mon.X - 1 then
             if ri.status == "online" or ri.status == "charging" or ri.status == "charged" then
                 reactor.stopReactor()
-            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > minFuelPercent and core.getEnergyStored() >= 1000000 then
+            elseif (ri.status == "offline" or ri.status == "stopping") and fuelPercent > minFuelPercent and core.getEnergyStored() > minEnergy then
                 reactor.chargeReactor()
             end
         end
@@ -655,7 +657,7 @@ function update()
         -- Get the hysteresis for the internal output gate
         if ri.status == "offline" then
             outputInputHyteresis = 0
-        elseif core.getEnergyStored() >= 1000000 then
+        elseif core.getEnergyStored() > minEnergy then
             if energyPercent == 100 then
                 outputInputHyteresis = 0
             elseif energyPercent >= 95 and energyPercent < 100 then
