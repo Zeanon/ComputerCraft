@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.0"
+local version = "1.15.1"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -254,9 +254,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 2 and yPos >= monitorData[side .. ":y"] + 10 and yPos <= monitorData[side .. ":y"] + 14 then
+			elseif monitorData[side .. ":amount"] >= 2 and yPos >= monitorData[side .. ":y"] + 10 and yPos <= monitorData[side .. ":y"] + 14 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line2"] = monitorData[side .. ":line2"] - 1
 					if monitorData[side .. ":line2"] < 1 then
@@ -270,9 +268,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 3 and yPos >= monitorData[side .. ":y"] + 18 and yPos <= monitorData[side .. ":y"] + 22 then
+			elseif monitorData[side .. ":amount"] >= 3 and yPos >= monitorData[side .. ":y"] + 18 and yPos <= monitorData[side .. ":y"] + 22 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line3"] = monitorData[side .. ":line3"] - 1
 					if monitorData[side .. ":line3"] < 1 then
@@ -286,9 +282,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 4 and yPos >= monitorData[side .. ":y"] + 26 and yPos <= monitorData[side .. ":y"] + 30 then
+			elseif monitorData[side .. ":amount"] >= 4 and yPos >= monitorData[side .. ":y"] + 26 and yPos <= monitorData[side .. ":y"] + 30 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line4"] = monitorData[side .. ":line4"] - 1
 					if monitorData[side .. ":line4"] < 1 then
@@ -302,9 +296,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 5 and yPos >= monitorData[side .. ":y"] + 34 and yPos <= monitorData[side .. ":y"] + 38 then
+			elseif monitorData[side .. ":amount"] >= 5 and yPos >= monitorData[side .. ":y"] + 34 and yPos <= monitorData[side .. ":y"] + 38 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line5"] = monitorData[side .. ":line5"] - 1
 					if monitorData[side .. ":line5"] < 1 then
@@ -318,9 +310,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 6 and yPos >= monitorData[side .. ":y"] + 42 and yPos <= monitorData[side .. ":y"] + 46 then
+			elseif monitorData[side .. ":amount"] >= 6 and yPos >= monitorData[side .. ":y"] + 42 and yPos <= monitorData[side .. ":y"] + 46 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line6"] = monitorData[side .. ":line6"] - 1
 					if monitorData[side .. ":line6"] < 1 then
@@ -334,9 +324,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 7 and yPos >= monitorData[side .. ":y"] + 50 and yPos <= monitorData[side .. ":y"] + 54 then
+			elseif monitorData[side .. ":amount"] >= 7 and yPos >= monitorData[side .. ":y"] + 50 and yPos <= monitorData[side .. ":y"] + 54 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line7"] = monitorData[side .. ":line7"] - 1
 					if monitorData[side .. ":line7"] < 1 then
@@ -350,9 +338,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 8 and yPos >= monitorData[side .. ":y"] + 58 and yPos <= monitorData[side .. ":y"] + 62 then
+			elseif monitorData[side .. ":amount"] >= 8 and yPos >= monitorData[side .. ":y"] + 58 and yPos <= monitorData[side .. ":y"] + 62 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line8"] = monitorData[side .. ":line8"] - 1
 					if monitorData[side .. ":line8"] < 1 then
@@ -366,9 +352,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 9 and yPos >= monitorData[side .. ":y"] + 66 and yPos <= monitorData[side .. ":y"] + 70 then
+			elseif monitorData[side .. ":amount"] >= 9 and yPos >= monitorData[side .. ":y"] + 66 and yPos <= monitorData[side .. ":y"] + 70 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line9"] = monitorData[side .. ":line9"] - 1
 					if monitorData[side .. ":line9"] < 1 then
@@ -382,9 +366,7 @@ function buttons()
 				end
 				drawLines()
 				save_config()
-			end
-
-			if monitorData[side .. ":amount"] >= 10 and yPos >= monitorData[side .. ":y"] + 74 and yPos <= monitorData[side .. ":y"] + 78 then
+			elseif monitorData[side .. ":amount"] >= 10 and yPos >= monitorData[side .. ":y"] + 74 and yPos <= monitorData[side .. ":y"] + 78 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line10"] = monitorData[side .. ":line10"] - 1
 					if monitorData[side .. ":line10"] < 1 then
@@ -398,7 +380,11 @@ function buttons()
 				end
 				drawLines()
 				save_config()
+			else
+				monitorData[side .. ":drawButtons"] = false;
 			end
+		else
+			monitorData[side .. ":drawButtons"] = true;
 		end
 	end
 end
