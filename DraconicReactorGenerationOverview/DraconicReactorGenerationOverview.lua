@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.11"
+local version = "1.15.12"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -234,22 +234,19 @@ function buttons()
 	while true do
 		-- button handler
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-		local drawButtons = monitorData[side .. ":drawButtons"]
 		if monitorData[side .. ":drawButtons"] then
 			local mon, monitor, monX, monY
 			monitor = peripheral.wrap(side)
 			monX, monY = monitor.getSize()
 			mon = {}
 			mon.monitor,mon.X, mon.Y = monitor, monX, monY
+			
 			if xPos >= 5 and xPos <= mon.X - 5 then
 				monitorData[side .. ":drawButtons"] = false
 				drawLines()
 				save_config()
-			elseif xPos <= 1 or xPos >= mon.X - 1 then	
-				monitorData[side .. ":drawButtons"] = false
-				drawLines()
-				save_config()
-			else if monitorData[side .. ":amount"] >= 1 and yPos >= monitorData[side .. ":y"] and yPos <= monitorData[side .. ":y"] + 4 then
+			elseif xPos <= 1 or xPos >= mon.X - 1 then
+			elseif monitorData[side .. ":amount"] >= 1 and yPos >= monitorData[side .. ":y"] and yPos <= monitorData[side .. ":y"] + 4 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line1"] = monitorData[side .. ":line1"] - 1
 					if monitorData[side .. ":line1"] < 1 then
@@ -383,8 +380,6 @@ function buttons()
 					if monitorData[side .. ":line9"] < 1 then
 						monitorData[side .. ":line9"] = reactorCount + 3
 					end
-					drawLines()
-					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line9"] = monitorData[side .. ":line9"] + 1
 					if monitorData[side .. ":line9"] > reactorCount + 3 then
@@ -410,10 +405,6 @@ function buttons()
 					save_config()
 				end
 			end
-		else
-			monitorData[side .. ":drawButtons"] = true
-			drawLines()
-			save_config()
 		end
 	end
 end
