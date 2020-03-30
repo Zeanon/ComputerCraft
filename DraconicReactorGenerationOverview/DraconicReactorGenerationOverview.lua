@@ -445,7 +445,6 @@ function drawLines()
 		for i = 1, reactorCount do
 			reactorGeneration[i] = getReactorGeneration(i)
 			print("|# Reactor " .. i .. " Generation: " .. gui.format_int(reactorGeneration[i]) .. " RF/t")
-			print(monitorData[connectedMonitorNames[i] .. ":drawButtons"])
 		end
 
 		print("|# Total Drainback: " .. gui.format_int(drainback) .. " RF/t")
