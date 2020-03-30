@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.6"
+local version = "1.15.7"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
