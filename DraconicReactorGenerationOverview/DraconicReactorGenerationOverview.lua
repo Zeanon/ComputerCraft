@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.1"
+local version = "1.15.2"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -382,9 +382,13 @@ function buttons()
 				save_config()
 			else
 				monitorData[side .. ":drawButtons"] = false;
+				drawLines()
+				save_config()
 			end
 		else
 			monitorData[side .. ":drawButtons"] = true;
+			drawLines()
+			save_config()
 		end
 	end
 end
