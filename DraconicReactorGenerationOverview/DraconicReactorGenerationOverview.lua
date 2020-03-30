@@ -234,7 +234,8 @@ function buttons()
 	while true do
 		-- button handler
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
-		if monitorData[side .. ":drawButtons"] then
+		local drawButtons = monitorData[side .. ":drawButtons"]
+		if drawButtons then
 			local mon, monitor, monX, monY
 			monitor = peripheral.wrap(side)
 			monX, monY = monitor.getSize()
@@ -381,15 +382,13 @@ function buttons()
 				drawLines()
 				save_config()
 			else
-				monitorData[side .. ":drawButtons"] = false
-				drawLines()
-				save_config()
+				drawButtons = false
 			end
 		else
-			monitorData[side .. ":drawButtons"] = true
-			drawLines()
-			save_config()
+			drawButtons = true
 		end
+		
+		monitorData[side .. ":drawButtons"] = drawButtons
 	end
 end
 
