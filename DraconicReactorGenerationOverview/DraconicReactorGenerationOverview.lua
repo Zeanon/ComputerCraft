@@ -385,7 +385,7 @@ function buttons()
 				drawButtons = false
 			end
 		else
-			drawButtons = true
+			drawButtons = false
 		end
 		
 		monitorData[side .. ":drawButtons"] = drawButtons
