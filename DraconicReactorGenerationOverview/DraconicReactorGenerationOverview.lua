@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.12"
+local version = "1.15.13"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -246,6 +246,9 @@ function buttons()
 				drawLines()
 				save_config()
 			elseif xPos <= 1 or xPos >= mon.X - 1 then
+				monitorData[side .. ":drawButtons"] = false
+				drawLines()
+				save_config()
 			elseif monitorData[side .. ":amount"] >= 1 and yPos >= monitorData[side .. ":y"] and yPos <= monitorData[side .. ":y"] + 4 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line1"] = monitorData[side .. ":line1"] - 1
@@ -405,6 +408,10 @@ function buttons()
 					save_config()
 				end
 			end
+		else
+			monitorData[side .. ":drawButtons"] = true
+			drawLines()
+			save_config()
 		end
 	end
 end
