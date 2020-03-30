@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.10"
+local version = "1.15.11"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -241,156 +241,180 @@ function buttons()
 			monX, monY = monitor.getSize()
 			mon = {}
 			mon.monitor,mon.X, mon.Y = monitor, monX, monY
-			if monitorData[side .. ":amount"] >= 1 and yPos >= monitorData[side .. ":y"] and yPos <= monitorData[side .. ":y"] + 4 then
+			if xPos >= 5 and xPos <= mon.X - 5 then
+				monitorData[side .. ":drawButtons"] = false
+				drawLines()
+				save_config()
+			elseif xPos <= 1 or xPos >= mon.X - 1 then	
+				monitorData[side .. ":drawButtons"] = false
+				drawLines()
+				save_config()
+			else if monitorData[side .. ":amount"] >= 1 and yPos >= monitorData[side .. ":y"] and yPos <= monitorData[side .. ":y"] + 4 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line1"] = monitorData[side .. ":line1"] - 1
 					if monitorData[side .. ":line1"] < 1 then
 						monitorData[side .. ":line1"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line1"] = monitorData[side .. ":line1"] + 1
 					if monitorData[side .. ":line1"] > reactorCount + 3 then
 						monitorData[side .. ":line1"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 2 and yPos >= monitorData[side .. ":y"] + 10 and yPos <= monitorData[side .. ":y"] + 14 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line2"] = monitorData[side .. ":line2"] - 1
 					if monitorData[side .. ":line2"] < 1 then
 						monitorData[side .. ":line2"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line2"] = monitorData[side .. ":line2"] + 1
 					if monitorData[side .. ":line2"] > reactorCount + 3 then
 						monitorData[side .. ":line2"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 3 and yPos >= monitorData[side .. ":y"] + 18 and yPos <= monitorData[side .. ":y"] + 22 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line3"] = monitorData[side .. ":line3"] - 1
 					if monitorData[side .. ":line3"] < 1 then
 						monitorData[side .. ":line3"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line3"] = monitorData[side .. ":line3"] + 1
 					if monitorData[side .. ":line3"] > reactorCount + 3 then
 						monitorData[side .. ":line3"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 4 and yPos >= monitorData[side .. ":y"] + 26 and yPos <= monitorData[side .. ":y"] + 30 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line4"] = monitorData[side .. ":line4"] - 1
 					if monitorData[side .. ":line4"] < 1 then
 						monitorData[side .. ":line4"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line4"] = monitorData[side .. ":line4"] + 1
 					if monitorData[side .. ":line4"] > reactorCount + 3 then
 						monitorData[side .. ":line4"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 5 and yPos >= monitorData[side .. ":y"] + 34 and yPos <= monitorData[side .. ":y"] + 38 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line5"] = monitorData[side .. ":line5"] - 1
 					if monitorData[side .. ":line5"] < 1 then
 						monitorData[side .. ":line5"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line5"] = monitorData[side .. ":line5"] + 1
 					if monitorData[side .. ":line5"] > reactorCount + 3 then
 						monitorData[side .. ":line5"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 6 and yPos >= monitorData[side .. ":y"] + 42 and yPos <= monitorData[side .. ":y"] + 46 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line6"] = monitorData[side .. ":line6"] - 1
 					if monitorData[side .. ":line6"] < 1 then
 						monitorData[side .. ":line6"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line6"] = monitorData[side .. ":line6"] + 1
 					if monitorData[side .. ":line6"] > reactorCount + 3 then
 						monitorData[side .. ":line6"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 7 and yPos >= monitorData[side .. ":y"] + 50 and yPos <= monitorData[side .. ":y"] + 54 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line7"] = monitorData[side .. ":line7"] - 1
 					if monitorData[side .. ":line7"] < 1 then
 						monitorData[side .. ":line7"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line7"] = monitorData[side .. ":line7"] + 1
 					if monitorData[side .. ":line7"] > reactorCount + 3 then
 						monitorData[side .. ":line7"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 8 and yPos >= monitorData[side .. ":y"] + 58 and yPos <= monitorData[side .. ":y"] + 62 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line8"] = monitorData[side .. ":line8"] - 1
 					if monitorData[side .. ":line8"] < 1 then
 						monitorData[side .. ":line8"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line8"] = monitorData[side .. ":line8"] + 1
 					if monitorData[side .. ":line8"] > reactorCount + 3 then
 						monitorData[side .. ":line8"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 9 and yPos >= monitorData[side .. ":y"] + 66 and yPos <= monitorData[side .. ":y"] + 70 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line9"] = monitorData[side .. ":line9"] - 1
 					if monitorData[side .. ":line9"] < 1 then
 						monitorData[side .. ":line9"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line9"] = monitorData[side .. ":line9"] + 1
 					if monitorData[side .. ":line9"] > reactorCount + 3 then
 						monitorData[side .. ":line9"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
 			elseif monitorData[side .. ":amount"] >= 10 and yPos >= monitorData[side .. ":y"] + 74 and yPos <= monitorData[side .. ":y"] + 78 then
 				if xPos >= 1 and xPos <= 5 then
 					monitorData[side .. ":line10"] = monitorData[side .. ":line10"] - 1
 					if monitorData[side .. ":line10"] < 1 then
 						monitorData[side .. ":line10"] = reactorCount + 3
 					end
+					drawLines()
+					save_config()
 				elseif xPos >= mon.X - 5 and xPos <= mon.X - 1 then
 					monitorData[side .. ":line10"] = monitorData[side .. ":line10"] + 1
 					if monitorData[side .. ":line10"] > reactorCount + 3 then
 						monitorData[side .. ":line10"] = 1
 					end
+					drawLines()
+					save_config()
 				end
-				drawLines()
-				save_config()
-			else
-				drawButtons = false
 			end
 		else
-			drawButtons = true
+			monitorData[side .. ":drawButtons"] = true
+			drawLines()
+			save_config()
 		end
-		
-		monitorData[side .. ":drawButtons"] = false
-		drawLines()
-		save_config()
 	end
 end
 
