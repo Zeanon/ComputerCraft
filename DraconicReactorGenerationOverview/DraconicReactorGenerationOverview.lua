@@ -8,7 +8,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.7"
+local version = "1.15.8"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -235,7 +235,7 @@ function buttons()
 		-- button handler
 		local event, side, xPos, yPos = os.pullEvent("monitor_touch")
 		local drawButtons = monitorData[side .. ":drawButtons"]
-		if drawButtons then
+		if monitorData[side .. ":drawButtons"] then
 			local mon, monitor, monX, monY
 			monitor = peripheral.wrap(side)
 			monX, monY = monitor.getSize()
@@ -385,7 +385,7 @@ function buttons()
 				drawButtons = false
 			end
 		else
-			drawButtons = false
+			drawButtons = true
 		end
 		
 		monitorData[side .. ":drawButtons"] = drawButtons
