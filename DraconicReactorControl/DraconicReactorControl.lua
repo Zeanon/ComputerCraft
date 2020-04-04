@@ -6,7 +6,7 @@
 
 
 -- Version
-local version = "1.10.11"
+local version = "1.10.12"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
