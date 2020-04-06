@@ -7,7 +7,7 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.5.1"
+local version = "1.5.2"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
@@ -208,7 +208,7 @@ function drawLines()
 		monitor = connectedMonitorPeripherals[i]
 		monX, monY = monitor.getSize()
 		mon = {}
-		mon.monitor,mon.X, mon.Y = monitor, monX, monY
+		mon.monitor, mon.X, mon.Y = monitor, monX, monY
 
 		totalEnergy = getTotalEnergyStored()
 		totalMaxEnergy = getTotalMaxEnergyStored()
