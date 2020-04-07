@@ -60,4 +60,8 @@ if os.getComputerLabel() == null then
 	os.setComputerLabel("Energy-Core-Overview")
 end
 
+if fs.exists("install") then
+	shell.run("delete install")
+end
+
 shell.run("reboot")
