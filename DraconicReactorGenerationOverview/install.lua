@@ -59,4 +59,8 @@ if os.getComputerLabel() == null then
 	os.setComputerLabel("Reactor-Generation-Overview")
 end
 
+if fs.exists("install") then
+	shell.run("delete install")
+end
+
 shell.run("reboot")
