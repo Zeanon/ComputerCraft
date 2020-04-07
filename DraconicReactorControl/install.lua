@@ -54,4 +54,5 @@ end
 if fs.exists("install") then
     shell.run("delete install")
 end
+
 shell.run("reboot")
