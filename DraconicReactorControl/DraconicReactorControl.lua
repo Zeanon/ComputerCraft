@@ -6,7 +6,7 @@
 
 
 -- Version
-local version = "1.10.12"
+local version = "1.10.13"
 
 -- Peripherals
 local internalInput = "flux_gate_0"
@@ -749,7 +749,7 @@ function update()
         gui.draw_line(mon, 0, 10, mon.X + 1, colors.gray)
         gui.draw_column(mon, mon.X - 25, 1, mon.Y, colors.gray)
 
-        gui.draw_text_lr(mon, 2, 12, 26, "Energy Saturation", satPercent .. "%", colors.white, satColor, colors.black)
+        gui.draw_text_lr(mon, 2, 12, 26, "Energy Saturation  T:" .. targetSat, satPercent .. "%", colors.white, satColor, colors.black)
         gui.progress_bar(mon, 2, 13, mon.X - 28, satPercent, 100, satColor, colors.lightGray)
 
         gui.draw_text_lr(mon, 2, 15, 26, "Temperature  M:" .. maxTemperature .. "C", gui.format_int(ri.temperature) .. "C", colors.white, tempColor, colors.black)
