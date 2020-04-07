@@ -51,4 +51,7 @@ if os.getComputerLabel() == null then
     os.setComputerLabel("Draconic-Reactor-Control")
 end
 
+if fs.exists("install") then
+    shell.run("delete install")
+end
 shell.run("reboot")
