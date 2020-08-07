@@ -10,6 +10,7 @@ local energyOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraf
 local lib, lib2, startup, run, energyOverview
 local libFile, lib2File, startupFile, runFile, energyOverviewFile
 
+
 fs.makeDir("lib")
 
 lib = http.get(libURL)
@@ -49,6 +50,7 @@ energyOverview = http.get(energyOverviewURL)
 energyOverviewFile = fs.open("EnergyCoreOverview", "w")
 energyOverviewFile.write(energyOverview.readAll())
 energyOverviewFile.close()
+
 
 if fs.exists("update") then
 	shell.run("delete update")
