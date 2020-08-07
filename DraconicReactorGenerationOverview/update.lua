@@ -4,5 +4,6 @@
 if fs.exists("install") then
     shell.run("delete install")
 end
+
 shell.run("pastebin get VT6ezUgB install")
 shell.run("install")
