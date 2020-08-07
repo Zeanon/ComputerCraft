@@ -33,7 +33,7 @@ startup = http.get(startupURL)
 startupFile = fs.open("startup", "w")
 startupFile.write(startup.readAll())
 startupFile.close()
-startup.readAll()
+startup.close()
 
 
 run = http.get(runURL)
