@@ -12,27 +12,27 @@ local libFile, startupFile, runFile, reactorControlFile
 fs.makeDir("lib")
 
 lib = http.get(libURL)
-libFile = lib.readAll()
 
-local file1 = fs.open("lib/gui", "w")
-file1.write(libFile)
-file1.close()
+libFile = fs.open("lib/gui", "w")
+libFile.write(lib.readAll())
+libFile.close()
+lib.close()
 
 
 startup = http.get(startupURL)
-startupFile = startup.readAll()
 
-local file2 = fs.open("startup", "w")
-file2.write(startupFile)
-file2.close()
+startupFile = fs.open("startup", "w")
+startupFile.write(startup.readAll())
+startupFile.close()
+startup.close()
 
 
 run = http.get(runURL)
-runFile = run.readAll()
 
-local file3 = fs.open("run", "w")
-file3.write(runFile)
-file3.close()
+runFile = fs.open("run", "w")
+runFile.write(run.readAll())
+runFile.close()
+run.close()
 
 
 reactorControl = http.get(reactorControlURL)
