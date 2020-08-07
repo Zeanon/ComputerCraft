@@ -9,46 +9,48 @@ local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/Computer
 local lib, lib2, startup, run, generationOverview
 local libFile, lib2File, startupFile, runFile, generationOverviewFile
 
+
 fs.makeDir("lib")
 
 lib = http.get(libURL)
-libFile = lib.readAll()
 
-local file1 = fs.open("lib/gui", "w")
-file1.write(libFile)
-file1.close()
+libFile = fs.open("lib/gui", "w")
+libFile.write(lib.readAll())
+libFile.close()
+lib.close()
 
 
 lib2 = http.get(lib2URL)
-lib2File = lib2.readAll()
 
-local file2 = fs.open("lib/color", "w")
-file2.write(lib2File)
-file2.close()
+lib2File = fs.open("lib/color", "w")
+lib2File.write(lib2.readAll())
+lib2File.close()
+lib2.close()
 
 
 startup = http.get(startupURL)
-startupFile = startup.readAll()
 
-local file3 = fs.open("startup", "w")
-file3.write(startupFile)
-file3.close()
+startupFile = fs.open("startup", "w")
+startupFile.write(startup.readAll())
+startupFile.close()
+startup.readAll()
 
 
 run = http.get(runURL)
-runFile = run.readAll()
 
-local file4 = fs.open("run", "w")
-file4.write(runFile)
-file4.close()
+runFile = fs.open("run", "w")
+runFile.write(runFile)
+runFile.close()
+run.close()
 
 
 generationOverview = http.get(generationOverviewURL)
-generationOverviewFile = generationOverview.readAll()
 
-local file5 = fs.open("DraconicReactorGenerationOverview", "w")
-file5.write(generationOverviewFile)
-file5.close()
+generationOverviewFile = fs.open("DraconicReactorGenerationOverview", "w")
+generationOverviewFile.write(generationOverview.readAll())
+generationOverviewFile.close()
+generationOverview.close()
+
 
 if fs.exists("update") then
 	shell.run("delete update")
