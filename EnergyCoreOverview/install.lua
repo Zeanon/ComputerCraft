@@ -13,43 +13,42 @@ local libFile, lib2File, startupFile, runFile, energyOverviewFile
 fs.makeDir("lib")
 
 lib = http.get(libURL)
-libFile = lib.readAll()
 
-local file1 = fs.open("lib/gui", "w")
-file1.write(libFile)
-file1.close()
+libFile = fs.open("lib/gui", "w")
+libFile.write(lib.readAll())
+libFile.close()
+lib.close()
 
 
 lib2 = http.get(lib2URL)
-lib2File = lib2.readAll()
 
-local file2 = fs.open("lib/color", "w")
-file2.write(lib2File)
-file2.close()
+lib2File = fs.open("lib/color", "w")
+lib2File.write(lib2.readAll())
+lib2File.close()
+lib2.close()
 
 
 startup = http.get(startupURL)
-startupFile = startup.readAll()
 
-local file3 = fs.open("startup", "w")
-file3.write(startupFile)
-file3.close()
+startupFile = fs.open("startup", "w")
+startupFile.write(startup.readAll())
+startupFile.close()
+startup.close()
 
 
 run = http.get(runURL)
-runFile = run.readAll()
 
-local file4 = fs.open("run", "w")
-file4.write(runFile)
-file4.close()
+runFile = fs.open("run", "w")
+runFile.write(run.readAll())
+runFile.close()
+run.close()
 
 
 energyOverview = http.get(energyOverviewURL)
-energyOverviewFile = energyOverview.readAll()
 
-local file5 = fs.open("EnergyCoreOverview", "w")
-file5.write(energyOverviewFile)
-file5.close()
+energyOverviewFile = fs.open("EnergyCoreOverview", "w")
+energyOverviewFile.write(energyOverview.readAll())
+energyOverviewFile.close()
 
 if fs.exists("update") then
 	shell.run("delete update")
