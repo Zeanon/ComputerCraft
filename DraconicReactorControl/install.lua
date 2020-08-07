@@ -36,11 +36,12 @@ run.close()
 
 
 reactorControl = http.get(reactorControlURL)
-reactorControlFile = reactorControl.readAll()
 
-local file4 = fs.open("DraconicReactor", "w")
-file4.write(reactorControlFile)
-file4.close()
+reactorControlFile = fs.open("DraconicReactor", "w")
+reactorControlFile.write(reactorControl.readAll())
+reactorControlFile.close()
+reactorControl.close()
+
 
 if fs.exists("update") then
     shell.run("delete update")
