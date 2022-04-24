@@ -2,31 +2,31 @@
 -- get it with pastebin get uAG74E88 install
 -- pastebin link: https://pastebin.com/uAG74E88
 
-local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
-local lib2URL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
+local guiLibURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
+local colorLibURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
 local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/startup.lua"
 local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/run.lua"
 local energyOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/EnergyCoreOverview/EnergyCoreOverview.lua"
-local lib, lib2, startup, run, energyOverview
-local libFile, lib2File, startupFile, runFile, energyOverviewFile
+local guiLib, colorLib, startup, run, exe
+local guiLibFile, colorLibFile, startupFile, runFile, exeFile
 
 
 fs.makeDir("lib")
 
-lib = http.get(libURL)
+guiLib = http.get(guiLibURL)
 
-libFile = fs.open("lib/gui", "w")
-libFile.write(lib.readAll())
-libFile.close()
-lib.close()
+guiLibFile = fs.open("lib/gui", "w")
+guiLibFile.write(guiLib.readAll())
+guiLibFile.close()
+guiLib.close()
 
 
-lib2 = http.get(lib2URL)
+colorLib = http.get(colorLibURL)
 
-lib2File = fs.open("lib/color", "w")
-lib2File.write(lib2.readAll())
-lib2File.close()
-lib2.close()
+colorLibFile = fs.open("lib/color", "w")
+colorLibFile.write(colorLib.readAll())
+colorLibFile.close()
+colorLib.close()
 
 
 startup = http.get(startupURL)
@@ -45,11 +45,11 @@ runFile.close()
 run.close()
 
 
-energyOverview = http.get(energyOverviewURL)
+exe = http.get(energyOverviewURL)
 
-energyOverviewFile = fs.open("EnergyCoreOverview", "w")
-energyOverviewFile.write(energyOverview.readAll())
-energyOverviewFile.close()
+exeFile = fs.open("EnergyCoreOverview", "w")
+exeFile.write(exe.readAll())
+exeFile.close()
 
 
 if fs.exists("update") then
