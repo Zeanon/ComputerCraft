@@ -1,5 +1,5 @@
 -- Installer for GenerationOverview by Zeanon
--- get it with pastebin get VT6ezUgB install
+-- get it with "pastebin get VT6ezUgB install"
 -- pastebin link: https://pastebin.com/VT6ezUgB
 local guiLibURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
 local colorLibURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
