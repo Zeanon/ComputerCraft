@@ -1,5 +1,5 @@
 -- Installer for DraconicReactorControl by drmon and Zeanon
--- get it with pastebin get UKxFmqXx install
+-- get it with "pastebin get UKxFmqXx install"
 -- pastebin link: https://pastebin.com/UKxFmqXx
 
 local guiLibURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
