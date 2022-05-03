@@ -6,7 +6,7 @@
 
 
 -- Version
-local version = "1.16.13"
+local version = "1.16.1"
 
 
 -- configure colors
