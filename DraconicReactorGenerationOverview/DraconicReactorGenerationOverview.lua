@@ -1,3 +1,14 @@
+-- Draconic Reactor Generation Overview program by Zeanon
+
+-- Do not edit in here. To adjust any values, edit them in the config-file
+-- Editing stuff in here will have no effect, since everything is read
+-- from the config-file
+
+
+-- Version
+local version = "1.16.13"
+
+
 -- configure colors
 local numberColor = colors.red
 local unitColor = colors.gray
@@ -8,11 +19,11 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.15.13"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
 
+-- initialize
 local generation, drainback
 local reactorGeneration = {}
 
@@ -30,7 +41,7 @@ local connectedMonitorPeripherals ={}
 local periList = peripheral.getNames()
 local validPeripherals = {
 	"draconic_reactor",
-	"flux_gate",
+	"flow_gate",
 	"monitor"
 }
 
@@ -175,7 +186,7 @@ function initPeripherals()
 				connectedReactorNames[reactorCount] = periList[i]
 				connectedReactorPeripherals[reactorCount] = peripheral.wrap(periList[i])
 			end,
-			["flux_gate"] = function()
+			["flow_gate"] = function()
 				gateCount = gateCount + 1
 				connectedGateNames[gateCount] = periList[i]
 				connectedGatePeripherals[gateCount] = peripheral.wrap(periList[i])
