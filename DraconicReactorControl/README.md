@@ -1,5 +1,5 @@
 # Disclaimer
-This program is not originally by me but a fork of [this] (https://github.com/acidjazz/drmon) program written by [acidjazz] (https://github.com/acidjazz).
+This program is not originally by me but a fork of [this](https://github.com/acidjazz/drmon/) program written by [acidjazz](https://github.com/acidjazz/).
 
 # DraconicReactorControl
 ## Reactor Setup
