@@ -88,6 +88,7 @@ function save_config()
 	end
 	sw.writeLine(" ")
 	sw.writeLine(" ")
+	sw.writeLine(" ")
 	sw.writeLine("---------- Saved Data ----------")
 	sw.writeLine("-- reactors")
 	sw.writeLine("reactorCount: " .. reactorCount)
