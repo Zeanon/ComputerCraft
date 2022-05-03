@@ -13,4 +13,5 @@ pastebin URL of install script: https://pastebin.com/VT6ezUgB
 ## Other Info
 to change the display colors, just open <code>config.txt</code> and edit the color values
 <br>you can also edit whether a screen uses smallFont or whether it shows the scroll buttons
+<br>remember to reboot after editing the config file
 <br>to control the reactors, use the [DraconicReactorControl](https://github.com/Zeanon/ComputerCraft/tree/master/DraconicReactorControl) program I wrote
