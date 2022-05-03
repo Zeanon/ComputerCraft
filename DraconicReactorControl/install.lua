@@ -1,4 +1,4 @@
--- Installer for DraconicReactorControl by drmon and Zeanon
+-- Installer for DraconicReactorControl by acidjazz and Zeanon
 -- get it with "pastebin get UKxFmqXx install"
 -- pastebin link: https://pastebin.com/UKxFmqXx
 
