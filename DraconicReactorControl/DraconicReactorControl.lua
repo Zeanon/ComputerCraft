@@ -6,7 +6,7 @@
 
 
 -- Version
-local version = "1.10.13"
+local version = "1.10.14"
 
 -- Peripherals
 local internalInput = "flow_gate_0"
