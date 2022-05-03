@@ -1,4 +1,4 @@
--- Draconic Reactor Control program by drmon(forked by Zeanon)
+-- Draconic Reactor Control program by acidjazz(forked by Zeanon)
 
 -- Do not edit in here. To adjust any values, edit them in the config-file
 -- Editing stuff in here will have no effect, since everything is read
