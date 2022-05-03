@@ -18,4 +18,4 @@ pastebin URL of install script: https://pastebin.com/qpA31HT6
 ## Run
 to run the program you don't have to do anything, the install script will do everything for you.
 <br>to kill the program just hold down ctrl+t twice or delete startup and then reboot the System.
-<br>if you happen, to use two reactors, you can use the [DraconicReactorGenerationOverview](https://github.com/Zeanon/ComputerCraft/tree/master/DraconicReactorGenerationOverview/) program I wrote, to monitor their total stats.
+<br>if you happen, to use two reactors, you can use the [DraconicReactorGenerationOverview](https://github.com/Zeanon/ComputerCraft/tree/master/legacy/DraconicReactorGenerationOverview/) program I wrote, to monitor their total stats.
