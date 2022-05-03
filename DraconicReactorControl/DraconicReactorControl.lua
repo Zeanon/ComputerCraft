@@ -6,7 +6,7 @@
 
 
 -- Version
-local version = "1.11.1"
+local version = "1.11.2"
 
 
 -- Peripherals
@@ -67,7 +67,7 @@ local satthreshold = -1
 local fieldthreshold = -1
 local fuelthreshold = -1
 local energythreshold = -1
-local outputInputHyteresis = 250000
+local outputInputHysteresis = 2000000
 local lastTemp = {}
 local lastGen = {}
 local lastSat = {}
@@ -597,8 +597,8 @@ function update()
             emergencyFlood = true
             inputfluxgate.setSignalLowFlow(9000000)
             inputfluxgate.setSignalHighFlow(9000000)
-            outputfluxgate.setSignalLowFlow(9000000 + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(9000000 + outputInputHyteresis)
+            outputfluxgate.setSignalLowFlow(9000000 + outputInputHysteresis)
+            outputfluxgate.setSignalHighFlow(9000000 + outputInputHysteresis)
             fieldthreshold = fieldBoostOutput
         else
             emergencyFlood = false
@@ -655,31 +655,31 @@ function update()
         if ri.status == "charging" then
             inputfluxgate.setSignalLowFlow(9000000)
             inputfluxgate.setSignalHighFlow(9000000)
-            outputfluxgate.setSignalLowFlow(9000000 + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(9000000 + outputInputHyteresis)
+            outputfluxgate.setSignalLowFlow(9000000 + outputInputHysteresis)
+            outputfluxgate.setSignalHighFlow(9000000 + outputInputHysteresis)
             emergencyCharge = false
         end
 
         -- Get the hysteresis for the internal output gate
         if ri.status == "offline" then
-            outputInputHyteresis = 0
+            outputInputHysteresis = 0
         elseif core.getEnergyStored() > minEnergy then
             if energyPercent == 100 then
-                outputInputHyteresis = 0
+                outputInputHysteresis = 0
             elseif energyPercent >= 95 and energyPercent < 100 then
-                outputInputHyteresis = 100000
+                outputInputHysteresis = 100000
             elseif energyPercent >= 90 and energyPercent < 95 then
-                outputInputHyteresis = 250000
+                outputInputHysteresis = 250000
             elseif energyPercent >= 80 and energyPercent < 90 then
-                outputInputHyteresis = 500000
+                outputInputHysteresis = 500000
             elseif energyPercent >= 70 and energyPercent < 80 then
-                outputInputHyteresis = 750000
+                outputInputHysteresis = 750000
             elseif energyPercent >= 60 and energyPercent < 70 then
-                outputInputHyteresis = 1000000
+                outputInputHysteresis = 1000000
             elseif energyPercent >= 50 and energyPercent < 60 then
-                outputInputHyteresis = 1500000
+                outputInputHysteresis = 1500000
             elseif energyPercent >= 0 and energyPercent < 50 then
-                outputInputHyteresis = 2000000
+                outputInputHysteresis = 2000000
             else
                 action = "Not enough buffer energy"
                 reactor.stopReactor()
@@ -800,7 +800,7 @@ function update()
             gui.draw_line(mon, mon.X - 11, 6, 11, colors.orange)
         end
 
-        gui.draw_text_lr(mon, mon.X - 23, 12, 0, "Hyteresis", gui.format_int(outputInputHyteresis) .. " RF", colors.white, colors.blue, colors.black)
+        gui.draw_text_lr(mon, mon.X - 23, 12, 0, "Hyteresis", gui.format_int(outputInputHysteresis) .. " RF", colors.white, colors.blue, colors.black)
 
         if threshold >= 0 then
             gui.draw_text_lr(mon, mon.X - 23, 14, 0, "Threshold", gui.format_int(threshold) .. " RF", colors.white, colors.magenta, colors.black)
@@ -906,7 +906,7 @@ function getOutput()
 
     if emergencyFlood == false and ri.status ~= "offline" then
         if (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= targetGeneration) and (externalfluxgate.getSignalLowFlow() + outputfluxgate.getSignalLowFlow() <= threshold or threshold == -1) then
-            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+            outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHysteresis)
             outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
         end
         if ri.generationRate < safeTarget - 2500 then
@@ -951,7 +951,7 @@ function getOutput()
                 externalfluxgate.setSignalHighFlow(0)
                 sinceOutputChange = minChangeWait
             else
-                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHysteresis)
                 outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalLowFlow(targetGeneration - outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
@@ -967,7 +967,7 @@ function getOutput()
                 externalfluxgate.setSignalHighFlow(0)
                 sinceOutputChange = minChangeWait
             else
-                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHyteresis)
+                outputfluxgate.setSignalLowFlow(inputfluxgate.getSignalLowFlow() + outputInputHysteresis)
                 outputfluxgate.setSignalHighFlow(outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalLowFlow(threshold - outputfluxgate.getSignalLowFlow())
                 externalfluxgate.setSignalHighFlow(externalfluxgate.getSignalLowFlow())
