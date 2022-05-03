@@ -11,3 +11,5 @@ pastebin URL of install script: https://pastebin.com/uAG74E88
 ## Other Info
 to change the display colors, just open <code>config.txt</code> and edit the color values
 <br>you can also edit whether a screen uses smallFont or whether it shows the scroll buttons
+<br>to turn of the buttons, just set <code>drawButtons</code> to false in the config for the specific monitor
+<br>after you edited the config, just reboot the computer
