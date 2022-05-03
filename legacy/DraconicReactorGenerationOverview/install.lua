@@ -1,11 +1,11 @@
 -- Installer for GenerationOverview by Zeanon
--- get it with pastebin get VT6ezUgB install
--- pastebin link: https://pastebin.com/VT6ezUgB
+-- get it with pastebin get aUyxiBs0 install
+-- pastebin link: https://pastebin.com/aUyxiBs0
 local libURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/gui.lua"
 local lib2URL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/lib/color.lua"
-local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/startup.lua"
-local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/run.lua"
-local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/DaconicReactorGenerationOverview.lua"
+local startupURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/legacy/DraconicReactorGenerationOverview/startup.lua"
+local runURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/legacy/DraconicReactorGenerationOverview/run.lua"
+local generationOverviewURL = "https://raw.githubusercontent.com/Zeanon/ComputerCraft/master/DraconicReactorGenerationOverview/legacy/DaconicReactorGenerationOverview.lua"
 local lib, lib2, startup, run, generationOverview
 local libFile, lib2File, startupFile, runFile, generationOverviewFile
 
@@ -53,7 +53,7 @@ file5.close()
 if fs.exists("update") then
 	shell.run("delete update")
 end
-shell.run("pastebin get HZ7ffzMn update")
+shell.run("pastebin get RD8sVpNn update")
 
 if os.getComputerLabel() == null then
 	os.setComputerLabel("Reactor-Generation-Overview")
