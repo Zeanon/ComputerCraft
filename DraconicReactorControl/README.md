@@ -14,6 +14,7 @@ the Setup needs:
 pastebin URL of install script: https://pastebin.com/UKxFmqXx 
 <br>use <code>pastebin get UKxFmqXx install</code> and then run install
 <br>to update just run <code>update</code>
+
 ## Run
 to run the program you don't have to do anything, the install script will do everything for you.
 <br>to kill the program just hold down ctrl+t twice or delete startup and then reboot the System.
