@@ -11,8 +11,8 @@ the Setup needs:
 <br>make sure that there is no other monitor, energy core or reactor connected to the same network or the autodetection of these items will not work properly
 
 ## Installation
-pastebin URL of install script: https://pastebin.com/UKxFmqXx 
-<br>use <code>pastebin get UKxFmqXx install</code> and then run install
+pastebin URL of install script: https://pastebin.com/qpA31HT6
+<br>use <code>pastebin get qpA31HT6 install</code> and then run install
 <br>to update just run <code>update</code>
 
 ## Run
