@@ -1,3 +1,14 @@
+-- Energy Core Overview program by Zeanon
+
+-- Do not edit in here. To adjust any values, edit them in the config-file
+-- Editing stuff in here will have no effect, since everything is read
+-- from the config-file
+
+
+-- version
+local version = "1.5.2"
+
+
 -- configure colors
 local numberColor = colors.red
 local unitColor = colors.gray
@@ -7,11 +18,11 @@ local textColor = colors.white
 local refresh = 1
 
 -- program
-local version = "1.5.2"
 os.loadAPI("lib/gui")
 os.loadAPI("lib/color")
 
 
+-- initialize
 local totalEnergy, totalMaxEnergy
 local oldEnergy = 0
 local coreEnergy = {}
