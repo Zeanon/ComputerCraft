@@ -9,47 +9,47 @@
 local version = "1.10.13"
 
 -- Peripherals
-local internalInput = "flux_gate_0"
-local internalOutput = "flux_gate_1"
-local externalOutput = "flux_gate_2"
+local internalInput = "flow_gate_0"
+local internalOutput = "flow_gate_1"
+local externalOutput = "flow_gate_2"
 
 -- Target strength of the containment field
 local targetStrength = 30
 -- Maximum temperature the reactor may reach
 local maxTemperature = 7000
-local tempBoost1Output = 400000
-local tempBoost2Output = 750000
-local tempBoost3Output = 1000000
+local tempBoost1Output = 4000000
+local tempBoost2Output = 7500000
+local tempBoost3Output = 10000000
 -- Temperature the programm should keep the reactor at
 local safeTemperature = 5000
 -- If the containment field gets below this value the reactor will be shut down
 local minFieldPercent = 20
 local fieldBoost = 25
-local fieldBoostOutput = 400000
+local fieldBoostOutput = 4000000
 -- Different boost levels for energySaturation
 local satBoostThreshold = 20
 local satBoost1 = 25
-local satBoost1Output = 600000
+local satBoost1Output = 6000000
 local satBoost2 = 30
 local satBoost2Output = 1000000
 -- Tolerances for auto boosting
 local genTolerance = 250
 local satTolerance = 2
 local tempTolerance = 10
-local maxIncrease = 10000
-local safeTarget = 100000
+local maxIncrease = 100000
+local safeTarget = 1000000
 -- The amount of turns the program goes through until the output can be changed again
 local minChangeWait = 10
 -- The amount of turns the program will save to check whether the reactor is stable
 local stableTurns = 25
 -- Maximum output level
-local maxTargetGeneration = 1500000
+local maxTargetGeneration = 15000000
 -- Target saturation
 local targetSat = 35
 -- Minimum fuelPercent needed
 local minFuelPercent = 15
 -- Minimum bufferEnergy needed
-local minEnergy = 10000000
+local minEnergy = 100000000
 
 local activateOnCharged = true
 
@@ -58,15 +58,15 @@ os.loadAPI("lib/gui")
 
 -- Toggleable via the monitor, use our algorithm to achieve our target field strength or let the user tweak it
 local autoInputGate = true
-local curInputGate = 222000
-local targetGeneration = 100000
+local curInputGate = 2220000
+local targetGeneration = 1000000
 local threshold = -1
 local tempthreshold = -1
 local satthreshold = -1
 local fieldthreshold = -1
 local fuelthreshold = -1
 local energythreshold = -1
-local outputInputHyteresis = 25000
+local outputInputHyteresis = 250000
 local lastTemp = {}
 local lastGen = {}
 local lastSat = {}
@@ -325,7 +325,7 @@ externalfluxgate = peripheral.wrap(externalOutput)
 -- Check if everything is connected properly
 if reactor == null then
     error("No valid reactor was found")
-elseif core == null or core.getMaxEnergyStored() < 1500000 then
+elseif core == null or core.getMaxEnergyStored() < 15000000 then
     error("No valid energy core was found")
 elseif monitor == null then
     error("No valid monitor was found")
@@ -594,10 +594,10 @@ function update()
         if fieldPercent < fieldBoost and ri.status ~= "offline" then
             action = "Field Str dangerous"
             emergencyFlood = true
-            inputfluxgate.setSignalLowFlow(900000)
-            inputfluxgate.setSignalHighFlow(900000)
-            outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(900000 + outputInputHyteresis)
+            inputfluxgate.setSignalLowFlow(9000000)
+            inputfluxgate.setSignalHighFlow(9000000)
+            outputfluxgate.setSignalLowFlow(9000000 + outputInputHyteresis)
+            outputfluxgate.setSignalHighFlow(9000000 + outputInputHyteresis)
             fieldthreshold = fieldBoostOutput
         else
             emergencyFlood = false
@@ -652,10 +652,10 @@ function update()
 
         -- Are we charging? open the floodgates
         if ri.status == "charging" then
-            inputfluxgate.setSignalLowFlow(900000)
-            inputfluxgate.setSignalHighFlow(900000)
-            outputfluxgate.setSignalLowFlow(900000 + outputInputHyteresis)
-            outputfluxgate.setSignalHighFlow(900000 + outputInputHyteresis)
+            inputfluxgate.setSignalLowFlow(9000000)
+            inputfluxgate.setSignalHighFlow(9000000)
+            outputfluxgate.setSignalLowFlow(9000000 + outputInputHyteresis)
+            outputfluxgate.setSignalHighFlow(9000000 + outputInputHyteresis)
             emergencyCharge = false
         end
 
@@ -666,19 +666,19 @@ function update()
             if energyPercent == 100 then
                 outputInputHyteresis = 0
             elseif energyPercent >= 95 and energyPercent < 100 then
-                outputInputHyteresis = 10000
-            elseif energyPercent >= 90 and energyPercent < 95 then
-                outputInputHyteresis = 25000
-            elseif energyPercent >= 80 and energyPercent < 90 then
-                outputInputHyteresis = 50000
-            elseif energyPercent >= 70 and energyPercent < 80 then
-                outputInputHyteresis = 75000
-            elseif energyPercent >= 60 and energyPercent < 70 then
                 outputInputHyteresis = 100000
+            elseif energyPercent >= 90 and energyPercent < 95 then
+                outputInputHyteresis = 250000
+            elseif energyPercent >= 80 and energyPercent < 90 then
+                outputInputHyteresis = 500000
+            elseif energyPercent >= 70 and energyPercent < 80 then
+                outputInputHyteresis = 750000
+            elseif energyPercent >= 60 and energyPercent < 70 then
+                outputInputHyteresis = 1000000
             elseif energyPercent >= 50 and energyPercent < 60 then
-                outputInputHyteresis = 150000
+                outputInputHyteresis = 1500000
             elseif energyPercent >= 0 and energyPercent < 50 then
-                outputInputHyteresis = 200000
+                outputInputHyteresis = 2000000
             else
                 action = "Not enough buffer energy"
                 reactor.stopReactor()
