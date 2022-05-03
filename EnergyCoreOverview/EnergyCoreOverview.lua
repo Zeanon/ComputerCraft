@@ -120,6 +120,8 @@ function save_config()
 		end
 	end
 	sw.writeLine(" ")
+	sw.writeLine(" ")
+	sw.writeLine(" ")
 	sw.writeLine("-- just some saved data")
 	for i = 1, monitorCount do
 		sw.writeLine(" ")
