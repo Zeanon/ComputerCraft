@@ -221,20 +221,6 @@ function update()
 		oldEnergy = totalEnergy
 	end
 end
-
---compute the average energy loss/gain
-function computeAverageEnergy()
-	local tempEnergy = 0
-	for i = 0, (averageTurns - 3) do
-		tempEnergy = tempEnergy + averageEnergy[i]
-		averageEnergy[i] = averageEnergy[i + 1]
-	end
-	tempEnergy = tempEnergy + averageEnergy[averageTurns - 2]
-	averageEnergy[averageTurns - 2] = totalEnergy
-	tempEnergy = tempEnergy + totalEnergy
-	
-	return tempEnergy / averageTurns
-end
 	
 
 --draw the different lines on the screen
@@ -759,6 +745,19 @@ end
 function getEnergyStored(number)
 	local core = connectedCorePeripherals[number]
 	return core.getEnergyStored()
+end
+
+function computeAverageEnergy()
+	local tempEnergy = 0
+	for i = 0, (averageTurns - 3) do
+		tempEnergy = tempEnergy + averageEnergy[i]
+		averageEnergy[i] = averageEnergy[i + 1]
+	end
+	tempEnergy = tempEnergy + averageEnergy[averageTurns - 2]
+	averageEnergy[averageTurns - 2] = totalEnergy
+	tempEnergy = tempEnergy + totalEnergy
+	
+	return tempEnergy / averageTurns
 end
 
 -- check that every line displays something
