@@ -6,7 +6,7 @@
 
 
 -- version
-local version = "1.6.3"
+local version = "1.6.2"
 
 
 -- configure colors
@@ -239,6 +239,7 @@ function drawLines()
 		print("|# Total maximum energy: " .. gui.format_int(totalMaxEnergy) .. " RF")
 		print("|# Total free storage: " .. gui.format_int(totalMaxEnergy - totalEnergy) .. " RF")
 		print("|# Transfer: " .. (totalEnergy - oldEnergy) / (20 * refresh) .. " RF/t")
+		print("|# Average: " .. computeAverageEnergy() .. " RF/t")
 
 		for i = 1, coreCount do
 			coreEnergy[i] = getEnergyStored(i)
@@ -567,7 +568,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 		gui.draw_rft(mon, x, localY, unitColor)
 		if drawButtons then
 			gui.drawSideButtons(mon, localY, buttonColor)
-			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", "Avrg", textColor, textColor, buttonColor)
+			gui.draw_text_lr(mon, 2, localY + 2, 0, "Bar ", "Avrg", textColor, textColor, buttonColor)
 		end
 	elseif line == 7 then
 		local average = computeAverageEnergy()
@@ -594,52 +595,52 @@ function drawLine(mon, localY, line, drawButtons, side)
 		end
 	else
 		if gui.getModulo(line - 8, 6) == 1 then
-			local length = string.len(tostring(coreEnergy[1 + (line - 8) / 6]))
+			local length = string.len(tostring(coreEnergy[1 + gui.intDivision(line - 8, 6)]))
 			local offset = (length * 4) + (2 * math.floor((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
-			gui.draw_number(mon, coreEnergy[1 + (line - 8) / 6], x + 9, localY, numberColor)
+			gui.draw_number(mon, coreEnergy[1 + gui.intDivision(line - 8, 6)], x + 9, localY, numberColor)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
-				if line == 8 then
+				if line == 9 then
 					gui.draw_text_lr(mon, 2, localY + 2, 0, "Count", " EC1", textColor, textColor, buttonColor)
 				else
-					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. (line - 8) / 6 .. " ", " EC" .. 1 + ((line - 8) / 6), textColor, textColor, buttonColor)
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. gui.intDivision(line - 8, 6) .. " ", " EC" .. 1 + gui.intDivision(line - 8, 6), textColor, textColor, buttonColor)
 				end
 			end
 		elseif gui.getModulo(line - 8, 6) == 2 then
-			local length = string.len(tostring(coreMaxEnergy[1 + ((line - 9) / 6)]))
+			local length = string.len(tostring(coreMaxEnergy[1 + gui.intDivision(line - 9, 6)]))
 			local offset = (length * 4) + (2 * math.floor((length - 1) / 3)) + 9
 			local x = ((mon.X - offset) / 2) - 1
-			gui.draw_number(mon, coreMaxEnergy[1 + ((line - 9) / 6)], x + 9, localY, numberColor)
+			gui.draw_number(mon, coreMaxEnergy[1 + gui.intDivision(line - 9, 6)], x + 9, localY, numberColor)
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 9) / 6) .. " ", " EC" .. 1 + ((line - 9) / 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 8, 6) == 3 then
-			local delimeter = (1000 ^ (math.floor((string.len(tostring(coreEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
-			local energy = math.floor(coreEnergy[1 + ((line - 10) / 6)] / delimeter) / 100
-			local maxDelimeter = (1000 ^ (math.floor((string.len(tostring(coreMaxEnergy[1 + ((line - 10) / 6)]))) - 1) / 3)) / 100
-			local maxEnergy = math.floor(coreMaxEnergy[1 + ((line - 10) / 6)] / maxDelimeter) / 100
+			local delimeter = (1000 ^ (math.floor((string.len(tostring(coreEnergy[1 + gui.intDivision(line - 10, 6)]))) - 1) / 3)) / 100
+			local energy = math.floor(coreEnergy[1 + gui.intDivision(line - 10, 6)] / delimeter) / 100
+			local maxDelimeter = (1000 ^ (math.floor((string.len(tostring(coreMaxEnergy[1 + gui.intDivision(line - 10, 6)]))) - 1) / 3)) / 100
+			local maxEnergy = math.floor(coreMaxEnergy[1 + gui.intDivision(line - 10, 6)] / maxDelimeter) / 100
 			local length = string.len(tostring(energy)) + string.len(tostring(maxEnergy)) - 1
 			local offset = (length * 4) + (2 * math.floor((length - 3) / 3)) + 23
 			local x = ((mon.X - offset) / 2)
 
 			gui.draw_number(mon, energy, x + 22 + (string.len(tostring(maxEnergy)) * 4), localY, numberColor)
-			gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(math.floor(coreEnergy[1 + ((line - 10) / 6)]))), unitColor)
+			gui.draw_si(mon, x + 17 + (string.len(tostring(maxEnergy)) * 4), localY, string.len(tostring(math.floor(coreEnergy[1 + gui.intDivision(line - 10, 6)]))), unitColor)
 
 			gui.draw_slash(mon, x + 12 + (string.len(tostring(maxEnergy)) * 4), localY, unitColor)
 			gui.draw_number(mon, maxEnergy, x + 14, localY, numberColor)
-			gui.draw_si(mon, x + 9, localY, string.len(tostring(math.floor(coreMaxEnergy[1 + ((line - 10) / 6)]))), unitColor)
+			gui.draw_si(mon, x + 9, localY, string.len(tostring(math.floor(coreMaxEnergy[1 + gui.intDivision(line - 10, 6)]))), unitColor)
 
 			gui.draw_rf(mon, x, localY, unitColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 10) / 6) .. " ", " EC" .. 1 + ((line - 10) / 6), textColor, textColor, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + gui.intDivision(line - 10, 6) .. " ", " EC" .. 1 + gui.intDivision(line - 10, 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 8, 6) == 4 then
-			local energyPercent = math.ceil(coreEnergy[1 + ((line - 11) / 6)] / coreMaxEnergy[1 + ((line - 11) / 6)] * 10000)*.01
+			local energyPercent = math.ceil(coreEnergy[1 + gui.intDivision(line - 11, 6)] / coreMaxEnergy[1 + gui.intDivision(line - 11, 6)] * 10000)*.01
 			if energyPercent == math.huge or isnan(energyPercent) then
 				energyPercent = 0
 			end
@@ -650,7 +651,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_percent(mon, x, localY, numberColor)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 11) / 6) .. " ", " EC" .. 1 + ((line - 11) / 6), textColor, textColor, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + gui.intDivision(line - 11, 6) .. " ", " EC" .. 1 + gui.intDivision(line - 11, 6), textColor, textColor, buttonColor)
 
 			end
 		elseif gui.getModulo(line - 8, 6) == 5 then
@@ -661,7 +662,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 				length = mon.X - 2
 			end
 			local x = ((mon.X - length) / 2) - 1
-			local energyPercent = math.ceil(coreEnergy[1 + ((line - 12) / 6)] / coreMaxEnergy[1 + ((line - 12) / 6)] * 10000)*.01
+			local energyPercent = math.ceil(coreEnergy[1 + gui.intDivision(line - 12, 6)] / coreMaxEnergy[1 + gui.intDivision(line - 12, 6)] * 10000)*.01
 			if energyPercent == math.huge or isnan(energyPercent) then
 				energyPercent = 0
 			end
@@ -678,24 +679,28 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.progress_bar(mon, x + 2, localY + 4, length, energyPercent, 100, energyColor, colors.lightGray)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
-				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + ((line - 12) / 6) .. " ", " EC" .. 1 + ((line - 12) / 6), textColor, textColor, buttonColor)
+				gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. 1 + gui.intDivision(line - 12, 6) .. " ", " EC" .. 1 + gui.intDivision(line - 12, 6), textColor, textColor, buttonColor)
 			end
 		elseif gui.getModulo(line - 8, 6) == 0 then
 			local tier
-			if coreMaxEnergy[(line - 7) / 6] == 45500000 then
+			if coreMaxEnergy[gui.intDivision(line - 7, 6)] == 45500000 then
 				tier = 1
-			elseif coreMaxEnergy[(line - 7) / 6] == 273000000 then
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 273000000 then
 				tier = 2
-			elseif coreMaxEnergy[(line - 7) / 6] == 1640000000 then
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 1640000000 then
 				tier = 3
-			elseif coreMaxEnergy[(line - 7) / 6] == 9880000000 then
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 9880000000 then
 				tier = 4
-			elseif coreMaxEnergy[(line - 7) / 6] == 59300000000 then
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 59300000000 then
 				tier = 5
-			elseif coreMaxEnergy[(line - 7) / 6] == 356000000000 then
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 356000000000 then
 				tier = 6
-			elseif coreMaxEnergy[(line - 7) / 6] == 2140000000000 then
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 2140000000000 then
 				tier = 7
+			elseif coreMaxEnergy[gui.intDivision(line - 7, 6)] == 9223372036854775807 then
+				tier = 8
+			else
+				tier = 0
 			end
 			local length = string.len(tostring(tier))
 			local offset = (length * 4) + 19
@@ -710,9 +715,9 @@ function drawLine(mon, localY, line, drawButtons, side)
 			if drawButtons then
 				gui.drawSideButtons(mon, localY, buttonColor)
 				if line == (coreCount * 6) + 8 then
-					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. ((line - 7) / 6) .. " ", "Ener", textColor, textColor, buttonColor)
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. gui.intDivision(line - 8, 6) .. " ", "Ener", textColor, textColor, buttonColor)
 				else
-					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. ((line - 7) / 6) .. " ", " EC" .. ((line - 7) / 6) + 1, textColor, textColor, buttonColor)
+					gui.draw_text_lr(mon, 2, localY + 2, 0, "EC" .. gui.intDivision(line - 8, 6) .. " ", " EC" .. gui.intDivision(line - 8, 6) + 1, textColor, textColor, buttonColor)
 				end
 			end
 		end
@@ -753,8 +758,8 @@ function computeAverageEnergy()
 		averageEnergy[i] = averageEnergy[i + 1]
 	end
 	tempEnergy = tempEnergy + averageEnergy[averageTurns - 2]
-	averageEnergy[averageTurns - 2] = totalEnergy
-	tempEnergy = tempEnergy + totalEnergy
+	averageEnergy[averageTurns - 2] = (totalEnergy - oldEnergy) / (20 * refresh)
+	tempEnergy = tempEnergy + ((totalEnergy - oldEnergy) / (20 * refresh))
 	
 	return tempEnergy / averageTurns
 end
@@ -833,8 +838,11 @@ checkLines()
 
 --Fill the averageEnergy array
 for i = 0, averageTurns - 1 do
-	averageEnergy[i] = getTotalEnergyStored()
+	averageEnergy[i] = 0
 end
+
+--Set oldEnergy to the current level
+oldEnergy = getTotalEnergyStored()
 
 init()
 
