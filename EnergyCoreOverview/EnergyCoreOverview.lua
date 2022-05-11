@@ -571,7 +571,7 @@ function drawLine(mon, localY, line, drawButtons, side)
 			gui.draw_text_lr(mon, 2, localY + 2, 0, "Gen ", "Avrg", textColor, textColor, buttonColor)
 		end
 	elseif line == 7 then
-		local average = computeAverageEnergy
+		local average = computeAverageEnergy()
 		local length = string.len(tostring(average))
 		local offset = (length * 4) + (2 * math.floor((length - 1) / 3)) + 17
 		local x = ((mon.X - offset) / 2) - 1
