@@ -75,7 +75,7 @@ function getModulo(number, modulo)
 	return number - result
 end
 
--- intDivision(number1, number2)
+function intDivision(number1, number2)
 	local temp = number1
 	local result = 0
 	
@@ -85,6 +85,7 @@ end
 	end
 	
 	return result
+end
 
 -- monitor related
 -- display text text on monitor, "mon" peripheral
