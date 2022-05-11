@@ -6,7 +6,7 @@
 
 
 -- version
-local version = "1.6.2"
+local version = "1.6.3"
 
 
 -- configure colors
@@ -211,12 +211,6 @@ end
 if monitorCount == 0 then
 	error("No valid monitor was found")
 end
-
---Fill the averageEnergy array
-for i = 0, averageTurns - 1 do
-	averageEnergy[i] = getTotalEnergyStored()
-end
-
 
 --update the monitor
 function update()
@@ -836,6 +830,11 @@ end
 
 --run
 checkLines()
+
+--Fill the averageEnergy array
+for i = 0, averageTurns - 1 do
+	averageEnergy[i] = getTotalEnergyStored()
+end
 
 init()
 
