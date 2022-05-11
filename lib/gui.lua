@@ -75,6 +75,17 @@ function getModulo(number, modulo)
 	return number - result
 end
 
+-- intDivision(number1, number2)
+	local temp = number1
+	local result = 0
+	
+	while temp >= number2 do
+		temp = temp - number2
+		result = result + 1
+	end
+	
+	return result
+
 -- monitor related
 -- display text text on monitor, "mon" peripheral
 function draw_text(mon, x, y, text, text_color, bg_color)
