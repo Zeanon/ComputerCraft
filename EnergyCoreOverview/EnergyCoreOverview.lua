@@ -6,7 +6,7 @@
 
 
 -- version
-local version = "1.6.1"
+local version = "1.6.2"
 
 
 -- configure colors
@@ -16,7 +16,7 @@ local buttonColor = colors.lightGray
 local textColor = colors.white
 -- lower number means higher refresh rate but also increases server load
 local refresh = 1
-
+-- amount of turns to be used to compute the average energy loss/gain
 local averageTurns = 20
 
 -- program
@@ -210,6 +210,11 @@ end
 
 if monitorCount == 0 then
 	error("No valid monitor was found")
+end
+
+--Fill the averageEnergy array
+for i = 0, averageTurns - 1 do
+	averageEnergy[i] = getTotalEnergyStored()
 end
 
 
