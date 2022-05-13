@@ -1,3 +1,7 @@
+# WARNING
+This program is still buggy on 1.16, do not use rn
+
+
 # Disclaimer/Credit
 This program is not originally by me but a fork of [this](https://github.com/acidjazz/drmon/) program written by [acidjazz](https://github.com/acidjazz/), so full credit for the base of the program to him.
 
